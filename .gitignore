@@ -1,0 +1,45 @@
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+venv*/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+
+# Node & Frontend dependencies
+node_modules/
+.npm/
+
+# Large Model Checkpoints & Weights (>50MB / >100MB)
+*.safetensors
+*.pth
+*.pt
+*.bin
+*.ckpt
+*.onnx
+*.incomplete
+.cache/
+nltk_data/
+
+# Generated outputs & audio test artifacts
+test_*.wav
+*.wav.part
+generated_audio/
+generated_images/
+*.log
+
+# Third-party unused clone repositories
+TTS/
+Trainer/
+
+# OS and Editor files
+.DS_Store
+.vscode/
+.idea/
