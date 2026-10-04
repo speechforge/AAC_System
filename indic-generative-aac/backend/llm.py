@@ -73,7 +73,10 @@ class IndicLLM:
     def __init__(self, model_name=None):
         if model_name is None:
             local_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../models/Qwen2.5-0.5B-Instruct"))
-            model_name = local_path if os.path.exists(local_path) else "Qwen/Qwen2.5-0.5B-Instruct"
+            has_weights = os.path.exists(local_path) and any(
+                f.endswith((".safetensors", ".bin")) for f in os.listdir(local_path)
+            ) if os.path.exists(local_path) else False
+            model_name = local_path if has_weights else "Qwen/Qwen2.5-0.5B-Instruct"
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         print(f"Loading {model_name} on {self.device}")

@@ -43,3 +43,8 @@ Trainer/
 .DS_Store
 .vscode/
 .idea/
+
+# Deployments & Backups
+hf_space/
+*.bak*
+
