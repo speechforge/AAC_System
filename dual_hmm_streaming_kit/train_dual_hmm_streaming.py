@@ -447,9 +447,9 @@ def run_streaming_pipeline():
         next_hmm.total_tokens = total_tokens_now
         next_hmm.vocabulary = set(unjumble_hmm.word_unigrams.keys())
 
-        # Prune rare transitions periodically to ensure constant memory footprint
-        if chunk_id % 5 == 0:
-            print("[*] Running periodic memory compaction...")
+        # Prune rare transitions frequently to ensure constant memory footprint (<18GB)
+        if chunk_id % 2 == 0 or len(next_hmm.fourgrams) > 10000000 or len(unjumble_hmm.word_trigrams) > 10000000:
+            print("[*] Running periodic memory compaction and pruning rare transitions...")
             unjumble_hmm.prune_rare_transitions(min_count=2)
             next_hmm.prune_rare_transitions(min_count=2)
             gc.collect()
