@@ -24,12 +24,11 @@ node_modules/
 *.bin
 *.ckpt
 *.onnx
-*.pkl
 *.zip
 *.incomplete
 .cache/
 nltk_data/
-models/
+indic-generative-aac/models/
 checkpoint/
 checkpoints/
 
@@ -39,7 +38,6 @@ test_*.wav
 generated_audio/
 generated_images/
 *.log
-dual_hmm_streaming_kit/models/
 dual_hmm_streaming_kit/logs/
 
 # Third-party unused clone repositories

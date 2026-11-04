@@ -112,13 +112,16 @@ class AACNextWordHMM:
             self.fourgrams[(tokens[i], tokens[i + 1], tokens[i + 2])][tokens[i + 3]] += 1
 
     def prune_rare_transitions(self, min_count=2):
-        """Memory compaction: drop singleton 4-grams to maintain high throughput and avoid OOM."""
-        for u in list(self.fourgrams.keys()):
-            filtered = Counter({v: c for v, c in self.fourgrams[u].items() if c >= min_count})
-            if filtered:
-                self.fourgrams[u] = filtered
-            else:
-                del self.fourgrams[u]
+        """Zero-allocation in-place memory compaction: drop rare 4-grams to prevent OOM."""
+        dead_keys = []
+        for u, counter in self.fourgrams.items():
+            to_remove = [v for v, c in counter.items() if c < min_count]
+            for v in to_remove:
+                del counter[v]
+            if not counter:
+                dead_keys.append(u)
+        for u in dead_keys:
+            del self.fourgrams[u]
 
     def predict_next(self, current_words, top_k=10):
         """
@@ -272,14 +275,17 @@ class AACUnjumbleHMM:
             self.pos_trigrams[(pos_tags[i], pos_tags[i + 1])][pos_tags[i + 2]] += 1
 
     def prune_rare_transitions(self, min_count=2):
-        """Drop singleton trigrams when state space exceeds 10 million to prevent OOM."""
-        if len(self.word_trigrams) > 10000000:
-            for ctx in list(self.word_trigrams.keys()):
-                filtered = Counter({w: c for w, c in self.word_trigrams[ctx].items() if c >= min_count})
-                if filtered:
-                    self.word_trigrams[ctx] = filtered
-                else:
-                    del self.word_trigrams[ctx]
+        """Zero-allocation in-place memory compaction: drop rare trigrams when exceeding 8M contexts."""
+        if len(self.word_trigrams) > 8000000:
+            dead_keys = []
+            for ctx, counter in self.word_trigrams.items():
+                to_remove = [w for w, c in counter.items() if c < min_count]
+                for w in to_remove:
+                    del counter[w]
+                if not counter:
+                    dead_keys.append(ctx)
+            for ctx in dead_keys:
+                del self.word_trigrams[ctx]
 
     def score_sequence(self, tokens):
         """

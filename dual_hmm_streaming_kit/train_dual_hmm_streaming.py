@@ -498,7 +498,7 @@ def run_streaming_pipeline():
             eval_m=eval_m, elapsed=t_chunk_elapsed, pct=100.0, status=f"CHUNK_{chunk_id}_COMPLETE"
         )
 
-        # Serialize HMM Checkpoints safely
+        # Serialize HMM Checkpoints safely with memory guard
         print("[*] Serializing HMM Checkpoints...")
         gc.collect()
 
@@ -506,6 +506,7 @@ def run_streaming_pipeline():
         with open(latest_uj_path + ".tmp", "wb") as f:
             pickle.dump(unjumble_hmm, f, protocol=pickle.HIGHEST_PROTOCOL)
         os.replace(latest_uj_path + ".tmp", latest_uj_path)
+        gc.collect()
 
         # 2. HMM-1 (Lightweight Next-Word Config & Fourgrams)
         with open(latest_next_path + ".tmp", "wb") as f:
@@ -519,10 +520,12 @@ def run_streaming_pipeline():
                 "total_tokens": next_hmm.total_tokens
             }, f, protocol=pickle.HIGHEST_PROTOCOL)
         os.replace(latest_next_path + ".tmp", latest_next_path)
-
-        # 3. Master Backend Model
-        save_master_backend_hmm(next_hmm, unjumble_hmm)
         gc.collect()
+
+        # 3. Master Backend Model (saved periodically to conserve RAM during heavy runs)
+        if chunk_id % 5 == 0:
+            save_master_backend_hmm(next_hmm, unjumble_hmm)
+            gc.collect()
 
         print(f"[✓] Chunk {chunk_id} Complete! Cumulative sentences: {unjumble_hmm.sentence_count:,}\n")
 
