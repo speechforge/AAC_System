@@ -1,0 +1,198 @@
+{
+  "single": {
+    "mode": "single",
+    "avg_llm": 1.06,
+    "avg_sem": 2.27,
+    "cvr": 0.33,
+    "results": [
+      {
+        "name": "Basic Request",
+        "generated": "The user wants to buy water.",
+        "candidate": null,
+        "valid": true,
+        "score": 1.0,
+        "violation": false,
+        "t_llm": 1.59,
+        "t_sem": 2.51
+      },
+      {
+        "name": "Basic Feeling",
+        "generated": "The user is feeling happy about their day.",
+        "candidate": null,
+        "valid": true,
+        "score": 1.0,
+        "violation": false,
+        "t_llm": 0.86,
+        "t_sem": 2.35
+      },
+      {
+        "name": "Hallucination Trap",
+        "generated": "The user ordered a pizza and felt hungry for it.",
+        "candidate": null,
+        "valid": true,
+        "score": 1.0,
+        "violation": false,
+        "t_llm": 0.9,
+        "t_sem": 2.24
+      },
+      {
+        "name": "Negation",
+        "generated": "The user wants to buy milk.",
+        "candidate": null,
+        "valid": false,
+        "score": 0.8,
+        "violation": true,
+        "t_llm": 0.74,
+        "t_sem": 2.23
+      },
+      {
+        "name": "Multiple Entities",
+        "generated": "The user wants to buy a pizza for their mother.",
+        "candidate": null,
+        "valid": true,
+        "score": 1.0,
+        "violation": false,
+        "t_llm": 0.9,
+        "t_sem": 2.22
+      },
+      {
+        "name": "Relations",
+        "generated": "The user wants to go to school with their mother.",
+        "candidate": null,
+        "valid": true,
+        "score": 1.0,
+        "violation": false,
+        "t_llm": 0.9,
+        "t_sem": 2.22
+      },
+      {
+        "name": "Temporal Explicit",
+        "generated": "The user wants to go to school tomorrow.",
+        "candidate": null,
+        "valid": true,
+        "score": 1.0,
+        "violation": false,
+        "t_llm": 0.81,
+        "t_sem": 2.22
+      },
+      {
+        "name": "Question",
+        "generated": "The user wants to know about water. The user is in the present tense. Water is an essential element for life.",
+        "candidate": null,
+        "valid": false,
+        "score": 0.8,
+        "violation": true,
+        "t_llm": 1.42,
+        "t_sem": 2.22
+      },
+      {
+        "name": "Hindi Code-Mixed",
+        "generated": "\u0905\u092a\u0928\u0947 \u0936\u093f\u0915\u094d\u0937\u093e \u092e\u0947\u0902 \u0917\u0939\u0930\u093e\u0908 \u0915\u0930\u0928\u093e\u0964",
+        "candidate": null,
+        "valid": false,
+        "score": 0.5,
+        "violation": true,
+        "t_llm": 1.46,
+        "t_sem": 2.22
+      }
+    ]
+  },
+  "dual": {
+    "mode": "dual",
+    "avg_llm": 2.0,
+    "avg_sem": 2.23,
+    "cvr": 0.33,
+    "results": [
+      {
+        "name": "Basic Request",
+        "generated": "The user wants to buy water.",
+        "candidate": "The user wants to buy water.",
+        "valid": true,
+        "score": 1.0,
+        "violation": false,
+        "t_llm": 1.47,
+        "t_sem": 2.21
+      },
+      {
+        "name": "Basic Feeling",
+        "generated": "The user feels happy about their recent meal at the restaurant.",
+        "candidate": "The user is feeling happy about their recent meal at the restaurant.",
+        "valid": true,
+        "score": 1.0,
+        "violation": false,
+        "t_llm": 1.91,
+        "t_sem": 2.22
+      },
+      {
+        "name": "Hallucination Trap",
+        "generated": "The user ordered a pizza and was feeling hungry for it.",
+        "candidate": "The user ordered a pizza and felt hungry for it.",
+        "valid": true,
+        "score": 1.0,
+        "violation": false,
+        "t_llm": 1.83,
+        "t_sem": 2.23
+      },
+      {
+        "name": "Negation",
+        "generated": "The user wants to buy milk.",
+        "candidate": "The user wants to buy milk.",
+        "valid": false,
+        "score": 0.8,
+        "violation": true,
+        "t_llm": 1.47,
+        "t_sem": 2.23
+      },
+      {
+        "name": "Multiple Entities",
+        "generated": "The user wants to buy a pizza for their mother.",
+        "candidate": "The user wants to buy a pizza for their mother.",
+        "valid": true,
+        "score": 1.0,
+        "violation": false,
+        "t_llm": 1.79,
+        "t_sem": 2.22
+      },
+      {
+        "name": "Relations",
+        "generated": "The user wants to go to school with their mother.",
+        "candidate": "The user wants to go to school with their mother.",
+        "valid": true,
+        "score": 1.0,
+        "violation": false,
+        "t_llm": 1.8,
+        "t_sem": 2.22
+      },
+      {
+        "name": "Temporal Explicit",
+        "generated": "The user plans to go to school tomorrow.",
+        "candidate": "The user wants to go to school tomorrow.",
+        "valid": true,
+        "score": 1.0,
+        "violation": false,
+        "t_llm": 1.63,
+        "t_sem": 2.22
+      },
+      {
+        "name": "Question",
+        "generated": "The user wants to know about water. The user is asking for information about water.",
+        "candidate": "The user wants to know about water. The user is asking for information about water.",
+        "valid": false,
+        "score": 0.8,
+        "violation": true,
+        "t_llm": 2.28,
+        "t_sem": 2.22
+      },
+      {
+        "name": "Hindi Code-Mixed",
+        "generated": "\u0905\u092a\u0928\u0947 \u0936\u093f\u0915\u094d\u0937\u093e \u092e\u0947\u0902 \u0917\u0939\u0930\u093e\u0908 \u0915\u0930\u0915\u0947 \u0924\u0948\u092f\u093e\u0930 \u0939\u094b\u0964",
+        "candidate": "\u0905\u092a\u0928\u0947 \u0936\u093f\u0915\u094d\u0937\u093e \u092e\u0947\u0902 \u0917\u0939\u0930\u093e\u0908 \u0915\u0930\u0915\u0947 \u0924\u0948\u092f\u093e\u0930 \u0939\u094b\u0964",
+        "valid": false,
+        "score": 0.7,
+        "violation": true,
+        "t_llm": 3.84,
+        "t_sem": 2.26
+      }
+    ]
+  }
+}

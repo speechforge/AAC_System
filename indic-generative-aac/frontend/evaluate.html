@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MOS Evaluation Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 p-8 font-sans">
+    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+        <header class="bg-sky-600 text-white p-6">
+            <h1 class="text-3xl font-extrabold tracking-tight">MOS Evaluation Dashboard</h1>
+            <p class="text-sky-100 mt-2 font-medium">Subjective Mean Opinion Score Testing for Indic TTS</p>
+        </header>
+
+        <main class="p-6">
+            <div id="loading" class="text-center py-10 font-bold text-slate-400">Loading samples...</div>
+            <div id="samples-container" class="space-y-6 hidden"></div>
+
+            <div class="mt-8 border-t pt-6 flex justify-between items-center hidden" id="submission-area">
+                <div class="text-slate-500 font-bold">Please rate all samples to submit.</div>
+                <button onclick="submitMOS()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-xl shadow-sm transition">Submit Ratings</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const mockSamples = [
+            { id: 1, lang: "en", condition: "Baseline", text: "I want to go to school with mother." },
+            { id: 2, lang: "hi (Code-Mix)", condition: "Code-Mixed", text: "मुझे school जाना है mother के साथ।" },
+            { id: 3, lang: "en", condition: "Semantic Validation", text: "I do not want to go to the doctor." }
+        ];
+
+        let ratings = {};
+
+        function renderSamples() {
+            const container = document.getElementById('samples-container');
+            container.innerHTML = '';
+            
+            mockSamples.forEach(sample => {
+                const el = document.createElement('div');
+                el.className = "p-6 border border-slate-200 rounded-xl bg-slate-50 shadow-sm";
+                el.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span class="inline-block px-3 py-1 bg-sky-100 text-sky-800 rounded-full text-xs font-bold mb-2">${sample.condition} (${sample.lang})</span>
+                            <h3 class="text-lg font-bold text-slate-700">"${sample.text}"</h3>
+                        </div>
+                        <button class="bg-sky-500 hover:bg-sky-600 text-white px-4 py-2 rounded-lg font-bold shadow-sm flex items-center gap-2">
+                            ▶ Play Audio
+                        </button>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label class="block text-sm font-bold text-slate-500 mb-3">Rate Quality (1-5)</label>
+                        <div class="flex gap-4">
+                            ${[1, 2, 3, 4, 5].map(n => `
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="rating_${sample.id}" value="${n}" class="peer sr-only" onchange="rate(${sample.id}, ${n})">
+                                    <div class="w-12 h-12 rounded-full border-2 border-slate-300 flex items-center justify-center font-bold text-slate-400 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-600 transition">
+                                        ${n}
+                                    </div>
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('samples-container').classList.remove('hidden');
+            document.getElementById('submission-area').classList.remove('hidden');
+        }
+
+        function rate(id, score) {
+            ratings[id] = score;
+        }
+
+        function submitMOS() {
+            if (Object.keys(ratings).length < mockSamples.length) {
+                alert("Please rate all samples before submitting!");
+                return;
+            }
+            alert("MOS Ratings Submitted Successfully!\nData: " + JSON.stringify(ratings));
+            // In a real implementation, this would POST to /evaluate
+        }
+
+        setTimeout(renderSamples, 500); // Simulate network load
+    </script>
+</body>
+</html>

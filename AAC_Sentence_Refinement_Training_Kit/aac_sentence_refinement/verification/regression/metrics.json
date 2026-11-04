@@ -1,0 +1,161 @@
+{
+  "dataset": "/workspace/scratch/5768c4da23ce/aac_sentence_refinement/data/regression.jsonl",
+  "dataset_sha256": "2a87a70fb55035424d7b59e3874a52e033e30ec79ec5d5f80fb75674fb24241a",
+  "checkpoint": null,
+  "model_startup_and_warmup_ms": null,
+  "timeout_s": 2.0,
+  "cache_enabled": false,
+  "bootstrap_seed": 42,
+  "observation_unit": "one AAC payload/draft; paired across methods",
+  "bootstrap_unit": "selection group, including all draft and polarity variants; 2000 resamples",
+  "rates_are_fractions": true,
+  "definitions": {
+    "exact_match": "exact string match against supplied references, all evaluation rows",
+    "validator_pass": "heuristic/frame validation pass among supported frames; not human semantic accuracy",
+    "negation_error": "selected-negation omission among all inputs containing a recognized selected negator",
+    "added_content": "unselected-content diagnostic among supported frames; does not detect all semantic errors",
+    "raw_fallback": "returned original raw_sentence after blocking, failure or rejection; all rows",
+    "latency_ms": "warm synchronous wall time including parsing/IPC/validation; excludes initial model loading"
+  },
+  "methods": {
+    "rules": {
+      "n": 8,
+      "groups": 8,
+      "exact_match": {
+        "numerator": 8,
+        "denominator": 8,
+        "rate": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "validator_pass": {
+        "numerator": 7,
+        "denominator": 7,
+        "rate": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "negation_error": {
+        "numerator": 0,
+        "denominator": 2,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "added_content": {
+        "numerator": 0,
+        "denominator": 7,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "raw_fallback": {
+        "numerator": 1,
+        "denominator": 8,
+        "rate": 0.125,
+        "ci95": [
+          0.0,
+          0.375
+        ]
+      },
+      "latency_ms": {
+        "mean": 0.12134725002965752,
+        "p50": 0.07230900007471064,
+        "p95": 0.30356679999385955,
+        "p99": 0.3297445599673665,
+        "max": 0.33628899996074324
+      },
+      "routes": {
+        "rule": 7,
+        "raw_fallback": 1
+      },
+      "fallback_reasons": {
+        "ambiguous_or_unsupported_frame": 1
+      },
+      "model_attempts": 0
+    }
+  },
+  "by_intent": {
+    "rules": {
+      "regression": {
+        "n": 8,
+        "groups": 8,
+        "exact_match": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 7,
+          "denominator": 7,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 2,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 7,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 1,
+          "denominator": 8,
+          "rate": 0.125,
+          "ci95": [
+            0.0,
+            0.375
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.12134725002965752,
+          "p50": 0.07230900007471064,
+          "p95": 0.30356679999385955,
+          "p99": 0.3297445599673665,
+          "max": 0.33628899996074324
+        },
+        "routes": {
+          "rule": 7,
+          "raw_fallback": 1
+        },
+        "fallback_reasons": {
+          "ambiguous_or_unsupported_frame": 1
+        },
+        "model_attempts": 0
+      }
+    }
+  },
+  "limitations": [
+    "Template-derived tests share grammar and vocabulary with the implementation.",
+    "Group splitting prevents draft duplication leakage; it does not measure new-user or new-domain generalization.",
+    "Exact match can penalize valid unlisted paraphrases; validator metrics are diagnostics.",
+    "No clinical, conversational-rate, TTS, human-adequacy or real-world safety measurements are produced."
+  ],
+  "paired_exact_match_difference_vs_raw": {}
+}

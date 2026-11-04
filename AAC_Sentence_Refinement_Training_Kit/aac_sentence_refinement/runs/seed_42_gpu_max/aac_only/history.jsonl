@@ -1,0 +1,10 @@
+{"epoch": 1, "step": 96, "train_loss": 0.4836060891081835, "validation_loss": 0.00334770516637763, "best_validation_loss": 0.00334770516637763, "completed_epoch": true, "elapsed_s": 21.374200531980023}
+{"epoch": 2, "step": 192, "train_loss": 0.005647121927081017, "validation_loss": 0.001337241185887105, "best_validation_loss": 0.001337241185887105, "completed_epoch": true, "elapsed_s": 44.018010228988715}
+{"epoch": 3, "step": 288, "train_loss": 0.003658877728682262, "validation_loss": 0.001109345491274361, "best_validation_loss": 0.001109345491274361, "completed_epoch": true, "elapsed_s": 64.23493305197917}
+{"epoch": 4, "step": 384, "train_loss": 0.0019919874504951553, "validation_loss": 0.0002534718298174355, "best_validation_loss": 0.0002534718298174355, "completed_epoch": true, "elapsed_s": 84.44805371097755}
+{"epoch": 5, "step": 480, "train_loss": 0.0012738307326931823, "validation_loss": 0.00015148877739924743, "best_validation_loss": 0.00015148877739924743, "completed_epoch": true, "elapsed_s": 104.77406143501867}
+{"epoch": 6, "step": 576, "train_loss": 0.0009112471317209227, "validation_loss": 8.970487869856005e-05, "best_validation_loss": 8.970487869856005e-05, "completed_epoch": true, "elapsed_s": 125.20263086399063}
+{"epoch": 7, "step": 672, "train_loss": 0.0007944027363921338, "validation_loss": 6.654287246597718e-05, "best_validation_loss": 6.654287246597718e-05, "completed_epoch": true, "elapsed_s": 145.66250244295225}
+{"epoch": 8, "step": 768, "train_loss": 0.0006277688702090448, "validation_loss": 5.909273744927963e-05, "best_validation_loss": 5.909273744927963e-05, "completed_epoch": true, "elapsed_s": 166.2401209139498}
+{"epoch": 9, "step": 864, "train_loss": 0.0005851903263491142, "validation_loss": 6.836143764230952e-05, "best_validation_loss": 5.909273744927963e-05, "completed_epoch": true, "elapsed_s": 185.33360973000526}
+{"epoch": 10, "step": 960, "train_loss": 0.0006544235473614099, "validation_loss": 6.330493958038274e-05, "best_validation_loss": 5.909273744927963e-05, "completed_epoch": true, "elapsed_s": 204.39799134398345}

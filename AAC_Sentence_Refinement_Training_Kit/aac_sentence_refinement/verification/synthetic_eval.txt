@@ -1,0 +1,63 @@
+{
+  "rules": {
+    "n": 384,
+    "groups": 40,
+    "exact_match": {
+      "numerator": 384,
+      "denominator": 384,
+      "rate": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ]
+    },
+    "validator_pass": {
+      "numerator": 384,
+      "denominator": 384,
+      "rate": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ]
+    },
+    "negation_error": {
+      "numerator": 0,
+      "denominator": 172,
+      "rate": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    "added_content": {
+      "numerator": 0,
+      "denominator": 384,
+      "rate": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    "raw_fallback": {
+      "numerator": 0,
+      "denominator": 384,
+      "rate": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    "latency_ms": {
+      "mean": 0.07613210677526183,
+      "p50": 0.0722044999292848,
+      "p95": 0.11534984996615093,
+      "p99": 0.17853274019216772,
+      "max": 0.26331799995205074
+    },
+    "routes": {
+      "rule": 384
+    },
+    "fallback_reasons": {},
+    "model_attempts": 0
+  }
+}

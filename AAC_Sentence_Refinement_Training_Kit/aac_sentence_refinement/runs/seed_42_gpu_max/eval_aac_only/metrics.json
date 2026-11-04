@@ -1,0 +1,1503 @@
+{
+  "dataset": "/home/linux/Documents/AACsystem/AAC_System-jaydeep/AAC_Sentence_Refinement_Training_Kit/aac_sentence_refinement/data/aac_test.jsonl",
+  "dataset_sha256": "08f4c60ad288a48cd026577b539cb87c0032221e1af29fd12e45ba71409f14b2",
+  "checkpoint": "runs/seed_42_gpu_max/aac_only/best",
+  "model_startup_and_warmup_ms": 2725.0499699730426,
+  "timeout_s": 2.0,
+  "cache_enabled": false,
+  "bootstrap_seed": 42,
+  "observation_unit": "one AAC payload/draft; paired across methods",
+  "bootstrap_unit": "selection group, including all draft and polarity variants; 2000 resamples",
+  "rates_are_fractions": true,
+  "definitions": {
+    "exact_match": "exact string match against supplied references, all evaluation rows",
+    "validator_pass": "heuristic/frame validation pass among supported frames; not human semantic accuracy",
+    "negation_error": "selected-negation omission among all inputs containing a recognized selected negator",
+    "added_content": "unselected-content diagnostic among supported frames; does not detect all semantic errors",
+    "raw_fallback": "returned original raw_sentence after blocking, failure or rejection; all rows",
+    "latency_ms": "warm synchronous wall time including parsing/IPC/validation; excludes initial model loading"
+  },
+  "methods": {
+    "raw": {
+      "n": 384,
+      "groups": 40,
+      "exact_match": {
+        "numerator": 0,
+        "denominator": 384,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "validator_pass": {
+        "numerator": 0,
+        "denominator": 384,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "negation_error": {
+        "numerator": 0,
+        "denominator": 172,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "added_content": {
+        "numerator": 0,
+        "denominator": 384,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "raw_fallback": {
+        "numerator": 0,
+        "denominator": 384,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "latency_ms": {
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "routes": {
+        "raw": 384
+      },
+      "fallback_reasons": {},
+      "model_attempts": 0
+    },
+    "rules": {
+      "n": 384,
+      "groups": 40,
+      "exact_match": {
+        "numerator": 384,
+        "denominator": 384,
+        "rate": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "validator_pass": {
+        "numerator": 384,
+        "denominator": 384,
+        "rate": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "negation_error": {
+        "numerator": 0,
+        "denominator": 172,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "added_content": {
+        "numerator": 0,
+        "denominator": 384,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "raw_fallback": {
+        "numerator": 0,
+        "denominator": 384,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "latency_ms": {
+        "mean": 0.07756437238034171,
+        "p50": 0.07921253563836217,
+        "p95": 0.0908763671759516,
+        "p99": 0.09962568758055568,
+        "max": 0.11965702287852764
+      },
+      "routes": {
+        "rule": 384
+      },
+      "fallback_reasons": {},
+      "model_attempts": 0
+    },
+    "model": {
+      "n": 384,
+      "groups": 40,
+      "exact_match": {
+        "numerator": 378,
+        "denominator": 384,
+        "rate": 0.984375,
+        "ci95": [
+          0.963963963963964,
+          1.0
+        ]
+      },
+      "validator_pass": {
+        "numerator": 378,
+        "denominator": 384,
+        "rate": 0.984375,
+        "ci95": [
+          0.963963963963964,
+          1.0
+        ]
+      },
+      "negation_error": {
+        "numerator": 0,
+        "denominator": 172,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "added_content": {
+        "numerator": 0,
+        "denominator": 384,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "raw_fallback": {
+        "numerator": 6,
+        "denominator": 384,
+        "rate": 0.015625,
+        "ci95": [
+          0.0,
+          0.036036036036036036
+        ]
+      },
+      "latency_ms": {
+        "mean": 31.193478528318035,
+        "p50": 31.756703509017825,
+        "p95": 37.257424788549535,
+        "p99": 41.14993913332001,
+        "max": 43.702707975171506
+      },
+      "routes": {
+        "model": 378,
+        "raw_fallback": 6
+      },
+      "fallback_reasons": {
+        "added_content": 2,
+        "frame_or_scope": 6
+      },
+      "model_attempts": 384
+    },
+    "hybrid": {
+      "n": 384,
+      "groups": 40,
+      "exact_match": {
+        "numerator": 384,
+        "denominator": 384,
+        "rate": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "validator_pass": {
+        "numerator": 384,
+        "denominator": 384,
+        "rate": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "negation_error": {
+        "numerator": 0,
+        "denominator": 172,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "added_content": {
+        "numerator": 0,
+        "denominator": 384,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "raw_fallback": {
+        "numerator": 0,
+        "denominator": 384,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "latency_ms": {
+        "mean": 0.07031395004257017,
+        "p50": 0.07143698167055845,
+        "p95": 0.0826515257358551,
+        "p99": 0.0942091317847372,
+        "max": 0.11298398021608591
+      },
+      "routes": {
+        "rule": 384
+      },
+      "fallback_reasons": {},
+      "model_attempts": 0
+    }
+  },
+  "by_intent": {
+    "raw": {
+      "expression_of_emotion": {
+        "n": 296,
+        "groups": 35,
+        "exact_match": {
+          "numerator": 0,
+          "denominator": 296,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 0,
+          "denominator": 296,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 148,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 296,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 296,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "routes": {
+          "raw": 296
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      },
+      "question": {
+        "n": 8,
+        "groups": 2,
+        "exact_match": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci95": null
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "routes": {
+          "raw": 8
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      },
+      "refusal": {
+        "n": 24,
+        "groups": 3,
+        "exact_match": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "routes": {
+          "raw": 24
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      },
+      "request_action": {
+        "n": 8,
+        "groups": 1,
+        "exact_match": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci95": null
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "routes": {
+          "raw": 8
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      },
+      "request_object": {
+        "n": 48,
+        "groups": 2,
+        "exact_match": {
+          "numerator": 0,
+          "denominator": 48,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 0,
+          "denominator": 48,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci95": null
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 48,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 48,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "routes": {
+          "raw": 48
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      }
+    },
+    "rules": {
+      "expression_of_emotion": {
+        "n": 296,
+        "groups": 35,
+        "exact_match": {
+          "numerator": 296,
+          "denominator": 296,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 296,
+          "denominator": 296,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 148,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 296,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 296,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.08140099541649122,
+          "p50": 0.08175551192834973,
+          "p95": 0.09236627374775708,
+          "p99": 0.09973744163289666,
+          "max": 0.11965702287852764
+        },
+        "routes": {
+          "rule": 296
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      },
+      "question": {
+        "n": 8,
+        "groups": 2,
+        "exact_match": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci95": null
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.06117476732470095,
+          "p50": 0.06129650864750147,
+          "p95": 0.06636627949774265,
+          "p99": 0.06732526235282421,
+          "max": 0.0675650080665946
+        },
+        "routes": {
+          "rule": 8
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      },
+      "refusal": {
+        "n": 24,
+        "groups": 3,
+        "exact_match": {
+          "numerator": 24,
+          "denominator": 24,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 24,
+          "denominator": 24,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.07067463593557477,
+          "p50": 0.07103051757439971,
+          "p95": 0.0745797879062593,
+          "p99": 0.07496722508221865,
+          "max": 0.07506704423576593
+        },
+        "routes": {
+          "rule": 24
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      },
+      "request_action": {
+        "n": 8,
+        "groups": 1,
+        "exact_match": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci95": null
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.06298802327364683,
+          "p50": 0.06327155278995633,
+          "p95": 0.06640207720920444,
+          "p99": 0.06658689817413688,
+          "max": 0.06663310341536999
+        },
+        "routes": {
+          "rule": 8
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      },
+      "request_object": {
+        "n": 48,
+        "groups": 2,
+        "exact_match": {
+          "numerator": 48,
+          "denominator": 48,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 48,
+          "denominator": 48,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci95": null
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 48,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 48,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.06251105757352586,
+          "p50": 0.06278749788179994,
+          "p95": 0.06997722666710615,
+          "p99": 0.07350631058216095,
+          "max": 0.07603305857628584
+        },
+        "routes": {
+          "rule": 48
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      }
+    },
+    "model": {
+      "expression_of_emotion": {
+        "n": 296,
+        "groups": 35,
+        "exact_match": {
+          "numerator": 294,
+          "denominator": 296,
+          "rate": 0.9932432432432432,
+          "ci95": [
+            0.9802631578947368,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 294,
+          "denominator": 296,
+          "rate": 0.9932432432432432,
+          "ci95": [
+            0.9802631578947368,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 148,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 296,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 2,
+          "denominator": 296,
+          "rate": 0.006756756756756757,
+          "ci95": [
+            0.0,
+            0.019736842105263157
+          ]
+        },
+        "latency_ms": {
+          "mean": 31.72165645574333,
+          "p50": 31.88465948915109,
+          "p95": 36.608303227694705,
+          "p99": 39.80058809393086,
+          "max": 41.082582087256014
+        },
+        "routes": {
+          "model": 294,
+          "raw_fallback": 2
+        },
+        "fallback_reasons": {
+          "added_content": 2,
+          "frame_or_scope": 2
+        },
+        "model_attempts": 296
+      },
+      "question": {
+        "n": 8,
+        "groups": 2,
+        "exact_match": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci95": null
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 23.51826625817921,
+          "p50": 23.615982034243643,
+          "p95": 25.03964839852415,
+          "p99": 25.0895273394417,
+          "max": 25.10199707467109
+        },
+        "routes": {
+          "model": 8
+        },
+        "fallback_reasons": {},
+        "model_attempts": 8
+      },
+      "refusal": {
+        "n": 24,
+        "groups": 3,
+        "exact_match": {
+          "numerator": 24,
+          "denominator": 24,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 24,
+          "denominator": 24,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 34.88100258012613,
+          "p50": 34.234133490826935,
+          "p95": 43.01297106430866,
+          "p99": 43.60151143511757,
+          "max": 43.702707975171506
+        },
+        "routes": {
+          "model": 24
+        },
+        "fallback_reasons": {},
+        "model_attempts": 24
+      },
+      "request_action": {
+        "n": 8,
+        "groups": 1,
+        "exact_match": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci95": null
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 31.427012261701748,
+          "p50": 30.204948503524065,
+          "p95": 36.377262318274006,
+          "p99": 36.568087617633864,
+          "max": 36.61579394247383
+        },
+        "routes": {
+          "model": 8
+        },
+        "fallback_reasons": {},
+        "model_attempts": 8
+      },
+      "request_object": {
+        "n": 48,
+        "groups": 2,
+        "exact_match": {
+          "numerator": 44,
+          "denominator": 48,
+          "rate": 0.9166666666666666,
+          "ci95": [
+            0.8333333333333334,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 44,
+          "denominator": 48,
+          "rate": 0.9166666666666666,
+          "ci95": [
+            0.8333333333333334,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci95": null
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 48,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 4,
+          "denominator": 48,
+          "rate": 0.08333333333333333,
+          "ci95": [
+            0.0,
+            0.16666666666666666
+          ]
+        },
+        "latency_ms": {
+          "mean": 27.332899039417196,
+          "p50": 26.692770479712635,
+          "p95": 35.82450769026764,
+          "p99": 36.26130108255893,
+          "max": 36.40841296873987
+        },
+        "routes": {
+          "model": 44,
+          "raw_fallback": 4
+        },
+        "fallback_reasons": {
+          "frame_or_scope": 4
+        },
+        "model_attempts": 48
+      }
+    },
+    "hybrid": {
+      "expression_of_emotion": {
+        "n": 296,
+        "groups": 35,
+        "exact_match": {
+          "numerator": 296,
+          "denominator": 296,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 296,
+          "denominator": 296,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 148,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 296,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 296,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.07324352918658406,
+          "p50": 0.07294199895113707,
+          "p95": 0.08473801426589489,
+          "p99": 0.09862391161732376,
+          "max": 0.11298398021608591
+        },
+        "routes": {
+          "rule": 296
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      },
+      "question": {
+        "n": 8,
+        "groups": 2,
+        "exact_match": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci95": null
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.05967335891909897,
+          "p50": 0.05882995901629329,
+          "p95": 0.06526415818370879,
+          "p99": 0.0661399879027158,
+          "max": 0.06635894533246756
+        },
+        "routes": {
+          "rule": 8
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      },
+      "refusal": {
+        "n": 24,
+        "groups": 3,
+        "exact_match": {
+          "numerator": 24,
+          "denominator": 24,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 24,
+          "denominator": 24,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 24,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.0658016069792211,
+          "p50": 0.06458646384999156,
+          "p95": 0.07403229246847332,
+          "p99": 0.07443258073180914,
+          "max": 0.0745370052754879
+        },
+        "routes": {
+          "rule": 24
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      },
+      "request_action": {
+        "n": 8,
+        "groups": 1,
+        "exact_match": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 8,
+          "denominator": 8,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci95": null
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.070516238338314,
+          "p50": 0.06479449803009629,
+          "p95": 0.08953814976848662,
+          "p99": 0.0920939922798425,
+          "max": 0.09273295290768147
+        },
+        "routes": {
+          "rule": 8
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      },
+      "request_object": {
+        "n": 48,
+        "groups": 2,
+        "exact_match": {
+          "numerator": 48,
+          "denominator": 48,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "validator_pass": {
+          "numerator": 48,
+          "denominator": 48,
+          "rate": 1.0,
+          "ci95": [
+            1.0,
+            1.0
+          ]
+        },
+        "negation_error": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null,
+          "ci95": null
+        },
+        "added_content": {
+          "numerator": 0,
+          "denominator": 48,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "raw_fallback": {
+          "numerator": 0,
+          "denominator": 48,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "latency_ms": {
+          "mean": 0.05624410065744693,
+          "p50": 0.05621201125904918,
+          "p95": 0.0622762949205935,
+          "p99": 0.06649836781434715,
+          "max": 0.06778805982321501
+        },
+        "routes": {
+          "rule": 48
+        },
+        "fallback_reasons": {},
+        "model_attempts": 0
+      }
+    }
+  },
+  "limitations": [
+    "Template-derived tests share grammar and vocabulary with the implementation.",
+    "Group splitting prevents draft duplication leakage; it does not measure new-user or new-domain generalization.",
+    "Exact match can penalize valid unlisted paraphrases; validator metrics are diagnostics.",
+    "No clinical, conversational-rate, TTS, human-adequacy or real-world safety measurements are produced."
+  ],
+  "paired_exact_match_difference_vs_raw": {
+    "rules": {
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "n_pairs": 384
+    },
+    "model": {
+      "mean": 0.984375,
+      "ci95": [
+        0.963963963963964,
+        1.0
+      ],
+      "n_pairs": 384
+    },
+    "hybrid": {
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "n_pairs": 384
+    }
+  }
+}

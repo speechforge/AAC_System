@@ -1,0 +1,26 @@
+{
+  "system": "Baseline AAC",
+  "llm": "Qwen2.5-0.5B-Instruct",
+  "hmm_words": 427454,
+  "tts": "AI4Bharat Indic-TTS",
+  "working": {
+    "frontend": true,
+    "backend": true,
+    "qwen_generation": true,
+    "hmm_predictor": true,
+    "semantic_validator": true,
+    "tts_synthesis": true
+  },
+  "metrics": {
+    "semantic_fidelity": "NOT MEASURED",
+    "intent_accuracy": "NOT MEASURED",
+    "entity_preservation": "NOT MEASURED",
+    "negation_preservation": "NOT MEASURED",
+    "wer": "NOT MEASURED",
+    "cer": "NOT MEASURED",
+    "mos": "NOT MEASURED",
+    "speaker_similarity": "NOT MEASURED",
+    "latency": "NOT MEASURED",
+    "rtf": "NOT MEASURED"
+  }
+}

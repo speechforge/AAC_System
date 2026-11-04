@@ -1,0 +1,7 @@
+{
+  "completed_steps": 960,
+  "best_validation_loss": 5.909273744927963e-05,
+  "elapsed_this_invocation_s": 204.40108426602092,
+  "peak_allocated_vram_gib": 2.393604278564453,
+  "output": "/home/linux/Documents/AACsystem/AAC_System-jaydeep/AAC_Sentence_Refinement_Training_Kit/aac_sentence_refinement/runs/seed_42_gpu_max/aac_only"
+}

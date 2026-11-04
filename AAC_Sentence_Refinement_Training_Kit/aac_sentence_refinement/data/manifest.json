@@ -1,0 +1,91 @@
+{
+  "seed": 42,
+  "schema_version": 1,
+  "reserved_groups": [
+    "emotion_action:happy|play outside",
+    "emotion_relation:angry|with|food",
+    "object:medicine",
+    "object:water"
+  ],
+  "files": {
+    "aac_train.jsonl": {
+      "path": "/home/linux/Documents/AACsystem/AAC_System-jaydeep/AAC_Sentence_Refinement_Training_Kit/aac_sentence_refinement/data/aac_train.jsonl",
+      "rows": 3052,
+      "groups": 318,
+      "sha256": "7908e09abc7a7253795bac4fcec56cfde5831aedea2fd0d698369ce331b8004b",
+      "intents": {
+        "expression_of_emotion": 2256,
+        "question": 76,
+        "request_object": 408,
+        "refusal": 224,
+        "request_action": 88
+      }
+    },
+    "aac_validation.jsonl": {
+      "path": "/home/linux/Documents/AACsystem/AAC_System-jaydeep/AAC_Sentence_Refinement_Training_Kit/aac_sentence_refinement/data/aac_validation.jsonl",
+      "rows": 384,
+      "groups": 40,
+      "sha256": "340096a10027a376704f067ef14144c45f4caedec3fb71a0a6cc85e7ce8f1a21",
+      "intents": {
+        "expression_of_emotion": 296,
+        "request_object": 48,
+        "refusal": 24,
+        "question": 8,
+        "request_action": 8
+      }
+    },
+    "aac_test.jsonl": {
+      "path": "/home/linux/Documents/AACsystem/AAC_System-jaydeep/AAC_Sentence_Refinement_Training_Kit/aac_sentence_refinement/data/aac_test.jsonl",
+      "rows": 384,
+      "groups": 40,
+      "sha256": "08f4c60ad288a48cd026577b539cb87c0032221e1af29fd12e45ba71409f14b2",
+      "intents": {
+        "expression_of_emotion": 296,
+        "request_object": 48,
+        "refusal": 24,
+        "question": 8,
+        "request_action": 8
+      }
+    },
+    "regression.jsonl": {
+      "path": "/home/linux/Documents/AACsystem/AAC_System-jaydeep/AAC_Sentence_Refinement_Training_Kit/aac_sentence_refinement/data/regression.jsonl",
+      "rows": 8,
+      "groups": 8,
+      "sha256": "2a87a70fb55035424d7b59e3874a52e033e30ec79ec5d5f80fb75674fb24241a",
+      "intents": {
+        "regression": 8
+      }
+    },
+    "fluency_train.jsonl": {
+      "path": "/home/linux/Documents/AACsystem/AAC_System-jaydeep/AAC_Sentence_Refinement_Training_Kit/aac_sentence_refinement/data/fluency_train.jsonl",
+      "rows": 4380,
+      "groups": 74,
+      "sha256": "34945e1a3bcdc8e16e9bb06983629e25a02aea092101a6b023e8af2f8f7ba7ee",
+      "intents": {
+        "fluency": 4380
+      }
+    },
+    "fluency_validation.jsonl": {
+      "path": "/home/linux/Documents/AACsystem/AAC_System-jaydeep/AAC_Sentence_Refinement_Training_Kit/aac_sentence_refinement/data/fluency_validation.jsonl",
+      "rows": 620,
+      "groups": 9,
+      "sha256": "b32ff144106e9417b69ff3e1e5fe47bfd8f48e8ad4dc8cb2012c8c40c2958bb2",
+      "intents": {
+        "fluency": 620
+      }
+    }
+  },
+  "online": {
+    "dataset": "Salesforce/wikitext",
+    "config": "wikitext-2-raw-v1",
+    "revision": "b08601e04326c79dfdd32d625aee71d232d685c3",
+    "split": "train",
+    "accepted": 5000,
+    "exclusions": {
+      "markup_or_non_ascii": 2054,
+      "length_or_punctuation": 2320,
+      "no_corruption": 1087,
+      "duplicate": 5
+    }
+  }
+}
