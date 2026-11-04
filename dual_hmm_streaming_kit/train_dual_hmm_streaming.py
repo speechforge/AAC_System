@@ -277,13 +277,13 @@ def run_streaming_pipeline():
             print(f"[*] Note: High-order 4-grams initialized fresh ({e_nxt})")
 
     # Initial memory compaction and safety pruning
-    if len(next_hmm.fourgrams) > 5000000:
-        print(f"[*] Compacting {len(next_hmm.fourgrams):,} 4-gram states to safety ceiling...")
-        next_hmm.prune_rare_transitions(min_count=3, max_total_fourgrams=5000000)
+    if len(next_hmm.fourgrams) > 4000000:
+        print(f"[*] Compacting {len(next_hmm.fourgrams):,} 4-gram states to safety ceiling (4M)...")
+        next_hmm.prune_rare_transitions(min_count=3, max_total_fourgrams=4000000)
         print(f"[*] Compaction complete: 4-grams now {len(next_hmm.fourgrams):,} states.")
-    if len(unjumble_hmm.word_trigrams) > 8000000:
-        print(f"[*] Compacting {len(unjumble_hmm.word_trigrams):,} trigram states...")
-        unjumble_hmm.prune_rare_transitions(min_count=2, max_total_trigrams=8000000)
+    if len(unjumble_hmm.word_trigrams) > 5000000:
+        print(f"[*] Compacting {len(unjumble_hmm.word_trigrams):,} trigram states to safety ceiling (5M)...")
+        unjumble_hmm.prune_rare_transitions(min_count=2, max_total_trigrams=5000000)
         print(f"[*] Compaction complete: trigrams now {len(unjumble_hmm.word_trigrams):,} states.")
     gc.collect()
     print(f"[*] System State: Sentences: {unjumble_hmm.sentence_count:,} | Vocab: {len(unjumble_hmm.word_unigrams):,} | Bigrams: {len(unjumble_hmm.word_bigrams):,} | Trigrams: {len(unjumble_hmm.word_trigrams):,}")
@@ -455,11 +455,11 @@ def run_streaming_pipeline():
         next_hmm.total_tokens = total_tokens_now
         next_hmm.vocabulary = set(unjumble_hmm.word_unigrams.keys())
 
-        # Prune rare transitions frequently to ensure constant memory footprint (<16GB)
-        if chunk_id % 2 == 0 or len(next_hmm.fourgrams) > 5000000 or len(unjumble_hmm.word_trigrams) > 8000000:
+        # Prune rare transitions frequently to ensure constant memory footprint (<10GB)
+        if chunk_id % 2 == 0 or len(next_hmm.fourgrams) > 4000000 or len(unjumble_hmm.word_trigrams) > 5000000:
             print("[*] Running periodic memory compaction and pruning rare transitions...")
-            unjumble_hmm.prune_rare_transitions(min_count=2, max_total_trigrams=8000000)
-            next_hmm.prune_rare_transitions(min_count=3, max_total_fourgrams=5000000)
+            unjumble_hmm.prune_rare_transitions(min_count=2, max_total_trigrams=5000000)
+            next_hmm.prune_rare_transitions(min_count=3, max_total_fourgrams=4000000)
             gc.collect()
 
         # Run Validation Benchmarks
