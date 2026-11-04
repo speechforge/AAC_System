@@ -2,6 +2,9 @@ import sys
 import os
 import io
 import re
+import time
+import uuid
+import tempfile
 import torch
 import numpy as np
 import scipy.io.wavfile
@@ -45,6 +48,7 @@ class IndicF5Engine:
         self.model = None
         self.vocoder = None
         self.prompts = {}
+        self.custom_voice_meta = {}  # voice_id -> {"label": str, "created_at": float}
         self.sample_rate = 24000
 
         # Locating prompt audio references
@@ -142,9 +146,72 @@ class IndicF5Engine:
                 except Exception as e:
                     print(f"[IndicF5] Warning: could not pre-process prompt '{key}': {e}")
 
+    def register_custom_voice(self, audio_bytes, ref_text, label=None, voice_id=None):
+        """
+        Registers a user-uploaded reference clip as a new zero-shot cloning voice.
+        Implements the IndicF5 three-input contract (text / ref_audio_path / ref_text):
+        https://huggingface.co/ai4bharat/IndicF5
+
+        Returns the voice_id on success. Raises ValueError/RuntimeError on bad input.
+        """
+        ref_text = (ref_text or "").strip()
+        if not ref_text:
+            raise ValueError("A transcript of the reference audio is required for voice cloning.")
+        if not audio_bytes or len(audio_bytes) < 100:
+            raise ValueError("Reference audio file is empty or unreadable.")
+
+        voice_id = voice_id or ("custom_" + uuid.uuid4().hex[:10])
+
+        # Persist the upload to a temp wav file on disk (IndicF5 expects a file path)
+        tmp_path = os.path.join(tempfile.gettempdir(), f"aac_voice_{voice_id}.wav")
+        with open(tmp_path, "wb") as f:
+            f.write(audio_bytes)
+
+        if F5_AVAILABLE and self.model is not None and self.vocoder is not None:
+            try:
+                ref_audio, proc_text = preprocess_ref_audio_text(tmp_path, ref_text)
+                self.prompts[voice_id] = {
+                    "audio": ref_audio,
+                    "text": proc_text,
+                    "path": tmp_path,
+                }
+            except Exception as e:
+                raise RuntimeError(f"Failed to process reference audio: {e}")
+        else:
+            # Model not loaded (mock mode) — still accept the upload so the UI flow
+            # works end-to-end; synthesis will use the mock tone until the real
+            # IndicF5 checkpoint + f5_tts package are installed.
+            self.prompts[voice_id] = {"audio": None, "text": ref_text, "path": tmp_path}
+
+        self.custom_voice_meta[voice_id] = {
+            "label": label or "My Cloned Voice",
+            "created_at": time.time(),
+        }
+        return voice_id
+
+    def remove_custom_voice(self, voice_id):
+        self.prompts.pop(voice_id, None)
+        meta = self.custom_voice_meta.pop(voice_id, None)
+        return meta is not None
+
+    def list_voices(self):
+        """Lists built-in presets plus any session-registered custom clones."""
+        presets = [
+            {"voice_id": "indic_female", "label": "Studio Female (Indic)", "type": "preset", "available": "indic_female" in self.prompts},
+            {"voice_id": "english_female", "label": "Narrator Female (English)", "type": "preset", "available": "english_female" in self.prompts},
+        ]
+        custom = [
+            {"voice_id": vid, "label": meta["label"], "type": "custom", "available": True}
+            for vid, meta in self.custom_voice_meta.items()
+        ]
+        return presets + custom
+
     def generate_speech(self, text, lang="hi", code_mix=False, speaker_name="female"):
         """
         Synthesize speech using IndicF5.
+        `speaker_name` may be a voice_id registered via register_custom_voice(),
+        one of the built-in preset keys ("indic_female" / "english_female"),
+        or the legacy "female" sentinel (language-based default selection).
         Returns:
             audio_array: np.ndarray in int16 format
             sample_rate: 24000
@@ -156,7 +223,9 @@ class IndicF5Engine:
         if self.model is not None and self.vocoder is not None:
             try:
                 # Select appropriate prompt style
-                if lang == "en" and not code_mix:
+                if speaker_name and speaker_name != "female" and speaker_name in self.prompts:
+                    prompt = self.prompts.get(speaker_name)
+                elif lang == "en" and not code_mix:
                     prompt = self.prompts.get("english_female") or self.prompts.get("indic_female")
                 else:
                     prompt = self.prompts.get("indic_female") or self.prompts.get("english_female")

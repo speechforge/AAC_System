@@ -5,9 +5,10 @@ import json
 import base64
 import urllib.request
 import urllib.parse
+import os
 import traceback
 import scipy.io.wavfile
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -48,6 +49,7 @@ class AACRequest(BaseModel):
     language: str = "en"
     code_mix: bool = False
     generation_mode: str = "dual"  # 'single' or 'dual'
+    voice_id: str | None = None   # preset key ("indic_female"/"english_female") or a cloned custom_* voice_id
     debug: bool = False
 
 
@@ -95,6 +97,103 @@ def transliterate_endpoint(req: TransliterateRequest):
         print("[Transliterate] API Error:", e)
 
     return {"original": req.text, "transliterated": req.text}
+
+class SymbolRequest(BaseModel):
+    word: str
+    language: str = "en"
+
+
+@app.post("/api/generate_symbol")
+def generate_symbol(req: SymbolRequest):
+    """
+    Text-to-image AAC symbol generation. Uses the OpenAI Images API; the key is
+    read from the OPENAI_API_KEY environment variable and never reaches the browser.
+    Swap the provider by editing this function only.
+    """
+    word = req.word.strip()
+    if not word or len(word) > 80:
+        raise HTTPException(status_code=400, detail="Provide a word (max 80 characters).")
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=501, detail="AI image generation is not configured (set OPENAI_API_KEY on the server).")
+
+    prompt = (f"A simple, clear AAC communication pictogram representing the word '{word}'. "
+              "Flat vector icon style, bold outlines, bright friendly colors, centered subject, "
+              "plain white background, no text or letters.")
+    payload = json.dumps({
+        "model": os.environ.get("SYMBOL_IMAGE_MODEL", "gpt-image-1"),
+        "prompt": prompt, "size": "1024x1024", "n": 1,
+    }).encode("utf-8")
+    http_req = urllib.request.Request(
+        "https://api.openai.com/v1/images/generations", data=payload,
+        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(http_req, timeout=90) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        b64 = data["data"][0].get("b64_json")
+        if not b64:
+            raise ValueError("provider returned no inline image")
+        return {"image_b64": b64, "word": word}
+    except Exception as e:
+        print("[Symbol] generation error:", e)
+        raise HTTPException(status_code=502, detail="Image provider request failed.")
+
+
+@app.get("/api/voice/list")
+def list_voices():
+    """Lists built-in TTS voice presets plus any custom voices cloned this session."""
+    return {"voices": tts.list_voices(), "engine_ready": tts.model is not None}
+
+
+@app.post("/api/voice/clone")
+async def clone_voice(
+    file: UploadFile = File(...),
+    transcript: str = Form(...),
+    label: str = Form("My Cloned Voice"),
+):
+    """
+    Registers a user-uploaded reference audio clip as a new zero-shot voice
+    using the IndicF5 model (https://huggingface.co/ai4bharat/IndicF5), which
+    requires the reference audio plus its exact spoken transcript.
+    """
+    allowed_types = ("audio/", "video/webm")  # browsers sometimes tag mic recordings as video/webm
+    if file.content_type and not any(file.content_type.startswith(t) for t in allowed_types):
+        raise HTTPException(status_code=400, detail=f"Unsupported file type: {file.content_type}")
+
+    audio_bytes = await file.read()
+    max_bytes = 20 * 1024 * 1024  # 20MB cap
+    if len(audio_bytes) > max_bytes:
+        raise HTTPException(status_code=400, detail="Reference audio file is too large (max 20MB).")
+
+    try:
+        voice_id = tts.register_custom_voice(audio_bytes, transcript, label=label)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except RuntimeError as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    return {
+        "voice_id": voice_id,
+        "label": label,
+        "status": "ready" if tts.model is not None else "queued_mock_mode",
+        "message": (
+            "Voice cloned successfully."
+            if tts.model is not None
+            else "Upload accepted. Install the IndicF5 checkpoint to hear the real cloned voice; using placeholder audio until then."
+        ),
+    }
+
+
+@app.delete("/api/voice/{voice_id}")
+def delete_voice(voice_id: str):
+    if not voice_id.startswith("custom_"):
+        raise HTTPException(status_code=400, detail="Only custom cloned voices can be removed.")
+    removed = tts.remove_custom_voice(voice_id)
+    if not removed:
+        raise HTTPException(status_code=404, detail="Voice not found.")
+    return {"status": "removed", "voice_id": voice_id}
+
 
 @app.get("/api/health")
 def read_root():
@@ -230,7 +329,7 @@ def generate(req: AACRequest):
     try:
         t_tts_start = time.time()
         audio_data, sr = tts.generate_speech(
-            sentence, lang=req.language, code_mix=req.code_mix, speaker_name="female"
+            sentence, lang=req.language, code_mix=req.code_mix, speaker_name=(req.voice_id or "female")
         )
         t_tts = time.time() - t_tts_start
         byte_io = io.BytesIO()

@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Indic AAC Studio · Intelligent Communicator</title>
-  
+  <title>Indic AAC Studio</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230c8fe6'/%3E%3Cstop offset='1' stop-color='%234f46e5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E" />
+
   <!-- Premium Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,6 +46,11 @@
       }
     };
   </script>
+
+  <!-- Firebase (Google Auth + Firestore sync) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
   <!-- React 18, ReactDOM 18, and Babel Standalone -->
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -100,6 +106,7 @@
     .card-accent-rose { border-top: 3px solid #f43f5e; }
     .card-accent-teal { border-top: 3px solid #14b8a6; }
     .card-accent-red { border-top: 3px solid #ef4444; }
+    .card-accent-pink { border-top: 3px solid #ec4899; }
 
     /* Custom Minimal Scrollbar */
     ::-webkit-scrollbar {
@@ -154,6 +161,91 @@
     .dark.high-contrast .comm-card,
     .dark.high-contrast button {
       border-color: #ffffff !important;
+    }
+
+    /* ─── Feature: Accessibility Dock (text scale + grayscale) ─── */
+    html {
+      font-size: var(--a11y-text-scale, 100%);
+      transition: font-size 0.18s ease;
+    }
+    html.a11y-grayscale {
+      filter: grayscale(1);
+    }
+
+    /* ─── Feature: Premium Tactile Button Animations (ripple) ─── */
+    .tap-ripple {
+      position: relative;
+      isolation: isolate;
+    }
+    .tap-ripple::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle, currentColor 10%, transparent 10.5%);
+      background-repeat: no-repeat;
+      background-position: 50%;
+      background-size: 3000% 3000%;
+      opacity: 0;
+      pointer-events: none;
+      transition: background-size 0s, opacity 0.5s ease;
+    }
+    .tap-ripple:active::after {
+      background-size: 0% 0%;
+      opacity: 0.12;
+      transition: background-size 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.1s ease;
+    }
+
+    /* Button press depth + glow, layered on top of spring-press */
+    .spring-press, .comm-card, button {
+      will-change: transform;
+    }
+    .spring-press:active, .comm-card:active {
+      filter: brightness(0.97);
+    }
+
+    /* Bookmark star pop animation */
+    @keyframes starPop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.5) rotate(-8deg); }
+      70% { transform: scale(0.9) rotate(4deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    .star-pop {
+      animation: starPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Floating Accessibility Dock */
+    .a11y-dock {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      z-index: 60;
+    }
+    .a11y-dock-panel {
+      transform-origin: bottom right;
+      animation: dockPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes dockPop {
+      0% { opacity: 0; transform: scale(0.9) translateY(8px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Voice clone dropzone */
+    .voice-dropzone {
+      border: 2px dashed rgba(100, 116, 139, 0.35);
+      transition: all 0.15s ease;
+    }
+    .voice-dropzone.drag-active {
+      border-color: #0c8fe6;
+      background-color: rgba(12, 143, 230, 0.06);
+    }
+
+    /* Generic fade-in utility used across new panels */
+    .animate-fade-in { animation: genericFadeIn 0.18s ease; }
+    @keyframes genericFadeIn {
+      0% { opacity: 0; transform: translateY(4px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -235,6 +327,53 @@
           <path d="m6.34 17.66-1.41 1.41"></path>
           <path d="m19.07 4.93-1.41 1.41"></path>
         </svg>
+      ),
+      StarOutline: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      ),
+      StarFilled: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1" strokeLinejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      ),
+      Mic: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+          <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
+          <line x1="12" y1="18" x2="12" y2="22"></line>
+          <line x1="8" y1="22" x2="16" y2="22"></line>
+        </svg>
+      ),
+      Upload: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+      ),
+      Accessibility: () => (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="4" r="1.6" fill="currentColor" stroke="none"></circle>
+          <path d="M5 8.5c2.3.8 4.6 1.2 7 1.2s4.7-.4 7-1.2"></path>
+          <path d="M12 9.7V14"></path>
+          <path d="M12 14l-3.5 7"></path>
+          <path d="M12 14l3.5 7"></path>
+          <path d="M9 12.5 7 19"></path>
+          <path d="M15 12.5 17 19"></path>
+        </svg>
+      ),
+      Contrast: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 2a10 10 0 0 1 0 20Z" fill="currentColor" stroke="none"></path>
+        </svg>
+      ),
+      Bolt: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
       )
     };
 
@@ -251,6 +390,8 @@
       { id: 'emergency', label: { en: 'Urgent', hi: 'आपातकालीन', gu: 'તાત્કાલિક', mr: 'तातडीचे' }, icon: '🆘', accent: 'card-accent-red' },
       { id: 'search', label: { en: '5,000+ Emojis', hi: '5000+ इमोजी', gu: '5000+ ઈમોજી', mr: '5000+ इमोजी' }, icon: '🔍', accent: 'card-accent-sky' }
     ];
+
+    const MY_WORDS_META = { id: 'custom', label: { en: 'My Words', hi: 'मेरे शब्द', gu: 'મારા શબ્દો', mr: 'माझे शब्द' }, icon: '📌', accent: 'card-accent-pink' };
 
     // ─── MULTILINGUAL SYMBOL DATABASE ────────────────────────────
     const SYMBOL_DATABASE = {
@@ -468,10 +609,43 @@
       }
     };
 
+    // ─── FIREBASE CONFIG ─────────────────────────────────────────
+    // Paste your web-app config from Firebase Console → Project settings → Your apps.
+    // Also enable Authentication → Google, and create a Firestore database.
+    // Project: indicaacsystemnaacl2026 (web config is public by design; Firestore rules protect the data).
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyC4UZOUCAiO18L_yZ4ZuwrefDQLBzBr7yA",
+      authDomain: "indicaacsystemnaacl2026.firebaseapp.com",
+      projectId: "indicaacsystemnaacl2026",
+      storageBucket: "indicaacsystemnaacl2026.firebasestorage.app",
+      messagingSenderId: "731997066981",
+      appId: "1:731997066981:web:b1208f5c8bc971e099660c"
+    };
+    let fbAuth = null, fbDb = null;
+    try {
+      if (window.firebase && !FIREBASE_CONFIG.apiKey.startsWith("YOUR_")) {
+        firebase.initializeApp(FIREBASE_CONFIG);
+        fbAuth = firebase.auth();
+        fbDb = firebase.firestore();
+      }
+    } catch (e) { console.warn("Firebase init failed:", e); }
+
+    // ─── FEATURE 1: LOCAL CACHE (offline-ready preferences & custom grids) ───
+    const CACHE_KEY = 'aac_studio_cache_v1';
+    const loadCache = () => {
+      try {
+        const raw = localStorage.getItem(CACHE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        return {};
+      }
+    };
+    const CACHED = loadCache();
+
     // ─── MAIN REACT APPLICATION ──────────────────────────────────
     function App() {
       // Core State
-      const [language, setLanguage] = useState('en');
+      const [language, setLanguage] = useState(CACHED.language || 'en');
       const [tokens, setTokens] = useState([]);
       const [inputText, setInputText] = useState('');
       const [showPhoneticKeyboard, setShowPhoneticKeyboard] = useState(false);
@@ -484,14 +658,52 @@
       const [isPredicting, setIsPredicting] = useState(false);
       const [isGenerating, setIsGenerating] = useState(false);
       const [generatedResult, setGeneratedResult] = useState(null);
+      const [lastAudioB64, setLastAudioB64] = useState(null);
 
       // Preferences & Accessibility
-      const [darkMode, setDarkMode] = useState(false);
-      const [highContrast, setHighContrast] = useState(false);
-      const [speechRate, setSpeechRate] = useState(1.0);
-      const [autoSpeakOnSelect, setAutoSpeakOnSelect] = useState(true);
-      const [generationMode, setGenerationMode] = useState('dual');
+      const [darkMode, setDarkMode] = useState(CACHED.darkMode || false);
+      const [highContrast, setHighContrast] = useState(CACHED.highContrast || false);
+      const [speechRate, setSpeechRate] = useState(CACHED.speechRate || 1.0);
+      const [autoSpeakOnSelect, setAutoSpeakOnSelect] = useState(
+        CACHED.autoSpeakOnSelect !== undefined ? CACHED.autoSpeakOnSelect : true
+      );
+      const [generationMode, setGenerationMode] = useState(CACHED.generationMode || 'dual');
       const [showSettingsDrawer, setShowSettingsDrawer] = useState(false);
+
+      // Accessibility Dock (text size + grayscale)
+      const [textScale, setTextScale] = useState(CACHED.textScale || 100);
+      const [grayscaleMode, setGrayscaleMode] = useState(CACHED.grayscaleMode || false);
+      const [showA11yDock, setShowA11yDock] = useState(false);
+
+      // Voice Controls (presets + upload-to-clone)
+      const [voiceList, setVoiceList] = useState([]);
+      const [activeVoiceId, setActiveVoiceId] = useState(CACHED.activeVoiceId || 'indic_female');
+      const [customVoices, setCustomVoices] = useState(CACHED.customVoices || []); // [{voice_id,label}]
+      const [showVoicePanel, setShowVoicePanel] = useState(false);
+      const [cloneFile, setCloneFile] = useState(null);
+      const [cloneTranscript, setCloneTranscript] = useState('');
+      const [cloneLabel, setCloneLabel] = useState('');
+      const [isCloning, setIsCloning] = useState(false);
+      const [dragActive, setDragActive] = useState(false);
+      const [engineReady, setEngineReady] = useState(false);
+
+      // Bookmark Sentences (Quick Picks)
+      const [bookmarks, setBookmarks] = useState(CACHED.bookmarks || []);
+      const [starPopId, setStarPopId] = useState(null);
+
+      // Custom grids (locally cached custom words, offline-ready)
+      const [customWords, setCustomWords] = useState(CACHED.customWords || []);
+
+      // ─── Feature: AI Symbol Creator (emoji vs GenAI image) ─────
+      const [symbolStyle, setSymbolStyle] = useState(CACHED.symbolStyle || 'emoji'); // 'emoji' | 'ai'
+      const [isGeneratingSymbol, setIsGeneratingSymbol] = useState(false);
+      const [pendingSymbolImage, setPendingSymbolImage] = useState(null); // data URI preview before "Add"
+
+      // ─── Feature: Firebase Google Sign-In + cross-account sync ─────
+      const [authUser, setAuthUser] = useState(null); // {uid, name, email, photoURL} | null
+      const [authReady, setAuthReady] = useState(false);
+      const [isSyncing, setIsSyncing] = useState(false);
+      const [firebaseEnabled, setFirebaseEnabled] = useState(false);
 
       // Speech state
       const [isSpeaking, setIsSpeaking] = useState(false);
@@ -499,11 +711,44 @@
       const [toast, setToast] = useState(null);
 
       const inputRef = useRef(null);
+      const audioElRef = useRef(null);
+      const cloneFileInputRef = useRef(null);
+
+      // ─── PERSIST PREFERENCES + CUSTOM GRIDS TO LOCAL CACHE ─────
+      useEffect(() => {
+        const payload = {
+          language, darkMode, highContrast, speechRate, autoSpeakOnSelect,
+          generationMode, textScale, grayscaleMode, activeVoiceId, customVoices,
+          bookmarks, customWords, symbolStyle
+        };
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+        } catch (e) { /* storage full or disabled — fail silently, app still works */ }
+      }, [
+        language, darkMode, highContrast, speechRate, autoSpeakOnSelect,
+        generationMode, textScale, grayscaleMode, activeVoiceId, customVoices,
+        bookmarks, customWords, symbolStyle
+      ]);
+
+      // Accessibility Dock effects: text scale + grayscale applied globally
+      useEffect(() => {
+        document.documentElement.style.setProperty('--a11y-text-scale', textScale + '%');
+      }, [textScale]);
+
+      useEffect(() => {
+        if (grayscaleMode) document.documentElement.classList.add('a11y-grayscale');
+        else document.documentElement.classList.remove('a11y-grayscale');
+      }, [grayscaleMode]);
 
       // ─── SPEECH SYNTHESIS ENGINE (Real Native Pronunciation) ───
       const speak = useCallback((text, targetLang = language) => {
         if (!text || !window.speechSynthesis) return;
 
+        // Stop any in-flight IndicF5 backend audio so voices never overlap
+        if (audioElRef.current) {
+          audioElRef.current.pause();
+          audioElRef.current = null;
+        }
         window.speechSynthesis.cancel();
 
         const utterance = new SpeechSynthesisUtterance(text);
@@ -568,6 +813,192 @@
         setToast({ message, type });
         setTimeout(() => setToast(null), 2800);
       }, []);
+
+      // ─── FEATURE 1: Notify when preferences/custom grids were restored
+      // from the local offline cache (instant load, no network needed) ───
+      useEffect(() => {
+        const hadCache = Object.keys(CACHED).length > 0;
+        const hasContent = (CACHED.customWords && CACHED.customWords.length) ||
+                            (CACHED.bookmarks && CACHED.bookmarks.length);
+        if (hadCache && hasContent) {
+          showToast('Restored your preferences & custom grid from local cache ⚡', 'info');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
+
+      // ─── FIREBASE: Google sign-in + Firestore sync of custom words & bookmarks ───
+      const syncReadyRef = useRef(false);
+      useEffect(() => {
+        setFirebaseEnabled(!!fbAuth);
+        if (!fbAuth) { setAuthReady(true); return; }
+        return fbAuth.onAuthStateChanged(async (u) => {
+          syncReadyRef.current = false;
+          if (!u) { setAuthUser(null); setAuthReady(true); return; }
+          setAuthUser({ uid: u.uid, name: u.displayName, email: u.email, photoURL: u.photoURL });
+          setAuthReady(true);
+          setIsSyncing(true);
+          try {
+            const snap = await fbDb.collection('users').doc(u.uid).get();
+            if (snap.exists) {
+              const d = snap.data();
+              const mergeById = (a, b) => { const m = new Map(); [...a, ...b].forEach(x => m.set(x.id, x)); return [...m.values()]; };
+              if (d.customWords) setCustomWords(prev => mergeById(prev, JSON.parse(d.customWords)));
+              if (d.bookmarks) setBookmarks(prev => mergeById(prev, JSON.parse(d.bookmarks)).slice(0, 24));
+              if (d.symbolStyle) setSymbolStyle(d.symbolStyle);
+            }
+          } catch (e) { console.warn('Sync download failed', e); }
+          finally { setIsSyncing(false); syncReadyRef.current = true; }
+        });
+      }, []);
+
+      // Debounced upload whenever synced data changes (only after the initial download finished)
+      useEffect(() => {
+        if (!fbDb || !authUser || !syncReadyRef.current) return;
+        const t = setTimeout(async () => {
+          setIsSyncing(true);
+          try {
+            await fbDb.collection('users').doc(authUser.uid).set({
+              customWords: JSON.stringify(customWords),
+              bookmarks: JSON.stringify(bookmarks),
+              symbolStyle,
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+          } catch (e) { console.warn('Sync upload failed', e); }
+          finally { setIsSyncing(false); }
+        }, 1200);
+        return () => clearTimeout(t);
+      }, [customWords, bookmarks, symbolStyle, authUser]);
+
+      const handleSignIn = useCallback(async () => {
+        if (!fbAuth) { showToast('Add your Firebase config in index.html to enable Google sign-in.', 'warning'); return; }
+        try { await fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); showToast('Signed in — your words now sync across devices.', 'success'); }
+        catch (e) { if (e.code !== 'auth/popup-closed-by-user') showToast('Sign-in failed: ' + e.message, 'warning'); }
+      }, [showToast]);
+      const handleSignOut = useCallback(async () => { if (fbAuth) { await fbAuth.signOut(); showToast('Signed out.', 'info'); } }, [showToast]);
+
+      // ─── FEATURE 3: F5-TTS BACKEND PIPELINE — PLAY SYNTHESIZED AUDIO ───
+      // Plays the real IndicF5-synthesized WAV (base64) returned by /generate,
+      // instead of (or in addition to) the local browser Web Speech voice.
+      const playBackendAudio = useCallback((audioB64, label = '') => {
+        if (!audioB64) return false;
+        try {
+          if (window.speechSynthesis) window.speechSynthesis.cancel();
+          if (audioElRef.current) {
+            audioElRef.current.pause();
+            audioElRef.current = null;
+          }
+          const audio = new Audio('data:audio/wav;base64,' + audioB64);
+          audioElRef.current = audio;
+          audio.onplay = () => { setIsSpeaking(true); setActiveSpeakingWord(label); };
+          audio.onended = () => { setIsSpeaking(false); setActiveSpeakingWord(''); };
+          audio.onerror = () => { setIsSpeaking(false); setActiveSpeakingWord(''); };
+          audio.play().catch(() => { setIsSpeaking(false); setActiveSpeakingWord(''); });
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }, []);
+
+      // ─── FEATURE 5: VOICE CONTROLS — fetch available presets / clones ───
+      const fetchVoiceList = useCallback(async () => {
+        try {
+          const res = await fetch('/api/voice/list');
+          if (res.ok) {
+            const data = await res.json();
+            setVoiceList(data.voices || []);
+            setEngineReady(!!data.engine_ready);
+          }
+        } catch (e) { /* backend offline — presets panel still shows local defaults */ }
+      }, []);
+
+      useEffect(() => { fetchVoiceList(); }, [fetchVoiceList]);
+
+      const handleCloneUpload = useCallback(async () => {
+        if (!cloneFile) {
+          showToast('Please choose a reference audio file first.', 'warning');
+          return;
+        }
+        if (!cloneTranscript.trim()) {
+          showToast('Please type exactly what is spoken in the reference clip.', 'warning');
+          return;
+        }
+        setIsCloning(true);
+        try {
+          const form = new FormData();
+          form.append('file', cloneFile);
+          form.append('transcript', cloneTranscript.trim());
+          form.append('label', cloneLabel.trim() || (cloneFile.name || 'My Cloned Voice'));
+
+          const res = await fetch('/api/voice/clone', { method: 'POST', body: form });
+          const data = await res.json();
+
+          if (!res.ok) throw new Error(data.detail || 'Upload failed');
+
+          const newVoice = { voice_id: data.voice_id, label: data.label };
+          setCustomVoices(prev => [...prev.filter(v => v.voice_id !== newVoice.voice_id), newVoice]);
+          setActiveVoiceId(data.voice_id);
+          setCloneFile(null);
+          setCloneTranscript('');
+          setCloneLabel('');
+          if (cloneFileInputRef.current) cloneFileInputRef.current.value = '';
+          showToast(data.message || 'Voice cloned! It will be used for your next AI Polish & Speak.', 'success');
+          fetchVoiceList();
+        } catch (err) {
+          showToast('Voice cloning failed: ' + err.message, 'warning');
+        } finally {
+          setIsCloning(false);
+        }
+      }, [cloneFile, cloneTranscript, cloneLabel, showToast, fetchVoiceList]);
+
+      const handleRemoveCustomVoice = useCallback(async (voiceId) => {
+        try {
+          await fetch('/api/voice/' + voiceId, { method: 'DELETE' });
+        } catch (e) { /* ignore network errors, still clean up client state */ }
+        setCustomVoices(prev => prev.filter(v => v.voice_id !== voiceId));
+        if (activeVoiceId === voiceId) setActiveVoiceId('indic_female');
+        showToast('Cloned voice removed.', 'info');
+      }, [activeVoiceId, showToast]);
+
+      // ─── FEATURE 6: BOOKMARK SENTENCES (Quick Picks) ───────────
+      const addBookmark = useCallback((text) => {
+        if (!text || !text.trim()) return;
+        const id = 'bm_' + Date.now();
+        setBookmarks(prev => {
+          if (prev.some(b => b.text === text)) return prev; // avoid duplicates
+          return [{ id, text, language }, ...prev].slice(0, 24);
+        });
+        setStarPopId(id);
+        setTimeout(() => setStarPopId(null), 450);
+        if (navigator.vibrate) navigator.vibrate(15);
+        showToast('Saved to Quick Picks ⭐', 'success');
+      }, [language, showToast]);
+
+      const removeBookmark = useCallback((id) => {
+        setBookmarks(prev => prev.filter(b => b.id !== id));
+      }, []);
+
+      const speakBookmark = useCallback((item) => {
+        speak(item.text, item.language || language);
+      }, [language]);
+
+      // Local object-URL preview for the chosen reference audio file
+      const clonePreviewUrl = useMemo(() => {
+        if (!cloneFile) return null;
+        return URL.createObjectURL(cloneFile);
+      }, [cloneFile]);
+      useEffect(() => {
+        return () => { if (clonePreviewUrl) URL.revokeObjectURL(clonePreviewUrl); };
+      }, [clonePreviewUrl]);
+
+      const handleCloneFileChosen = useCallback((file) => {
+        if (!file) return;
+        if (!file.type.startsWith('audio/') && !file.type.startsWith('video/webm')) {
+          showToast('Please choose an audio file (wav, mp3, m4a, ogg...).', 'warning');
+          return;
+        }
+        setCloneFile(file);
+        if (!cloneLabel.trim()) setCloneLabel(file.name.replace(/\.[^/.]+$/, ''));
+      }, [cloneLabel, showToast]);
 
       // ─── PREDICTIVE SUGGESTIONS (HMM + Local Fallback) ─────────
       const fetchPredictions = useCallback(async (currentWords) => {
@@ -638,7 +1069,9 @@
         const newToken = {
           id: 'tok_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
           label: wordLabel,
-          emoji: emoji
+          emoji: emoji,
+          image: item.image || null,
+          isCustom: !!item.isCustom
         };
 
         setTokens(prev => [...prev, newToken]);
@@ -812,6 +1245,7 @@
 
         setIsGenerating(true);
         setGeneratedResult(null);
+        setLastAudioB64(null);
 
         try {
           const res = await fetch('/generate', {
@@ -823,7 +1257,8 @@
               entities: entitiesList,
               language: language,
               code_mix: false,
-              generation_mode: generationMode
+              generation_mode: generationMode,
+              voice_id: activeVoiceId
             })
           });
 
@@ -832,8 +1267,14 @@
           const data = await res.json();
           setGeneratedResult(data);
 
-          // Pronounce the finalized sentence with Web Speech API
-          if (data.text) {
+          // ─── Feature 3: F5-TTS Pipeline — prefer the natural synthesized
+          // voice returned by the backend; fall back to the browser's Web
+          // Speech voice only if no backend audio was produced.
+          if (data.audio_b64) {
+            setLastAudioB64(data.audio_b64);
+            const played = playBackendAudio(data.audio_b64, data.text);
+            if (!played && data.text) speak(data.text, language);
+          } else if (data.text) {
             speak(data.text, language);
           }
         } catch (err) {
@@ -855,7 +1296,16 @@
         } finally {
           setIsGenerating(false);
         }
-      }, [tokens, inputText, language, generationMode, speak, showToast]);
+      }, [tokens, inputText, language, generationMode, activeVoiceId, speak, playBackendAudio, showToast]);
+
+      // Replay the last generated sentence — prefers the real IndicF5 audio.
+      const handleReplayVoice = useCallback(() => {
+        if (lastAudioB64) {
+          const played = playBackendAudio(lastAudioB64, generatedResult && generatedResult.text);
+          if (played) return;
+        }
+        if (generatedResult && generatedResult.text) speak(generatedResult.text, language);
+      }, [lastAudioB64, generatedResult, language, speak, playBackendAudio]);
 
       // Filtered symbols
       const displayedSymbols = useMemo(() => {
@@ -871,8 +1321,85 @@
               labels: { en: item.l, hi: item.l, gu: item.l, mr: item.l }
             }));
         }
+        // ─── Feature 1: Custom Grid (locally cached, offline-ready) ───
+        if (activeCategory === 'custom') {
+          return customWords.map(w => ({
+            e: w.emoji,
+            image: w.image || null,
+            k: w.id,
+            labels: { en: w.label, hi: w.label, gu: w.label, mr: w.label },
+            isCustom: true
+          }));
+        }
         return SYMBOL_DATABASE[activeCategory] || SYMBOL_DATABASE.core;
-      }, [activeCategory, searchQuery]);
+      }, [activeCategory, searchQuery, customWords]);
+
+      // Add / remove words from the local "My Words" custom grid
+      const [newWordText, setNewWordText] = useState('');
+      const [newWordEmoji, setNewWordEmoji] = useState('✨');
+      const generateSymbolImage = useCallback(async (label) => {
+        const res = await fetch('/api/generate_symbol', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ word: label, language })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.detail || ('HTTP ' + res.status));
+        // Downscale to 256px so many symbols fit in localStorage / Firestore (1 MB doc limit)
+        const src = 'data:image/png;base64,' + data.image_b64;
+        return await new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => {
+            const c = document.createElement('canvas');
+            c.width = c.height = 256;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, 256, 256);
+            ctx.drawImage(img, 0, 0, 256, 256);
+            resolve(c.toDataURL('image/jpeg', 0.85));
+          };
+          img.onerror = () => resolve(src);
+          img.src = src;
+        });
+      }, [language]);
+
+      const handlePreviewSymbol = useCallback(async () => {
+        const label = newWordText.trim();
+        if (!label) { showToast('Type a word first, then generate its symbol.', 'warning'); return; }
+        setIsGeneratingSymbol(true);
+        try {
+          setPendingSymbolImage(await generateSymbolImage(label));
+        } catch (err) {
+          showToast('AI image failed: ' + err.message + ' — using emoji instead.', 'warning');
+        } finally {
+          setIsGeneratingSymbol(false);
+        }
+      }, [newWordText, generateSymbolImage, showToast]);
+
+      const addCustomWord = useCallback(async () => {
+        const label = newWordText.trim();
+        if (!label) {
+          showToast('Type a word to add it to My Words.', 'warning');
+          return;
+        }
+        let image = null;
+        if (symbolStyle === 'ai') {
+          image = pendingSymbolImage;
+          if (!image) {
+            setIsGeneratingSymbol(true);
+            try { image = await generateSymbolImage(label); }
+            catch (err) { showToast('AI image failed (' + err.message + ') — saved with emoji.', 'warning'); }
+            finally { setIsGeneratingSymbol(false); }
+          }
+        }
+        const word = { id: 'cw_' + Date.now(), label, emoji: newWordEmoji.trim() || '✨', image };
+        setCustomWords(prev => [...prev, word]);
+        setNewWordText('');
+        setPendingSymbolImage(null);
+        showToast('Added "' + label + '" to My Words' + (image ? ' with an AI symbol.' : '.'), 'success');
+      }, [newWordText, newWordEmoji, symbolStyle, pendingSymbolImage, generateSymbolImage, showToast]);
+      const removeCustomWord = useCallback((id) => {
+        setCustomWords(prev => prev.filter(w => w.id !== id));
+      }, []);
 
       const top5Words = TOP_5_HIGH_PEAKED_WORDS[language] || TOP_5_HIGH_PEAKED_WORDS.en;
 
@@ -920,10 +1447,49 @@
                   <option value="mr">🟠 मराठी (Marathi)</option>
                 </select>
 
+                {/* Google Sign-In */}
+                {authUser ? (
+                  <div className="flex items-center gap-1.5 pl-1 pr-1 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+                    {authUser.photoURL
+                      ? <img src={authUser.photoURL} alt="" referrerPolicy="no-referrer" className="w-7 h-7 rounded-full" />
+                      : <span className="w-7 h-7 rounded-full bg-brand-600 text-white text-xs font-bold flex items-center justify-center">{(authUser.name || '?')[0]}</span>}
+                    <span className="hidden md:inline text-[11px] font-bold text-slate-700 dark:text-slate-200 max-w-[90px] truncate">{authUser.name}</span>
+                    <span className={`text-[10px] ${isSyncing ? 'animate-pulse text-brand-500' : 'text-emerald-500'}`} title={isSyncing ? 'Syncing…' : 'Synced'}>{isSyncing ? '⟳' : '✓'}</span>
+                    <button onClick={handleSignOut} className="tap-ripple spring-press text-[10px] font-bold text-slate-400 hover:text-rose-500 px-1.5" title="Sign out">Sign out</button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleSignIn}
+                    className="tap-ripple spring-press flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-xs"
+                    title={firebaseEnabled ? 'Sign in with Google to sync your words and phrases' : 'Firebase not configured yet'}
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.9 2.4 30.4 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+                    <span className="hidden sm:inline">Sign in</span>
+                  </button>
+                )}
+
+                {/* My Words — pinned top-bar shortcut */}
+                <button
+                  onClick={() => {
+                    setActiveCategory('custom');
+                    setTimeout(() => document.getElementById('symbolBoard')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+                  }}
+                  className={`tap-ripple spring-press flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-extrabold border shadow-sm ${
+                    activeCategory === 'custom'
+                      ? 'bg-pink-600 text-white border-pink-700'
+                      : 'bg-gradient-to-r from-pink-50 to-amber-50 text-pink-700 border-pink-200 dark:from-pink-950/40 dark:to-amber-950/30 dark:text-pink-300 dark:border-pink-800'
+                  }`}
+                  title="Open My Words — your personal grid"
+                >
+                  <span>📌</span>
+                  <span className="hidden sm:inline">{MY_WORDS_META.label[language] || 'My Words'}</span>
+                  {customWords.length > 0 && <span className="text-[10px] opacity-80">({customWords.length})</span>}
+                </button>
+
                 {/* Voice Pronunciation Toggle */}
                 <button
                   onClick={() => setAutoSpeakOnSelect(!autoSpeakOnSelect)}
-                  className={`p-2 rounded-lg border text-xs font-semibold transition-all ${
+                  className={`tap-ripple spring-press p-2 rounded-lg border text-xs font-semibold transition-all ${
                     autoSpeakOnSelect
                       ? 'bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950/60 dark:border-emerald-800 dark:text-emerald-300'
                       : 'bg-white border-slate-200 text-slate-400 dark:bg-slate-900 dark:border-slate-800'
@@ -933,10 +1499,24 @@
                   {autoSpeakOnSelect ? <Icons.Volume /> : <Icons.Mute />}
                 </button>
 
+                {/* ─── Feature 5: Voice Controls (presets + upload-to-clone) ─── */}
+                <button
+                  onClick={() => setShowVoicePanel(true)}
+                  className="tap-ripple spring-press p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all relative"
+                  title="Voice Controls: choose a voice or clone your own"
+                >
+                  <Icons.Mic />
+                  {customVoices.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-brand-600 text-white text-[8px] font-black flex items-center justify-center">
+                      {customVoices.length}
+                    </span>
+                  )}
+                </button>
+
                 {/* Dark / Light Toggle */}
                 <button
                   onClick={() => setDarkMode(!darkMode)}
-                  className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+                  className="tap-ripple spring-press p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
                   title="Toggle theme"
                 >
                   {darkMode ? <Icons.Sun /> : <Icons.Moon />}
@@ -945,7 +1525,7 @@
                 {/* Settings Drawer Button */}
                 <button
                   onClick={() => setShowSettingsDrawer(true)}
-                  className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+                  className="tap-ripple spring-press p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
                   title="Preferences"
                 >
                   <Icons.Settings />
@@ -986,13 +1566,13 @@
                 {/* ─── TOP 5 HIGH-PEAKED CORE WORDS (Integrated Seamlessly) ─── */}
                 <div className="flex items-center gap-1.5 flex-wrap">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-1">
-                    Quick Picks:
+                    Top Words:
                   </span>
                   {top5Words.map((item, idx) => (
                     <button
                       key={idx}
                       onClick={() => addToken({ label: item.word, emoji: item.emoji })}
-                      className="spring-press flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-brand-500 hover:text-white dark:bg-slate-800 dark:hover:bg-brand-600 text-slate-800 dark:text-slate-100 font-bold text-xs border border-slate-200 dark:border-slate-700 transition-colors shadow-xs"
+                      className="tap-ripple spring-press flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-brand-500 hover:text-white dark:bg-slate-800 dark:hover:bg-brand-600 text-slate-800 dark:text-slate-100 font-bold text-xs border border-slate-200 dark:border-slate-700 transition-colors shadow-xs"
                       title={`Quick add ${item.word}`}
                     >
                       <span className="text-sm">{item.emoji}</span>
@@ -1001,6 +1581,33 @@
                   ))}
                 </div>
               </div>
+
+              {/* ─── FEATURE 6: QUICK PICKS — Bookmarked Sentences Shelf ─── */}
+              {bookmarks.length > 0 && (
+                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 -mt-1">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-500 flex items-center gap-1 flex-shrink-0">
+                    <Icons.StarFilled />
+                    <span>Quick Picks</span>
+                  </span>
+                  {bookmarks.map((bm) => (
+                    <div
+                      key={bm.id}
+                      className="tap-ripple spring-press flex-shrink-0 inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900/50 dark:to-yellow-900/30 border-2 border-amber-400 dark:border-amber-500 text-amber-900 dark:text-amber-100 text-xs font-bold shadow-md shadow-amber-400/30 ring-2 ring-amber-300/30 group"
+                    >
+                      <button onClick={() => speakBookmark(bm)} className="hover:underline" title="Speak this saved phrase">
+                        {bm.text.length > 36 ? bm.text.slice(0, 36) + '…' : bm.text}
+                      </button>
+                      <button
+                        onClick={() => removeBookmark(bm.id)}
+                        className="text-amber-400 hover:text-rose-500 font-bold text-[11px] px-1 opacity-60 group-hover:opacity-100"
+                        title="Remove from Quick Picks"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* The Sentence Strip */}
               <div className="min-h-[85px] p-3 rounded-xl bg-slate-50/80 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center gap-2 focus-within:ring-2 focus-within:ring-brand-500/20 focus-within:border-brand-500 transition-all">
@@ -1014,14 +1621,14 @@
                 {tokens.map((token) => (
                   <div
                     key={token.id}
-                    className="spring-press inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs hover:border-brand-400 group"
+                    className={`spring-press inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl shadow-xs group ${token.isCustom ? "bg-pink-50 dark:bg-pink-950/30 border-2 border-pink-300 dark:border-pink-700" : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-brand-400"}`}
                   >
                     <button
                       onClick={() => speak(token.label, language)}
                       className="text-lg leading-none hover:scale-115 transition-transform"
                       title="Speak word"
                     >
-                      {token.emoji}
+                      {token.image ? <img src={token.image} alt={token.label} className="w-7 h-7 object-contain rounded-md" /> : token.emoji}
                     </button>
                     <span className="font-bold text-sm text-slate-900 dark:text-white">
                       {token.label}
@@ -1315,7 +1922,7 @@
                   <button
                     onClick={clearAll}
                     disabled={tokens.length === 0 && !inputText}
-                    className="p-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-500 hover:text-rose-600 disabled:opacity-40 transition-colors"
+                    className="tap-ripple spring-press p-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-500 hover:text-rose-600 disabled:opacity-40 transition-colors"
                     title="Clear canvas"
                   >
                     <Icons.Trash />
@@ -1327,7 +1934,7 @@
                       if (fullText.trim()) speak(fullText, language);
                     }}
                     disabled={tokens.length === 0 && !inputText}
-                    className="spring-press flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-bold text-xs border border-slate-200 dark:border-slate-700 disabled:opacity-40 transition-all shadow-xs"
+                    className="tap-ripple spring-press flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-bold text-xs border border-slate-200 dark:border-slate-700 disabled:opacity-40 transition-all shadow-xs"
                   >
                     <Icons.Volume />
                     <span>Speak</span>
@@ -1336,7 +1943,7 @@
                   <button
                     onClick={handleGenerateSentence}
                     disabled={isGenerating || (tokens.length === 0 && !inputText)}
-                    className="spring-press flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-extrabold text-xs shadow-md shadow-brand-500/20 disabled:opacity-40 cursor-pointer"
+                    className="tap-ripple spring-press flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-extrabold text-xs shadow-md shadow-brand-500/20 disabled:opacity-40 cursor-pointer"
                   >
                     {isGenerating ? (
                       <>
@@ -1370,14 +1977,33 @@
                         Accuracy: {(generatedResult.semantic_score * 100).toFixed(0)}%
                       </span>
                     )}
+                    {lastAudioB64 && (
+                      <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 px-2 py-0.5 rounded-full border border-indigo-200 dark:border-indigo-800">
+                        🎙️ IndicF5 Voice
+                      </span>
+                    )}
                   </div>
-                  <button
-                    onClick={() => speak(generatedResult.text, language)}
-                    className="spring-press flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-600 text-white text-xs font-bold shadow-xs hover:bg-emerald-500"
-                  >
-                    <Icons.Play />
-                    <span>Replay Voice</span>
-                  </button>
+                  <div className="flex items-center gap-1.5">
+                    {/* ─── Feature 6: Bookmark Sentences (Quick Picks) ─── */}
+                    <button
+                      onClick={() => addBookmark(generatedResult.text)}
+                      className={`tap-ripple spring-press flex items-center justify-center w-8 h-8 rounded-lg border text-base ${
+                        bookmarks.some(b => b.text === generatedResult.text)
+                          ? 'bg-amber-100 border-amber-300 text-amber-600 dark:bg-amber-950/50 dark:border-amber-700'
+                          : 'bg-white border-slate-200 text-slate-400 hover:text-amber-500 dark:bg-slate-800 dark:border-slate-700'
+                      } ${starPopId ? 'star-pop' : ''}`}
+                      title="Save to Quick Picks"
+                    >
+                      {bookmarks.some(b => b.text === generatedResult.text) ? <Icons.StarFilled /> : <Icons.StarOutline />}
+                    </button>
+                    <button
+                      onClick={handleReplayVoice}
+                      className="tap-ripple spring-press flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-600 text-white text-xs font-bold shadow-xs hover:bg-emerald-500"
+                    >
+                      <Icons.Play />
+                      <span>Replay Voice</span>
+                    </button>
+                  </div>
                 </div>
 
                 <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
@@ -1407,7 +2033,7 @@
                         setTimeout(() => document.getElementById('gridSearchInput')?.focus(), 50);
                       }
                     }}
-                    className={`spring-press flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-bold text-xs border transition-all ${
+                    className={`tap-ripple spring-press flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-bold text-xs border transition-all ${
                       isActive
                         ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-slate-900 dark:border-white shadow-sm'
                         : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-800 hover:border-slate-300'
@@ -1421,7 +2047,7 @@
             </div>
 
             {/* ─── 4. SYMBOL BOARD GRID ───────────────────────────────── */}
-            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-sm flex flex-col gap-3">
+            <div id="symbolBoard" className="scroll-mt-20 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-sm flex flex-col gap-3">
               
               {/* Optional Search Input if Search Category is Active */}
               {activeCategory === 'search' && (
@@ -1448,24 +2074,81 @@
                 </div>
               )}
 
+              {/* ─── Feature 1: Custom Grid — add-word form (offline local cache) ─── */}
+              {activeCategory === 'custom' && (
+                <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5">
+                  {symbolStyle === 'ai' ? (
+                    <button
+                      onClick={handlePreviewSymbol}
+                      disabled={isGeneratingSymbol || !newWordText.trim()}
+                      className="tap-ripple spring-press w-12 h-12 flex-shrink-0 rounded-lg bg-white dark:bg-slate-900 border border-dashed border-pink-300 dark:border-pink-700 flex items-center justify-center text-lg disabled:opacity-50 overflow-hidden"
+                      title="Generate an AI symbol for this word"
+                    >
+                      {isGeneratingSymbol
+                        ? <span className="w-4 h-4 border-2 border-pink-500 border-t-transparent rounded-full animate-spin"></span>
+                        : pendingSymbolImage
+                          ? <img src={pendingSymbolImage} alt="preview" className="w-full h-full object-contain" />
+                          : '✨'}
+                    </button>
+                  ) : (
+                  <input
+                    type="text"
+                    value={newWordEmoji}
+                    onChange={(e) => setNewWordEmoji(e.target.value)}
+                    maxLength={4}
+                    className="w-12 text-center text-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg py-1.5 focus:outline-none focus:border-brand-500"
+                    title="Emoji for this word"
+                  />
+                  )}
+                  <input
+                    type="text"
+                    value={newWordText}
+                    onChange={(e) => { setNewWordText(e.target.value); setPendingSymbolImage(null); }}
+                    onKeyDown={(e) => { if (e.key === 'Enter') addCustomWord(); }}
+                    placeholder="Add a custom word to your personal grid (saved offline)…"
+                    className="flex-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:border-brand-500"
+                  />
+                  <button
+                    onClick={addCustomWord}
+                    className="tap-ripple spring-press px-3.5 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs flex items-center gap-1.5"
+                  >
+                    <span>{isGeneratingSymbol ? '…' : '＋'}</span>
+                    <span>Add word</span>
+                  </button>
+                </div>
+              )}
+
               {/* Clean Cards Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                 {displayedSymbols.map((item, idx) => {
                   const label = item.labels ? (item.labels[language] || item.labels.en || item.k) : (item.label || item.k);
                   const isSpoken = activeSpeakingWord.toLowerCase() === label.toLowerCase();
-                  const catMeta = CATEGORIES.find(c => c.id === activeCategory) || CATEGORIES[0];
-                  
+                  const catMeta = activeCategory === 'custom' ? MY_WORDS_META : (CATEGORIES.find(c => c.id === activeCategory) || CATEGORIES[0]);
+
                   return (
                     <button
-                      key={idx}
+                      key={item.isCustom ? item.k : idx}
                       onClick={() => addToken(item)}
-                      className={`comm-card min-h-[110px] p-3 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50/80 dark:hover:bg-slate-850 flex flex-col items-center justify-between text-center shadow-card cursor-pointer ${catMeta.accent} ${
+                      className={`tap-ripple comm-card relative min-h-[110px] p-3 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50/80 dark:hover:bg-slate-850 flex flex-col items-center justify-between text-center shadow-card cursor-pointer ${catMeta.accent} ${
                         isSpoken ? 'ring-2 ring-emerald-500 bg-emerald-50/50' : ''
                       }`}
                     >
-                      <span className="text-4xl my-auto select-none">
-                        {item.e || item.emoji}
-                      </span>
+                      {item.isCustom && (
+                        <span
+                          onClick={(e) => { e.stopPropagation(); removeCustomWord(item.k); }}
+                          className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-rose-500 hover:bg-rose-50 flex items-center justify-center text-[10px] font-bold"
+                          title="Remove from My Words"
+                        >
+                          ✕
+                        </span>
+                      )}
+                      {item.image ? (
+                        <img src={item.image} alt={label} className="w-16 h-16 object-contain my-auto select-none rounded-lg" draggable="false" />
+                      ) : (
+                        <span className="text-4xl my-auto select-none">
+                          {item.e || item.emoji}
+                        </span>
+                      )}
                       <span className="font-extrabold text-slate-800 dark:text-slate-100 text-xs tracking-tight line-clamp-1 w-full mt-1">
                         {label}
                       </span>
@@ -1477,6 +2160,12 @@
               {activeCategory === 'search' && displayedSymbols.length === 0 && searchQuery && (
                 <div className="text-center py-12 text-slate-400 font-medium text-sm">
                   No emojis found matching "{searchQuery}".
+                </div>
+              )}
+
+              {activeCategory === 'custom' && customWords.length === 0 && (
+                <div className="text-center py-10 text-slate-400 font-medium text-sm">
+                  📌 Your personal word grid is empty. Add words above — they're cached locally and load instantly offline.
                 </div>
               )}
             </div>
@@ -1499,35 +2188,28 @@
                     </button>
                   </div>
 
-                  {/* Speech Rate Slider */}
-                  <div className="flex flex-col gap-2">
-                    <div className="flex justify-between text-xs font-bold text-slate-700 dark:text-slate-300">
-                      <span>Speech Speed</span>
-                      <span className="text-brand-600">{speechRate.toFixed(1)}x</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="0.7"
-                      max="1.3"
-                      step="0.1"
-                      value={speechRate}
-                      onChange={(e) => setSpeechRate(parseFloat(e.target.value))}
-                      className="accent-brand-600 cursor-pointer w-full"
-                    />
-                  </div>
+                  {/* Speech Speed & High Contrast Mode have moved to the
+                      Accessibility Dock (floating ♿ button) for a uniform
+                      accessibility-controls experience. */}
 
-                  {/* High Contrast */}
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-xs font-bold text-slate-800 dark:text-slate-100">High Contrast Mode</div>
-                      <div className="text-[10px] text-slate-400">Bold outlines for low vision</div>
+                  {/* ─── Feature: AI Symbol Creator — emoji vs GenAI image ─── */}
+                  <div className="flex flex-col gap-1.5">
+                    <div className="text-xs font-bold text-slate-800 dark:text-slate-100">Custom Symbol Style</div>
+                    <div className="text-[10px] text-slate-400 -mt-1 mb-0.5">Used when you add a word to "My Words"</div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => setSymbolStyle('emoji')}
+                        className={`tap-ripple spring-press p-2 rounded-xl text-left text-xs font-bold border ${symbolStyle === 'emoji' ? 'bg-brand-50 border-brand-500 text-brand-900 dark:bg-brand-950/40 dark:text-brand-200' : 'bg-slate-50 border-slate-200 text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'}`}
+                      >
+                        😊 Emoji
+                      </button>
+                      <button
+                        onClick={() => setSymbolStyle('ai')}
+                        className={`tap-ripple spring-press p-2 rounded-xl text-left text-xs font-bold border ${symbolStyle === 'ai' ? 'bg-brand-50 border-brand-500 text-brand-900 dark:bg-brand-950/40 dark:text-brand-200' : 'bg-slate-50 border-slate-200 text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'}`}
+                      >
+                        ✨ AI Generated
+                      </button>
                     </div>
-                    <button
-                      onClick={() => setHighContrast(!highContrast)}
-                      className={`w-11 h-6 rounded-full p-0.5 transition-colors ${highContrast ? 'bg-brand-600' : 'bg-slate-300'}`}
-                    >
-                      <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${highContrast ? 'translate-x-5' : ''}`}></div>
-                    </button>
                   </div>
 
                   {/* AI Verification Mode */}
@@ -1552,7 +2234,7 @@
 
                 <button
                   onClick={() => setShowSettingsDrawer(false)}
-                  className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition-all"
+                  className="tap-ripple spring-press w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition-all"
                 >
                   Save & Close
                 </button>
@@ -1560,6 +2242,294 @@
               </div>
             </div>
           )}
+
+          {/* ─── FEATURE 5: VOICE CONTROLS PANEL (presets + clone upload) ─── */}
+          {showVoicePanel && (
+            <div
+              className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4"
+              onClick={(e) => { if (e.target === e.currentTarget) setShowVoicePanel(false); }}
+            >
+              <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-5 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
+
+                <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <span className="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
+                    <Icons.Mic />
+                    <span>Voice Controls</span>
+                  </span>
+                  <button onClick={() => setShowVoicePanel(false)} className="tap-ripple spring-press text-slate-400 hover:text-slate-600 font-bold w-7 h-7 rounded-lg">
+                    ✕
+                  </button>
+                </div>
+
+                <div className={`text-[11px] font-bold px-3 py-2 rounded-xl flex items-center gap-2 ${engineReady ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300' : 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300'}`}>
+                  <span>{engineReady ? '✅' : '⚠️'}</span>
+                  <span>
+                    {engineReady
+                      ? 'IndicF5-TTS engine loaded — natural synthesis is active.'
+                      : 'IndicF5-TTS checkpoint not loaded on the server yet — voices will use placeholder audio until it is.'}
+                  </span>
+                </div>
+
+                {/* Quick Preset Voices (Male/Female style selection) */}
+                <div className="flex flex-col gap-2">
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-100">Quick Voices</div>
+                  <div className="grid grid-cols-1 gap-2">
+                    {(voiceList.length > 0 ? voiceList.filter(v => v.type === 'preset') : [
+                      { voice_id: 'indic_female', label: 'Studio Female (Indic)', type: 'preset' },
+                      { voice_id: 'english_female', label: 'Narrator Female (English)', type: 'preset' }
+                    ]).map((v) => (
+                      <button
+                        key={v.voice_id}
+                        onClick={() => { setActiveVoiceId(v.voice_id); showToast('Voice set: ' + v.label, 'success'); }}
+                        className={`tap-ripple spring-press flex items-center justify-between p-2.5 rounded-xl text-left text-xs font-bold border transition-all ${
+                          activeVoiceId === v.voice_id
+                            ? 'bg-brand-50 border-brand-500 text-brand-900 dark:bg-brand-950/50 dark:text-brand-200'
+                            : 'bg-slate-50 border-slate-200 text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'
+                        }`}
+                      >
+                        <span className="flex items-center gap-2"><Icons.Bolt /> {v.label}</span>
+                        {activeVoiceId === v.voice_id && <Icons.Check />}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-slate-400 leading-relaxed">
+                    Want a male voice, or a specific person's voice? Upload a short reference clip below — the
+                    IndicF5 model (<span className="font-semibold">ai4bharat/IndicF5</span>) will clone it from a few seconds of audio.
+                  </p>
+                </div>
+
+                {/* Upload Reference Audio to Clone a Voice */}
+                <div className="flex flex-col gap-2.5 border-t border-slate-100 dark:border-slate-800 pt-4">
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
+                    <Icons.Upload />
+                    <span>Clone a Voice from Reference Audio</span>
+                  </div>
+
+                  <div
+                    className={`voice-dropzone rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center cursor-pointer ${dragActive ? 'drag-active' : ''}`}
+                    onClick={() => cloneFileInputRef.current && cloneFileInputRef.current.click()}
+                    onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
+                    onDragLeave={() => setDragActive(false)}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      setDragActive(false);
+                      const f = e.dataTransfer.files && e.dataTransfer.files[0];
+                      if (f) handleCloneFileChosen(f);
+                    }}
+                  >
+                    <input
+                      ref={cloneFileInputRef}
+                      type="file"
+                      accept="audio/*,video/webm"
+                      className="hidden"
+                      onChange={(e) => handleCloneFileChosen(e.target.files && e.target.files[0])}
+                    />
+                    {!cloneFile ? (
+                      <>
+                        <span className="text-2xl">🎤</span>
+                        <span className="text-xs font-bold text-slate-600 dark:text-slate-300">Click to choose, or drag & drop an audio file</span>
+                        <span className="text-[10px] text-slate-400">WAV / MP3 / M4A / OGG · 5–15 seconds works best · max 20MB</span>
+                      </>
+                    ) : (
+                      <div className="w-full flex flex-col items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                        <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">📎 {cloneFile.name}</span>
+                        {clonePreviewUrl && <audio controls src={clonePreviewUrl} className="w-full h-8" />}
+                        <button
+                          onClick={() => { setCloneFile(null); if (cloneFileInputRef.current) cloneFileInputRef.current.value = ''; }}
+                          className="tap-ripple spring-press text-[10px] font-bold text-rose-500 hover:text-rose-600"
+                        >
+                          Remove file
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <textarea
+                    value={cloneTranscript}
+                    onChange={(e) => setCloneTranscript(e.target.value)}
+                    placeholder="Type EXACTLY what is spoken in the reference clip (required — IndicF5 uses this to align the voice)..."
+                    rows={2}
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs font-medium text-slate-800 dark:text-slate-100 focus:outline-none focus:border-brand-500 resize-none"
+                  />
+
+                  <input
+                    type="text"
+                    value={cloneLabel}
+                    onChange={(e) => setCloneLabel(e.target.value)}
+                    placeholder="Name this voice (e.g. Dad's Voice)"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:border-brand-500"
+                  />
+
+                  <button
+                    onClick={handleCloneUpload}
+                    disabled={isCloning || !cloneFile || !cloneTranscript.trim()}
+                    className="tap-ripple spring-press w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 disabled:opacity-40 text-white font-extrabold text-xs flex items-center justify-center gap-2"
+                  >
+                    {isCloning ? (
+                      <>
+                        <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        <span>Cloning Voice…</span>
+                      </>
+                    ) : (
+                      <>
+                        <Icons.Sparkles />
+                        <span>Clone & Use This Voice</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* My Cloned Voices List */}
+                {customVoices.length > 0 && (
+                  <div className="flex flex-col gap-2 border-t border-slate-100 dark:border-slate-800 pt-4">
+                    <div className="text-xs font-bold text-slate-800 dark:text-slate-100">My Cloned Voices</div>
+                    {customVoices.map((v) => (
+                      <div
+                        key={v.voice_id}
+                        className={`flex items-center justify-between p-2.5 rounded-xl border text-xs font-bold ${
+                          activeVoiceId === v.voice_id
+                            ? 'bg-brand-50 border-brand-500 text-brand-900 dark:bg-brand-950/50 dark:text-brand-200'
+                            : 'bg-slate-50 border-slate-200 text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'
+                        }`}
+                      >
+                        <button className="flex-1 text-left flex items-center gap-2" onClick={() => setActiveVoiceId(v.voice_id)}>
+                          <Icons.Mic /> {v.label}
+                          {activeVoiceId === v.voice_id && <span className="text-[9px] text-brand-600">· active</span>}
+                        </button>
+                        <button
+                          onClick={() => handleRemoveCustomVoice(v.voice_id)}
+                          className="tap-ripple spring-press text-rose-400 hover:text-rose-600 px-2"
+                          title="Delete this cloned voice"
+                        >
+                          <Icons.Trash />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+              </div>
+            </div>
+          )}
+
+          {/* ─── FEATURE 4: ACCESSIBILITY DOCK (floating, global) ─── */}
+          <div className="a11y-dock">
+            {showA11yDock && (
+              <div className="a11y-dock-panel mb-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-4 w-60 flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-extrabold text-slate-800 dark:text-white flex items-center gap-1.5">
+                    <Icons.Accessibility />
+                    <span>Accessibility Options</span>
+                  </span>
+                  <button onClick={() => setShowA11yDock(false)} className="tap-ripple spring-press text-slate-400 hover:text-slate-600 font-bold text-xs w-6 h-6">✕</button>
+                </div>
+
+                {/* Text Size +/- */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    <span>Text Size</span>
+                    <span className="text-brand-600">{textScale}%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setTextScale(s => Math.max(85, s - 10))}
+                      className="tap-ripple spring-press flex-1 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-black text-base flex items-center justify-center"
+                      title="Decrease text size"
+                    >
+                      A−
+                    </button>
+                    <button
+                      onClick={() => setTextScale(100)}
+                      className="tap-ripple spring-press px-2 h-9 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 font-bold text-[10px]"
+                      title="Reset to default"
+                    >
+                      Reset
+                    </button>
+                    <button
+                      onClick={() => setTextScale(s => Math.min(150, s + 10))}
+                      className="tap-ripple spring-press flex-1 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-black text-base flex items-center justify-center"
+                      title="Increase text size"
+                    >
+                      A+
+                    </button>
+                  </div>
+                </div>
+
+                {/* Day / Night Mode */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    {darkMode ? <Icons.Moon /> : <Icons.Sun />}
+                    <span>{darkMode ? 'Night Mode' : 'Day Mode'}</span>
+                  </div>
+                  <button
+                    onClick={() => setDarkMode(!darkMode)}
+                    className={`tap-ripple w-11 h-6 rounded-full p-0.5 transition-colors ${darkMode ? 'bg-brand-600' : 'bg-slate-300'}`}
+                    title={darkMode ? 'Switch to Day Mode' : 'Switch to Night Mode'}
+                    aria-label="Toggle day and night mode"
+                  >
+                    <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${darkMode ? 'translate-x-5' : ''}`}></div>
+                  </button>
+                </div>
+
+                {/* Grayscale Toggle */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    <Icons.Contrast />
+                    <span>Grayscale</span>
+                  </div>
+                  <button
+                    onClick={() => setGrayscaleMode(!grayscaleMode)}
+                    className={`tap-ripple w-11 h-6 rounded-full p-0.5 transition-colors ${grayscaleMode ? 'bg-brand-600' : 'bg-slate-300'}`}
+                  >
+                    <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${grayscaleMode ? 'translate-x-5' : ''}`}></div>
+                  </button>
+                </div>
+
+                {/* High Contrast Mode (moved here from Preferences) */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    <Icons.Contrast />
+                    <span>High Contrast</span>
+                  </div>
+                  <button
+                    onClick={() => setHighContrast(!highContrast)}
+                    className={`tap-ripple w-11 h-6 rounded-full p-0.5 transition-colors ${highContrast ? 'bg-brand-600' : 'bg-slate-300'}`}
+                  >
+                    <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${highContrast ? 'translate-x-5' : ''}`}></div>
+                  </button>
+                </div>
+
+                {/* Speech Speed (moved here from Preferences) */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    <span>Speech Speed</span>
+                    <span className="text-brand-600">{speechRate.toFixed(1)}x</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0.7"
+                    max="1.3"
+                    step="0.1"
+                    value={speechRate}
+                    onChange={(e) => setSpeechRate(parseFloat(e.target.value))}
+                    className="accent-brand-600 cursor-pointer w-full"
+                  />
+                </div>
+              </div>
+            )}
+
+            <button
+              onClick={() => setShowA11yDock(prev => !prev)}
+              className={`tap-ripple spring-press w-12 h-12 rounded-full shadow-xl flex items-center justify-center transition-all ${
+                showA11yDock
+                  ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+                  : 'bg-gradient-to-br from-brand-600 to-indigo-600 text-white'
+              }`}
+              title="Accessibility options"
+            >
+              <Icons.Accessibility />
+            </button>
+          </div>
 
           {/* ─── FOOTER ─────────────────────────────────────────────── */}
           <footer className="py-3 border-t border-slate-200/80 dark:border-slate-800 text-center text-[11px] text-slate-400">
