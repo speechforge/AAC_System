@@ -30,7 +30,7 @@ from tqdm import tqdm
 import torch
 from datasets import load_dataset
 
-from models_def import AACNextWordHMM, AACUnjumbleHMM
+from models_def import AACNextWordHMM, AACUnjumbleHMM, trim_memory
 from test_suite import get_next_word_test_cases, get_unjumble_test_cases
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -277,15 +277,16 @@ def run_streaming_pipeline():
             print(f"[*] Note: High-order 4-grams initialized fresh ({e_nxt})")
 
     # Initial memory compaction and safety pruning
-    if len(next_hmm.fourgrams) > 4000000:
-        print(f"[*] Compacting {len(next_hmm.fourgrams):,} 4-gram states to safety ceiling (4M)...")
-        next_hmm.prune_rare_transitions(min_count=3, max_total_fourgrams=4000000)
+    if len(next_hmm.fourgrams) > 2500000:
+        print(f"[*] Compacting {len(next_hmm.fourgrams):,} 4-gram states to safety ceiling (2.5M)...")
+        next_hmm.prune_rare_transitions(min_count=3, max_total_fourgrams=2500000)
         print(f"[*] Compaction complete: 4-grams now {len(next_hmm.fourgrams):,} states.")
-    if len(unjumble_hmm.word_trigrams) > 5000000:
-        print(f"[*] Compacting {len(unjumble_hmm.word_trigrams):,} trigram states to safety ceiling (5M)...")
-        unjumble_hmm.prune_rare_transitions(min_count=2, max_total_trigrams=5000000)
+    if len(unjumble_hmm.word_trigrams) > 3500000:
+        print(f"[*] Compacting {len(unjumble_hmm.word_trigrams):,} trigram states to safety ceiling (3.5M)...")
+        unjumble_hmm.prune_rare_transitions(min_count=2, max_total_trigrams=3500000)
         print(f"[*] Compaction complete: trigrams now {len(unjumble_hmm.word_trigrams):,} states.")
     gc.collect()
+    trim_memory()
     print(f"[*] System State: Sentences: {unjumble_hmm.sentence_count:,} | Vocab: {len(unjumble_hmm.word_unigrams):,} | Bigrams: {len(unjumble_hmm.word_bigrams):,} | Trigrams: {len(unjumble_hmm.word_trigrams):,}")
 
     # Initial baseline eval
@@ -456,11 +457,12 @@ def run_streaming_pipeline():
         next_hmm.vocabulary = set(unjumble_hmm.word_unigrams.keys())
 
         # Prune rare transitions frequently to ensure constant memory footprint (<10GB)
-        if chunk_id % 2 == 0 or len(next_hmm.fourgrams) > 4000000 or len(unjumble_hmm.word_trigrams) > 5000000:
+        if chunk_id % 2 == 0 or len(next_hmm.fourgrams) > 2500000 or len(unjumble_hmm.word_trigrams) > 3500000:
             print("[*] Running periodic memory compaction and pruning rare transitions...")
-            unjumble_hmm.prune_rare_transitions(min_count=2, max_total_trigrams=5000000)
-            next_hmm.prune_rare_transitions(min_count=3, max_total_fourgrams=4000000)
+            unjumble_hmm.prune_rare_transitions(min_count=2, max_total_trigrams=3500000)
+            next_hmm.prune_rare_transitions(min_count=3, max_total_fourgrams=2500000)
             gc.collect()
+            trim_memory()
 
         # Run Validation Benchmarks
         print("[*] Running Clinical AAC Validation Benchmarks...")
@@ -475,7 +477,40 @@ def run_streaming_pipeline():
         print(f"  -> Unjumble Exact Match: {eval_m['unjumble_exact_match_pct']}%")
         print(f"  -> Unjumble Kendall-Tau: {eval_m['unjumble_kendall_tau']}")
 
-        # Save Checkpoint metrics
+        # Serialize HMM Checkpoints safely with memory guard
+        print("[*] Serializing HMM Checkpoints...")
+        gc.collect()
+        trim_memory()
+
+        # 1. HMM-2 (Syntactic Unjumble + Master N-grams)
+        with open(latest_uj_path + ".tmp", "wb") as f:
+            pickle.dump(unjumble_hmm, f, protocol=pickle.HIGHEST_PROTOCOL)
+        os.replace(latest_uj_path + ".tmp", latest_uj_path)
+        gc.collect()
+        trim_memory()
+
+        # 2. HMM-1 (Lightweight Next-Word Config & Fourgrams)
+        with open(latest_next_path + ".tmp", "wb") as f:
+            pickle.dump({
+                "fourgrams": next_hmm.fourgrams,
+                "lambda1": next_hmm.lambda1,
+                "lambda2": next_hmm.lambda2,
+                "lambda3": next_hmm.lambda3,
+                "lambda4": next_hmm.lambda4,
+                "sentence_count": next_hmm.sentence_count,
+                "total_tokens": next_hmm.total_tokens
+            }, f, protocol=pickle.HIGHEST_PROTOCOL)
+        os.replace(latest_next_path + ".tmp", latest_next_path)
+        gc.collect()
+        trim_memory()
+
+        # 3. Master Backend Model (saved periodically to conserve RAM during heavy runs)
+        if chunk_id % 5 == 0:
+            save_master_backend_hmm(next_hmm, unjumble_hmm)
+            gc.collect()
+            trim_memory()
+
+        # Save Checkpoint metrics ONLY AFTER successful serialization
         chunk_checkpoint = {
             "chunk_id": chunk_id,
             "timestamp": datetime.now().isoformat(),
@@ -505,35 +540,6 @@ def run_streaming_pipeline():
             tri_sz=len(unjumble_hmm.word_trigrams), four_sz=len(next_hmm.fourgrams),
             eval_m=eval_m, elapsed=t_chunk_elapsed, pct=100.0, status=f"CHUNK_{chunk_id}_COMPLETE"
         )
-
-        # Serialize HMM Checkpoints safely with memory guard
-        print("[*] Serializing HMM Checkpoints...")
-        gc.collect()
-
-        # 1. HMM-2 (Syntactic Unjumble + Master N-grams)
-        with open(latest_uj_path + ".tmp", "wb") as f:
-            pickle.dump(unjumble_hmm, f, protocol=pickle.HIGHEST_PROTOCOL)
-        os.replace(latest_uj_path + ".tmp", latest_uj_path)
-        gc.collect()
-
-        # 2. HMM-1 (Lightweight Next-Word Config & Fourgrams)
-        with open(latest_next_path + ".tmp", "wb") as f:
-            pickle.dump({
-                "fourgrams": next_hmm.fourgrams,
-                "lambda1": next_hmm.lambda1,
-                "lambda2": next_hmm.lambda2,
-                "lambda3": next_hmm.lambda3,
-                "lambda4": next_hmm.lambda4,
-                "sentence_count": next_hmm.sentence_count,
-                "total_tokens": next_hmm.total_tokens
-            }, f, protocol=pickle.HIGHEST_PROTOCOL)
-        os.replace(latest_next_path + ".tmp", latest_next_path)
-        gc.collect()
-
-        # 3. Master Backend Model (saved periodically to conserve RAM during heavy runs)
-        if chunk_id % 5 == 0:
-            save_master_backend_hmm(next_hmm, unjumble_hmm)
-            gc.collect()
 
         print(f"[✓] Chunk {chunk_id} Complete! Cumulative sentences: {unjumble_hmm.sentence_count:,}\n")
 
