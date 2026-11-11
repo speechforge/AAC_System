@@ -2,6 +2,10 @@ import argparse
 import os
 import string
 
+# DEPRECATED — This module uses the legacy Indic-TTS (FastPitch) pipeline.
+# It is superseded by IndicF5Engine in backend/tts.py.
+# This file is kept for historical reference only and is NOT called by the live backend.
+
 import numpy as np
 import pandas as pd
 import torch

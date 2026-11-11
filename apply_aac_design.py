@@ -1,6 +1,10 @@
 import re
+import os
 
-with open('/media/linux/ShreejiPers1/Future_Conference_Works/aac_system_demo_track/indic-generative-aac/frontend/index_new.html', 'r', encoding='utf-8') as f:
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+_FRONTEND_DIR = os.path.join(_SCRIPT_DIR, "indic-generative-aac", "frontend")
+
+with open(os.path.join(_FRONTEND_DIR, 'index_new.html'), 'r', encoding='utf-8') as f:
     html = f.read()
 
 # Remove gradients and shadows
@@ -67,5 +71,5 @@ html = re.sub(r'bg-sky-50', 'bg-white', html)
 html = re.sub(r'text-sky-500', 'text-blue-600', html)
 
 
-with open('/media/linux/ShreejiPers1/Future_Conference_Works/aac_system_demo_track/indic-generative-aac/frontend/index_new.html', 'w', encoding='utf-8') as f:
+with open(os.path.join(_FRONTEND_DIR, 'index_new.html'), 'w', encoding='utf-8') as f:
     f.write(html)

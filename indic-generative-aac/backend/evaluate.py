@@ -45,14 +45,16 @@ def compute_metrics(test_cases, run_name):
         
         # Measure LLM + Semantics
         t0 = time.time()
-        sentence = language_model.generate_sentence(context, lang, code_mix)
-        valid, val_data = validator.validate(context, sentence, lang)
+        gen, structured_ctx, ledger, c_llm1, c_llm2, decision, telem = language_model.generate_sentence(context, lang, code_mix)
+        sentence = gen
+        valid, val_data = validator.validate(context, ledger, sentence, lang)
         
         # Fail/Regeneration loop
         if not valid:
             for _ in range(2):
-                sentence = language_model.generate_sentence(context, lang, code_mix)
-                valid, val_data = validator.validate(context, sentence, lang)
+                gen, structured_ctx, ledger, c_llm1, c_llm2, decision, telem = language_model.generate_sentence(context, lang, code_mix)
+                sentence = gen
+                valid, val_data = validator.validate(context, ledger, sentence, lang)
                 if valid: break
                 
         t_llm = time.time() - t0

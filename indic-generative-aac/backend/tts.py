@@ -206,12 +206,20 @@ class IndicF5Engine:
 
     def _load_fallback_prompt(self):
         """Creates or loads a default fallback prompt if no audio files were located."""
-        wav_path = "/media/linux/ShreejiPers1/Future_Conference_Works/aac_system_demo_track/IndicF5/prompts/PAN_F_HAPPY_00001.wav"
+        _base = os.path.dirname(os.path.abspath(__file__))
+        wav_path = next(
+            (p for p in [
+                os.path.abspath(os.path.join(_base, "../../IndicF5/prompts/PAN_F_HAPPY_00001.wav")),
+                os.path.abspath(os.path.join(_base, "../../IndicF5/f5_tts/infer/examples/basic/basic_ref_en.wav")),
+                "/media/linux/ShreejiPers1/Future_Conference_Works/aac_system_demo_track/IndicF5/prompts/PAN_F_HAPPY_00001.wav",
+            ] if os.path.exists(p)),
+            None
+        )
         text = "ਭਹੰਪੀ ਵਿੱਚ ਸਮਾਰਕਾਂ ਦੇ ਭਵਨ ਨਿਰਮਾਣ ਕਲਾ ਦੇ ਵੇਰਵੇ ਗੁੰਝਲਦਾਰ ਅਤੇ ਹੈਰਾਨ ਕਰਨ ਵਾਲੇ ਹਨ, ਜੋ ਮੈਨੂੰ ਖੁਸ਼ ਕਰਦੇ  ਹਨ।"
-        if os.path.exists(wav_path):
+        if wav_path and os.path.exists(wav_path):
             ref_audio, proc_text = preprocess_ref_audio_text(wav_path, text)
             return {"audio": ref_audio, "text": proc_text}
-        raise FileNotFoundError(f"No prompt audio available at {wav_path}")
+        raise FileNotFoundError(f"No prompt audio available; searched IndicF5/prompts/ and IndicF5/f5_tts/infer/examples/basic/")
 
 
 # Backwards compatibility alias

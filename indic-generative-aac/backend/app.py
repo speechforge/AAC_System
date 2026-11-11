@@ -1,3 +1,4 @@
+import os
 import time
 import io
 import re
@@ -65,6 +66,29 @@ class TransliterateRequest(BaseModel):
 
 @app.post("/api/transliterate")
 def transliterate_endpoint(req: TransliterateRequest):
+    # Offline-first phoneme map for Roman→Devanagari (Hindi) common AAC words.
+    # Covers the most frequent symbols without any network request.
+    _OFFLINE_HI = {
+        "maa": "माँ", "ma": "माँ", "papa": "पापा", "dadi": "दादी", "dada": "दादा",
+        "paani": "पानी", "pani": "पानी", "khana": "खाना", "dard": "दर्द",
+        "dawai": "दवाई", "dawa": "दवा", "doctor": "डॉक्टर", "daktar": "डॉक्टर",
+        "school": "स्कूल", "ghar": "घर", "bhai": "भाई", "behen": "बहन",
+        "dost": "दोस्त", "neend": "नींद", "bathroom": "बाथरूम", "bhook": "भूख",
+        "pyaas": "प्यास", "dukh": "दुख", "khushi": "खुशी", "gussa": "गुस्सा",
+        "thaka": "थका", "bimaar": "बीमार", "aaram": "आराम", "help": "मदद",
+        "haan": "हाँ", "nahi": "नहीं", "nahin": "नहीं", "chahiye": "चाहिए",
+        "jana": "जाना", "aana": "आना", "kal": "कल", "aaj": "आज",
+    }
+    _OFFLINE_GU = {
+        "paani": "પાણી", "khana": "ખાણું", "mummy": "મમ્મી", "papa": "પપ્પા",
+        "school": "શાળા", "ghar": "ઘર", "dard": "દર્દ", "help": "મદદ",
+    }
+    _OFFLINE_MR = {
+        "paani": "पाणी", "khana": "जेवण", "aai": "आई", "baba": "बाबा",
+        "school": "शाळा", "ghar": "घर", "dard": "दुखणे", "help": "मदत",
+    }
+    _OFFLINE_MAPS = {"hi": _OFFLINE_HI, "gu": _OFFLINE_GU, "mr": _OFFLINE_MR}
+
     lang_codes = {
         "hi": "hi-t-i0-und",
         "gu": "gu-t-i0-und",
@@ -74,14 +98,22 @@ def transliterate_endpoint(req: TransliterateRequest):
     text = req.text.strip()
     if not text:
         return {"original": req.text, "transliterated": req.text}
-    
+
     if not re.search(r'[a-zA-Z]', text):
         return {"original": req.text, "transliterated": req.text}
 
+    # Try offline map first (zero latency, zero network)
+    offline_map = _OFFLINE_MAPS.get(req.language, _OFFLINE_HI)
+    text_lower = text.lower().strip()
+    if text_lower in offline_map:
+        return {"original": req.text, "transliterated": offline_map[text_lower], "source": "offline"}
+
+    # Fall back to Google Transliteration API with reduced timeout (0.8s)
+    # NOTE: This call is network-dependent — will silently fall back to passthrough if offline.
     url = f"https://inputtools.google.com/request?text={urllib.parse.quote(text)}&itc={itc}&num=1"
     try:
         http_req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(http_req, timeout=3) as resp:
+        with urllib.request.urlopen(http_req, timeout=0.8) as resp:
             data = json.loads(resp.read().decode('utf-8'))
             if data and data[0] == "SUCCESS" and len(data) > 1:
                 words_res = []
@@ -90,11 +122,11 @@ def transliterate_endpoint(req: TransliterateRequest):
                         words_res.append(item[1][0])
                     else:
                         words_res.append(item[0])
-                return {"original": req.text, "transliterated": " ".join(words_res)}
+                return {"original": req.text, "transliterated": " ".join(words_res), "source": "google"}
     except Exception as e:
-        print("[Transliterate] API Error:", e)
+        print(f"[Transliterate] API unavailable (offline mode): {e}")
 
-    return {"original": req.text, "transliterated": req.text}
+    return {"original": req.text, "transliterated": req.text, "source": "passthrough"}
 
 @app.get("/api/health")
 def read_root():
@@ -102,8 +134,13 @@ def read_root():
 
 @app.get("/api/hmm_info")
 def hmm_info():
+    inf_stats = {}
+    if hasattr(hmm_engine, 'infinity_gram') and hmm_engine.infinity_gram is not None:
+        inf_stats = hmm_engine.infinity_gram.get_stats()
     return {
         "sentence_count": getattr(hmm_engine, 'sentence_count', 0),
+        "infinity_gram_enabled": bool(inf_stats),
+        "infinity_gram_stats": inf_stats,
         "bigram_states": len(hmm_engine.bigrams),
         "trigram_states": len(hmm_engine.trigrams),
         "hindi_vocab": len(getattr(hmm_engine, 'hindi_vocab', [])),
@@ -274,8 +311,9 @@ def generate(req: AACRequest):
     }
 
 # Mount static frontend
-app.mount("/static", StaticFiles(directory="../frontend"), name="static")
-app.mount("/", StaticFiles(directory="../frontend", html=True), name="frontend")
+_frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../frontend"))
+app.mount("/static", StaticFiles(directory=_frontend_dir), name="static")
+app.mount("/", StaticFiles(directory=_frontend_dir, html=True), name="frontend")
 
 if __name__ == "__main__":
     import uvicorn

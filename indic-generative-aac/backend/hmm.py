@@ -3,8 +3,14 @@ import os
 import sys
 from collections import defaultdict, Counter
 
+# Ensure infinity_gram engine is loaded for arbitrary-depth n-gram modeling
+try:
+    from infinity_gram import infinity_gram_engine
+except ImportError:
+    infinity_gram_engine = None
+
 # Ensure dual_hmm_streaming_kit is accessible for class definitions
-DUAL_KIT_DIR = "/home/linux/Documents/AACsystem/AAC_System-jaydeep/dual_hmm_streaming_kit"
+DUAL_KIT_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../dual_hmm_streaming_kit"))
 if DUAL_KIT_DIR not in sys.path:
     sys.path.insert(0, DUAL_KIT_DIR)
 
@@ -21,6 +27,7 @@ except ImportError:
 
 class AACHMM:
     def __init__(self):
+        self.infinity_gram = infinity_gram_engine
         self.unigrams = Counter()
         self.bigrams = defaultdict(Counter)
         self.trigrams = defaultdict(Counter)
@@ -52,29 +59,67 @@ class AACHMM:
             except Exception as e:
                 print(f"[HMM Engine] Error loading hmm_hindi.pkl: {e}")
 
-        # 2. Load General/English HMM (lightweight stub mode — skips all large pkl files)
-        # Both hmm2_unjumble_latest.pkl (~709MB) and hmm_model.pkl (~768MB) are too large
-        # to load alongside the training process. Use built-in minimal AAC vocab instead.
-        print("[HMM Engine] Using lightweight built-in English AAC vocab (training is running in parallel).")
-        self._load_builtin_english_vocab()
-        return
-
-        local_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'hmm_model.pkl')
-        model_path = local_path if os.path.exists(local_path) else '/home/linux/Documents/2026/aac_system_demo_track/indic-generative-aac/backend/hmm_model.pkl'
-        if os.path.exists(model_path):
+        # 2. Load General/English HMM — try Dual HMM kit first, fall back to built-in vocab
+        dual_hmm1_path = os.path.join(DUAL_KIT_DIR, "models", "hmm1_nextword_latest.pkl")
+        if os.path.exists(dual_hmm1_path):
             try:
-                with open(model_path, 'rb') as f:
-                    data = pickle.load(f)
-                    self.bigrams = data.get('bigrams', defaultdict(Counter))
-                    self.trigrams = data.get('trigrams', defaultdict(Counter))
-                    self.fourgrams = data.get('fourgrams', defaultdict(Counter))
-                    self.start_priors = data.get('start_priors', Counter())
-                    self.unigrams = data.get('unigrams', Counter())
-                    self.sentence_count = data.get('sentence_count', len(self.bigrams))
-                    self.unjumble_model = data.get('unjumble_model', None)
-                print(f"[HMM Engine] Loaded enhanced dual model: {self.sentence_count:,} sentences, {len(self.bigrams):,} bigrams, {len(self.trigrams):,} trigrams, unjumble_available={self.unjumble_model is not None}.")
+                with open(dual_hmm1_path, 'rb') as f:
+                    h1_data = pickle.load(f)
+                # hmm1 stores fourgrams as {(w1,w2,w3): Counter(next_word→count)}
+                # We map this into our bigrams/trigrams/fourgrams structure
+                raw_fg = h1_data.get('fourgrams', {})
+                for ctx_tuple, next_counts in raw_fg.items():
+                    if len(ctx_tuple) == 3:
+                        self.fourgrams[ctx_tuple] = next_counts
+                        # Also populate trigram from last 2 of context
+                        tri_key = (ctx_tuple[1], ctx_tuple[2])
+                        for w, c in next_counts.items():
+                            self.trigrams[tri_key][w] += c
+                        # And bigram from last 1
+                        bi_key = ctx_tuple[2]
+                        for w, c in next_counts.items():
+                            self.bigrams[bi_key][w] += c
+                    elif len(ctx_tuple) == 2:
+                        self.trigrams[ctx_tuple] = next_counts
+                        bi_key = ctx_tuple[1]
+                        for w, c in next_counts.items():
+                            self.bigrams[bi_key][w] += c
+                    elif len(ctx_tuple) == 1:
+                        self.bigrams[ctx_tuple[0]] = next_counts
+                self.sentence_count = h1_data.get('sentence_count', len(raw_fg))
+                # Build unigram from bigram values
+                for bi_key, next_ctr in self.bigrams.items():
+                    self.unigrams[bi_key] += sum(next_ctr.values())
+                # Build start_priors: words that follow sentence-start markers
+                for ctx, nxt in self.fourgrams.items():
+                    if ctx[2] in ('i', 'please', 'can', 'help', 'do', 'my'):
+                        self.start_priors[ctx[2]] += sum(nxt.values())
+                if not self.start_priors:
+                    for w in ['i', 'please', 'can', 'help', 'yes', 'no']:
+                        if w in self.unigrams:
+                            self.start_priors[w] = self.unigrams[w]
+                print(f"[HMM Engine] Loaded Dual HMM-1: {self.sentence_count:,} sentences, "
+                      f"{len(self.fourgrams):,} 4-gram contexts, {len(self.trigrams):,} trigrams, "
+                      f"{len(self.bigrams):,} bigrams.")
             except Exception as e:
-                print(f"[HMM Engine] Error loading hmm_model.pkl: {e}")
+                print(f"[HMM Engine] Failed to load Dual HMM-1: {e}. Falling back to built-in vocab.")
+                self._load_builtin_english_vocab()
+        else:
+            print(f"[HMM Engine] Dual HMM-1 not found at {dual_hmm1_path}. Using built-in vocab.")
+            self._load_builtin_english_vocab()
+
+        # Try loading HMM-2 (unjumble) — optional, large file
+        dual_hmm2_path = os.path.join(DUAL_KIT_DIR, "models", "hmm2_unjumble_latest.pkl")
+        if os.path.exists(dual_hmm2_path):
+            try:
+                with open(dual_hmm2_path, 'rb') as f:
+                    h2_data = pickle.load(f)
+                # Store raw for unjumble
+                self._unjumble_data = h2_data
+                self.unjumble_model = h2_data
+                print(f"[HMM Engine] Loaded Dual HMM-2 (unjumble): {type(h2_data)}")
+            except Exception as e:
+                print(f"[HMM Engine] Failed to load HMM-2: {e}. Unjumble will return input order.")
 
     def _load_builtin_english_vocab(self):
         """Minimal built-in AAC English HMM — no file loading, zero RAM cost."""
@@ -118,6 +163,16 @@ class AACHMM:
         return words, 0.0
 
     def predict_next(self, current_words, language="hi", top_k=5):
+        # ── 1. Primary Engine: Infinity-Gram (∞-gram) with Arbitrary Context Depth ──
+        if self.infinity_gram is not None:
+            try:
+                inf_preds = self.infinity_gram.predict_next(current_words, language=language, top_k=top_k)
+                if inf_preds:
+                    return inf_preds
+            except Exception as e:
+                print(f"[HMM Engine] Infinity-Gram fallback to Markov: {e}")
+
+        # ── 2. Fallback Engine: Legacy Fixed 3-gram / 4-gram Markov Model ──
         # Determine if input is Hindi
         is_hindi = (language == "hi") or any(any(ord(c) >= 0x0900 and ord(c) <= 0x097F for c in w) for w in current_words)
         

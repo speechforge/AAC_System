@@ -1,6 +1,10 @@
 import re
+import os
 
-with open('/media/linux/ShreejiPers1/Future_Conference_Works/aac_system_demo_track/indic-generative-aac/frontend/index_new.html', 'r') as f:
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+_FRONTEND_DIR = os.path.join(_SCRIPT_DIR, "indic-generative-aac", "frontend")
+
+with open(os.path.join(_FRONTEND_DIR, 'index_new.html'), 'r') as f:
     text = f.read()
 
 text = re.sub(
@@ -19,5 +23,5 @@ text = re.sub(
     text
 )
 
-with open('/media/linux/ShreejiPers1/Future_Conference_Works/aac_system_demo_track/indic-generative-aac/frontend/index_new.html', 'w') as f:
+with open(os.path.join(_FRONTEND_DIR, 'index_new.html'), 'w') as f:
     f.write(text)

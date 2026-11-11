@@ -72,7 +72,8 @@ def run_eval(mode):
         cm = case.get("code_mix", False)
         
         t0 = time.time()
-        gen, ledger, candidate = llm.generate_sentence(ctx, lang, cm, mode=mode)
+        gen, structured_ctx, ledger, c_llm1, c_llm2, decision, telem = llm.generate_sentence(ctx, lang, cm, mode=mode)
+        candidate = c_llm2 or c_llm1
         t_llm = time.time() - t0
         
         t1 = time.time()
@@ -125,7 +126,7 @@ final_report = {
     "dual": res_dual
 }
 
-with open('/home/linux/Documents/2026/aac_system_demo_track/indic-generative-aac/tests/semantic/eval_report.json', 'w') as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'eval_report.json'), 'w') as f:
     json.dump(final_report, f, indent=2)
 
 print("\nEvaluation completed and saved to eval_report.json")

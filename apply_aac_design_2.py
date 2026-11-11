@@ -1,6 +1,10 @@
 import re
+import os
 
-with open('/media/linux/ShreejiPers1/Future_Conference_Works/aac_system_demo_track/indic-generative-aac/frontend/index.html', 'r', encoding='utf-8') as f:
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+_FRONTEND_DIR = os.path.join(_SCRIPT_DIR, "indic-generative-aac", "frontend")
+
+with open(os.path.join(_FRONTEND_DIR, 'index.html'), 'r', encoding='utf-8') as f:
     html = f.read()
 
 # 1. Reset Body Background
@@ -147,5 +151,5 @@ html = re.sub(
 # Change text size of label on genBtn to match prompt emphasis
 html = re.sub(r'id="genBtnText" class="text-sm"', 'id="genBtnText" class="text-lg font-black"', html)
 
-with open('/media/linux/ShreejiPers1/Future_Conference_Works/aac_system_demo_track/indic-generative-aac/frontend/index_new.html', 'w', encoding='utf-8') as f:
+with open(os.path.join(_FRONTEND_DIR, 'index_new.html'), 'w', encoding='utf-8') as f:
     f.write(html)
