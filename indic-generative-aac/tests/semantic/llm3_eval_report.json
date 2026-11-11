@@ -1,0 +1,455 @@
+{
+  "dataset_size": 10,
+  "semantic_metrics": {
+    "overall_validity_rate": "90.0%",
+    "entity_preservation_rate": "100.0%",
+    "negation_preservation_rate": "100.0%",
+    "intent_preservation_rate": "80.0%",
+    "unsupported_avoidance_rate": "100.0%",
+    "tts_audio_synthesis_rate": "90.0%",
+    "fallbacks_triggered": 4
+  },
+  "llm3_decisions": {
+    "breakdown": {
+      "PASS": 1,
+      "REFINE": 9,
+      "REJECT": 0
+    },
+    "edit_types": {
+      "words_replaced": 5,
+      "deterministic_fallback": 4,
+      "kept_unchanged": 1
+    }
+  },
+  "latency_profile_seconds": {
+    "t_llm1": 1.11,
+    "t_llm2": 1.09,
+    "t_llm3": 10.34,
+    "t_sem": 0.0,
+    "t_tts": 0.13,
+    "t_total": 17.9
+  },
+  "cases": [
+    {
+      "id": "case_1_feel_pizza",
+      "name": "Example 1: I FEEL + PIZZA (Minimal Realization)",
+      "llm1": "The user felt hungry and decided to go to the restaurant for pizza.",
+      "llm2": "The user felt hungry and decided to go to the restaurant for pizza.",
+      "llm3_decision": {
+        "decision": "REFINE",
+        "final_text": "The user felt and decided to go to the for pizza.",
+        "semantic_fidelity": true,
+        "intent_preserved": true,
+        "entities_preserved": true,
+        "negation_preserved": true,
+        "unsupported_information_removed": true,
+        "minimal_refinement": true,
+        "violations_removed": [
+          "restaurant",
+          "hungry"
+        ],
+        "minimal_refinement_details": {
+          "intent": "FEELING",
+          "required_concepts": [
+            "INTENT:FEELING",
+            "ACTION:GO TO THE RESTAURANT FOR PIZZA"
+          ],
+          "entity_replacements": {
+            "pizza": "pizzaholic"
+          },
+          "negation_preservation": true,
+          "temporal_info": null,
+          "location": null,
+          "speaker": "USER",
+          "actor": "USER",
+          "language": "English",
+          "contextual_constraints": []
+        },
+        "edit_type": "words_replaced"
+      },
+      "final_text": "The user felt and decided to go to the for pizza.",
+      "validated": true,
+      "score": 1.0,
+      "audio_ok": true,
+      "entity_ok": true,
+      "negation_ok": true,
+      "unsupported": [],
+      "metrics": {
+        "t_llm1": 1.106,
+        "t_llm2": 1.062,
+        "t_llm3": 11.843,
+        "t_sem": 0.0,
+        "t_tts": 0.14,
+        "t_total": 14.18,
+        "tokens_in": 1102,
+        "tokens_out": 245
+      }
+    },
+    {
+      "id": "case_2_want_pizza",
+      "name": "Example 2: I WANT + PIZZA",
+      "llm1": "The user wants a pizza.",
+      "llm2": "The user wants to eat pizza.",
+      "llm3_decision": {
+        "decision": "REFINE",
+        "final_text": "The user wants to eat a pizza.",
+        "semantic_fidelity": true,
+        "intent_preserved": true,
+        "entities_preserved": true,
+        "negation_preserved": true,
+        "unsupported_information_removed": true,
+        "minimal_refinement": true,
+        "violations_removed": [
+          "ACTION:eat",
+          "RELATION:eating_out"
+        ],
+        "minimal_refinement_details": {
+          "ACTION": "eat",
+          "RELATION": "eating_out"
+        },
+        "edit_type": "words_replaced"
+      },
+      "final_text": "The user wants to eat a pizza.",
+      "validated": true,
+      "score": 1.0,
+      "audio_ok": true,
+      "entity_ok": true,
+      "negation_ok": true,
+      "unsupported": [],
+      "metrics": {
+        "t_llm1": 0.726,
+        "t_llm2": 0.755,
+        "t_llm3": 7.565,
+        "t_sem": 0.0,
+        "t_tts": 0.19,
+        "t_total": 9.28,
+        "tokens_in": 1064,
+        "tokens_out": 137
+      }
+    },
+    {
+      "id": "case_3_neg_want_pizza",
+      "name": "Example 3: DON'T WANT + PIZZA (Negation Preservation)",
+      "llm1": "I want you to eat pizza.",
+      "llm2": "I want you to eat pizza.",
+      "llm3_decision": {
+        "decision": "REFINE",
+        "final_text": "I want you to eat pizza.",
+        "semantic_fidelity": false,
+        "intent_preserved": true,
+        "entities_preserved": true,
+        "negation_preserved": true,
+        "unsupported_information_removed": false,
+        "minimal_refinement": true,
+        "violations_removed": [],
+        "edit_type": "deterministic_fallback",
+        "fallback_applied": true
+      },
+      "final_text": "I don't want pizza.",
+      "validated": true,
+      "score": 1.0,
+      "audio_ok": true,
+      "entity_ok": true,
+      "negation_ok": true,
+      "unsupported": [],
+      "metrics": {
+        "t_llm1": 0.769,
+        "t_llm2": 0.812,
+        "t_llm3": 12.919,
+        "t_sem": 0.0,
+        "t_tts": 0.14,
+        "t_total": 28.85,
+        "tokens_in": 1095,
+        "tokens_out": 236
+      }
+    },
+    {
+      "id": "case_4_feel_sad",
+      "name": "Example 4: I FEEL + SAD (Emotion Preservation)",
+      "llm1": "I feel sad because I'm hungry and need food.",
+      "llm2": "I feel sad because I am hungry and need food.",
+      "llm3_decision": {
+        "decision": "REFINE",
+        "final_text": "I feel sad because I am and need food.",
+        "semantic_fidelity": true,
+        "intent_preserved": true,
+        "entities_preserved": true,
+        "negation_preserved": true,
+        "unsupported_information_removed": true,
+        "minimal_refinement": true,
+        "violations_removed": [
+          "hungry"
+        ],
+        "minimal_refinement_details": "Removed 'hungry' from the intent.",
+        "edit_type": "words_replaced"
+      },
+      "final_text": "I feel sad because I am and need food.",
+      "validated": true,
+      "score": 1.0,
+      "audio_ok": true,
+      "entity_ok": true,
+      "negation_ok": true,
+      "unsupported": [],
+      "metrics": {
+        "t_llm1": 1.199,
+        "t_llm2": 0.933,
+        "t_llm3": 7.433,
+        "t_sem": 0.0,
+        "t_tts": 0.15,
+        "t_total": 9.76,
+        "tokens_in": 1086,
+        "tokens_out": 132
+      }
+    },
+    {
+      "id": "case_5_feel_happy",
+      "name": "Example 5: I FEEL + HAPPY",
+      "llm1": "I feel happy about the delicious food I'm about to eat at the restaurant.",
+      "llm2": "I feel happy about the delicious food I am about to eat at the restaurant.",
+      "llm3_decision": {
+        "decision": "REFINE",
+        "final_text": "I feel happy about the food I am about to eat at.",
+        "semantic_fidelity": true,
+        "intent_preserved": true,
+        "entities_preserved": true,
+        "negation_preserved": true,
+        "unsupported_information_removed": true,
+        "minimal_refinement": true,
+        "violations_removed": [
+          "restaurant",
+          "delicious"
+        ],
+        "minimal_refinement_details": {
+          "intent": "feeling",
+          "entity": "food",
+          "relation": "about-to-eat",
+          "context": "restaurant"
+        },
+        "edit_type": "words_replaced"
+      },
+      "final_text": "I feel happy about the food I am about to eat at.",
+      "validated": true,
+      "score": 1.0,
+      "audio_ok": true,
+      "entity_ok": true,
+      "negation_ok": true,
+      "unsupported": [],
+      "metrics": {
+        "t_llm1": 1.26,
+        "t_llm2": 1.313,
+        "t_llm3": 9.152,
+        "t_sem": 0.0,
+        "t_tts": 0.17,
+        "t_total": 11.95,
+        "tokens_in": 1106,
+        "tokens_out": 175
+      }
+    },
+    {
+      "id": "case_6_want_water",
+      "name": "Example 6: I WANT + WATER (Omission of cold/now/drink)",
+      "llm1": "The user wants water.",
+      "llm2": "The user wants water.",
+      "llm3_decision": {
+        "decision": "PASS",
+        "final_text": "The user wants water.",
+        "semantic_fidelity": true,
+        "intent_preserved": true,
+        "entities_preserved": true,
+        "negation_preserved": true,
+        "unsupported_information_removed": true,
+        "minimal_refinement": true,
+        "violations_removed": [
+          "<list of removed violations>"
+        ],
+        "minimal_refinement_details": "",
+        "edit_type": "kept_unchanged"
+      },
+      "final_text": "The user wants water.",
+      "validated": true,
+      "score": 1.0,
+      "audio_ok": true,
+      "entity_ok": true,
+      "negation_ok": true,
+      "unsupported": [],
+      "metrics": {
+        "t_llm1": 0.677,
+        "t_llm2": 0.742,
+        "t_llm3": 7.123,
+        "t_sem": 0.0,
+        "t_tts": 0.11,
+        "t_total": 8.7,
+        "tokens_in": 1055,
+        "tokens_out": 108
+      }
+    },
+    {
+      "id": "case_7_feel_pizza_hungry",
+      "name": "Example 7: I FEEL + PIZZA (Omission of hungry/eat/tonight)",
+      "llm1": "The user felt hungry and decided to go to the restaurant for pizza.",
+      "llm2": "The user felt hungry and decided to go to the restaurant for pizza.",
+      "llm3_decision": {
+        "decision": "REFINE",
+        "final_text": "The user felt and decided to go to the for pizza.",
+        "semantic_fidelity": true,
+        "intent_preserved": true,
+        "entities_preserved": true,
+        "negation_preserved": true,
+        "unsupported_information_removed": true,
+        "minimal_refinement": true,
+        "violations_removed": [
+          "restaurant",
+          "hungry"
+        ],
+        "minimal_refinement_details": {
+          "intent": "FEELING",
+          "required_concepts": [
+            "INTENT:FEELING",
+            "ACTION:GO TO THE RESTAURANT FOR PIZZA"
+          ],
+          "entity_replacements": {
+            "pizza": "pizzaholic"
+          },
+          "negation_preservation": true,
+          "temporal_info": null,
+          "location": null,
+          "speaker": "USER",
+          "actor": "USER",
+          "language": "English",
+          "contextual_constraints": []
+        },
+        "edit_type": "words_replaced"
+      },
+      "final_text": "The user felt and decided to go to the for pizza.",
+      "validated": true,
+      "score": 1.0,
+      "audio_ok": true,
+      "entity_ok": true,
+      "negation_ok": true,
+      "unsupported": [],
+      "metrics": {
+        "t_llm1": 1.132,
+        "t_llm2": 1.214,
+        "t_llm3": 13.262,
+        "t_sem": 0.0,
+        "t_tts": 0.15,
+        "t_total": 15.77,
+        "tokens_in": 1102,
+        "tokens_out": 245
+      }
+    },
+    {
+      "id": "case_8_neg_school",
+      "name": "Example 8: I DON'T WANT + SCHOOL (Negation + School)",
+      "llm1": "I want you to eat out tomorrow.",
+      "llm2": "I want you to eat out tomorrow.",
+      "llm3_decision": {
+        "decision": "REFINE",
+        "final_text": "I want you to eat out .",
+        "semantic_fidelity": true,
+        "intent_preserved": true,
+        "entities_preserved": true,
+        "negation_preserved": true,
+        "unsupported_information_removed": true,
+        "minimal_refinement": true,
+        "violations_removed": [
+          "tomorrow"
+        ],
+        "minimal_refinement_details": "Removed 'tomorrow' from the intent.",
+        "edit_type": "deterministic_fallback",
+        "fallback_applied": true
+      },
+      "final_text": "I don't want school.",
+      "validated": true,
+      "score": 1.0,
+      "audio_ok": true,
+      "entity_ok": true,
+      "negation_ok": true,
+      "unsupported": [],
+      "metrics": {
+        "t_llm1": 0.848,
+        "t_llm2": 0.87,
+        "t_llm3": 7.521,
+        "t_sem": 0.0,
+        "t_tts": 0.11,
+        "t_total": 18.52,
+        "tokens_in": 1100,
+        "tokens_out": 123
+      }
+    },
+    {
+      "id": "indic_hindi_want_water",
+      "name": "Indic Language: Hindi WANT + water",
+      "llm1": "पानी को बना दिया।",
+      "llm2": "User wants to eat rice and vegetables.",
+      "llm3_decision": {
+        "decision": "REFINE",
+        "final_text": "The candidate expresses the intent 'WANT' and mentions the actor 'USER'. It also specifies that the action is 'Eating', which is a required concept from the context. The relation between the intent and the actor is implied by the context. However, the entity 'INTENT:WANT' is missing, as it should be mentioned in the context. The relationship between the intent and the actor is also implied by the context. Therefore, this candidate does not meet all the criteria.",
+        "semantic_fidelity": true,
+        "intent_preserved": true,
+        "entities_preserved": true,
+        "negation_preserved": true,
+        "unsupported_information_removed": true,
+        "minimal_refinement": true,
+        "violations_removed": [
+          "Missing 'INTENT:WANT'"
+        ],
+        "edit_type": "deterministic_fallback",
+        "fallback_applied": true
+      },
+      "final_text": "मुझे पानी चाहिए।",
+      "validated": true,
+      "score": 1.0,
+      "audio_ok": true,
+      "entity_ok": true,
+      "negation_ok": true,
+      "unsupported": [],
+      "metrics": {
+        "t_llm1": 1.339,
+        "t_llm2": 0.893,
+        "t_llm3": 12.281,
+        "t_sem": 0.0,
+        "t_tts": 0.16,
+        "t_total": 28.28,
+        "tokens_in": 1183,
+        "tokens_out": 222
+      }
+    },
+    {
+      "id": "indic_hindi_neg_milk",
+      "name": "Indic Language: Hindi NEGATED WANT + milk",
+      "llm1": "मुंबई के बारे में आपका निम्न वर्णन होगा।",
+      "llm2": "मुंबई की भविष्य से आपका निम्न वर्णन होगा।",
+      "llm3_decision": {
+        "decision": "REFINE",
+        "final_text": "मुंबई की भविष्य से आपका निम्न वर्णन होगा।",
+        "semantic_fidelity": false,
+        "intent_preserved": true,
+        "entities_preserved": true,
+        "negation_preserved": true,
+        "unsupported_information_removed": false,
+        "minimal_refinement": true,
+        "violations_removed": [],
+        "edit_type": "deterministic_fallback",
+        "fallback_applied": true
+      },
+      "final_text": "मुझे दूध नहीं चाहिए।",
+      "validated": false,
+      "score": 0.8,
+      "audio_ok": false,
+      "entity_ok": true,
+      "negation_ok": true,
+      "unsupported": [],
+      "metrics": {
+        "t_llm1": 2.036,
+        "t_llm2": 2.26,
+        "t_llm3": 14.286,
+        "t_sem": 0.0,
+        "t_tts": 0.0,
+        "t_total": 33.7,
+        "tokens_in": 1494,
+        "tokens_out": 297
+      }
+    }
+  ]
+}

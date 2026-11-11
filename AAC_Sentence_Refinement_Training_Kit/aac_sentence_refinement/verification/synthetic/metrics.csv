@@ -1,0 +1,6 @@
+method,metric,numerator,denominator,rate,ci95_low,ci95_high
+rules,exact_match,384,384,1.0,1.0,1.0
+rules,validator_pass,384,384,1.0,1.0,1.0
+rules,negation_error,0,172,0.0,0.0,0.0
+rules,added_content,0,384,0.0,0.0,0.0
+rules,raw_fallback,0,384,0.0,0.0,0.0

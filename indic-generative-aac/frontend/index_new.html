@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indic Generative AAC</title>
+  <script src="/static/all_emojis.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Nunito','ui-sans-serif','system-ui'] }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .card-btn { transition: transform .15s, box-shadow .15s; }
+    .card-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px -4px rgba(14,165,233,.25); }
+    .card-btn.selected { outline: 3px solid #0ea5e9; outline-offset: 2px; background: #e0f2fe !important; }
+    .spinner { border: 3px solid #bae6fd; border-top-color: #0ea5e9; border-radius: 50%; width: 22px; height: 22px; animation: spin .8s linear infinite; display:inline-block; vertical-align:middle; }
+    @keyframes spin { to { transform:rotate(360deg) } }
+    ::-webkit-scrollbar { height: 4px; } ::-webkit-scrollbar-thumb { background: #bae6fd; border-radius:99px; }
+    @keyframes floatUp {
+      0% { bottom: -10vh; transform: scale(0.5) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; scale: 1; }
+      70% { opacity: 1; }
+      100% { bottom: 50vh; transform: scale(1.5) rotate(45deg); opacity: 0; }
+    }
+    .flying-emoji {
+      position: fixed;
+      font-size: 3rem;
+      pointer-events: none;
+      z-index: 9999;
+      animation: floatUp ease-in forwards;
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.8) translateY(15px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .pop-in {
+      opacity: 0;
+      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    
+    /* Dark Mode Theme */
+    body.dark-mode { background: #0f172a !important; color: #f8fafc !important; }
+    body.dark-mode header { background-color: rgba(15, 23, 42, 0.95) !important; border-bottom-color: #334155 !important; }
+    body.dark-mode .bg-white, body.dark-mode #accessMenu { background-color: #1e293b !important; border-color: #334155 !important; }
+    body.dark-mode .card-btn, body.dark-mode .cat-tab, body.dark-mode input, body.dark-mode select, body.dark-mode #accessMenu button {
+      background-color: #1e293b !important;
+      color: #e2e8f0 !important;
+      border-color: #334155 !important;
+    }
+    body.dark-mode .card-btn:hover, body.dark-mode .cat-tab:hover, body.dark-mode #accessMenu button:hover {
+      background-color: #334155 !important;
+    }
+    body.dark-mode .card-btn.selected, body.dark-mode .cat-tab.ring-2 {
+      background-color: #3b82f6 !important;
+      color: white !important;
+      border-color: #60a5fa !important;
+    }
+    body.dark-mode span, body.dark-mode p, body.dark-mode h1, body.dark-mode div {
+      color: inherit;
+    }
+    body.dark-mode .text-slate-300, body.dark-mode .text-slate-400 { color: #94a3b8 !important; }
+    body.dark-mode .text-slate-700, body.dark-mode .text-sky-700, body.dark-mode .text-red-700, body.dark-mode .text-indigo-700 { color: #e2e8f0 !important; }
+    body.dark-mode .bg-red-50, body.dark-mode .bg-sky-50, body.dark-mode .bg-indigo-50 { background-color: #1e293b !important; border-color: #334155 !important; }
+    body.dark-mode .bg-indigo-600 { background-color: #4f46e5 !important; color: white !important; }
+    body.dark-mode .bg-slate-800 { background-color: #334155 !important; color: white !important; }
+  </style>
+</head>
+<body class="bg-white text-slate-900 min-h-screen" style="font-family:'Nunito',sans-serif">
+
+  <!-- ── HEADER ── -->
+  <header class="bg-white/90 backdrop-blur-sm sticky top-0 z-40 shadow-sm border-b border-sky-100">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
+      <div class="flex items-center gap-3">
+        <span class="text-4xl">🗣️</span>
+        <div>
+          <h1 id="appTitle" class="text-xl font-black text-sky-700 leading-none tracking-tight">इंडिक एएसी</h1>
+          <p id="appSubtitle" class="text-xs text-slate-400 font-semibold">बोलो अपनी बात · सहायक संचार प्रणाली</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap">
+        <select id="lang" onchange="setLanguage(this.value)" class="rounded-xl border border-sky-200 bg-sky-50 text-sky-800 font-bold px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 cursor-pointer">
+          <option value="hi" selected>🇮🇳 हिन्दी (Hindi)</option>
+          <option value="gu">🟡 ગુજરાતી (Gujarati)</option>
+          <option value="mr">🟠 मराठी (Marathi)</option>
+          <option value="en">🇬🇧 English</option>
+        </select>
+        <label class="flex items-center gap-1.5 cursor-pointer bg-orange-50 border border-orange-200 rounded-xl px-3 py-2 select-none">
+          <input type="checkbox" id="code_mix" class="accent-orange-500 w-4 h-4"/>
+          <span id="codeMixLabel" class="text-xs font-bold text-orange-600 whitespace-nowrap">Code-Mix</span>
+        </label>
+        <div class="relative">
+          <button onclick="toggleAccessMenu()" class="rounded-xl border border-slate-700 bg-slate-800 text-white font-bold px-4 py-2 text-sm hover:bg-slate-700 flex items-center gap-2">
+            ⚙️ <span id="accessBtnText">सुलभता</span>
+          </button>
+          <div id="accessMenu" class="hidden absolute right-0 top-full mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50 flex flex-col gap-4">
+            <div>
+              <span id="lblTheme" class="text-xs font-bold uppercase text-slate-400 block mb-2">थीम</span>
+              <div class="flex gap-2">
+                <button id="btnLight" onclick="setTheme('light')" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 py-2 rounded-lg font-bold text-sm">☀️ लाइट</button>
+                <button id="btnDark" onclick="setTheme('dark')" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white py-2 rounded-lg font-bold text-sm">🌙 डार्क</button>
+              </div>
+            </div>
+            <div>
+              <span id="lblColor" class="text-xs font-bold uppercase text-slate-400 block mb-2">रंग</span>
+              <div class="flex gap-2">
+                <button id="btnColor" onclick="setColorMode('color')" class="flex-1 bg-pink-50 text-pink-700 border border-pink-200 py-2 rounded-lg font-bold text-sm">🌈 रंगीन</button>
+                <button id="btnBW" onclick="setColorMode('bw')" class="flex-1 bg-slate-100 text-slate-700 border border-slate-300 py-2 rounded-lg font-bold text-sm">⬛ श्वेत-श्याम</button>
+              </div>
+            </div>
+            <div>
+              <span id="lblFontSize" class="text-xs font-bold uppercase text-slate-400 block mb-2">अक्षर आकार (1-5)</span>
+              <input type="range" min="1" max="5" value="3" id="fontScaleSlider" oninput="setFontScale(this.value)" class="w-full accent-sky-500 cursor-pointer h-2 bg-slate-200 rounded-lg appearance-none">
+              <div class="flex justify-between text-[10px] font-bold text-slate-400 mt-1">
+                <span id="lblFontMin">1 (न्यूनतम)</span>
+                <span id="lblFontDef">3 (सामान्य)</span>
+                <span id="lblFontMax">5 (अधिकतम)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 space-y-5">
+
+    <!-- ── SENTENCE BAR ── -->
+    <div class="flex gap-2">
+      <div class="bg-white flex-1 rounded-2xl shadow-sm border border-slate-200 px-5 py-4 min-h-[60px] flex flex-wrap gap-2 items-center" id="sentenceBar">
+        <span id="barPlaceholder" class="text-slate-300 font-semibold italic text-sm">वाक्य बनाने के लिए नीचे दिए गए प्रतीकों पर टैप करें…</span>
+      </div>
+      <button onclick="clearAll()" class="bg-red-50 hover:bg-red-100 text-red-600 font-bold border border-red-200 rounded-2xl px-4 py-4 flex flex-col items-center justify-center transition-all shadow-sm">
+        <span class="text-2xl leading-none">🗑️</span>
+        <span id="clearBtnText" class="text-[10px] uppercase tracking-wide mt-1">साफ़ करें</span>
+      </button>
+    </div>
+    
+    <!-- ── HMM SMART WORD RECOMMENDATION ── -->
+    <div id="recommendationContainer" class="hidden bg-white border-4 border-slate-800 mt-4 p-3 rounded-lg">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <span class="text-sm">💡</span>
+          <span id="hmmRecHeader" class="text-[11px] font-extrabold text-indigo-900 uppercase tracking-wider">स्मार्ट शब्द सिफारिशें (HMM Next-Word Recommendations)</span>
+        </div>
+        <span class="text-[10px] font-bold text-indigo-600 bg-white px-2.5 py-0.5 rounded-full border border-indigo-200">मार्कोव मॉडल (HMM)</span>
+      </div>
+      <div id="predictiveBar" class="flex gap-2 overflow-x-auto py-1 items-center min-h-[42px]"></div>
+    </div>
+
+    <!-- ── SYSTEM CONTROLS ── -->
+    <section class="mt-4 flex gap-4 items-center bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex-wrap">
+      <!-- Generation modes hidden to keep UI simple as requested -->
+      <div id="genModeLabel" class="hidden font-bold text-slate-700 text-sm mr-2">उत्पादन मोड:</div>
+      <label class="hidden flex items-center gap-2 cursor-pointer">
+        <input type="radio" name="genMode" value="single" checked class="accent-sky-500 w-4 h-4">
+        <span id="modeSingleLabel" class="text-sm font-medium text-slate-600">सिंगल LLM (तेज़)</span>
+      </label>
+      <label class="hidden flex items-center gap-2 cursor-pointer">
+        <input type="radio" name="genMode" value="dual" class="accent-sky-500 w-4 h-4">
+        <span id="modeDualLabel" class="text-sm font-medium text-slate-600">डुअल LLM (सटीक)</span>
+      </label>
+      <label class="flex items-center gap-2 cursor-pointer ml-auto">
+        <input type="checkbox" id="debugMode" class="accent-amber-500 w-4 h-4">
+        <span id="debugModeLabel" class="text-sm font-bold text-amber-600">🛠 शोध / डीबग मोड</span>
+      </label>
+    </section>
+    
+    <!-- ── RESEARCH DEBUG PANEL ── -->
+    <section id="debugPanel" class="mt-4 hidden bg-amber-50 border border-amber-200 p-4 rounded-xl text-xs font-mono text-amber-900 overflow-x-auto shadow-inner">
+      <h3 id="debugHeading" class="font-bold text-sm mb-2 uppercase tracking-wide">शोध मेट्रिक्स और लेज़र</h3>
+      <pre id="debugOutput">अभी तक कोई डेटा नहीं है...</pre>
+    </section>
+
+    <!-- ── MAGIC CONTEXT (सुझाव बॉक्स) ── -->
+    <div class="bg-white border-4 border-blue-600 p-3 rounded-2xl border  shadow-xs space-y-1.5">
+      <div class="flex items-center justify-between text-xs font-bold text-indigo-950 px-1">
+        <div class="flex items-center gap-1.5">
+          <span class="text-base">🪄</span>
+          <span id="typingHelperTitle">सुझाव संदर्भ (Smart Context & Hindi Typing)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span id="translitHint">"mera bharat mahan" ➔ "मेरा भारत महान"</span>
+          </span>
+          <button type="button" id="toggleTranslitBtn" onclick="toggleTransliteration()" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 border border-indigo-200 hover:bg-indigo-200 transition-all">
+            🔤 हिन्दी चालू
+          </button>
+        </div>
+      </div>
+      <div class="flex gap-2 items-center">
+        <div class="relative flex-1">
+          <input type="text" id="contextInput" placeholder="संदर्भ लिखें: 'mera bharat mahan' टाइप करके Space दबाएं ➔ मेरा भारत महान" class="w-full rounded-xl border border-indigo-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 font-medium text-slate-800 shadow-inner pr-14">
+          <span id="translitStatus" class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-extrabold text-indigo-500 pointer-events-none opacity-80">
+            अ / A
+          </span>
+        </div>
+        <button onclick="generateDynamicOptions()" class="bg-white border-4 border-blue-600 text-blue-700 hover:bg-blue-50 font-bold rounded-xl px-5 py-2.5 text-sm shadow-sm transition-all flex items-center gap-2 shrink-0">
+          🪄 <span id="suggestBtnText">सुझाव</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 1: INTENT ── -->
+    <section>
+      <p id="step1Title" class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-3">① आप क्या करना चाहते हैं?</p>
+      <div id="intentGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button onclick="setIntent('REQUEST','🤲')" data-intent="REQUEST"
+          class="card-btn intent-btn flex flex-col items-center gap-1.5 rounded-lg border-4 border-slate-800 bg-white py-5 font-bold text-slate-900 transition-all hover:bg-slate-100 border-orange-200 bg-orange-50 py-5 font-bold text-orange-700 shadow-sm">
+          <span class="text-4xl">🤲</span><span id="intentRequestLabel" class="text-sm font-bold">मुझे चाहिए</span>
+        </button>
+        <button onclick="setIntent('NEGATION','🚫')" data-intent="NEGATION"
+          class="card-btn intent-btn flex flex-col items-center gap-1.5 rounded-lg border-4 border-slate-800 bg-white py-5 font-bold text-slate-900 transition-all hover:bg-slate-100 border-red-200 bg-red-50 py-5 font-bold text-red-700 shadow-sm">
+          <span class="text-4xl">🚫</span><span id="intentNegationLabel" class="text-sm font-bold">नहीं चाहिए</span>
+        </button>
+        <button onclick="setIntent('STATEMENT','💬')" data-intent="STATEMENT"
+          class="card-btn intent-btn flex flex-col items-center gap-1.5 rounded-lg border-4 border-slate-800 bg-white py-5 font-bold text-slate-900 transition-all hover:bg-slate-100 border-purple-200 bg-purple-50 py-5 font-bold text-purple-700 shadow-sm">
+          <span class="text-4xl">💬</span><span id="intentStatementLabel" class="text-sm font-bold">मुझे लगता है / कहो</span>
+        </button>
+        <button onclick="setIntent('QUESTION','❓')" data-intent="QUESTION"
+          class="card-btn intent-btn flex flex-col items-center gap-1.5 rounded-lg border-4 border-slate-800 bg-white py-5 font-bold text-slate-900 transition-all hover:bg-slate-100 border-teal-200 bg-teal-50 py-5 font-bold text-teal-700 shadow-sm">
+          <span class="text-4xl">❓</span><span id="intentQuestionLabel" class="text-sm font-bold">मैं पूछ रहा हूँ</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ── STEP 2: ENTITIES ── -->
+    <section>
+      <p id="step2Title" class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-3">② प्रतीक चुनें</p>
+
+      <!-- Category tabs -->
+      <div class="flex gap-2 overflow-x-auto pb-2 mb-4" id="catTabs">
+        <button onclick="showCat('ai')" data-cat="ai" id="aiTab" class="cat-tab shrink-0 rounded-lg bg-white text-slate-900 font-bold text-xs px-4 py-2 border-4 border-slate-800 transition-all hover:bg-slate-100 transition-all hover:bg-indigo-200">🪄 HMM सुझाव</button>
+      </div>
+      <button onclick="showSearch()" data-cat="search" id="searchTabBtn" class="hidden cat-tab shrink-0 rounded-lg bg-white text-slate-900 font-bold text-xs px-4 py-2 border-4 border-slate-800 transition-all hover:bg-slate-100 transition-all hover:bg-slate-200">🔍 खोजें (5000+)</button>
+
+      <div id="searchBox" class="hidden mb-4">
+        <input type="text" id="searchInput" onkeyup="doSearch()" placeholder="5,000+ इमोजी प्रतीकों में से खोजें..." class="w-full rounded-xl border border-sky-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+      </div>
+
+      <div id="symbolGrid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 max-h-[50vh] overflow-y-auto p-2 -mx-2"></div>
+    </section>
+
+    <!-- ── ACTION ROW ── -->
+    <div class="flex gap-3">
+      <button id="genBtn" onclick="generate()"
+        class="flex-1 flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 disabled:bg-sky-300 active:scale-95 text-white font-extrabold text-lg rounded-2xl py-4 shadow-lg shadow-sky-200 transition-all">
+        <span id="genBtnIcon">✨</span>
+        <span id="genBtnText">वाक्य बनाएं और बोलें</span>
+      </button>
+      <button onclick="clearAll()"
+        class="px-5 rounded-2xl border-2 border-slate-200 bg-white text-slate-500 font-bold hover:bg-slate-50 transition-all text-lg">
+        🗑️
+      </button>
+    </div>
+
+    <!-- ── OUTPUT CARD ── -->
+    <div id="outputCard" class="hidden rounded-2xl shadow-lg border border-sky-100 overflow-hidden">
+
+      <!-- Generated text -->
+      <div class="bg-white px-6 pt-6 pb-4">
+        <p id="genSentenceHeader" class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">उत्पन्न वाक्य</p>
+        <p id="outputText" class="text-2xl font-black text-slate-800 leading-snug mb-3"></p>
+        <span id="validBadge" class="inline-flex items-center gap-1.5 text-sm font-bold rounded-full px-4 py-1.5"></span>
+      </div>
+
+      <!-- Caregiver Context & Intent Breakdown (AAC Semantic Parser & Context Repair) -->
+      <div id="caregiverSection" class="hidden bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-t border-blue-100">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="text-base">🩺</span>
+            <p id="caregiverHeader" class="text-[11px] font-extrabold text-blue-900 uppercase tracking-widest">देखभालकर्ता संदर्भ और व्याख्या (Caregiver Intent Breakdown)</p>
+          </div>
+          <span class="text-[10px] font-bold text-blue-600 bg-white px-2 py-0.5 rounded-full border border-blue-200">Semantic Context Repair</span>
+        </div>
+        
+        <div class="bg-white/90 backdrop-blur-sm p-3 rounded-xl border border-blue-100 mb-3 shadow-xs">
+          <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-1">💡 इरादा व्याख्या (Caregiver Explanation)</p>
+          <p id="caregiverExplanation" class="text-sm font-semibold text-slate-800 leading-snug"></p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+          <div class="bg-white p-2.5 rounded-xl border border-blue-100">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">🤝 संबोधन (Addressee)</span>
+            <span id="caregiverAddressee" class="font-bold text-blue-900">-</span>
+          </div>
+          <div class="bg-white p-2.5 rounded-xl border border-blue-100">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">🧠 स्थिति / भावना (User State)</span>
+            <span id="caregiverState" class="font-bold text-purple-900">-</span>
+          </div>
+          <div class="bg-white p-2.5 rounded-xl border border-blue-100">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">🎯 मुख्य इच्छा / अनुरोध (Core Request)</span>
+            <span id="caregiverRequest" class="font-bold text-emerald-900">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audio -->
+      <div id="audioSection" class="hidden bg-sky-50 px-6 py-4 border-t border-sky-100">
+        <p id="audioOutputHeader" class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">🔊 ऑडियो आउटपुट</p>
+        <audio id="audioPlayer" controls class="w-full rounded-xl"></audio>
+      </div>
+
+      <!-- MOS -->
+      <div id="mosSection" class="hidden bg-white px-6 py-4 border-t border-slate-100">
+        <p id="mosHeader" class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-3">ऑडियो की गुणवत्ता जांचें (MOS)</p>
+        <div class="grid grid-cols-5 gap-2">
+          <button onclick="submitMOS(1)" class="mos-btn flex flex-col items-center gap-1 py-3 rounded-xl border-2 border-slate-200 bg-slate-50 hover:bg-yellow-50 hover:border-yellow-300 font-bold text-slate-500 text-xs transition-all">⭐<span class="mos-l1">खराब</span></button>
+          <button onclick="submitMOS(2)" class="mos-btn flex flex-col items-center gap-1 py-3 rounded-xl border-2 border-slate-200 bg-slate-50 hover:bg-yellow-50 hover:border-yellow-300 font-bold text-slate-500 text-xs transition-all">⭐⭐<span class="mos-l2">साधारण</span></button>
+          <button onclick="submitMOS(3)" class="mos-btn flex flex-col items-center gap-1 py-3 rounded-xl border-2 border-slate-200 bg-slate-50 hover:bg-yellow-50 hover:border-yellow-300 font-bold text-slate-500 text-xs transition-all">⭐⭐⭐<span class="mos-l3">ठीक</span></button>
+          <button onclick="submitMOS(4)" class="mos-btn flex flex-col items-center gap-1 py-3 rounded-xl border-2 border-yellow-100 bg-yellow-50 hover:bg-yellow-100 font-bold text-yellow-700 text-xs transition-all">⭐⭐⭐⭐<span class="mos-l4">अच्छा</span></button>
+          <button onclick="submitMOS(5)" class="mos-btn flex flex-col items-center gap-1 py-3 rounded-xl border-2 border-green-200 bg-green-50 hover:bg-green-100 font-bold text-green-700 text-xs transition-all">⭐⭐⭐⭐⭐<span class="mos-l5">उत्कृष्ट!</span></button>
+        </div>
+        <p id="mosThanks" class="hidden text-green-600 font-bold text-sm mt-3 text-center">✅ रेटिंग सहेजी गई! धन्यवाद।</p>
+      </div>
+
+      <!-- Latency metrics -->
+      <div class="bg-slate-50 px-6 py-4 border-t border-slate-100">
+        <p id="pipelineMetricsHeader" class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-3">⚡ पाइपलाइन मेट्रिक्स</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <div class="bg-white rounded-xl border border-slate-200 p-3 text-center"><p id="mLLMLabel" class="text-[10px] text-slate-400 font-bold uppercase mb-0.5">एलएलएम</p><p id="mLLM" class="text-xl font-black text-sky-600">—</p></div>
+          <div class="bg-white rounded-xl border border-slate-200 p-3 text-center"><p id="mSemLabel" class="text-[10px] text-slate-400 font-bold uppercase mb-0.5">सिमेंटिक</p><p id="mSem" class="text-xl font-black text-purple-600">—</p></div>
+          <div class="bg-white rounded-xl border border-slate-200 p-3 text-center"><p id="mTTSLabel" class="text-[10px] text-slate-400 font-bold uppercase mb-0.5">टीटीएस</p><p id="mTTS" class="text-xl font-black text-green-600">—</p></div>
+          <div class="bg-white rounded-xl border border-slate-200 p-3 text-center"><p id="mTotalLabel" class="text-[10px] text-slate-400 font-bold uppercase mb-0.5">कुल</p><p id="mTotal" class="text-xl font-black text-orange-500">—</p></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer id="footerText" class="text-center text-xs text-slate-400 py-8">
+    इंडिक जेनेरेटिव एएसी · AI4Bharat IndicF5-TTS + Qwen 2.5 · शोध डेमो
+  </footer>
+
+<script>
+// ─── MULTILINGUAL LOCALIZATION (I18N) ────────────────────────
+const I18N = {
+  hi: {
+    appTitle: "इंडिक एएसी",
+    appSubtitle: "बोलो अपनी बात · सहायक संचार प्रणाली",
+    codeMix: "मिश्रित भाषा",
+    accessBtnText: "सुलभता",
+    lblTheme: "थीम",
+    btnLight: "☀️ लाइट",
+    btnDark: "🌙 डार्क",
+    lblColor: "रंग",
+    btnColor: "🌈 रंगीन",
+    btnBW: "⬛ श्वेत-श्याम",
+    lblFontSize: "अक्षर आकार (1-5)",
+    lblFontMin: "1 (न्यूनतम)",
+    lblFontDef: "3 (सामान्य)",
+    lblFontMax: "5 (अधिकतम)",
+    barPlaceholder: "वाक्य बनाने के लिए नीचे दिए गए प्रतीकों पर टैप करें…",
+    manualPlaceholderEmpty: "शब्द लिखें (अल्पविराम से अलग)...",
+    manualPlaceholderFilled: "शब्द लिखें और Enter दबाएं...",
+    clearBtnText: "साफ़ करें",
+    genModeLabel: "उत्पादन मोड:",
+    modeSingleLabel: "सिंगल LLM (तेज़)",
+    modeDualLabel: "डुअल LLM (सटीक)",
+    debugModeLabel: "🛠 शोध / डीबग मोड",
+    debugHeading: "शोध मेट्रिक्स और लेज़र",
+    debugPlaceholder: "अभी तक कोई डेटा नहीं है...",
+    contextPlaceholder: "संदर्भ लिखें: 'mera bharat mahan' ➔ 'मेरा भारत महान'",
+    typingHelperTitle: "सुझाव संदर्भ (स्मार्ट संदर्भ और हिन्दी टाइपिंग)",
+    translitHint: "\"mera bharat mahan\" ➔ \"मेरा भारत महान\"",
+    suggestBtnText: "सुझाव",
+    step1Title: "① आप क्या करना चाहते हैं?",
+    intentRequest: "मुझे चाहिए",
+    intentNegation: "नहीं चाहिए",
+    intentStatement: "मुझे लगता है / कहो",
+    intentQuestion: "मैं पूछ रहा हूँ",
+    step2Title: "② प्रतीक चुनें",
+    catPeople: "👨‍👩‍👧 लोग",
+    catBody: "🫁 शरीर और स्वास्थ्य",
+    catFood: "🍎 भोजन",
+    catPlaces: "🏫 स्थान",
+    catFeelings: "😊 भावनाएं",
+    catActions: "⚡ क्रियाएं",
+    catEmergency: "🆘 सहायता",
+    catAi: "🪄 AI सुझाव",
+    catSearch: "🔍 खोजें (5000+)",
+    searchPlaceholder: "5,000+ इमोजी प्रतीकों में से खोजें...",
+    searchNoMatch: "कोई प्रतीक नहीं मिला।",
+    searchPrompt: "5,000 से अधिक इमोजी खोजने के लिए ऊपर लिखें...",
+    genBtnText: "वाक्य बनाएं और बोलें",
+    genBtnGenerating: "वाक्य बना रहे हैं…",
+    genBtnDualGenerating: "वाक्य बना रहे हैं (डुअल LLM)…",
+    genSentenceHeader: "उत्पन्न वाक्य",
+    audioOutputHeader: "🔊 ऑडियो आउटपुट",
+    mosHeader: "ऑडियो की गुणवत्ता जांचें (MOS)",
+    mosPoor: "खराब",
+    mosFair: "साधारण",
+    mosOk: "ठीक",
+    mosGood: "अच्छा",
+    mosGreat: "उत्कृष्ट!",
+    mosThanks: "✅ रेटिंग सहेजी गई! धन्यवाद।",
+    pipelineMetricsHeader: "⚡ पाइपलाइन मेट्रिक्स",
+    mLLMLabel: "एलएलएम",
+    mSemLabel: "सिमेंटिक",
+    mTTSLabel: "टीटीएस",
+    mTotalLabel: "कुल",
+    selectSymbolToast: "कृपया कम से कम एक प्रतीक चुनें! 👆",
+    footerText: "इंडिक जेनेरेटिव एएसी · AI4Bharat IndicF5-TTS + Qwen 2.5 · शोध डेमो",
+    validScore: "✅ अर्थपूर्ण रूप से मान्य (स्कोर: {score})",
+    invalidScore: "⚠️ सत्यापन बेमेल — ध्वनि अवरुद्ध",
+    stageLLM1: "LLM-1 · वाक्य निर्माता",
+    stageLLM2: "LLM-2 · वाक्य शोधक",
+    stageLLM3: "LLM-3 · अंतिम सत्यापनकर्ता",
+    stageFinal: "✅ अंतिम वाक्य",
+    unsupportedRemoved: "🚫 असमर्थित शब्द हटाए गए: ",
+    safeFallback: "🛡️ शून्य-भ्रम सुरक्षित फ़ॉलबैक लागू"
+  },
+  gu: {
+    appTitle: "ઈન્ડિક એએસી",
+    appSubtitle: "તમારા મનની વાત કહો · સહાયક સંચાર પ્રણાલી",
+    codeMix: "મિશ્ર ભાષા",
+    accessBtnText: "સરળતા",
+    lblTheme: "થીમ",
+    btnLight: "☀️ લાઈટ",
+    btnDark: "🌙 ડાર્ક",
+    lblColor: "રંગ",
+    btnColor: "🌈 રંગીન",
+    btnBW: "⬛ શ્વેત-શ્યામ",
+    lblFontSize: "ફોન્ટ સાઇઝ (1-5)",
+    lblFontMin: "1 (ઓછું)",
+    lblFontDef: "3 (સામાન્ય)",
+    lblFontMax: "5 (વધુ)",
+    barPlaceholder: "વાક્ય બનાવવા માટે નીચે આપેલા પ્રતીકો પર ટેપ કરો…",
+    manualPlaceholderEmpty: "શબ્દો લખો (અલ્પવિરામ સાથે)...",
+    manualPlaceholderFilled: "શબ્દ લખો અને Enter દબાવો...",
+    clearBtnText: "સાફ કરો",
+    genModeLabel: "જનરેશન મોડ:",
+    modeSingleLabel: "સિંગલ LLM (ઝડપી)",
+    modeDualLabel: "ડ્યુઅલ LLM (ચોક્કસ)",
+    debugModeLabel: "🛠 સંશોધન / ડીબગ મોડ",
+    debugHeading: "સંશોધન મેટ્રિક્સ અને લેજર",
+    debugPlaceholder: "હજુ સુધી કોઈ ડેટા નથી...",
+    contextPlaceholder: "સંદર્ભ લખો: 'kem cho' ➔ 'કેમ છો'",
+    typingHelperTitle: "સૂચન સંદર્ભ (ગુજરાતી ફોનેટિક ટાઇપિંગ)",
+    translitHint: "\"kem cho\" ➔ \"કેમ છો\"",
+    suggestBtnText: "સૂચન",
+    step1Title: "① તમે શું કરવા માંગો છો?",
+    intentRequest: "મને જોઈએ છે",
+    intentNegation: "નથી જોઈતું",
+    intentStatement: "મને લાગે છે / કહો",
+    intentQuestion: "હું પૂછું છું",
+    step2Title: "② પ્રતીકો પસંદ કરો",
+    catPeople: "👨‍👩‍👧 લોકો",
+    catBody: "🫁 શરીર અને સ્વાસ્થ્ય",
+    catFood: "🍎 ખોરાક",
+    catPlaces: "🏫 સ્થળો",
+    catFeelings: "😊 લાગણીઓ",
+    catActions: "⚡ ક્રિયાઓ",
+    catEmergency: "🆘 મદદ",
+    catAi: "🪄 AI સૂચનો",
+    catSearch: "🔍 શોધો (5000+)",
+    searchPlaceholder: "5,000+ ઇમોજી પ્રતીકો શોધો...",
+    searchNoMatch: "કોઈ પ્રતીક મળ્યું નથી.",
+    searchPrompt: "5,000 થી વધુ ઇમોજી શોધવા ઉપર લખો...",
+    genBtnText: "વાક્ય બનાવો અને બોલો",
+    genBtnGenerating: "વાક્ય બનાવી રહ્યા છીએ…",
+    genBtnDualGenerating: "વાક્ય બનાવી રહ્યા છીએ (ડ્યુઅલ LLM)…",
+    genSentenceHeader: "બનાવેલું વાક્ય",
+    audioOutputHeader: "🔊 ઑડિઓ આઉટપુટ",
+    mosHeader: "ઑડિઓ ગુણવત્તા રેટિંગ (MOS)",
+    mosPoor: "નબળું",
+    mosFair: "ઠીકઠીક",
+    mosOk: "બરાબર",
+    mosGood: "સારું",
+    mosGreat: "ઉત્તમ!",
+    mosThanks: "✅ રેટિંગ સાચવવામાં આવ્યું! આભાર.",
+    pipelineMetricsHeader: "⚡ પાઇપલાઇન મેટ્રિક્સ",
+    mLLMLabel: "એલએલએમ",
+    mSemLabel: "સિમેન્ટિક",
+    mTTSLabel: "ટીટીએસ",
+    mTotalLabel: "કુલ",
+    selectSymbolToast: "કૃપા કરીને ઓછામાં ઓછું એક પ્રતીક પસંદ કરો! 👆",
+    footerText: "ઈન્ડિક જનરેટિવ એએસી · AI4Bharat IndicF5-TTS + Qwen 2.5 · સંશોધન ડેમો",
+    validScore: "✅ અર્થપૂર્ણ રીતે માન્ય (સ્કોર: {score})",
+    invalidScore: "⚠️ ચકાસણી મેળ ખાતી નથી — અવાજ બંધ",
+    stageLLM1: "LLM-1 · વાક્ય નિર્માતા",
+    stageLLM2: "LLM-2 · વાક્ય સુધારક",
+    stageLLM3: "LLM-3 · અંતિમ ચકાસણીકર્તા",
+    stageFinal: "✅ અંતિમ વાક્ય",
+    unsupportedRemoved: "🚫 અસમર્થિત શબ્દો દૂર કર્યા: ",
+    safeFallback: "🛡️ શૂન્ય-ભ્રમ સુરક્ષિત ફોલબેક લાગુ"
+  },
+  mr: {
+    appTitle: "इंडिक एएसी",
+    appSubtitle: "तुमच्या मनातील बोला · सहाय्यक संवाद प्रणाली",
+    codeMix: "मिश्र भाषा",
+    accessBtnText: "सुलभता",
+    lblTheme: "थीम",
+    btnLight: "☀️ लाइट",
+    btnDark: "🌙 डार्क",
+    lblColor: "रंग",
+    btnColor: "🌈 रंगीत",
+    btnBW: "⬛ कृष्ण-धवल",
+    lblFontSize: "फॉन्ट आकार (1-5)",
+    lblFontMin: "1 (कमी)",
+    lblFontDef: "3 (सामान्य)",
+    lblFontMax: "5 (जास्त)",
+    barPlaceholder: "वाक्य तयार करण्यासाठी खालील चिन्हांवर टॅप करा…",
+    manualPlaceholderEmpty: "शब्द टाइप करा (स्वल्पविरामाने वेगळे)...",
+    manualPlaceholderFilled: "शब्द टाइप करा आणि Enter दाबा...",
+    clearBtnText: "साफ करा",
+    genModeLabel: "निर्मिती मोड:",
+    modeSingleLabel: "सिंगल LLM (जलद)",
+    modeDualLabel: "ड्युअल LLM (अचूक)",
+    debugModeLabel: "🛠 संशोधन / डीबग मोड",
+    debugHeading: "संशोधन मेट्रिक्स आणि लेजर",
+    debugPlaceholder: "अद्याप कोणताही डेटा नाही...",
+    contextPlaceholder: "संदर्भ लिहा: 'kasa ahes' ➔ 'कसा आहेस'",
+    typingHelperTitle: "सुझाव संदर्भ (मराठी फोनेटिक टायपिंग)",
+    translitHint: "\"kasa ahes\" ➔ \"कसा आहेस\"",
+    suggestBtnText: "सूचना",
+    step1Title: "① तुम्हाला काय करायचे आहे?",
+    intentRequest: "मला पाहिजे",
+    intentNegation: "नको आहे",
+    intentStatement: "मला वाटते / बोला",
+    intentQuestion: "मी विचारत आहे",
+    step2Title: "② चिन्हे निवडा",
+    catPeople: "👨‍👩‍👧 लोक",
+    catBody: "🫁 शरीर आणि आरोग्य",
+    catFood: "🍎 अन्न",
+    catPlaces: "🏫 ठिकाणे",
+    catFeelings: "😊 भावना",
+    catActions: "⚡ कृती",
+    catEmergency: "🆘 मदत",
+    catAi: "🪄 AI सूचना",
+    catSearch: "🔍 शोधा (5000+)",
+    searchPlaceholder: "5,000+ इमोजी चिन्हांमधून शोधा...",
+    searchNoMatch: "कोणतेही चिन्ह आढळले नाही.",
+    searchPrompt: "5,000 पेक्षा जास्त इमोजी शोधण्यासाठी वर टाइप करा...",
+    genBtnText: "वाक्य तयार करा आणि बोला",
+    genBtnGenerating: "तयार करत आहे…",
+    genBtnDualGenerating: "तयार करत आहे (ड्युअल LLM)…",
+    genSentenceHeader: "तयार केलेले वाक्य",
+    audioOutputHeader: "🔊 ऑडिओ आउटपुट",
+    mosHeader: "ऑडिओचे मूल्यांकन करा (MOS)",
+    mosPoor: "खराब",
+    mosFair: "साधारण",
+    mosOk: "ठीक",
+    mosGood: "छान",
+    mosGreat: "उत्कृष्ट!",
+    mosThanks: "✅ गुण जतन केले! धन्यवाद.",
+    pipelineMetricsHeader: "⚡ पाइपलाइन मेट्रिक्स",
+    mLLMLabel: "एलएलएम",
+    mSemLabel: "सिमेंटिक",
+    mTTSLabel: "टीटीएस",
+    mTotalLabel: "एकूण",
+    selectSymbolToast: "कृपया किमान एक चिन्ह निवडा! 👆",
+    footerText: "इंडिक जनरेटिव्ह एएसी · AI4Bharat IndicF5-TTS + Qwen 2.5 · संशोधन डेमो",
+    validScore: "✅ अर्थपूर्णदृष्ट्या वैध (गुण: {score})",
+    invalidScore: "⚠️ पडताळणी जुळली नाही — ऑडिओ अवरोधित",
+    stageLLM1: "LLM-1 · वाक्य निर्माता",
+    stageLLM2: "LLM-2 · वाक्य सुधारक",
+    stageLLM3: "LLM-3 · अंतिम पडताळणीकर्ता",
+    stageFinal: "✅ अंतिम वाक्य",
+    unsupportedRemoved: "🚫 असंबद्ध शब्द काढून टाकले: ",
+    safeFallback: "🛡️ शून्य-भ्रम सुरक्षित फॉलबॅक लागू"
+  },
+  en: {
+    appTitle: "Indic AAC",
+    appSubtitle: "Speak Your Mind · Assistive Communication",
+    codeMix: "Code-Mix",
+    accessBtnText: "Accessibility",
+    lblTheme: "Theme",
+    btnLight: "☀️ Light",
+    btnDark: "🌙 Dark",
+    lblColor: "Color",
+    btnColor: "🌈 Color",
+    btnBW: "⬛ B&W",
+    lblFontSize: "Font Size (1-5)",
+    lblFontMin: "1 (Min)",
+    lblFontDef: "3 (Default)",
+    lblFontMax: "5 (Max)",
+    barPlaceholder: "Tap symbols below to build your sentence…",
+    manualPlaceholderEmpty: "Type words (comma-separated)...",
+    manualPlaceholderFilled: "Type word & hit Enter...",
+    clearBtnText: "Clear",
+    genModeLabel: "Generation Mode:",
+    modeSingleLabel: "Single LLM (Fast)",
+    modeDualLabel: "Dual LLM (Quality)",
+    debugModeLabel: "🛠 Research/Debug Mode",
+    debugHeading: "Research Metrics & Ledger",
+    debugPlaceholder: "No generation data yet...",
+    contextPlaceholder: "Enter context (e.g., at the park, dinner time)",
+    suggestBtnText: "Suggest",
+    step1Title: "① What do you want to do?",
+    intentRequest: "I WANT",
+    intentNegation: "DON'T WANT",
+    intentStatement: "I FEEL / SAY",
+    intentQuestion: "I'M ASKING",
+    step2Title: "② Choose symbols",
+    catPeople: "👨‍👩‍👧 People",
+    catBody: "🫁 Body & Health",
+    catFood: "🍎 Food",
+    catPlaces: "🏫 Places",
+    catFeelings: "😊 Feelings",
+    catActions: "⚡ Actions",
+    catEmergency: "🆘 Help",
+    catAi: "🪄 AI Suggestions",
+    catSearch: "🔍 Search (5000+)",
+    searchPlaceholder: "Search from 5000+ emoji symbols...",
+    searchNoMatch: "No emojis found.",
+    searchPrompt: "Type above to search over 5,000 emojis...",
+    genBtnText: "Generate & Speak",
+    genBtnGenerating: "Generating…",
+    genBtnDualGenerating: "Generating (Dual LLM)…",
+    genSentenceHeader: "Generated Sentence",
+    audioOutputHeader: "🔊 Audio Output",
+    mosHeader: "Rate This Audio (MOS)",
+    mosPoor: "Poor",
+    mosFair: "Fair",
+    mosOk: "OK",
+    mosGood: "Good",
+    mosGreat: "Great!",
+    mosThanks: "✅ Score saved! Thank you.",
+    pipelineMetricsHeader: "⚡ Pipeline Metrics",
+    mLLMLabel: "LLM",
+    mSemLabel: "Semantic",
+    mTTSLabel: "TTS",
+    mTotalLabel: "Total",
+    selectSymbolToast: "Please select at least one symbol! 👆",
+    footerText: "Indic Generative AAC · AI4Bharat IndicF5-TTS + Qwen 2.5 · Research Demo",
+    validScore: "✅ Semantically Valid (score: {score})",
+    invalidScore: "⚠️ Validation Mismatch — Blocked from Speech",
+    stageLLM1: "LLM-1 · Realizer",
+    stageLLM2: "LLM-2 · Refiner",
+    stageLLM3: "LLM-3 · Verifier & Refiner",
+    stageFinal: "✅ Final Output",
+    unsupportedRemoved: "🚫 Unsupported Removed: ",
+    safeFallback: "🛡️ Zero-Hallucination Safe Fallback Applied (Authoritative Concept Realization)"
+  }
+};
+
+// ─── MULTILINGUAL SYMBOL DATABASE ────────────────────────────
+const SYMBOLS = {
+  people: [
+    {e:'👤', k:'I',       labels:{en:'I / Me', hi:'मैं', gu:'હું', mr:'मी'}},
+    {e:'👩', k:'MOTHER',  labels:{en:'Mother', hi:'माँ', gu:'માતા', mr:'आई'}},
+    {e:'👨', k:'FATHER',  labels:{en:'Father', hi:'पिताजी', gu:'પિતાજી', mr:'बाबा'}},
+    {e:'👧', k:'SISTER',  labels:{en:'Sister', hi:'बहन', gu:'બહેન', mr:'बहीण'}},
+    {e:'👦', k:'BROTHER', labels:{en:'Brother', hi:'भाई', gu:'ભાઈ', mr:'भाऊ'}},
+    {e:'👩‍🏫', k:'TEACHER', labels:{en:'Teacher', hi:'शिक्षक', gu:'શિક્ષક', mr:'शिक्षक'}},
+    {e:'👨‍⚕️', k:'DOCTOR',  labels:{en:'Doctor', hi:'डॉक्टर', gu:'ડૉક્ટર', mr:'डॉक्टर'}},
+    {e:'👫', k:'FRIEND',  labels:{en:'Friend', hi:'दोस्त', gu:'મિત્ર', mr:'मित्र'}}
+  ],
+  body: [
+    {e:'🫁', k:'LUNGS',  labels:{en:'Lungs', hi:'फेफड़े', gu:'ફેફસાં', mr:'फुप्फुसे'}},
+    {e:'🫀', k:'HEART',  labels:{en:'Heart', hi:'दिल', gu:'હૃદય', mr:'हृदय'}},
+    {e:'🧠', k:'BRAIN',  labels:{en:'Brain', hi:'दिमाग', gu:'મગજ', mr:'मेंदू'}},
+    {e:'🦴', k:'BONE',   labels:{en:'Bone', hi:'हड्डी', gu:'હાડકું', mr:'हाड'}},
+    {e:'🦷', k:'TOOTH',  labels:{en:'Tooth', hi:'दांत', gu:'દાંત', mr:'दात'}},
+    {e:'🩸', k:'BLOOD',  labels:{en:'Blood', hi:'खून', gu:'લોહી', mr:'रक्त'}},
+    {e:'👁️', k:'EYE',    labels:{en:'Eye', hi:'आँख', gu:'આંખ', mr:'डोळा'}},
+    {e:'👂', k:'EAR',    labels:{en:'Ear', hi:'कान', gu:'કાન', mr:'कान'}},
+    {e:'👃', k:'NOSE',   labels:{en:'Nose', hi:'नाक', gu:'નાક', mr:'नाक'}},
+    {e:'👅', k:'TONGUE', labels:{en:'Tongue', hi:'जीभ', gu:'જીભ', mr:'जीभ'}}
+  ],
+  food: [
+    {e:'💧', k:'WATER', labels:{en:'Water', hi:'पानी', gu:'પાણી', mr:'पाणी'}},
+    {e:'🍎', k:'FOOD',  labels:{en:'Food', hi:'खाना', gu:'ખોરાક', mr:'जेवण'}},
+    {e:'🥛', k:'MILK',  labels:{en:'Milk', hi:'दूध', gu:'દૂધ', mr:'दूध'}},
+    {e:'🍚', k:'RICE',  labels:{en:'Rice', hi:'चावल', gu:'ભાત', mr:'भात'}},
+    {e:'🍞', k:'BREAD', labels:{en:'Bread', hi:'रोटी', gu:'રોટલી', mr:'पोळी'}},
+    {e:'🍌', k:'FRUIT', labels:{en:'Fruit', hi:'फल', gu:'ફળ', mr:'फळ'}},
+    {e:'🫖', k:'TEA',   labels:{en:'Tea', hi:'चाय', gu:'ચા', mr:'चहा'}},
+    {e:'🧃', k:'JUICE', labels:{en:'Juice', hi:'जूस', gu:'જ્યુસ', mr:'रस'}}
+  ],
+  places: [
+    {e:'🏠', k:'HOME',     labels:{en:'Home', hi:'घर', gu:'ઘર', mr:'घर'}},
+    {e:'🏫', k:'SCHOOL',   labels:{en:'School', hi:'स्कूल', gu:'શાળા', mr:'शाळा'}},
+    {e:'🏥', k:'HOSPITAL', labels:{en:'Hospital', hi:'अस्पताल', gu:'હોસ્પિટલ', mr:'रुग्णालय'}},
+    {e:'🚽', k:'TOILET',   labels:{en:'Toilet', hi:'शौचालय', gu:'શૌચાલય', mr:'शौचालय'}},
+    {e:'🛏️', k:'BEDROOM',  labels:{en:'Bedroom', hi:'कमरा', gu:'ઓરડો', mr:'खोली'}},
+    {e:'🛒', k:'MARKET',   labels:{en:'Market', hi:'बाज़ार', gu:'બજાર', mr:'बाजार'}}
+  ],
+  feelings: [
+    {e:'😊', k:'HAPPY',   labels:{en:'Happy', hi:'खुश', gu:'ખુશ', mr:'आनंदी'}},
+    {e:'😢', k:'SAD',     labels:{en:'Sad', hi:'उदास', gu:'ઉદાસ', mr:'दुःखी'}},
+    {e:'😡', k:'ANGRY',   labels:{en:'Angry', hi:'गुस्सा', gu:'ગુસ્સો', mr:'रागात'}},
+    {e:'😴', k:'TIRED',   labels:{en:'Tired', hi:'थका हुआ', gu:'થાકેલું', mr:'दमलेला'}},
+    {e:'🤒', k:'SICK',    labels:{en:'Sick', hi:'बीमार', gu:'બીમાર', mr:'आजारी'}},
+    {e:'😨', k:'SCARED',  labels:{en:'Scared', hi:'डरा हुआ', gu:'ડરેલું', mr:'घाबरलेला'}},
+    {e:'❤️', k:'LOVE',    labels:{en:'Love', hi:'प्यार', gu:'પ્રેમ', mr:'प्रेम'}},
+    {e:'😁', k:'EXCITED', labels:{en:'Excited', hi:'उत्साहित', gu:'ઉત્સાહિત', mr:'उत्साही'}}
+  ],
+  actions: [
+    {e:'🎮', k:'PLAY',  labels:{en:'Play', hi:'खेलना', gu:'રમવું', mr:'खेळणे'}},
+    {e:'📚', k:'STUDY', labels:{en:'Study', hi:'पढ़ना', gu:'ભણવું', mr:'अभ्यास'}},
+    {e:'🛌', k:'SLEEP', labels:{en:'Sleep', hi:'सोना', gu:'ઊંઘવું', mr:'झोपणे'}},
+    {e:'🍽️', k:'EAT',   labels:{en:'Eat', hi:'खाना', gu:'જમવું', mr:'खाणे'}},
+    {e:'🚿', k:'BATHE', labels:{en:'Bathe', hi:'नहाना', gu:'નાહવું', mr:'आंघोळ'}},
+    {e:'🚶', k:'GO',    labels:{en:'Go', hi:'जाना', gu:'જવું', mr:'जाणे'}},
+    {e:'📞', k:'CALL',  labels:{en:'Call', hi:'फ़ोन करना', gu:'ફોન કરવો', mr:'फोन करणे'}},
+    {e:'✏️', k:'WRITE', labels:{en:'Write', hi:'लिखना', gu:'લખવું', mr:'लिहिणे'}}
+  ],
+  emergency: [
+    {e:'🆘', k:'HELP',      labels:{en:'Help!', hi:'मदद!', gu:'મદદ!', mr:'मदत!'}},
+    {e:'🚑', k:'AMBULANCE', labels:{en:'Ambulance', hi:'एम्बुलेंस', gu:'એમ્બ્યુલન્સ', mr:'रुग्णवाहिका'}},
+    {e:'🔥', k:'FIRE',      labels:{en:'Fire!', hi:'आग!', gu:'આગ!', mr:'आग!'}},
+    {e:'💊', k:'MEDICINE',  labels:{en:'Medicine', hi:'दवा', gu:'દવા', mr:'औषध'}},
+    {e:'😖', k:'PAIN',      labels:{en:'Pain', hi:'दर्द', gu:'દુખાવો', mr:'वेदना'}}
+  ]
+};
+
+const INTENT_EMOJI = {REQUEST:'🤲',NEGATION:'🚫',STATEMENT:'💬',QUESTION:'❓'};
+
+function getSymbolLabel(sym, lang) {
+  if (sym.labels && sym.labels[lang]) return sym.labels[lang];
+  if (sym.l) return sym.l;
+  return sym.k;
+}
+
+// ─── STATE ───────────────────────────────────────────────────
+let state = { intent:'REQUEST', intentLabel:'', entities:[], language:'hi', code_mix:false };
+let currentCat = 'ai';
+const mosLog = [];
+
+// ─── LANGUAGE SWITCHING ──────────────────────────────────────
+function setLanguage(lang) {
+  state.language = lang;
+  document.documentElement.lang = lang;
+  const t = I18N[lang] || I18N.hi;
+
+  // Header & Navigation
+  document.getElementById('appTitle').textContent = t.appTitle;
+  document.getElementById('appSubtitle').textContent = t.appSubtitle;
+  document.getElementById('codeMixLabel').textContent = t.codeMix;
+  document.getElementById('accessBtnText').textContent = t.accessBtnText;
+
+  // Accessibility
+  document.getElementById('lblTheme').textContent = t.lblTheme;
+  document.getElementById('btnLight').textContent = t.btnLight;
+  document.getElementById('btnDark').textContent = t.btnDark;
+  document.getElementById('lblColor').textContent = t.lblColor;
+  document.getElementById('btnColor').textContent = t.btnColor;
+  document.getElementById('btnBW').textContent = t.btnBW;
+  document.getElementById('lblFontSize').textContent = t.lblFontSize;
+  document.getElementById('lblFontMin').textContent = t.lblFontMin;
+  document.getElementById('lblFontDef').textContent = t.lblFontDef;
+  document.getElementById('lblFontMax').textContent = t.lblFontMax;
+
+  // Sentence Bar & Clear
+  document.getElementById('barPlaceholder').textContent = t.barPlaceholder;
+  document.getElementById('clearBtnText').textContent = t.clearBtnText;
+
+  // System Controls
+  document.getElementById('genModeLabel').textContent = t.genModeLabel;
+  document.getElementById('modeSingleLabel').textContent = t.modeSingleLabel;
+  document.getElementById('modeDualLabel').textContent = t.modeDualLabel;
+  document.getElementById('debugModeLabel').textContent = t.debugModeLabel;
+  document.getElementById('debugHeading').textContent = t.debugHeading;
+  if (!document.getElementById('debugOutput').textContent.includes('{')) {
+    document.getElementById('debugOutput').textContent = t.debugPlaceholder;
+  }
+
+  // Magic Context
+  document.getElementById('contextInput').placeholder = t.contextPlaceholder;
+  document.getElementById('suggestBtnText').textContent = t.suggestBtnText;
+  if (document.getElementById('typingHelperTitle') && t.typingHelperTitle) {
+    document.getElementById('typingHelperTitle').textContent = t.typingHelperTitle;
+  }
+  if (document.getElementById('translitHint') && t.translitHint) {
+    document.getElementById('translitHint').textContent = t.translitHint;
+  }
+
+  // Step 1: Intents
+  document.getElementById('step1Title').textContent = t.step1Title;
+  document.getElementById('intentRequestLabel').textContent = t.intentRequest;
+  document.getElementById('intentNegationLabel').textContent = t.intentNegation;
+  document.getElementById('intentStatementLabel').textContent = t.intentStatement;
+  document.getElementById('intentQuestionLabel').textContent = t.intentQuestion;
+
+  // Update active intent label
+  const intentMap = {
+    REQUEST: t.intentRequest,
+    NEGATION: t.intentNegation,
+    STATEMENT: t.intentStatement,
+    QUESTION: t.intentQuestion
+  };
+  state.intentLabel = intentMap[state.intent] || t.intentRequest;
+
+  // Step 2: Entities & Category Tabs
+  document.getElementById('step2Title').textContent = t.step2Title;
+  document.querySelector('.cat-tab[data-cat="people"]').textContent = t.catPeople;
+  document.querySelector('.cat-tab[data-cat="body"]').textContent = t.catBody;
+  document.querySelector('.cat-tab[data-cat="food"]').textContent = t.catFood;
+  document.querySelector('.cat-tab[data-cat="places"]').textContent = t.catPlaces;
+  document.querySelector('.cat-tab[data-cat="feelings"]').textContent = t.catFeelings;
+  document.querySelector('.cat-tab[data-cat="actions"]').textContent = t.catActions;
+  document.querySelector('.cat-tab[data-cat="emergency"]').textContent = t.catEmergency;
+  document.querySelector('.cat-tab[data-cat="ai"]').textContent = t.catAi;
+  document.querySelector('.cat-tab[data-cat="search"]').textContent = t.catSearch;
+  document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+
+  // Action Row
+  document.getElementById('genBtnText').textContent = t.genBtnText;
+
+  // Output Card
+  document.getElementById('genSentenceHeader').textContent = t.genSentenceHeader;
+  document.getElementById('audioOutputHeader').textContent = t.audioOutputHeader;
+  document.getElementById('mosHeader').textContent = t.mosHeader;
+  document.querySelector('.mos-l1').textContent = t.mosPoor;
+  document.querySelector('.mos-l2').textContent = t.mosFair;
+  document.querySelector('.mos-l3').textContent = t.mosOk;
+  document.querySelector('.mos-l4').textContent = t.mosGood;
+  document.querySelector('.mos-l5').textContent = t.mosGreat;
+  document.getElementById('pipelineMetricsHeader').textContent = t.pipelineMetricsHeader;
+  document.getElementById('mLLMLabel').textContent = t.mLLMLabel;
+  document.getElementById('mSemLabel').textContent = t.mSemLabel;
+  document.getElementById('mTTSLabel').textContent = t.mTTSLabel;
+  document.getElementById('mTotalLabel').textContent = t.mTotalLabel;
+  document.getElementById('footerText').textContent = t.footerText;
+
+  // Update existing selected entities to match target language
+  state.entities.forEach(item => {
+    for (const cat in SYMBOLS) {
+      const match = SYMBOLS[cat].find(s => s.k === item.k);
+      if (match) {
+        item.l = getSymbolLabel(match, lang);
+        break;
+      }
+    }
+  });
+
+  // Re-render sentence bar & symbol grid
+  rebuildBar();
+  showCat(currentCat);
+}
+
+// ─── CATEGORY TABS ───────────────────────────────────────────
+function showCat(cat) {
+  currentCat = cat;
+  const lang = state.language;
+  const t = I18N[lang] || I18N.hi;
+
+  document.getElementById('searchBox').classList.add('hidden');
+  document.querySelectorAll('.cat-tab').forEach(b => {
+    const active = b.dataset.cat === cat;
+    b.classList.toggle('ring-2', active);
+    b.classList.toggle('ring-offset-1', active);
+    b.classList.toggle('ring-blue-600', active);
+  });
+
+  const grid = document.getElementById('symbolGrid');
+  grid.innerHTML = '';
+  const symbols = SYMBOLS[cat] || [];
+  symbols.forEach((s, i) => {
+    const label = getSymbolLabel(s, lang);
+    const btn = document.createElement('button');
+    btn.id = 'sym_' + s.k;
+    btn.className = 'card-btn pop-in flex flex-col items-center gap-2 rounded-lg border-4 border-slate-800 bg-white py-4 px-2 font-bold text-slate-900 text-sm transition-all hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-blue-500';
+    btn.style.animationDelay = (i * 0.03) + 's';
+    btn.innerHTML = `<span class="text-xs font-black uppercase mb-1 w-full text-center truncate text-slate-900">${label}</span><span class="text-5xl leading-none">${s.e}</span>`;
+    if (state.entities.find(x => x.k === s.k)) btn.classList.add('selected');
+    btn.onclick = () => toggleEntity(s.k, s.e, label, btn);
+    grid.appendChild(btn);
+  });
+}
+
+function showSearch() {
+  currentCat = 'search';
+  const lang = state.language;
+  const t = I18N[lang] || I18N.hi;
+
+  document.querySelectorAll('.cat-tab').forEach(b => {
+    const active = b.dataset.cat === 'search';
+    b.classList.toggle('ring-2', active);
+    b.classList.toggle('ring-offset-1', active);
+    b.classList.toggle('ring-blue-600', active);
+  });
+  document.getElementById('searchBox').classList.remove('hidden');
+  const grid = document.getElementById('symbolGrid');
+  grid.innerHTML = `<p class="text-slate-400 text-sm col-span-full text-center py-4">${t.searchPrompt}</p>`;
+  document.getElementById('searchInput').focus();
+}
+
+function doSearch() {
+  if (currentCat !== 'search') return;
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const grid = document.getElementById('symbolGrid');
+  const lang = state.language;
+  const t = I18N[lang] || I18N.hi;
+
+  grid.innerHTML = '';
+  if (!q) {
+    grid.innerHTML = `<p class="text-slate-400 text-sm col-span-full text-center py-4">${t.searchPrompt}</p>`;
+    return;
+  }
+  
+  // Search in predefined multilingual symbols first
+  const multiMatches = [];
+  for (const cat in SYMBOLS) {
+    SYMBOLS[cat].forEach(s => {
+      const curL = getSymbolLabel(s, lang).toLowerCase();
+      const enL = (s.labels && s.labels.en ? s.labels.en.toLowerCase() : '');
+      if (curL.includes(q) || enL.includes(q) || s.k.toLowerCase().includes(q)) {
+        if (!multiMatches.some(m => m.k === s.k)) multiMatches.push(s);
+      }
+    });
+  }
+
+  // Also match ALL_EMOJIS if available
+  const emojiMatches = (window.ALL_EMOJIS || []).filter(s => s.l.toLowerCase().includes(q)).slice(0, 40);
+  
+  if (multiMatches.length === 0 && emojiMatches.length === 0) {
+    grid.innerHTML = `<p class="text-slate-400 text-sm col-span-full text-center py-4">${t.searchNoMatch}</p>`;
+    return;
+  }
+
+  multiMatches.forEach((s, i) => {
+    const label = getSymbolLabel(s, lang);
+    const btn = document.createElement('button');
+    btn.id = 'sym_' + s.k;
+    btn.className = 'card-btn pop-in flex flex-col items-center gap-2 rounded-lg border-4 border-slate-800 bg-white py-4 px-2 font-bold text-slate-900 text-sm transition-all hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-blue-500';
+    btn.style.animationDelay = (i * 0.02) + 's';
+    btn.innerHTML = `<span class="text-xs font-black uppercase mb-1 w-full text-center truncate text-slate-900">${label}</span><span class="text-5xl leading-none">${s.e}</span>`;
+    if (state.entities.find(x => x.k === s.k)) btn.classList.add('selected');
+    btn.onclick = () => toggleEntity(s.k, s.e, label, btn);
+    grid.appendChild(btn);
+  });
+
+  emojiMatches.forEach((s, i) => {
+    if (multiMatches.some(m => m.k === s.k)) return;
+    const btn = document.createElement('button');
+    btn.id = 'sym_' + s.k;
+    btn.className = 'card-btn pop-in flex flex-col items-center gap-2 rounded-lg border-4 border-slate-800 bg-white py-4 px-2 font-bold text-slate-900 text-sm transition-all hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-blue-500';
+    btn.style.animationDelay = ((i + multiMatches.length) * 0.02) + 's';
+    btn.innerHTML = `<span class="text-xs font-black uppercase mb-1 w-full text-center truncate text-slate-900">${s.l}</span><span class="text-5xl leading-none">${s.e}</span>`;
+    if (state.entities.find(x => x.k === s.k)) btn.classList.add('selected');
+    btn.onclick = () => toggleEntity(s.k, s.e, s.l, btn);
+    grid.appendChild(btn);
+  });
+}
+
+// ─── MAGIC CONTEXT OPTIONS ────────────────────────────────────
+async function generateDynamicOptions() {
+  let ctx = document.getElementById('contextInput').value.trim();
+  if (/[a-zA-Z]/.test(ctx)) {
+    const converted = await requestTransliteration(ctx, state.language || 'hi');
+    if (converted && converted !== ctx) {
+      ctx = converted;
+      document.getElementById('contextInput').value = converted;
+    }
+  }
+  if (!ctx) ctx = "general morning routine";
+  const btn = document.querySelector('button[onclick="generateDynamicOptions()"]');
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = '<span class="spinner"></span>';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/suggest_options', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ context: ctx })
+    });
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    
+    // Update Symbols in AI tab
+    SYMBOLS['ai'] = data.symbols.map(s => ({e: s.emoji, l: s.label, k: s.id, labels:{[state.language]: s.label, en: s.label}}));
+    document.getElementById('aiTab').classList.remove('hidden');
+    showCat('ai');
+  } catch (err) {
+    console.error(err);
+    alert('Failed to generate options.');
+  } finally {
+    btn.innerHTML = originalHtml;
+    btn.disabled = false;
+  }
+}
+
+// ─── INTENT ──────────────────────────────────────────────────
+function setIntent(intent, emoji) {
+  if (state.intent === intent) {
+    state.intent = null;
+    state.intentLabel = '';
+  } else {
+    state.intent = intent;
+    const lang = state.language;
+    const t = I18N[lang] || I18N.hi;
+    const intentMap = {
+      REQUEST: t.intentRequest,
+      NEGATION: t.intentNegation,
+      STATEMENT: t.intentStatement,
+      QUESTION: t.intentQuestion
+    };
+    state.intentLabel = intentMap[intent] || t.intentRequest;
+  }
+
+  document.querySelectorAll('.intent-btn').forEach(b => {
+    b.classList.remove('ring-4','ring-offset-2','ring-blue-600');
+    if (state.intent && b.dataset.intent === state.intent) {
+      b.classList.add('ring-4','ring-offset-2','ring-blue-600');
+    }
+  });
+  rebuildBar();
+}
+
+// ─── ACCESSIBILITY & EFFECTS ───────────────────────────────────
+function toggleAccessMenu() {
+  const menu = document.getElementById('accessMenu');
+  menu.classList.toggle('hidden');
+}
+
+function setTheme(theme) {
+  if (theme === 'dark') {
+     document.body.classList.add('dark-mode');
+     document.body.classList.remove('bg-gradient-to-br', 'from-sky-50', 'via-white', 'to-indigo-50');
+  } else {
+     document.body.classList.remove('dark-mode');
+     document.body.classList.add('bg-gradient-to-br', 'from-sky-50', 'via-white', 'to-indigo-50');
+  }
+  document.getElementById('accessMenu').classList.add('hidden');
+}
+
+function setColorMode(mode) {
+  if (mode === 'bw') {
+    document.body.classList.add('grayscale', 'contrast-125');
+  } else {
+    document.body.classList.remove('grayscale', 'contrast-125');
+  }
+  document.getElementById('accessMenu').classList.add('hidden');
+}
+
+function setFontScale(val) {
+  const sizes = { 1: 12, 2: 14, 3: 16, 4: 20, 5: 24 };
+  document.documentElement.style.fontSize = sizes[val] + 'px';
+}
+
+function spawnFlyingEmojis(emoji) {
+  const count = Math.floor(Math.random() * 4) + 4;
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'flying-emoji';
+      el.innerText = emoji;
+      el.style.left = Math.random() * 90 + 'vw';
+      el.style.animationDuration = (Math.random() * 3 + 4) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 7000);
+    }, Math.random() * 400);
+  }
+}
+
+// ─── ENTITY TOGGLE ───────────────────────────────────────────
+function toggleEntity(k, e, l, btn) {
+  const idx = state.entities.findIndex(x => x.k === k);
+  if (idx === -1) { 
+    state.entities.push({k, e, l}); 
+    btn.classList.add('selected'); 
+    spawnFlyingEmojis(e);
+  } else { 
+    state.entities.splice(idx, 1); 
+    btn.classList.remove('selected'); 
+  }
+  rebuildBar();
+}
+
+// ─── SENTENCE BAR ────────────────────────────────────────────
+function rebuildBar() {
+  const bar = document.getElementById('sentenceBar');
+  bar.innerHTML = '';
+  const lang = state.language;
+  const t = I18N[lang] || I18N.hi;
+  
+  // Intent chip
+  if (state.intent) {
+    addChip(bar, INTENT_EMOJI[state.intent], state.intentLabel, null);
+  }
+  
+  state.entities.forEach((item, idx) => {
+    const sep = document.createElement('span');
+    sep.className = 'text-slate-300 font-black text-lg select-none';
+    sep.textContent = '+';
+    bar.appendChild(sep);
+    addChip(bar, item.e, item.l, item.k, idx);
+  });
+  
+  const sep = document.createElement('span');
+  sep.className = 'text-slate-300 font-black text-lg select-none';
+  sep.textContent = '+';
+  if (state.entities.length > 0) bar.appendChild(sep);
+
+  const manualInput = document.createElement('input');
+  manualInput.type = 'text';
+  manualInput.placeholder = state.entities.length === 0 ? t.manualPlaceholderEmpty : t.manualPlaceholderFilled;
+  manualInput.className = 'bg-transparent border-none outline-none focus:ring-0 text-slate-600 font-bold text-sm min-w-[200px] flex-1 py-1';
+  setupIndicPhoneticInput(manualInput);
+  manualInput.onkeyup = (e) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      let val = manualInput.value.replace(/,/g, '').trim();
+      if (val) {
+        let bestEmoji = '💬';
+        const lower = val.toLowerCase();
+        for (const cat in SYMBOLS) {
+          const match = SYMBOLS[cat].find(x => getSymbolLabel(x, lang).toLowerCase() === lower || (x.labels && x.labels.en && x.labels.en.toLowerCase() === lower));
+          if (match) { bestEmoji = match.e; break; }
+        }
+        const tokenKey = 'manual_' + Date.now();
+        state.entities.push({k: tokenKey, e: bestEmoji, l: val});
+        rebuildBar();
+        setTimeout(() => {
+          const inputs = document.querySelectorAll('#sentenceBar input');
+          if (inputs.length > 0) inputs[inputs.length - 1].focus();
+        }, 50);
+      }
+    }
+  };
+  bar.appendChild(manualInput);
+  updatePredictions();
+}
+
+async function updatePredictions() {
+  const pBar = document.getElementById('predictiveBar');
+  if (!pBar) return;
+  try {
+    const words = state.entities.map(e => e.l);
+    const res = await fetch('/predict_next', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        current_words: words,
+        language: state.language || 'hi',
+        intent: state.intent || 'REQUEST'
+      })
+    });
+    const data = await res.json();
+    pBar.innerHTML = '';
+    if (data.suggestions && data.suggestions.length > 0) {
+      SYMBOLS['ai'] = data.suggestions.map(s => {
+        let e = s.emoji || '✨';
+        if (e === '✨' && window.ALL_EMOJIS) {
+          const match = window.ALL_EMOJIS.find(x => x.l.toLowerCase() === s.word.toLowerCase() || x.k.toLowerCase() === s.word.toLowerCase());
+          if (match) e = match.e;
+        }
+        return {
+          e: e,
+          k: 'pred_' + s.word,
+          labels: { en: s.word, hi: s.word, gu: s.word, mr: s.word }
+        };
+      });
+      if (typeof currentCat !== 'undefined' && currentCat === 'ai') {
+        const grid = document.getElementById('symbolGrid');
+        if (grid) {
+          grid.innerHTML = '';
+          SYMBOLS['ai'].forEach((s, i) => {
+            const label = getSymbolLabel(s, state.language);
+            const btn = document.createElement('button');
+            btn.id = 'sym_' + s.k;
+            btn.className = 'card-btn pop-in flex flex-col items-center gap-2 rounded-lg border-4 border-slate-800 bg-white py-4 px-2 font-bold text-slate-900 text-sm transition-all hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-blue-500';
+            btn.style.animationDelay = `${i * 30}ms`;
+            btn.innerHTML = `<span class="text-xs font-black uppercase mb-1 w-full text-center truncate text-slate-900">${label}</span><span class="text-5xl leading-none">${s.e}</span>`;
+            btn.onclick = (ev) => toggleEntity(s.k, s.e, label, ev.currentTarget);
+            grid.appendChild(btn);
+          });
+        }
+      }
+
+      data.suggestions.forEach(s => {
+        const b = document.createElement('button');
+        b.className = 'pop-in flex items-center gap-1.5 bg-white hover:bg-indigo-50 hover:border-indigo-400 text-indigo-900 font-bold px-3 py-1.5 rounded-xl text-xs sm:text-sm transition-all border border-indigo-200 shadow-xs whitespace-nowrap active:scale-95 cursor-pointer';
+        let e = s.emoji || '✨';
+        if (e === '✨' && window.ALL_EMOJIS) {
+          const match = window.ALL_EMOJIS.find(x => x.l.toLowerCase() === s.word.toLowerCase() || x.k.toLowerCase() === s.word.toLowerCase());
+          if (match) e = match.e;
+        }
+        b.innerHTML = `<span class="text-base leading-none">${e}</span><span>${s.word}</span><span class="text-[10px] text-indigo-400 font-medium">(${Math.round((s.prob || 0.2) * 100)}%)</span>`;
+        b.onclick = () => {
+          state.entities.push({k: 'pred_' + Date.now(), e: e, l: s.word});
+          rebuildBar();
+        };
+        pBar.appendChild(b);
+      });
+    } else {
+      pBar.innerHTML = '<span class="text-xs text-indigo-400 italic py-1">कोई नया शब्द शेष नहीं</span>';
+    }
+  } catch(e) {
+    console.error("HMM Error", e);
+    pBar.innerHTML = '';
+  }
+}
+
+function addChip(bar, emoji, label, removeKey, index) {
+  const chip = document.createElement('span');
+  chip.className = 'flex items-center gap-1.5 bg-white text-slate-900 font-bold text-sm rounded-lg border-4 border-slate-800 px-3 py-1.5 transition-all cursor-move';
+  chip.innerHTML = `<span class="text-lg leading-none">${emoji}</span>${label}`;
+  if (removeKey) {
+    chip.draggable = true;
+    chip.ondragstart = (e) => {
+      e.dataTransfer.setData('text/plain', index);
+      chip.style.opacity = '0.5';
+    };
+    chip.ondragend = () => {
+      chip.style.opacity = '1';
+    };
+    chip.ondragover = (e) => {
+      e.preventDefault();
+      chip.classList.add('ring-2', 'ring-sky-500');
+    };
+    chip.ondragleave = () => {
+      chip.classList.remove('ring-2', 'ring-sky-500');
+    };
+    chip.ondrop = (e) => {
+      e.preventDefault();
+      chip.classList.remove('ring-2', 'ring-sky-500');
+      const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+      if (!isNaN(fromIdx) && fromIdx !== index) {
+        const movedItem = state.entities.splice(fromIdx, 1)[0];
+        state.entities.splice(index, 0, movedItem);
+        rebuildBar();
+      }
+    };
+
+    const x = document.createElement('button');
+    x.textContent = '×';
+    x.className = 'ml-1 text-red-600 hover:text-red-800 font-black text-xl leading-none cursor-pointer';
+    x.onclick = () => {
+      state.entities = state.entities.filter(e => e.k !== removeKey);
+      const b = document.getElementById('sym_' + removeKey);
+      if (b) b.classList.remove('selected');
+      rebuildBar();
+    };
+    chip.appendChild(x);
+  } else {
+    chip.classList.remove('cursor-move');
+  }
+  bar.appendChild(chip);
+}
+
+// ─── CLEAR ENTITIES & ALL ─────────────────────────────────────
+function clearEntities() {
+  state.entities = [];
+  document.querySelectorAll('.card-btn').forEach(b => b.classList.remove('selected'));
+  rebuildBar();
+}
+
+function clearAll() {
+  clearEntities();
+  document.getElementById('outputCard').classList.add('hidden');
+}
+
+// ─── HINDI LINGUISTIC SOV BREAKDOWN ──────────────────────────
+function getLinguisticBreakdown(text, lang, intent, entities) {
+  if (lang === 'hi') {
+    let sov = '';
+    let grammarRule = '';
+    const entStr = entities.join(', ');
+    if (text.includes('चाहिए')) {
+      if (text.includes('नहीं')) {
+        sov = '<span class="text-amber-700 font-bold">Subject (मुझे)</span> + <span class="text-blue-700 font-bold">Object (' + entStr + ')</span> + <span class="text-rose-600 font-bold">Negation (नहीं)</span> + <span class="text-emerald-700 font-bold">Verb (चाहिए)</span>';
+        grammarRule = 'Hindi Dative Negation: Experiencer takes dative "मुझे" (मैं + को), followed by object, negation particle "नहीं", and modal verb "चाहिए".';
+      } else {
+        sov = '<span class="text-amber-700 font-bold">Subject (मुझे)</span> + <span class="text-blue-700 font-bold">Object (' + entStr + ')</span> + <span class="text-emerald-700 font-bold">Verb (चाहिए)</span>';
+        grammarRule = 'Hindi Dative Construction: SOV structure where the experiencer uses "मुझे" (to me), followed by the desired entity and modal verb "चाहिए".';
+      }
+    } else if (text.includes('है') && text.includes('खेलना')) {
+      sov = '<span class="text-amber-700 font-bold">Subject (मुझे)</span> + <span class="text-blue-700 font-bold">Action (' + entStr + ')</span> + <span class="text-emerald-700 font-bold">Auxiliary (है)</span>';
+      grammarRule = 'Infinitive Desire Construction: Subject in dative "मुझे" followed by the infinitive verb form ending in "-ना" and auxiliary "है".';
+    } else if (text.includes('दर्द')) {
+      sov = '<span class="text-amber-700 font-bold">Subject (मुझे)</span> + <span class="text-blue-700 font-bold">Sensation (' + entStr + ')</span> + <span class="text-emerald-700 font-bold">Verb (हो रहा है)</span>';
+      grammarRule = 'Physical Sensation Construction: Physical experiences use dative subject "मुझे" with the progressive verb "हो रहा है" (is happening).';
+    } else if (text.includes('हूँ')) {
+      sov = '<span class="text-amber-700 font-bold">Subject (मैं)</span> + <span class="text-blue-700 font-bold">State/Emotion (' + entStr + ')</span> + <span class="text-emerald-700 font-bold">Copula (हूँ)</span>';
+      grammarRule = 'Direct Subject Emotion Construction: Subject pronoun "मैं" (I) with state/emotion adjective and first-person copula "हूँ" (am).';
+    } else if (text.includes('मिल सकता') || text.includes('सकते')) {
+      sov = '<span class="text-teal-700 font-bold">Interrogative (क्या)</span> + <span class="text-amber-700 font-bold">Subject (मुझे / आप)</span> + <span class="text-blue-700 font-bold">Object (' + entStr + ')</span> + <span class="text-emerald-700 font-bold">Potential Verb</span>';
+      grammarRule = 'Polite Interrogative Structure: Question marker "क्या" with potential modal verb ("मिल सकता है" / "सकते हैं").';
+    }
+    if (sov) {
+      return `
+        <div class="mt-3 p-3.5 bg-indigo-50/80 rounded-xl border border-indigo-200 text-xs shadow-sm">
+          <div class="font-extrabold text-indigo-900 mb-1 flex items-center gap-1.5">
+            <span>📐</span><span>Hindi Linguistic SOV Structure:</span>
+          </div>
+          <div class="font-mono text-[11px] text-indigo-950 bg-white/80 p-2 rounded-lg border border-indigo-100 mb-1.5 leading-relaxed">${sov}</div>
+          <div class="text-[11px] text-slate-700 font-medium">${grammarRule}</div>
+        </div>
+      `;
+    }
+  }
+  return '';
+}
+
+// ─── GENERATE ────────────────────────────────────────────────
+async function generate() {
+  const lang = document.getElementById('lang').value;
+  state.language = lang;
+  state.code_mix = document.getElementById('code_mix').checked;
+  const t = I18N[lang] || I18N.hi;
+
+  if (state.entities.length === 0) { 
+    showToast(t.selectSymbolToast, 'error'); 
+    return; 
+  }
+
+  const genModeEl = document.querySelector('input[name="genMode"]:checked');
+  const genMode = genModeEl ? genModeEl.value : 'single';
+
+  const btn = document.getElementById('genBtn');
+  const icon = document.getElementById('genBtnIcon');
+  const txt  = document.getElementById('genBtnText');
+  btn.disabled = true;
+  icon.innerHTML = '<span class="spinner"></span>';
+  txt.textContent = genMode === 'dual' ? t.genBtnDualGenerating : t.genBtnGenerating;
+  document.getElementById('outputCard').classList.add('hidden');
+  
+  spawnFlyingEmojis('🗣️');
+
+  try {
+    const payload = {
+      intent: state.intent || 'STATEMENT',
+      negation: state.intent === 'NEGATION',
+      entities: state.entities.map(x => x.l),
+      language: state.language,
+      code_mix: state.code_mix,
+      generation_mode: genMode
+    };
+
+    const res = await fetch('/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('Server returned ' + res.status);
+    const data = await res.json();
+
+    // Show pipeline stages
+    const outTextEl = document.getElementById('outputText');
+    let html = '';
+
+    if (data.fallback_used) {
+      html += `<div class="mb-3 p-2.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-800 text-xs font-bold flex items-center gap-2">
+        <span>${t.safeFallback}</span>
+      </div>`;
+    }
+
+    if (data.candidate_llm1) {
+      const llm1Same = data.candidate_llm1 === data.text;
+      html += `<div class="mb-1 text-[10px] font-bold text-slate-400 uppercase tracking-widest">${t.stageLLM1}</div>`;
+      html += `<div class="mb-3 text-base ${llm1Same ? 'text-slate-700 font-semibold' : 'line-through text-slate-400'}">${data.candidate_llm1}</div>`;
+    }
+
+    if (genMode === 'dual' && data.candidate_llm2 && data.candidate_llm2 !== data.candidate_llm1) {
+      const llm2Same = data.candidate_llm2 === data.text;
+      html += `<div class="mb-1 text-[10px] font-bold text-indigo-400 uppercase tracking-widest">${t.stageLLM2}</div>`;
+      html += `<div class="mb-3 text-base ${llm2Same ? 'text-slate-700 font-semibold' : 'line-through text-slate-400'}">${data.candidate_llm2}</div>`;
+    }
+
+    const l3 = data.llm3_decision || data.judge_verdict;
+    if (l3 && (l3.decision || l3.verdict)) {
+      const dec = l3.decision || l3.verdict;
+      const jColor = dec === 'PASS' ? 'text-green-700 bg-green-50 border-green-200'
+                   : dec === 'REFINE' ? 'text-blue-700 bg-blue-50 border-blue-200'
+                   : 'text-amber-700 bg-amber-50 border-amber-200';
+      const badgeIcon = dec === 'PASS' ? '⚖️ PASS' : dec === 'REFINE' ? '✨ REFINE' : '⚠️ REJECT';
+      const editInfo = l3.edit_type ? ` · Edit: ${l3.edit_type}` : '';
+      
+      html += `<div class="mb-1 text-[10px] font-bold text-purple-600 uppercase tracking-widest">${t.stageLLM3}</div>`;
+      html += `<div class="mb-2 inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-lg border ${jColor}">${badgeIcon}${editInfo}</div>`;
+      
+      const viols = l3.violations_removed || l3.violations;
+      if (viols && viols.length > 0) {
+        html += `<div class="mb-2 text-xs text-red-500 font-medium">${t.unsupportedRemoved}${viols.join(', ')}</div>`;
+      }
+    }
+
+    const lingBreakdown = getLinguisticBreakdown(data.text, state.language, state.intent, state.entities.map(x => x.l));
+    html += `<div class="mt-2 border-t border-slate-200 pt-3">
+      <div class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1">${t.stageFinal}</div>
+      <div class="text-slate-800 font-bold text-xl leading-snug">${data.text}</div>
+      ${lingBreakdown}
+    </div>`;
+
+    outTextEl.innerHTML = html;
+
+    const badge = document.getElementById('validBadge');
+    if (data.validated) {
+      badge.className = 'inline-flex items-center gap-1.5 text-sm font-bold rounded-full px-4 py-1.5 bg-green-100 text-green-700';
+      badge.textContent = t.validScore.replace('{score}', data.semantic_score || 1.0);
+    } else {
+      badge.className = 'inline-flex items-center gap-1.5 text-sm font-bold rounded-full px-4 py-1.5 bg-amber-100 text-amber-700';
+      badge.textContent = t.invalidScore;
+    }
+
+    // Caregiver Context & Semantic Parsing breakdown
+    const cg = data.caregiver_context;
+    const cgSec = document.getElementById('caregiverSection');
+    if (cg && (cg.caregiver_explanation || cg.addressee || cg.user_state || cg.core_request)) {
+      document.getElementById('caregiverExplanation').textContent = cg.caregiver_explanation || 'No specific explanation provided.';
+      document.getElementById('caregiverAddressee').textContent   = cg.addressee || 'सामान्य / कोई नहीं (None)';
+      document.getElementById('caregiverState').textContent       = cg.user_state || 'सामान्य / अनुल्लेखित (Neutral)';
+      document.getElementById('caregiverRequest').textContent     = cg.core_request || 'कोई नहीं (None)';
+      cgSec.classList.remove('hidden');
+    } else {
+      cgSec.classList.add('hidden');
+    }
+
+    const audioSec = document.getElementById('audioSection');
+    const mosSec   = document.getElementById('mosSection');
+    if (data.audio_b64) {
+      const player = document.getElementById('audioPlayer');
+      player.src = 'data:audio/wav;base64,' + data.audio_b64;
+      audioSec.classList.remove('hidden');
+      mosSec.classList.remove('hidden');
+      document.getElementById('mosThanks').classList.add('hidden');
+      document.querySelectorAll('.mos-btn').forEach(b => b.classList.remove('bg-yellow-100','border-yellow-400'));
+      
+      // When speech synthesis playback ends, ensure entities remain cleared for next input
+      player.onended = () => { clearEntities(); };
+      player.play().catch(()=>{});
+    } else {
+      audioSec.classList.add('hidden');
+      mosSec.classList.add('hidden');
+    }
+
+    // Speech synthesis complete: immediately clear selected entities from sentence bar & card grid
+    clearEntities();
+
+    const m = data.metrics || {};
+    const tLLM = (m.t_llm1 || 0) + (m.t_llm2 || 0) + (m.t_llm3 || 0) || m.t_llm || 0;
+    document.getElementById('mLLM').textContent   = (tLLM).toFixed(2) + 's';
+    document.getElementById('mSem').textContent   = (m.t_sem || 0).toFixed(2) + 's';
+    document.getElementById('mTTS').textContent   = (m.t_tts || 0).toFixed(2) + 's';
+    document.getElementById('mTotal').textContent = (m.t_total || 0).toFixed(2) + 's';
+
+    // Update debug output
+    document.getElementById('debugOutput').textContent = JSON.stringify({
+      request: payload,
+      response: {
+        text: data.text,
+        validated: data.validated,
+        semantic_score: data.semantic_score,
+        metrics: data.metrics,
+        llm3_decision: data.llm3_decision
+      }
+    }, null, 2);
+
+    document.getElementById('outputCard').classList.remove('hidden');
+    document.getElementById('outputCard').scrollIntoView({behavior:'smooth', block:'nearest'});
+
+  } catch(err) {
+    showToast('Error: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    icon.textContent = '✨';
+    txt.textContent = t.genBtnText;
+  }
+}
+
+// ─── MOS ─────────────────────────────────────────────────────
+function submitMOS(score) {
+  mosLog.push({score, ts: new Date().toISOString(), lang: state.language});
+  document.querySelectorAll('.mos-btn').forEach((b, i) => {
+    b.classList.toggle('bg-yellow-100', i < score);
+    b.classList.toggle('border-yellow-400', i < score);
+  });
+  const t = I18N[state.language] || I18N.hi;
+  document.getElementById('mosThanks').textContent = t.mosThanks;
+  document.getElementById('mosThanks').classList.remove('hidden');
+}
+
+// ─── TOAST ───────────────────────────────────────────────────
+function showToast(msg, type='info') {
+  const t = document.createElement('div');
+  const cls = type === 'error' ? 'bg-red-500 text-white' : 'bg-sky-600 text-white';
+  t.className = `fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-2xl shadow-xl font-bold text-sm ${cls} transition-all`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 2800);
+}
+
+// ─── DEBUG TOGGLE ─────────────────────────────────────────────
+document.getElementById('debugMode').addEventListener('change', (e) => {
+  document.getElementById('debugPanel').classList.toggle('hidden', !e.target.checked);
+});
+
+// ─── INDIC PHONETIC TYPING ENGINE ────────────────────────────
+let translitEnabled = true;
+const translitCache = {};
+
+const OFFLINE_PHONETIC = {
+  hi: {
+    "mera": "मेरा", "meri": "मेरी", "mere": "मेरे",
+    "bharat": "भारत", "mahan": "महान",
+    "khana": "खाना", "pani": "पानी", "dost": "दोस्त",
+    "chahiye": "चाहिए", "mujhe": "मुझे", "hum": "हम", "main": "मैं",
+    "namaste": "नमस्ते", "aap": "आप", "kaise": "कैसे",
+    "ho": "हो", "hai": "है", "hain": "हैं", "kripya": "कृपया",
+    "madad": "मदद", "ghar": "घर", "school": "स्कूल",
+    "doctor": "डॉक्टर", "maa": "माँ", "papa": "पापा",
+    "bhookh": "भूख", "dard": "दर्द", "thaka": "थका",
+    "kya": "क्या", "kyun": "क्यों", "kab": "कब", "kahan": "कहाँ",
+    "achha": "अच्छा", "theek": "ठीक", "dhanyawad": "धन्यवाद"
+  },
+  gu: {
+    "kem": "કેમ", "cho": "છો", "tame": "તમે", "hu": "હું",
+    "mane": "મને", "pani": "પાણી", "khavanu": "ખાવાનું", "madad": "મદદ",
+    "bharat": "ભારત", "mahan": "મહાન", "maro": "મારો", "mari": "મારી"
+  },
+  mr: {
+    "kasa": "कसा", "ahes": "आहेस", "tu": "तू", "mala": "मला",
+    "pani": "पाणी", "jevan": "जेवण", "madat": "मदत",
+    "bharat": "भारत", "mahan": "महान", "majha": "माझा", "majhi": "माझी"
+  }
+};
+
+function toggleTransliteration() {
+  translitEnabled = !translitEnabled;
+  const btn = document.getElementById('toggleTranslitBtn');
+  const badge = document.getElementById('translitStatus');
+  if (translitEnabled) {
+    if (btn) {
+      btn.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 border border-indigo-200 hover:bg-indigo-200 transition-all";
+      btn.innerText = "🔤 हिन्दी चालू";
+    }
+    if (badge) badge.innerText = "अ / A";
+  } else {
+    if (btn) {
+      btn.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200 transition-all";
+      btn.innerText = "🔤 English Only";
+    }
+    if (badge) badge.innerText = "EN";
+  }
+}
+
+async function requestTransliteration(text, lang = 'hi') {
+  if (!text || !/[a-zA-Z]/.test(text)) return text;
+  const clean = text.trim();
+  const lower = clean.toLowerCase();
+
+  // Instant offline dictionary check for single word
+  if (OFFLINE_PHONETIC[lang] && OFFLINE_PHONETIC[lang][lower]) {
+    return OFFLINE_PHONETIC[lang][lower];
+  }
+
+  const cacheKey = `${lang}:${lower}`;
+  if (translitCache[cacheKey]) return translitCache[cacheKey];
+
+  try {
+    const res = await fetch('/api/transliterate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: clean, language: lang })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.transliterated) {
+        translitCache[cacheKey] = data.transliterated;
+        return data.transliterated;
+      }
+    }
+  } catch (err) {
+    console.warn("[Transliterate] Network failed:", err);
+  }
+  return text;
+}
+
+function setupIndicPhoneticInput(inputEl) {
+  if (!inputEl) return;
+  let debounceTimer = null;
+
+  // 1. Instant word transliteration on Space, Enter, or Punctuation
+  inputEl.addEventListener('keydown', async (e) => {
+    if (!translitEnabled) return;
+    const isTrigger = (e.key === ' ' || e.code === 'Space' || e.key === 'Enter' || e.key === ',' || e.key === '.' || e.key === '?' || e.key === '!');
+    if (!isTrigger) return;
+
+    const val = inputEl.value;
+    const cursorPos = inputEl.selectionStart;
+    const textBefore = val.slice(0, cursorPos);
+    const textAfter = val.slice(cursorPos);
+
+    // Grab the English word immediately preceding the cursor
+    const match = textBefore.match(/([a-zA-Z]+)$/);
+    if (!match) return;
+
+    const rawWord = match[1];
+    const wordStart = cursorPos - rawWord.length;
+
+    e.preventDefault();
+
+    const separator = (e.key === 'Enter') ? '' : e.key;
+    const lang = state.language || 'hi';
+    const transliterated = await requestTransliteration(rawWord, lang);
+
+    const newVal = val.slice(0, wordStart) + transliterated + separator + textAfter;
+    inputEl.value = newVal;
+
+    const newCursor = wordStart + transliterated.length + separator.length;
+    inputEl.setSelectionRange(newCursor, newCursor);
+
+    inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+
+  // 2. Debounced whole-sentence transliteration (for paste or paused typing)
+  inputEl.addEventListener('input', (e) => {
+    if (!translitEnabled) return;
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(async () => {
+      const val = inputEl.value;
+      if (/[a-zA-Z]{2,}/.test(val)) {
+        const lang = state.language || 'hi';
+        const converted = await requestTransliteration(val, lang);
+        if (converted && converted !== val) {
+          inputEl.value = converted;
+        }
+      }
+    }, 450);
+  });
+
+  // 3. On blur, convert any leftover English characters
+  inputEl.addEventListener('blur', async () => {
+    if (!translitEnabled) return;
+    const val = inputEl.value;
+    if (/[a-zA-Z]/.test(val)) {
+      const lang = state.language || 'hi';
+      const converted = await requestTransliteration(val, lang);
+      if (converted && converted !== val) {
+        inputEl.value = converted;
+      }
+    }
+  });
+}
+
+// ─── INITIAL BOOT ────────────────────────────────────────────
+setupIndicPhoneticInput(document.getElementById('contextInput'));
+setupIndicPhoneticInput(document.getElementById('searchInput'));
+setLanguage('hi');
+setIntent('REQUEST', '🤲');
+</script>
+</body>
+</html>

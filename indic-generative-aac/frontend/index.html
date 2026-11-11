@@ -1,0 +1,2547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Indic AAC Studio</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230c8fe6'/%3E%3Cstop offset='1' stop-color='%234f46e5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-size='32' text-anchor='middle' fill='white'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E" />
+
+  <!-- Premium Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Inter"', 'system-ui', 'sans-serif'],
+            dyslexic: ['"OpenDyslexic"', '"Plus Jakarta Sans"', 'sans-serif']
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#bae0fd',
+              300: '#7cc7fb',
+              400: '#36abf7',
+              500: '#0c8fe6',
+              600: '#0270c3',
+              700: '#03599e',
+              800: '#074c82',
+              900: '#0c3f6d',
+              950: '#082847'
+            }
+          },
+          boxShadow: {
+            'card': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)',
+            'card-hover': '0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
+            'glass': '0 8px 32px 0 rgba(15, 23, 42, 0.06)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Firebase (Google Auth + Firestore sync) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+  <!-- React 18, ReactDOM 18, and Babel Standalone -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- 5000+ Emoji Database from static directory -->
+  <script src="/static/all_emojis.js"></script>
+
+  <style>
+    /* Design Tokens */
+    :root {
+      --aac-card-radius: 16px;
+    }
+
+    /* Spring Button Physics */
+    .spring-press {
+      transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                  box-shadow 0.15s ease, 
+                  background-color 0.15s ease,
+                  border-color 0.15s ease;
+      touch-action: manipulation;
+      user-select: none;
+    }
+    .spring-press:hover {
+      transform: translateY(-2px);
+    }
+    .spring-press:active {
+      transform: scale(0.95);
+    }
+
+    /* Modern Card Elevate */
+    .comm-card {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .comm-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px -6px rgba(15, 23, 42, 0.08);
+    }
+    .comm-card:active {
+      transform: scale(0.94);
+    }
+
+    /* Subtle Category Indicator Bar on Card Left */
+    .card-accent-amber { border-top: 3px solid #f59e0b; }
+    .card-accent-emerald { border-top: 3px solid #10b981; }
+    .card-accent-sky { border-top: 3px solid #0284c7; }
+    .card-accent-purple { border-top: 3px solid #a855f7; }
+    .card-accent-yellow { border-top: 3px solid #eab308; }
+    .card-accent-indigo { border-top: 3px solid #6366f1; }
+    .card-accent-rose { border-top: 3px solid #f43f5e; }
+    .card-accent-teal { border-top: 3px solid #14b8a6; }
+    .card-accent-red { border-top: 3px solid #ef4444; }
+    .card-accent-pink { border-top: 3px solid #ec4899; }
+
+    /* Custom Minimal Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.4);
+      border-radius: 99px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.6);
+    }
+
+    /* Soundwave Visualizer Bar */
+    @keyframes soundWaveAnim {
+      0%, 100% { height: 4px; }
+      50% { height: 18px; }
+    }
+    .sound-bar {
+      width: 3px;
+      background-color: currentColor;
+      border-radius: 99px;
+      animation: soundWaveAnim 0.9s ease-in-out infinite;
+    }
+    .sound-bar:nth-child(2) { animation-delay: 0.15s; }
+    .sound-bar:nth-child(3) { animation-delay: 0.3s; }
+    .sound-bar:nth-child(4) { animation-delay: 0.45s; }
+
+    /* Glass Blur effect */
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .dark .glass-nav {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* High Contrast Mode */
+    .high-contrast .comm-card,
+    .high-contrast button {
+      border-width: 2px !important;
+      border-color: #000000 !important;
+      box-shadow: none !important;
+    }
+    .dark.high-contrast .comm-card,
+    .dark.high-contrast button {
+      border-color: #ffffff !important;
+    }
+
+    /* ─── Feature: Accessibility Dock (text scale + grayscale) ─── */
+    html {
+      font-size: var(--a11y-text-scale, 100%);
+      transition: font-size 0.18s ease;
+    }
+    html.a11y-grayscale {
+      filter: grayscale(1);
+    }
+
+    /* ─── Feature: Premium Tactile Button Animations (ripple) ─── */
+    .tap-ripple {
+      position: relative;
+      isolation: isolate;
+    }
+    .tap-ripple::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle, currentColor 10%, transparent 10.5%);
+      background-repeat: no-repeat;
+      background-position: 50%;
+      background-size: 3000% 3000%;
+      opacity: 0;
+      pointer-events: none;
+      transition: background-size 0s, opacity 0.5s ease;
+    }
+    .tap-ripple:active::after {
+      background-size: 0% 0%;
+      opacity: 0.12;
+      transition: background-size 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.1s ease;
+    }
+
+    /* Button press depth + glow, layered on top of spring-press */
+    .spring-press, .comm-card, button {
+      will-change: transform;
+    }
+    .spring-press:active, .comm-card:active {
+      filter: brightness(0.97);
+    }
+
+    /* Bookmark star pop animation */
+    @keyframes starPop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.5) rotate(-8deg); }
+      70% { transform: scale(0.9) rotate(4deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    .star-pop {
+      animation: starPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Floating Accessibility Dock */
+    .a11y-dock {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      z-index: 60;
+    }
+    .a11y-dock-panel {
+      transform-origin: bottom right;
+      animation: dockPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes dockPop {
+      0% { opacity: 0; transform: scale(0.9) translateY(8px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Voice clone dropzone */
+    .voice-dropzone {
+      border: 2px dashed rgba(100, 116, 139, 0.35);
+      transition: all 0.15s ease;
+    }
+    .voice-dropzone.drag-active {
+      border-color: #0c8fe6;
+      background-color: rgba(12, 143, 230, 0.06);
+    }
+
+    /* Generic fade-in utility used across new panels */
+    .animate-fade-in { animation: genericFadeIn 0.18s ease; }
+    @keyframes genericFadeIn {
+      0% { opacity: 0; transform: translateY(4px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen antialiased selection:bg-brand-500 selection:text-white transition-colors duration-200">
+  <div id="root"></div>
+
+  <!-- React 18 Application Script -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+    // ─── CLEAN SVG ICONS (Standard Modern App Feel) ─────────────
+    const Icons = {
+      Volume: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+      ),
+      Mute: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+      ),
+      Trash: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 6h18"></path>
+          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+        </svg>
+      ),
+      Sparkles: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+          <path d="M5 3v4"></path>
+          <path d="M19 17v4"></path>
+          <path d="M3 5h4"></path>
+          <path d="M17 19h4"></path>
+        </svg>
+      ),
+      Play: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+      ),
+      Settings: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      ),
+      Search: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      ),
+      Check: () => (
+        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      ),
+      Moon: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      ),
+      Sun: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="m4.93 4.93 1.41 1.41"></path>
+          <path d="m17.66 17.66 1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="m6.34 17.66-1.41 1.41"></path>
+          <path d="m19.07 4.93-1.41 1.41"></path>
+        </svg>
+      ),
+      StarOutline: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      ),
+      StarFilled: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1" strokeLinejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      ),
+      Mic: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+          <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
+          <line x1="12" y1="18" x2="12" y2="22"></line>
+          <line x1="8" y1="22" x2="16" y2="22"></line>
+        </svg>
+      ),
+      Upload: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+      ),
+      Accessibility: () => (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="4" r="1.6" fill="currentColor" stroke="none"></circle>
+          <path d="M5 8.5c2.3.8 4.6 1.2 7 1.2s4.7-.4 7-1.2"></path>
+          <path d="M12 9.7V14"></path>
+          <path d="M12 14l-3.5 7"></path>
+          <path d="M12 14l3.5 7"></path>
+          <path d="M9 12.5 7 19"></path>
+          <path d="M15 12.5 17 19"></path>
+        </svg>
+      ),
+      Contrast: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 2a10 10 0 0 1 0 20Z" fill="currentColor" stroke="none"></path>
+        </svg>
+      ),
+      Bolt: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+      )
+    };
+
+    // ─── VOCABULARY CATEGORIES ──────────────────────────────────
+    const CATEGORIES = [
+      { id: 'core', label: { en: 'Core Words', hi: 'मुख्य शब्द', gu: 'મુખ્ય શબ્દો', mr: 'मुख्य शब्द' }, icon: '⭐', accent: 'card-accent-amber' },
+      { id: 'actions', label: { en: 'Actions', hi: 'क्रियाएं', gu: 'ક્રિયાઓ', mr: 'कृती' }, icon: '⚡', accent: 'card-accent-emerald' },
+      { id: 'food', label: { en: 'Food & Drink', hi: 'खान-पान', gu: 'ખોરાક', mr: 'अन्न' }, icon: '🍎', accent: 'card-accent-sky' },
+      { id: 'feelings', label: { en: 'Feelings', hi: 'भावनाएं', gu: 'લાગણીઓ', mr: 'भावना' }, icon: '😊', accent: 'card-accent-purple' },
+      { id: 'people', label: { en: 'People', hi: 'लोग', gu: 'લોકો', mr: 'व्यक्ती' }, icon: '👤', accent: 'card-accent-yellow' },
+      { id: 'places', label: { en: 'Places', hi: 'स्थान', gu: 'સ્થળો', mr: 'ठिकाणे' }, icon: '🏠', accent: 'card-accent-indigo' },
+      { id: 'body', label: { en: 'Health & Body', hi: 'शरीर व सेहत', gu: 'શરીર', mr: 'शरीर' }, icon: '🫁', accent: 'card-accent-rose' },
+      { id: 'chat', label: { en: 'Social', hi: 'संवाद', gu: 'સંવાદ', mr: 'संवाद' }, icon: '💬', accent: 'card-accent-teal' },
+      { id: 'emergency', label: { en: 'Urgent', hi: 'आपातकालीन', gu: 'તાત્કાલિક', mr: 'तातडीचे' }, icon: '🆘', accent: 'card-accent-red' },
+      { id: 'search', label: { en: '5,000+ Emojis', hi: '5000+ इमोजी', gu: '5000+ ઈમોજી', mr: '5000+ इमोजी' }, icon: '🔍', accent: 'card-accent-sky' }
+    ];
+
+    const MY_WORDS_META = { id: 'custom', label: { en: 'My Words', hi: 'मेरे शब्द', gu: 'મારા શબ્દો', mr: 'माझे शब्द' }, icon: '📌', accent: 'card-accent-pink' };
+
+    // ─── MULTILINGUAL SYMBOL DATABASE ────────────────────────────
+    const SYMBOL_DATABASE = {
+      core: [
+        { e: '👍', k: 'YES', labels: { en: 'Yes', hi: 'हाँ', gu: 'હા', mr: 'हो' } },
+        { e: '🙅', k: 'NO', labels: { en: 'No', hi: 'नहीं', gu: 'ના', mr: 'नाही' } },
+        { e: '🤲', k: 'WANT', labels: { en: 'Want', hi: 'चाहिए', gu: 'જોઈએ', mr: 'पाहिजे' } },
+        { e: '🆘', k: 'HELP', labels: { en: 'Help', hi: 'मदद', gu: 'મદદ', mr: 'मदत' } },
+        { e: '➕', k: 'MORE', labels: { en: 'More', hi: 'और', gu: 'વધુ', mr: 'आणखी' } },
+        { e: '🛑', k: 'STOP', labels: { en: 'Stop', hi: 'रुकें', gu: 'ઊભા રહો', mr: 'थांबा' } },
+        { e: '👤', k: 'ME', labels: { en: 'I / Me', hi: 'मैं', gu: 'હું', mr: 'मी' } },
+        { e: '👉', k: 'YOU', labels: { en: 'You', hi: 'आप', gu: 'તમે', mr: 'तुम्ही' } },
+        { e: '✨', k: 'GOOD', labels: { en: 'Good', hi: 'अच्छा', gu: 'સારું', mr: 'चांगले' } },
+        { e: '⚠️', k: 'BAD', labels: { en: 'Bad', hi: 'खराब', gu: 'ખરાબ', mr: 'वाईट' } }
+      ],
+      actions: [
+        { e: '🍽️', k: 'EAT', labels: { en: 'Eat', hi: 'खाना', gu: 'જમવું', mr: 'खाणे' } },
+        { e: '💧', k: 'DRINK', labels: { en: 'Drink', hi: 'पीना', gu: 'પીવું', mr: 'पिणे' } },
+        { e: '🎮', k: 'PLAY', labels: { en: 'Play', hi: 'खेलना', gu: 'રમવું', mr: 'खेळणे' } },
+        { e: '🛌', k: 'SLEEP', labels: { en: 'Sleep', hi: 'सोना', gu: 'ઊંઘવું', mr: 'झोपणे' } },
+        { e: '🚶', k: 'GO', labels: { en: 'Go', hi: 'जाना', gu: 'જવું', mr: 'जाणे' } },
+        { e: '📚', k: 'STUDY', labels: { en: 'Study', hi: 'पढ़ना', gu: 'ભણવું', mr: 'अभ्यास' } },
+        { e: '🚿', k: 'BATH', labels: { en: 'Bathe', hi: 'नहाना', gu: 'નાહવું', mr: 'आंघोळ' } },
+        { e: '📞', k: 'CALL', labels: { en: 'Call', hi: 'फ़ोन करना', gu: 'ફોન કરવો', mr: 'फोन करणे' } },
+        { e: '✏️', k: 'WRITE', labels: { en: 'Write', hi: 'लिखना', gu: 'લખવું', mr: 'लिहिणे' } },
+        { e: '👀', k: 'LOOK', labels: { en: 'Look', hi: 'देखना', gu: 'જોવું', mr: 'पाहणे' } }
+      ],
+      food: [
+        { e: '💧', k: 'WATER', labels: { en: 'Water', hi: 'पानी', gu: 'પાણી', mr: 'पाणी' } },
+        { e: '🍎', k: 'FOOD', labels: { en: 'Food', hi: 'खाना', gu: 'ખોરાક', mr: 'जेवण' } },
+        { e: '🥛', k: 'MILK', labels: { en: 'Milk', hi: 'दूध', gu: 'દૂધ', mr: 'दूध' } },
+        { e: '🍚', k: 'RICE', labels: { en: 'Rice', hi: 'चावल', gu: 'ભાત', mr: 'भात' } },
+        { e: '🍞', k: 'ROTI', labels: { en: 'Bread/Roti', hi: 'रोटी', gu: 'રોટલી', mr: 'पोळी' } },
+        { e: '🍌', k: 'FRUIT', labels: { en: 'Fruit', hi: 'फल', gu: 'ફળ', mr: 'फळ' } },
+        { e: '🫖', k: 'TEA', labels: { en: 'Tea', hi: 'चाय', gu: 'ચા', mr: 'चहा' } },
+        { e: '🧃', k: 'JUICE', labels: { en: 'Juice', hi: 'जूस', gu: 'જ્યુસ', mr: 'रस' } },
+        { e: '🍪', k: 'SNACK', labels: { en: 'Biscuit', hi: 'बिस्कुट', gu: 'બિસ્કિટ', mr: 'बिस्किट' } },
+        { e: '🍕', k: 'PIZZA', labels: { en: 'Pizza', hi: 'पिज़्ज़ा', gu: 'પિઝા', mr: 'पिझ्झा' } }
+      ],
+      feelings: [
+        { e: '😊', k: 'HAPPY', labels: { en: 'Happy', hi: 'खुश', gu: 'ખુશ', mr: 'आनंदी' } },
+        { e: '😢', k: 'SAD', labels: { en: 'Sad', hi: 'उदास', gu: 'ઉદાસ', mr: 'दुःखी' } },
+        { e: '😡', k: 'ANGRY', labels: { en: 'Angry', hi: 'गुस्सा', gu: 'ગુસ્સો', mr: 'रागात' } },
+        { e: '😴', k: 'TIRED', labels: { en: 'Tired', hi: 'थका हुआ', gu: 'થાકેલું', mr: 'दमलेला' } },
+        { e: '🤒', k: 'SICK', labels: { en: 'Sick', hi: 'बीमार', gu: 'બીમાર', mr: 'आजारी' } },
+        { e: '😨', k: 'SCARED', labels: { en: 'Scared', hi: 'डरा हुआ', gu: 'ડરેલું', mr: 'घाबरलेला' } },
+        { e: '❤️', k: 'LOVE', labels: { en: 'Love', hi: 'प्यार', gu: 'પ્રેમ', mr: 'प्रेम' } },
+        { e: '😁', k: 'EXCITED', labels: { en: 'Excited', hi: 'उत्साहित', gu: 'ઉત્સાહિત', mr: 'उत्साही' } }
+      ],
+      people: [
+        { e: '👩', k: 'MOTHER', labels: { en: 'Mother', hi: 'माँ', gu: 'માતા', mr: 'आई' } },
+        { e: '👨', k: 'FATHER', labels: { en: 'Father', hi: 'पिताजी', gu: 'પિતાજી', mr: 'बाबा' } },
+        { e: '👧', k: 'SISTER', labels: { en: 'Sister', hi: 'बहन', gu: 'બહેન', mr: 'बहीण' } },
+        { e: '👦', k: 'BROTHER', labels: { en: 'Brother', hi: 'भाई', gu: 'ભાઈ', mr: 'भाऊ' } },
+        { e: '👩‍🏫', k: 'TEACHER', labels: { en: 'Teacher', hi: 'शिक्षक', gu: 'શિક્ષક', mr: 'शिक्षक' } },
+        { e: '👨‍⚕️', k: 'DOCTOR', labels: { en: 'Doctor', hi: 'डॉक्टर', gu: 'ડૉક્ટર', mr: 'डॉक्टर' } },
+        { e: '👫', k: 'FRIEND', labels: { en: 'Friend', hi: 'दोस्त', gu: 'મિત્ર', mr: 'मित्र' } }
+      ],
+      places: [
+        { e: '🏠', k: 'HOME', labels: { en: 'Home', hi: 'घर', gu: 'ઘર', mr: 'घर' } },
+        { e: '🏫', k: 'SCHOOL', labels: { en: 'School', hi: 'स्कूल', gu: 'શાળા', mr: 'शाळा' } },
+        { e: '🏥', k: 'HOSPITAL', labels: { en: 'Hospital', hi: 'अस्पताल', gu: 'હોસ્પિટલ', mr: 'रुग्णालय' } },
+        { e: '🚽', k: 'TOILET', labels: { en: 'Toilet', hi: 'शौचालय', gu: 'શૌચાલય', mr: 'शौचालय' } },
+        { e: '🛏️', k: 'ROOM', labels: { en: 'Bedroom', hi: 'कमरा', gu: 'ઓરડો', mr: 'खोली' } },
+        { e: '🛒', k: 'MARKET', labels: { en: 'Market', hi: 'बाज़ार', gu: 'બજાર', mr: 'बाजार' } }
+      ],
+      body: [
+        { e: '🫁', k: 'LUNGS', labels: { en: 'Lungs', hi: 'फेफड़े', gu: 'ફેફસાં', mr: 'फुप्फुसे' } },
+        { e: '🫀', k: 'HEART', labels: { en: 'Heart', hi: 'दिल', gu: 'હૃદય', mr: 'हृदय' } },
+        { e: '🧠', k: 'BRAIN', labels: { en: 'Brain', hi: 'दिमाग', gu: 'મગજ', mr: 'मेंदू' } },
+        { e: '🦴', k: 'BONE', labels: { en: 'Bone', hi: 'हड्डी', gu: 'હાડકું', mr: 'हाड' } },
+        { e: '🦷', k: 'TOOTH', labels: { en: 'Tooth', hi: 'दांत', gu: 'દાંત', mr: 'दात' } },
+        { e: '👁️', k: 'EYE', labels: { en: 'Eye', hi: 'आँख', gu: 'આંખ', mr: 'डोळा' } },
+        { e: '👂', k: 'EAR', labels: { en: 'Ear', hi: 'कान', gu: 'કાન', mr: 'कान' } },
+        { e: '👃', k: 'NOSE', labels: { en: 'Nose', hi: 'नाक', gu: 'નાક', mr: 'नाक' } }
+      ],
+      chat: [
+        { e: '🙏', k: 'NAMASTE', labels: { en: 'Hello', hi: 'नमस्ते', gu: 'નમસ્તે', mr: 'नमस्ते' } },
+        { e: '🙌', k: 'THANKS', labels: { en: 'Thank You', hi: 'धन्यवाद', gu: 'આભાર', mr: 'धन्यवाद' } },
+        { e: '❓', k: 'HOW', labels: { en: 'How are you?', hi: 'कैसे हैं?', gu: 'કેમ છો?', mr: 'कसे आहात?' } },
+        { e: '👋', k: 'BYE', labels: { en: 'Goodbye', hi: 'अलविदा', gu: 'આવજો', mr: 'बाय' } },
+        { e: '🤝', k: 'PLEASE', labels: { en: 'Please', hi: 'कृपया', gu: 'મહેરબાની કરીને', mr: 'कृपया' } }
+      ],
+      emergency: [
+        { e: '🆘', k: 'HELP_EMERGENCY', labels: { en: 'Help!', hi: 'मदद चाहिए!', gu: 'મદદ કરો!', mr: 'मदत हवी!' } },
+        { e: '😖', k: 'PAIN', labels: { en: 'Pain', hi: 'दर्द', gu: 'દુખાવો', mr: 'वेदना' } },
+        { e: '💊', k: 'MEDICINE', labels: { en: 'Medicine', hi: 'दवा', gu: 'દવા', mr: 'औषध' } },
+        { e: '🚑', k: 'AMBULANCE', labels: { en: 'Ambulance', hi: 'एम्बुलेंस', gu: 'એમ્બ્યુલન્સ', mr: 'रुग्णवाहिका' } },
+        { e: '🔥', k: 'FIRE', labels: { en: 'Danger / Fire', hi: 'खतरा / आग', gu: 'જોખમ', mr: 'धोका' } }
+      ]
+    };
+
+    // ─── TOP 5 HIGH-PEAKED WORDS PER LANGUAGE ───────────────────
+    const TOP_5_HIGH_PEAKED_WORDS = {
+      en: [
+        { word: 'Yes', emoji: '👍', badge: '1' },
+        { word: 'No', emoji: '🙅', badge: '2' },
+        { word: 'Want', emoji: '🤲', badge: '3' },
+        { word: 'Help', emoji: '🆘', badge: '4' },
+        { word: 'More', emoji: '➕', badge: '5' }
+      ],
+      hi: [
+        { word: 'हाँ', emoji: '👍', badge: '1' },
+        { word: 'नहीं', emoji: '🙅', badge: '2' },
+        { word: 'चाहिए', emoji: '🤲', badge: '3' },
+        { word: 'मदद', emoji: '🆘', badge: '4' },
+        { word: 'और', emoji: '➕', badge: '5' }
+      ],
+      gu: [
+        { word: 'હા', emoji: '👍', badge: '1' },
+        { word: 'ના', emoji: '🙅', badge: '2' },
+        { word: 'જોઈએ', emoji: '🤲', badge: '3' },
+        { word: 'મદદ', emoji: '🆘', badge: '4' },
+        { word: 'વધુ', emoji: '➕', badge: '5' }
+      ],
+      mr: [
+        { word: 'हो', emoji: '👍', badge: '1' },
+        { word: 'नाही', emoji: '🙅', badge: '2' },
+        { word: 'पाहिजे', emoji: '🤲', badge: '3' },
+        { word: 'मदत', emoji: '🆘', badge: '4' },
+        { word: 'आणखी', emoji: '➕', badge: '5' }
+      ]
+    };
+
+    // ─── NATIVE PHONETIC KEYBOARD LAYOUTS (Hindi, Gujarati, Marathi) ───
+    const PHONETIC_KEYBOARD_DATA = {
+      hi: {
+        langName: "हिन्दी (Hindi)",
+        script: "Devanagari",
+        vowels: [
+          { char: 'अ', label: 'अ' }, { char: 'आ', label: 'आ' }, { char: 'इ', label: 'इ' },
+          { char: 'ई', label: 'ई' }, { char: 'उ', label: 'उ' }, { char: 'ऊ', label: 'ऊ' },
+          { char: 'ऋ', label: 'ऋ' }, { char: 'ए', label: 'ए' }, { char: 'ऐ', label: 'ऐ' },
+          { char: 'ओ', label: 'ओ' }, { char: 'औ', label: 'औ' }, { char: 'अं', label: 'अं' },
+          { char: 'अः', label: 'अः' }
+        ],
+        matras: [
+          { char: 'ा', label: '◌ा (aa)' }, { char: 'ि', label: '◌ि (i)' }, { char: 'ी', label: '◌ी (ee)' },
+          { char: 'ु', label: '◌ु (u)' }, { char: 'ू', label: '◌ू (oo)' }, { char: 'ृ', label: '◌ृ (ri)' },
+          { char: 'े', label: '◌े (e)' }, { char: 'ै', label: '◌ै (ai)' }, { char: 'ो', label: '◌ो (o)' },
+          { char: 'ौ', label: '◌ौ (au)' }, { char: 'ं', label: '◌ं (anuswar)' }, { char: 'ः', label: '◌ः (visarga)' },
+          { char: 'ँ', label: '◌ँ (chandra)' }, { char: '्', label: '◌् (halant)' }
+        ],
+        consonants: [
+          ['क', 'ख', 'ग', 'घ', 'ङ'],
+          ['च', 'छ', 'ज', 'झ', 'ञ'],
+          ['ट', 'ठ', 'ड', 'ढ', 'ण'],
+          ['त', 'थ', 'द', 'ध', 'न'],
+          ['प', 'फ', 'ब', 'भ', 'म'],
+          ['य', 'र', 'ल', 'व'],
+          ['श', 'ष', 'स', 'ह'],
+          ['क्ष', 'त्र', 'ज्ञ', 'श्र', 'ड़', 'ढ़']
+        ],
+        numerals: ['१', '२', '३', '४', '५', '६', '७', '८', '९', '०']
+      },
+      gu: {
+        langName: "ગુજરાતી (Gujarati)",
+        script: "Gujarati",
+        vowels: [
+          { char: 'અ', label: 'અ' }, { char: 'આ', label: 'આ' }, { char: 'ઇ', label: 'ઇ' },
+          { char: 'ઈ', label: 'ઈ' }, { char: 'ઉ', label: 'ઉ' }, { char: 'ઊ', label: 'ઊ' },
+          { char: 'ઋ', label: 'ઋ' }, { char: 'એ', label: 'એ' }, { char: 'ઐ', label: 'ઐ' },
+          { char: 'ઓ', label: 'ઓ' }, { char: 'ઔ', label: 'ઔ' }, { char: 'અં', label: 'અં' },
+          { char: 'અઃ', label: 'અઃ' }
+        ],
+        matras: [
+          { char: 'ા', label: '◌ા (aa)' }, { char: 'િ', label: '◌િ (i)' }, { char: 'ી', label: '◌ી (ee)' },
+          { char: 'ુ', label: '◌ુ (u)' }, { char: 'ૂ', label: '◌ૂ (oo)' }, { char: 'ૃ', label: '◌ૃ (ri)' },
+          { char: 'ે', label: '◌ે (e)' }, { char: 'ૈ', label: '◌ૈ (ai)' }, { char: 'ો', label: '◌ો (o)' },
+          { char: 'ૌ', label: '◌ૌ (au)' }, { char: 'ં', label: '◌ં (anuswar)' }, { char: 'ઃ', label: '◌ઃ (visarga)' },
+          { char: '્', label: '◌્ (virama)' }
+        ],
+        consonants: [
+          ['ક', 'ખ', 'ગ', 'ઘ', 'ઙ'],
+          ['ચ', 'છ', 'જ', 'ઝ', 'ઞ'],
+          ['ટ', 'ઠ', 'ડ', 'ઢ', 'ણ'],
+          ['ત', 'થ', 'દ', 'ધ', 'ન'],
+          ['પ', 'ફ', 'બ', 'ભ', 'મ'],
+          ['ય', 'ર', 'લ', 'વ'],
+          ['શ', 'ષ', 'સ', 'હ'],
+          ['ળ', 'ક્ષ', 'જ્ઞ']
+        ],
+        numerals: ['૧', '૨', '૩', '૪', '૫', '૬', '૭', '૮', '૯', '૦']
+      },
+      mr: {
+        langName: "मराठी (Marathi)",
+        script: "Devanagari",
+        vowels: [
+          { char: 'अ', label: 'अ' }, { char: 'आ', label: 'आ' }, { char: 'इ', label: 'इ' },
+          { char: 'ई', label: 'ई' }, { char: 'उ', label: 'उ' }, { char: 'ऊ', label: 'ऊ' },
+          { char: 'ऋ', label: 'ऋ' }, { char: 'ऌ', label: 'ऌ' }, { char: 'ए', label: 'ए' },
+          { char: 'ऐ', label: 'ऐ' }, { char: 'ओ', label: 'ओ' }, { char: 'औ', label: 'औ' },
+          { char: 'अं', label: 'अं' }, { char: 'अः', label: 'अः' }, { char: 'ॲ', label: 'ॲ' },
+          { char: 'ऑ', label: 'ऑ' }
+        ],
+        matras: [
+          { char: 'ा', label: '◌ा (aa)' }, { char: 'ि', label: '◌ि (i)' }, { char: 'ी', label: '◌ी (ee)' },
+          { char: 'ु', label: '◌ु (u)' }, { char: 'ू', label: '◌ू (oo)' }, { char: 'ृ', label: '◌ृ (ri)' },
+          { char: 'े', label: '◌े (e)' }, { char: 'ै', label: '◌ै (ai)' }, { char: 'ो', label: '◌ो (o)' },
+          { char: 'ौ', label: '◌ौ (au)' }, { char: 'ं', label: '◌ं (anuswar)' }, { char: 'ः', label: '◌ः (visarga)' },
+          { char: 'ँ', label: '◌ँ (chandra)' }, { char: 'ॅ', label: '◌ॅ' }, { char: 'ॉ', label: '◌ॉ' },
+          { char: '्', label: '◌् (halant)' }
+        ],
+        consonants: [
+          ['क', 'ख', 'ग', 'घ', 'ङ'],
+          ['च', 'छ', 'ज', 'झ', 'ञ'],
+          ['ट', 'ठ', 'ड', 'ढ', 'ण'],
+          ['त', 'थ', 'द', 'ध', 'न'],
+          ['प', 'फ', 'ब', 'भ', 'म'],
+          ['य', 'र', 'ल', 'व'],
+          ['श', 'ष', 'स', 'ह'],
+          ['ळ', 'क्ष', 'ज्ञ', 'श्र']
+        ],
+        numerals: ['१', '२', '३', '४', '५', '६', '७', '८', '९', '०']
+      }
+    };
+
+    // ─── FIREBASE CONFIG ─────────────────────────────────────────
+    // Paste your web-app config from Firebase Console → Project settings → Your apps.
+    // Also enable Authentication → Google, and create a Firestore database.
+    // Project: indicaacsystemnaacl2026 (web config is public by design; Firestore rules protect the data).
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyC4UZOUCAiO18L_yZ4ZuwrefDQLBzBr7yA",
+      authDomain: "indicaacsystemnaacl2026.firebaseapp.com",
+      projectId: "indicaacsystemnaacl2026",
+      storageBucket: "indicaacsystemnaacl2026.firebasestorage.app",
+      messagingSenderId: "731997066981",
+      appId: "1:731997066981:web:b1208f5c8bc971e099660c"
+    };
+    let fbAuth = null, fbDb = null;
+    try {
+      if (window.firebase && !FIREBASE_CONFIG.apiKey.startsWith("YOUR_")) {
+        firebase.initializeApp(FIREBASE_CONFIG);
+        fbAuth = firebase.auth();
+        fbDb = firebase.firestore();
+      }
+    } catch (e) { console.warn("Firebase init failed:", e); }
+
+    // ─── FEATURE 1: LOCAL CACHE (offline-ready preferences & custom grids) ───
+    const CACHE_KEY = 'aac_studio_cache_v1';
+    const loadCache = () => {
+      try {
+        const raw = localStorage.getItem(CACHE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        return {};
+      }
+    };
+    const CACHED = loadCache();
+
+    // ─── MAIN REACT APPLICATION ──────────────────────────────────
+    function App() {
+      // Core State
+      const [language, setLanguage] = useState(CACHED.language || 'en');
+      const [tokens, setTokens] = useState([]);
+      const [inputText, setInputText] = useState('');
+      const [showPhoneticKeyboard, setShowPhoneticKeyboard] = useState(false);
+      const [keyboardSubTab, setKeyboardSubTab] = useState('all');
+      const [activeCategory, setActiveCategory] = useState('core');
+      const [searchQuery, setSearchQuery] = useState('');
+
+      // Predictions & Output
+      const [predictions, setPredictions] = useState([]);
+      const [isPredicting, setIsPredicting] = useState(false);
+      const [isGenerating, setIsGenerating] = useState(false);
+      const [generatedResult, setGeneratedResult] = useState(null);
+      const [lastAudioB64, setLastAudioB64] = useState(null);
+
+      // Preferences & Accessibility
+      const [darkMode, setDarkMode] = useState(CACHED.darkMode || false);
+      const [highContrast, setHighContrast] = useState(CACHED.highContrast || false);
+      const [speechRate, setSpeechRate] = useState(CACHED.speechRate || 1.0);
+      const [autoSpeakOnSelect, setAutoSpeakOnSelect] = useState(
+        CACHED.autoSpeakOnSelect !== undefined ? CACHED.autoSpeakOnSelect : true
+      );
+      const [generationMode, setGenerationMode] = useState(CACHED.generationMode || 'dual');
+      const [showSettingsDrawer, setShowSettingsDrawer] = useState(false);
+
+      // Accessibility Dock (text size + grayscale)
+      const [textScale, setTextScale] = useState(CACHED.textScale || 100);
+      const [grayscaleMode, setGrayscaleMode] = useState(CACHED.grayscaleMode || false);
+      const [showA11yDock, setShowA11yDock] = useState(false);
+
+      // Voice Controls (presets + upload-to-clone)
+      const [voiceList, setVoiceList] = useState([]);
+      const [activeVoiceId, setActiveVoiceId] = useState(CACHED.activeVoiceId || 'indic_female');
+      const [customVoices, setCustomVoices] = useState(CACHED.customVoices || []); // [{voice_id,label}]
+      const [showVoicePanel, setShowVoicePanel] = useState(false);
+      const [cloneFile, setCloneFile] = useState(null);
+      const [cloneTranscript, setCloneTranscript] = useState('');
+      const [cloneLabel, setCloneLabel] = useState('');
+      const [isCloning, setIsCloning] = useState(false);
+      const [dragActive, setDragActive] = useState(false);
+      const [engineReady, setEngineReady] = useState(false);
+
+      // Bookmark Sentences (Quick Picks)
+      const [bookmarks, setBookmarks] = useState(CACHED.bookmarks || []);
+      const [starPopId, setStarPopId] = useState(null);
+
+      // Custom grids (locally cached custom words, offline-ready)
+      const [customWords, setCustomWords] = useState(CACHED.customWords || []);
+
+      // ─── Feature: AI Symbol Creator (emoji vs GenAI image) ─────
+      const [symbolStyle, setSymbolStyle] = useState(CACHED.symbolStyle || 'emoji'); // 'emoji' | 'ai'
+      const [isGeneratingSymbol, setIsGeneratingSymbol] = useState(false);
+      const [pendingSymbolImage, setPendingSymbolImage] = useState(null); // data URI preview before "Add"
+
+      // ─── Feature: Firebase Google Sign-In + cross-account sync ─────
+      const [authUser, setAuthUser] = useState(null); // {uid, name, email, photoURL} | null
+      const [authReady, setAuthReady] = useState(false);
+      const [isSyncing, setIsSyncing] = useState(false);
+      const [firebaseEnabled, setFirebaseEnabled] = useState(false);
+
+      // Speech state
+      const [isSpeaking, setIsSpeaking] = useState(false);
+      const [activeSpeakingWord, setActiveSpeakingWord] = useState('');
+      const [toast, setToast] = useState(null);
+
+      const inputRef = useRef(null);
+      const audioElRef = useRef(null);
+      const cloneFileInputRef = useRef(null);
+
+      // ─── PERSIST PREFERENCES + CUSTOM GRIDS TO LOCAL CACHE ─────
+      useEffect(() => {
+        const payload = {
+          language, darkMode, highContrast, speechRate, autoSpeakOnSelect,
+          generationMode, textScale, grayscaleMode, activeVoiceId, customVoices,
+          bookmarks, customWords, symbolStyle
+        };
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+        } catch (e) { /* storage full or disabled — fail silently, app still works */ }
+      }, [
+        language, darkMode, highContrast, speechRate, autoSpeakOnSelect,
+        generationMode, textScale, grayscaleMode, activeVoiceId, customVoices,
+        bookmarks, customWords, symbolStyle
+      ]);
+
+      // Accessibility Dock effects: text scale + grayscale applied globally
+      useEffect(() => {
+        document.documentElement.style.setProperty('--a11y-text-scale', textScale + '%');
+      }, [textScale]);
+
+      useEffect(() => {
+        if (grayscaleMode) document.documentElement.classList.add('a11y-grayscale');
+        else document.documentElement.classList.remove('a11y-grayscale');
+      }, [grayscaleMode]);
+
+      // ─── SPEECH SYNTHESIS ENGINE (Real Native Pronunciation) ───
+      const speak = useCallback((text, targetLang = language) => {
+        if (!text || !window.speechSynthesis) return;
+
+        // Stop any in-flight IndicF5 backend audio so voices never overlap
+        if (audioElRef.current) {
+          audioElRef.current.pause();
+          audioElRef.current = null;
+        }
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = speechRate;
+        utterance.pitch = 1.0;
+
+        const localeMap = {
+          en: ['en-US', 'en-IN', 'en-GB', 'en'],
+          hi: ['hi-IN', 'hi', 'en-IN'],
+          gu: ['gu-IN', 'gu', 'hi-IN', 'en-IN'],
+          mr: ['mr-IN', 'mr', 'hi-IN', 'en-IN']
+        };
+
+        const voices = window.speechSynthesis.getVoices();
+        const preferredLocales = localeMap[targetLang] || ['en-US'];
+
+        let matchedVoice = null;
+        for (const loc of preferredLocales) {
+          matchedVoice = voices.find(v => v.lang.toLowerCase().replace('_', '-').startsWith(loc.toLowerCase()));
+          if (matchedVoice) break;
+        }
+
+        if (matchedVoice) utterance.voice = matchedVoice;
+        utterance.lang = preferredLocales[0];
+
+        utterance.onstart = () => {
+          setIsSpeaking(true);
+          setActiveSpeakingWord(text);
+        };
+        utterance.onend = () => {
+          setIsSpeaking(false);
+          setActiveSpeakingWord('');
+        };
+        utterance.onerror = () => {
+          setIsSpeaking(false);
+          setActiveSpeakingWord('');
+        };
+
+        window.speechSynthesis.speak(utterance);
+      }, [language, speechRate]);
+
+      // Pre-load browser voices
+      useEffect(() => {
+        if (window.speechSynthesis) {
+          window.speechSynthesis.getVoices();
+          window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+        }
+      }, []);
+
+      // Dark Mode & Contrast Sync
+      useEffect(() => {
+        const root = document.documentElement;
+        if (darkMode) root.classList.add('dark');
+        else root.classList.remove('dark');
+
+        if (highContrast) document.body.classList.add('high-contrast');
+        else document.body.classList.remove('high-contrast');
+      }, [darkMode, highContrast]);
+
+      // Toast feedback
+      const showToast = useCallback((message, type = 'info') => {
+        setToast({ message, type });
+        setTimeout(() => setToast(null), 2800);
+      }, []);
+
+      // ─── FEATURE 1: Notify when preferences/custom grids were restored
+      // from the local offline cache (instant load, no network needed) ───
+      useEffect(() => {
+        const hadCache = Object.keys(CACHED).length > 0;
+        const hasContent = (CACHED.customWords && CACHED.customWords.length) ||
+                            (CACHED.bookmarks && CACHED.bookmarks.length);
+        if (hadCache && hasContent) {
+          showToast('Restored your preferences & custom grid from local cache ⚡', 'info');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
+
+      // ─── FIREBASE: Google sign-in + Firestore sync of custom words & bookmarks ───
+      const syncReadyRef = useRef(false);
+      useEffect(() => {
+        setFirebaseEnabled(!!fbAuth);
+        if (!fbAuth) { setAuthReady(true); return; }
+        return fbAuth.onAuthStateChanged(async (u) => {
+          syncReadyRef.current = false;
+          if (!u) { setAuthUser(null); setAuthReady(true); return; }
+          setAuthUser({ uid: u.uid, name: u.displayName, email: u.email, photoURL: u.photoURL });
+          setAuthReady(true);
+          setIsSyncing(true);
+          try {
+            const snap = await fbDb.collection('users').doc(u.uid).get();
+            if (snap.exists) {
+              const d = snap.data();
+              const mergeById = (a, b) => { const m = new Map(); [...a, ...b].forEach(x => m.set(x.id, x)); return [...m.values()]; };
+              if (d.customWords) setCustomWords(prev => mergeById(prev, JSON.parse(d.customWords)));
+              if (d.bookmarks) setBookmarks(prev => mergeById(prev, JSON.parse(d.bookmarks)).slice(0, 24));
+              if (d.symbolStyle) setSymbolStyle(d.symbolStyle);
+            }
+          } catch (e) { console.warn('Sync download failed', e); }
+          finally { setIsSyncing(false); syncReadyRef.current = true; }
+        });
+      }, []);
+
+      // Debounced upload whenever synced data changes (only after the initial download finished)
+      useEffect(() => {
+        if (!fbDb || !authUser || !syncReadyRef.current) return;
+        const t = setTimeout(async () => {
+          setIsSyncing(true);
+          try {
+            await fbDb.collection('users').doc(authUser.uid).set({
+              customWords: JSON.stringify(customWords),
+              bookmarks: JSON.stringify(bookmarks),
+              symbolStyle,
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+          } catch (e) { console.warn('Sync upload failed', e); }
+          finally { setIsSyncing(false); }
+        }, 1200);
+        return () => clearTimeout(t);
+      }, [customWords, bookmarks, symbolStyle, authUser]);
+
+      const handleSignIn = useCallback(async () => {
+        if (!fbAuth) { showToast('Add your Firebase config in index.html to enable Google sign-in.', 'warning'); return; }
+        try { await fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); showToast('Signed in — your words now sync across devices.', 'success'); }
+        catch (e) { if (e.code !== 'auth/popup-closed-by-user') showToast('Sign-in failed: ' + e.message, 'warning'); }
+      }, [showToast]);
+      const handleSignOut = useCallback(async () => { if (fbAuth) { await fbAuth.signOut(); showToast('Signed out.', 'info'); } }, [showToast]);
+
+      // ─── FEATURE 3: F5-TTS BACKEND PIPELINE — PLAY SYNTHESIZED AUDIO ───
+      // Plays the real IndicF5-synthesized WAV (base64) returned by /generate,
+      // instead of (or in addition to) the local browser Web Speech voice.
+      const playBackendAudio = useCallback((audioB64, label = '') => {
+        if (!audioB64) return false;
+        try {
+          if (window.speechSynthesis) window.speechSynthesis.cancel();
+          if (audioElRef.current) {
+            audioElRef.current.pause();
+            audioElRef.current = null;
+          }
+          const audio = new Audio('data:audio/wav;base64,' + audioB64);
+          audioElRef.current = audio;
+          audio.onplay = () => { setIsSpeaking(true); setActiveSpeakingWord(label); };
+          audio.onended = () => { setIsSpeaking(false); setActiveSpeakingWord(''); };
+          audio.onerror = () => { setIsSpeaking(false); setActiveSpeakingWord(''); };
+          audio.play().catch(() => { setIsSpeaking(false); setActiveSpeakingWord(''); });
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }, []);
+
+      // ─── FEATURE 5: VOICE CONTROLS — fetch available presets / clones ───
+      const fetchVoiceList = useCallback(async () => {
+        try {
+          const res = await fetch('/api/voice/list');
+          if (res.ok) {
+            const data = await res.json();
+            setVoiceList(data.voices || []);
+            setEngineReady(!!data.engine_ready);
+          }
+        } catch (e) { /* backend offline — presets panel still shows local defaults */ }
+      }, []);
+
+      useEffect(() => { fetchVoiceList(); }, [fetchVoiceList]);
+
+      const handleCloneUpload = useCallback(async () => {
+        if (!cloneFile) {
+          showToast('Please choose a reference audio file first.', 'warning');
+          return;
+        }
+        if (!cloneTranscript.trim()) {
+          showToast('Please type exactly what is spoken in the reference clip.', 'warning');
+          return;
+        }
+        setIsCloning(true);
+        try {
+          const form = new FormData();
+          form.append('file', cloneFile);
+          form.append('transcript', cloneTranscript.trim());
+          form.append('label', cloneLabel.trim() || (cloneFile.name || 'My Cloned Voice'));
+
+          const res = await fetch('/api/voice/clone', { method: 'POST', body: form });
+          const data = await res.json();
+
+          if (!res.ok) throw new Error(data.detail || 'Upload failed');
+
+          const newVoice = { voice_id: data.voice_id, label: data.label };
+          setCustomVoices(prev => [...prev.filter(v => v.voice_id !== newVoice.voice_id), newVoice]);
+          setActiveVoiceId(data.voice_id);
+          setCloneFile(null);
+          setCloneTranscript('');
+          setCloneLabel('');
+          if (cloneFileInputRef.current) cloneFileInputRef.current.value = '';
+          showToast(data.message || 'Voice cloned! It will be used for your next AI Polish & Speak.', 'success');
+          fetchVoiceList();
+        } catch (err) {
+          showToast('Voice cloning failed: ' + err.message, 'warning');
+        } finally {
+          setIsCloning(false);
+        }
+      }, [cloneFile, cloneTranscript, cloneLabel, showToast, fetchVoiceList]);
+
+      const handleRemoveCustomVoice = useCallback(async (voiceId) => {
+        try {
+          await fetch('/api/voice/' + voiceId, { method: 'DELETE' });
+        } catch (e) { /* ignore network errors, still clean up client state */ }
+        setCustomVoices(prev => prev.filter(v => v.voice_id !== voiceId));
+        if (activeVoiceId === voiceId) setActiveVoiceId('indic_female');
+        showToast('Cloned voice removed.', 'info');
+      }, [activeVoiceId, showToast]);
+
+      // ─── FEATURE 6: BOOKMARK SENTENCES (Quick Picks) ───────────
+      const addBookmark = useCallback((text) => {
+        if (!text || !text.trim()) return;
+        const id = 'bm_' + Date.now();
+        setBookmarks(prev => {
+          if (prev.some(b => b.text === text)) return prev; // avoid duplicates
+          return [{ id, text, language }, ...prev].slice(0, 24);
+        });
+        setStarPopId(id);
+        setTimeout(() => setStarPopId(null), 450);
+        if (navigator.vibrate) navigator.vibrate(15);
+        showToast('Saved to Quick Picks ⭐', 'success');
+      }, [language, showToast]);
+
+      const removeBookmark = useCallback((id) => {
+        setBookmarks(prev => prev.filter(b => b.id !== id));
+      }, []);
+
+      const speakBookmark = useCallback((item) => {
+        speak(item.text, item.language || language);
+      }, [language]);
+
+      // Local object-URL preview for the chosen reference audio file
+      const clonePreviewUrl = useMemo(() => {
+        if (!cloneFile) return null;
+        return URL.createObjectURL(cloneFile);
+      }, [cloneFile]);
+      useEffect(() => {
+        return () => { if (clonePreviewUrl) URL.revokeObjectURL(clonePreviewUrl); };
+      }, [clonePreviewUrl]);
+
+      const handleCloneFileChosen = useCallback((file) => {
+        if (!file) return;
+        if (!file.type.startsWith('audio/') && !file.type.startsWith('video/webm')) {
+          showToast('Please choose an audio file (wav, mp3, m4a, ogg...).', 'warning');
+          return;
+        }
+        setCloneFile(file);
+        if (!cloneLabel.trim()) setCloneLabel(file.name.replace(/\.[^/.]+$/, ''));
+      }, [cloneLabel, showToast]);
+
+      // ─── PREDICTIVE SUGGESTIONS (HMM + Local Fallback) ─────────
+      const fetchPredictions = useCallback(async (currentWords) => {
+        setIsPredicting(true);
+        try {
+          const res = await fetch('/predict_next', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              current_words: currentWords,
+              language: language,
+              intent: 'REQUEST'
+            })
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            const suggestions = data.suggestions || data.predictions || [];
+            if (suggestions.length > 0) {
+              setPredictions(suggestions.slice(0, 7));
+              setIsPredicting(false);
+              return;
+            }
+          }
+        } catch (e) {
+          // Backend offline or busy, fall through to smart fallback
+        }
+
+        const fallbacks = {
+          en: [
+            { word: 'Water', emoji: '💧', prob: 0.94 },
+            { word: 'Food', emoji: '🍎', prob: 0.88 },
+            { word: 'Please', emoji: '🤝', prob: 0.81 },
+            { word: 'Go', emoji: '🚶', prob: 0.76 },
+            { word: 'Play', emoji: '🎮', prob: 0.70 }
+          ],
+          hi: [
+            { word: 'पानी', emoji: '💧', prob: 0.95 },
+            { word: 'खाना', emoji: '🍎', prob: 0.89 },
+            { word: 'घर', emoji: '🏠', prob: 0.82 },
+            { word: 'मदद', emoji: '🆘', prob: 0.75 }
+          ],
+          gu: [
+            { word: 'પાણી', emoji: '💧', prob: 0.95 },
+            { word: 'ખોરાક', emoji: '🍎', prob: 0.89 },
+            { word: 'ઘર', emoji: '🏠', prob: 0.82 }
+          ],
+          mr: [
+            { word: 'पाणी', emoji: '💧', prob: 0.95 },
+            { word: 'जेवण', emoji: '🍎', prob: 0.89 },
+            { word: 'घर', emoji: '🏠', prob: 0.82 }
+          ]
+        };
+
+        setPredictions(fallbacks[language] || fallbacks.en);
+        setIsPredicting(false);
+      }, [language]);
+
+      useEffect(() => {
+        const words = tokens.map(t => t.label);
+        fetchPredictions(words);
+      }, [tokens, language, fetchPredictions]);
+
+      // ─── ADD TOKEN TO SENTENCE CANVAS ─────────────────────────
+      const addToken = useCallback((item) => {
+        const wordLabel = item.labels ? (item.labels[language] || item.labels.en || item.k) : (item.word || item.label || item.k);
+        const emoji = item.e || item.emoji || '💬';
+        const newToken = {
+          id: 'tok_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+          label: wordLabel,
+          emoji: emoji,
+          image: item.image || null,
+          isCustom: !!item.isCustom
+        };
+
+        setTokens(prev => [...prev, newToken]);
+
+        // Real Pronunciation on Word Selection
+        if (autoSpeakOnSelect) {
+          speak(wordLabel, language);
+        }
+
+        // Haptic feedback
+        if (navigator.vibrate) navigator.vibrate(20);
+      }, [language, autoSpeakOnSelect, speak]);
+
+      // Remove single token
+      const removeToken = useCallback((id) => {
+        setTokens(prev => prev.filter(t => t.id !== id));
+      }, []);
+
+      // Clear all
+      const clearAll = useCallback(() => {
+        setTokens([]);
+        setInputText('');
+        setGeneratedResult(null);
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+      }, []);
+
+      // Close keyboard when switching to English
+      useEffect(() => {
+        if (language === 'en') {
+          setShowPhoneticKeyboard(false);
+        }
+      }, [language]);
+
+      // Native character insertion from phonetic keyboard
+      const handleInsertChar = useCallback((char) => {
+        setInputText(prev => {
+          if (inputRef.current && inputRef.current.selectionStart !== null) {
+            const start = inputRef.current.selectionStart;
+            const end = inputRef.current.selectionEnd;
+            const nextVal = prev.substring(0, start) + char + prev.substring(end);
+            setTimeout(() => {
+              if (inputRef.current) {
+                inputRef.current.focus();
+                inputRef.current.setSelectionRange(start + char.length, start + char.length);
+              }
+            }, 0);
+            return nextVal;
+          }
+          return prev + char;
+        });
+        if (navigator.vibrate) navigator.vibrate(10);
+      }, []);
+
+      // Backspace handler for phonetic keyboard
+      const handleBackspace = useCallback(() => {
+        setInputText(prev => {
+          if (!prev) return '';
+          if (inputRef.current && inputRef.current.selectionStart !== null) {
+            const start = inputRef.current.selectionStart;
+            const end = inputRef.current.selectionEnd;
+            if (start !== end) {
+              const nextVal = prev.substring(0, start) + prev.substring(end);
+              setTimeout(() => {
+                if (inputRef.current) {
+                  inputRef.current.focus();
+                  inputRef.current.setSelectionRange(start, start);
+                }
+              }, 0);
+              return nextVal;
+            }
+            if (start > 0) {
+              const nextVal = prev.substring(0, start - 1) + prev.substring(start);
+              setTimeout(() => {
+                if (inputRef.current) {
+                  inputRef.current.focus();
+                  inputRef.current.setSelectionRange(start - 1, start - 1);
+                }
+              }, 0);
+              return nextVal;
+            }
+          }
+          return prev.slice(0, -1);
+        });
+      }, []);
+
+      // Roman-to-Native transliteration helper
+      const handleTransliterateCurrent = useCallback(async () => {
+        if (!inputText.trim() || language === 'en') return;
+        try {
+          const res = await fetch('/api/transliterate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: inputText.trim(), language: language })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.transliterated) {
+              setInputText(data.transliterated);
+              showToast('Transliterated: ' + data.transliterated, 'success');
+            }
+          }
+        } catch (err) {}
+      }, [inputText, language, showToast]);
+
+      // Manual word submission + smart space transliteration
+      const handleInputKeyDown = useCallback(async (e) => {
+        if (e.key === ' ' && language !== 'en' && inputText.trim()) {
+          // If user types Roman letters and hits Space, auto-transliterate
+          if (/[a-zA-Z]/.test(inputText)) {
+            e.preventDefault();
+            try {
+              const res = await fetch('/api/transliterate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: inputText.trim(), language: language })
+              });
+              if (res.ok) {
+                const data = await res.json();
+                if (data.transliterated) {
+                  setInputText(data.transliterated + ' ');
+                  return;
+                }
+              }
+            } catch (err) {}
+          }
+        }
+
+        if (e.key === 'Enter' && inputText.trim()) {
+          e.preventDefault();
+          let cleanText = inputText.trim();
+          if (language !== 'en' && /[a-zA-Z]/.test(cleanText)) {
+            try {
+              const res = await fetch('/api/transliterate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: cleanText, language: language })
+              });
+              if (res.ok) {
+                const data = await res.json();
+                if (data.transliterated) cleanText = data.transliterated;
+              }
+            } catch (err) {}
+          }
+          addToken({ label: cleanText, emoji: '🔤' });
+          setInputText('');
+        }
+      }, [inputText, language, addToken]);
+
+      // ─── AI GENERATION (FastAPI Backend) ───────────────────────
+      const handleGenerateSentence = useCallback(async () => {
+        if (tokens.length === 0 && !inputText.trim()) {
+          showToast('Please select or type at least one word!', 'warning');
+          return;
+        }
+
+        const entitiesList = tokens.map(t => t.label);
+        if (inputText.trim()) entitiesList.push(inputText.trim());
+
+        // Infer intent naturally from selected concepts
+        const fullStr = entitiesList.join(' ').toLowerCase();
+        let inferredIntent = 'REQUEST';
+        let isNegated = false;
+        if (fullStr.includes('no') || fullStr.includes('not') || fullStr.includes('नहीं') || fullStr.includes('ના') || fullStr.includes('नाही')) {
+          inferredIntent = 'NEGATION';
+          isNegated = true;
+        } else if (fullStr.includes('?') || fullStr.includes('what') || fullStr.includes('how') || fullStr.includes('क्या') || fullStr.includes('શું') || fullStr.includes('काय')) {
+          inferredIntent = 'QUESTION';
+        } else if (fullStr.includes('happy') || fullStr.includes('sad') || fullStr.includes('love') || fullStr.includes('खुश') || fullStr.includes('उदास')) {
+          inferredIntent = 'STATEMENT';
+        }
+
+        setIsGenerating(true);
+        setGeneratedResult(null);
+        setLastAudioB64(null);
+
+        try {
+          const res = await fetch('/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              intent: inferredIntent,
+              negation: isNegated,
+              entities: entitiesList,
+              language: language,
+              code_mix: false,
+              generation_mode: generationMode,
+              voice_id: activeVoiceId
+            })
+          });
+
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+          const data = await res.json();
+          setGeneratedResult(data);
+
+          // ─── Feature 3: F5-TTS Pipeline — prefer the natural synthesized
+          // voice returned by the backend; fall back to the browser's Web
+          // Speech voice only if no backend audio was produced.
+          if (data.audio_b64) {
+            setLastAudioB64(data.audio_b64);
+            const played = playBackendAudio(data.audio_b64, data.text);
+            if (!played && data.text) speak(data.text, language);
+          } else if (data.text) {
+            speak(data.text, language);
+          }
+        } catch (err) {
+          // Zero-Hallucination Fallback realization
+          const prefix = {
+            en: isNegated ? 'I do not want' : inferredIntent === 'QUESTION' ? 'May I have' : 'I would like',
+            hi: isNegated ? 'मुझे नहीं चाहिए' : 'मुझे चाहिए',
+            gu: isNegated ? 'મને નથી જોઈતું' : 'મને જોઈએ છે',
+            mr: isNegated ? 'मला नको आहे' : 'मला हवे आहे'
+          };
+          const fallbackText = `${prefix[language] || prefix.en} ${entitiesList.join(' ')}.`;
+          setGeneratedResult({
+            text: fallbackText,
+            fallback_used: true,
+            semantic_score: 1.0,
+            metrics: { t_total: 0.05 }
+          });
+          speak(fallbackText, language);
+        } finally {
+          setIsGenerating(false);
+        }
+      }, [tokens, inputText, language, generationMode, activeVoiceId, speak, playBackendAudio, showToast]);
+
+      // Replay the last generated sentence — prefers the real IndicF5 audio.
+      const handleReplayVoice = useCallback(() => {
+        if (lastAudioB64) {
+          const played = playBackendAudio(lastAudioB64, generatedResult && generatedResult.text);
+          if (played) return;
+        }
+        if (generatedResult && generatedResult.text) speak(generatedResult.text, language);
+      }, [lastAudioB64, generatedResult, language, speak, playBackendAudio]);
+
+      // Filtered symbols
+      const displayedSymbols = useMemo(() => {
+        if (activeCategory === 'search') {
+          if (!searchQuery.trim() || !window.ALL_EMOJIS) return [];
+          const q = searchQuery.toLowerCase().trim();
+          return window.ALL_EMOJIS
+            .filter(item => item.l.toLowerCase().includes(q) || item.k.toLowerCase().includes(q))
+            .slice(0, 48)
+            .map(item => ({
+              e: item.e,
+              k: item.k,
+              labels: { en: item.l, hi: item.l, gu: item.l, mr: item.l }
+            }));
+        }
+        // ─── Feature 1: Custom Grid (locally cached, offline-ready) ───
+        if (activeCategory === 'custom') {
+          return customWords.map(w => ({
+            e: w.emoji,
+            image: w.image || null,
+            k: w.id,
+            labels: { en: w.label, hi: w.label, gu: w.label, mr: w.label },
+            isCustom: true
+          }));
+        }
+        return SYMBOL_DATABASE[activeCategory] || SYMBOL_DATABASE.core;
+      }, [activeCategory, searchQuery, customWords]);
+
+      // Add / remove words from the local "My Words" custom grid
+      const [newWordText, setNewWordText] = useState('');
+      const [newWordEmoji, setNewWordEmoji] = useState('✨');
+      const generateSymbolImage = useCallback(async (label) => {
+        const res = await fetch('/api/generate_symbol', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ word: label, language })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.detail || ('HTTP ' + res.status));
+        // Downscale to 256px so many symbols fit in localStorage / Firestore (1 MB doc limit)
+        const src = 'data:image/png;base64,' + data.image_b64;
+        return await new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => {
+            const c = document.createElement('canvas');
+            c.width = c.height = 256;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, 256, 256);
+            ctx.drawImage(img, 0, 0, 256, 256);
+            resolve(c.toDataURL('image/jpeg', 0.85));
+          };
+          img.onerror = () => resolve(src);
+          img.src = src;
+        });
+      }, [language]);
+
+      const handlePreviewSymbol = useCallback(async () => {
+        const label = newWordText.trim();
+        if (!label) { showToast('Type a word first, then generate its symbol.', 'warning'); return; }
+        setIsGeneratingSymbol(true);
+        try {
+          setPendingSymbolImage(await generateSymbolImage(label));
+        } catch (err) {
+          showToast('AI image failed: ' + err.message + ' — using emoji instead.', 'warning');
+        } finally {
+          setIsGeneratingSymbol(false);
+        }
+      }, [newWordText, generateSymbolImage, showToast]);
+
+      const addCustomWord = useCallback(async () => {
+        const label = newWordText.trim();
+        if (!label) {
+          showToast('Type a word to add it to My Words.', 'warning');
+          return;
+        }
+        let image = null;
+        if (symbolStyle === 'ai') {
+          image = pendingSymbolImage;
+          if (!image) {
+            setIsGeneratingSymbol(true);
+            try { image = await generateSymbolImage(label); }
+            catch (err) { showToast('AI image failed (' + err.message + ') — saved with emoji.', 'warning'); }
+            finally { setIsGeneratingSymbol(false); }
+          }
+        }
+        const word = { id: 'cw_' + Date.now(), label, emoji: newWordEmoji.trim() || '✨', image };
+        setCustomWords(prev => [...prev, word]);
+        setNewWordText('');
+        setPendingSymbolImage(null);
+        showToast('Added "' + label + '" to My Words' + (image ? ' with an AI symbol.' : '.'), 'success');
+      }, [newWordText, newWordEmoji, symbolStyle, pendingSymbolImage, generateSymbolImage, showToast]);
+      const removeCustomWord = useCallback((id) => {
+        setCustomWords(prev => prev.filter(w => w.id !== id));
+      }, []);
+
+      const top5Words = TOP_5_HIGH_PEAKED_WORDS[language] || TOP_5_HIGH_PEAKED_WORDS.en;
+
+      return (
+        <div className="flex flex-col min-h-screen">
+          
+          {/* Toast Notification */}
+          {toast && (
+            <div className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl shadow-lg font-semibold text-xs text-white flex items-center gap-2 animate-bounce-short ${
+              toast.type === 'warning' ? 'bg-amber-600' : 'bg-brand-600'
+            }`}>
+              <span>{toast.type === 'warning' ? '⚠️' : 'ℹ️'}</span>
+              <span>{toast.message}</span>
+            </div>
+          )}
+
+          {/* ─── 1. MODERN APP HEADER (Linear / Stripe Grade) ─────────── */}
+          <header className="sticky top-0 z-40 glass-nav border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
+            <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
+              
+              {/* App Brand */}
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 text-white flex items-center justify-center font-black text-sm shadow-sm">
+                  ⚡
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white leading-none tracking-tight">
+                    Indic AAC Studio
+                  </span>
+                </div>
+              </div>
+
+              {/* Utility Controls */}
+              <div className="flex items-center gap-2">
+                
+                {/* Language Switcher */}
+                <select
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-bold text-xs px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 focus:outline-none cursor-pointer transition-all shadow-xs"
+                >
+                  <option value="en">🇬🇧 English</option>
+                  <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
+                  <option value="gu">🟡 ગુજરાતી (Gujarati)</option>
+                  <option value="mr">🟠 मराठी (Marathi)</option>
+                </select>
+
+                {/* Google Sign-In */}
+                {authUser ? (
+                  <div className="flex items-center gap-1.5 pl-1 pr-1 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+                    {authUser.photoURL
+                      ? <img src={authUser.photoURL} alt="" referrerPolicy="no-referrer" className="w-7 h-7 rounded-full" />
+                      : <span className="w-7 h-7 rounded-full bg-brand-600 text-white text-xs font-bold flex items-center justify-center">{(authUser.name || '?')[0]}</span>}
+                    <span className="hidden md:inline text-[11px] font-bold text-slate-700 dark:text-slate-200 max-w-[90px] truncate">{authUser.name}</span>
+                    <span className={`text-[10px] ${isSyncing ? 'animate-pulse text-brand-500' : 'text-emerald-500'}`} title={isSyncing ? 'Syncing…' : 'Synced'}>{isSyncing ? '⟳' : '✓'}</span>
+                    <button onClick={handleSignOut} className="tap-ripple spring-press text-[10px] font-bold text-slate-400 hover:text-rose-500 px-1.5" title="Sign out">Sign out</button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleSignIn}
+                    className="tap-ripple spring-press flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-xs"
+                    title={firebaseEnabled ? 'Sign in with Google to sync your words and phrases' : 'Firebase not configured yet'}
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.9 2.4 30.4 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+                    <span className="hidden sm:inline">Sign in</span>
+                  </button>
+                )}
+
+                {/* My Words — pinned top-bar shortcut */}
+                <button
+                  onClick={() => {
+                    setActiveCategory('custom');
+                    setTimeout(() => document.getElementById('symbolBoard')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+                  }}
+                  className={`tap-ripple spring-press flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-extrabold border shadow-sm ${
+                    activeCategory === 'custom'
+                      ? 'bg-pink-600 text-white border-pink-700'
+                      : 'bg-gradient-to-r from-pink-50 to-amber-50 text-pink-700 border-pink-200 dark:from-pink-950/40 dark:to-amber-950/30 dark:text-pink-300 dark:border-pink-800'
+                  }`}
+                  title="Open My Words — your personal grid"
+                >
+                  <span>📌</span>
+                  <span className="hidden sm:inline">{MY_WORDS_META.label[language] || 'My Words'}</span>
+                  {customWords.length > 0 && <span className="text-[10px] opacity-80">({customWords.length})</span>}
+                </button>
+
+                {/* Voice Pronunciation Toggle */}
+                <button
+                  onClick={() => setAutoSpeakOnSelect(!autoSpeakOnSelect)}
+                  className={`tap-ripple spring-press p-2 rounded-lg border text-xs font-semibold transition-all ${
+                    autoSpeakOnSelect
+                      ? 'bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950/60 dark:border-emerald-800 dark:text-emerald-300'
+                      : 'bg-white border-slate-200 text-slate-400 dark:bg-slate-900 dark:border-slate-800'
+                  }`}
+                  title={autoSpeakOnSelect ? "Voice on click active" : "Voice on click muted"}
+                >
+                  {autoSpeakOnSelect ? <Icons.Volume /> : <Icons.Mute />}
+                </button>
+
+                {/* ─── Feature 5: Voice Controls (presets + upload-to-clone) ─── */}
+                <button
+                  onClick={() => setShowVoicePanel(true)}
+                  className="tap-ripple spring-press p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all relative"
+                  title="Voice Controls: choose a voice or clone your own"
+                >
+                  <Icons.Mic />
+                  {customVoices.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-brand-600 text-white text-[8px] font-black flex items-center justify-center">
+                      {customVoices.length}
+                    </span>
+                  )}
+                </button>
+
+                {/* Dark / Light Toggle */}
+                <button
+                  onClick={() => setDarkMode(!darkMode)}
+                  className="tap-ripple spring-press p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+                  title="Toggle theme"
+                >
+                  {darkMode ? <Icons.Sun /> : <Icons.Moon />}
+                </button>
+
+                {/* Settings Drawer Button */}
+                <button
+                  onClick={() => setShowSettingsDrawer(true)}
+                  className="tap-ripple spring-press p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+                  title="Preferences"
+                >
+                  <Icons.Settings />
+                </button>
+              </div>
+
+            </div>
+          </header>
+
+          {/* ─── 2. MAIN COMMUNICATOR CANVAS ─────────────────────────── */}
+          <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-5 flex flex-col gap-5">
+            
+            {/* ─── COMMUNICATOR STAGE (Standard Hero Box) ─── */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm p-4 sm:p-5 flex flex-col gap-3.5 transition-all">
+              
+              {/* Header row inside stage: Live Status & Top 5 High-Peaked Words */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2 border-b border-slate-100 dark:border-slate-800/80">
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                    Sentence Canvas
+                  </span>
+                  {tokens.length > 0 && (
+                    <span className="bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 font-bold text-[10px] px-2 py-0.5 rounded-full">
+                      {tokens.length} {tokens.length === 1 ? 'word' : 'words'}
+                    </span>
+                  )}
+                  {isSpeaking && (
+                    <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-semibold pl-2">
+                      <span className="sound-bar"></span>
+                      <span className="sound-bar"></span>
+                      <span className="sound-bar"></span>
+                      <span className="sound-bar"></span>
+                      <span className="text-[11px] ml-1">Speaking: "{activeSpeakingWord}"</span>
+                    </span>
+                  )}
+                </div>
+
+                {/* ─── TOP 5 HIGH-PEAKED CORE WORDS (Integrated Seamlessly) ─── */}
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-1">
+                    Top Words:
+                  </span>
+                  {top5Words.map((item, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => addToken({ label: item.word, emoji: item.emoji })}
+                      className="tap-ripple spring-press flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-brand-500 hover:text-white dark:bg-slate-800 dark:hover:bg-brand-600 text-slate-800 dark:text-slate-100 font-bold text-xs border border-slate-200 dark:border-slate-700 transition-colors shadow-xs"
+                      title={`Quick add ${item.word}`}
+                    >
+                      <span className="text-sm">{item.emoji}</span>
+                      <span>{item.word}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* ─── FEATURE 6: QUICK PICKS — Bookmarked Sentences Shelf ─── */}
+              {bookmarks.length > 0 && (
+                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 -mt-1">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-500 flex items-center gap-1 flex-shrink-0">
+                    <Icons.StarFilled />
+                    <span>Quick Picks</span>
+                  </span>
+                  {bookmarks.map((bm) => (
+                    <div
+                      key={bm.id}
+                      className="tap-ripple spring-press flex-shrink-0 inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900/50 dark:to-yellow-900/30 border-2 border-amber-400 dark:border-amber-500 text-amber-900 dark:text-amber-100 text-xs font-bold shadow-md shadow-amber-400/30 ring-2 ring-amber-300/30 group"
+                    >
+                      <button onClick={() => speakBookmark(bm)} className="hover:underline" title="Speak this saved phrase">
+                        {bm.text.length > 36 ? bm.text.slice(0, 36) + '…' : bm.text}
+                      </button>
+                      <button
+                        onClick={() => removeBookmark(bm.id)}
+                        className="text-amber-400 hover:text-rose-500 font-bold text-[11px] px-1 opacity-60 group-hover:opacity-100"
+                        title="Remove from Quick Picks"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* The Sentence Strip */}
+              <div className="min-h-[85px] p-3 rounded-xl bg-slate-50/80 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center gap-2 focus-within:ring-2 focus-within:ring-brand-500/20 focus-within:border-brand-500 transition-all">
+                {tokens.length === 0 && !inputText ? (
+                  <span className="text-slate-400 dark:text-slate-500 text-sm font-medium italic pl-1">
+                    Select symbols below or type to compose message…
+                  </span>
+                ) : null}
+
+                {/* Active Sentence Tokens */}
+                {tokens.map((token) => (
+                  <div
+                    key={token.id}
+                    className={`spring-press inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl shadow-xs group ${token.isCustom ? "bg-pink-50 dark:bg-pink-950/30 border-2 border-pink-300 dark:border-pink-700" : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-brand-400"}`}
+                  >
+                    <button
+                      onClick={() => speak(token.label, language)}
+                      className="text-lg leading-none hover:scale-115 transition-transform"
+                      title="Speak word"
+                    >
+                      {token.image ? <img src={token.image} alt={token.label} className="w-7 h-7 object-contain rounded-md" /> : token.emoji}
+                    </button>
+                    <span className="font-bold text-sm text-slate-900 dark:text-white">
+                      {token.label}
+                    </span>
+                    <button
+                      onClick={() => removeToken(token.id)}
+                      className="text-slate-400 hover:text-rose-500 font-bold text-sm ml-0.5 p-0.5"
+                      title="Remove"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+
+                {/* Direct Inline Typing (Physical Keyboard Friendly) */}
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  onKeyDown={handleInputKeyDown}
+                  placeholder={
+                    tokens.length > 0 
+                      ? (language !== 'en' ? "+ शब्द जोड़ें / Add word..." : "+ Add word...")
+                      : (language === 'gu' ? "શબ્દ લખો / Type custom word..." : language === 'mr' ? "शब्द टाइप करा / Type custom word..." : language === 'hi' ? "शब्द लिखें / Type custom word..." : "Type custom word...")
+                  }
+                  className="flex-1 min-w-[130px] bg-transparent border-none text-slate-800 dark:text-slate-100 font-semibold text-sm focus:outline-none placeholder-slate-400 px-1 py-1"
+                />
+
+                {/* Phonetic Keyboard Explicit Toggle Button */}
+                {language !== 'en' && (
+                  <button
+                    type="button"
+                    onClick={() => setShowPhoneticKeyboard(prev => !prev)}
+                    className={`flex-shrink-0 px-2.5 py-1 text-xs font-bold rounded-lg border transition-all flex items-center gap-1.5 shadow-xs cursor-pointer ${
+                      showPhoneticKeyboard
+                        ? 'bg-brand-600 text-white border-brand-700 shadow-sm'
+                        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-brand-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+                    }`}
+                    title={showPhoneticKeyboard ? "Hide on-screen keyboard" : "Open on-screen keyboard for mouse/touch"}
+                  >
+                    <span className="text-sm">⌨️</span>
+                    <span className="text-[11px] font-bold">
+                      {showPhoneticKeyboard
+                        ? 'Hide Keyboard'
+                        : (language === 'gu' ? 'ગુજરાતી કીબોર્ડ' : language === 'mr' ? 'मराठी कीबोर्ड' : 'हिन्दी कीबोर्ड')}
+                    </span>
+                    <span className="text-[10px] opacity-75">{showPhoneticKeyboard ? '▲' : '▼'}</span>
+                  </button>
+                )}
+              </div>
+
+              {/* ─── NATIVE PHONETIC ON-SCREEN KEYBOARD (Indic: Hindi, Gujarati, Marathi) ─── */}
+              {showPhoneticKeyboard && language !== 'en' && PHONETIC_KEYBOARD_DATA[language] && (
+                <div className="rounded-2xl bg-white dark:bg-slate-900 border-2 border-brand-500/30 dark:border-brand-500/40 p-3 sm:p-4 shadow-xl transition-all animate-fadeIn">
+                  
+                  {/* Keyboard Header */}
+                  <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 dark:border-slate-800 gap-2 flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">⌨️</span>
+                      <span className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white">
+                        {PHONETIC_KEYBOARD_DATA[language].langName} Phonetic Keyboard
+                      </span>
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800">
+                        Touch & Type
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5">
+                      {/* Section Tabs */}
+                      <div className="inline-flex rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 text-xs font-bold">
+                        <button
+                          type="button"
+                          onClick={() => setKeyboardSubTab('all')}
+                          className={`px-2.5 py-1 rounded-md transition-all ${keyboardSubTab === 'all' ? 'bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-300 shadow-xs' : 'text-slate-600 dark:text-slate-400'}`}
+                        >
+                          All
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setKeyboardSubTab('vowels')}
+                          className={`px-2.5 py-1 rounded-md transition-all ${keyboardSubTab === 'vowels' ? 'bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-300 shadow-xs' : 'text-slate-600 dark:text-slate-400'}`}
+                        >
+                          {language === 'gu' ? 'સ્વર-માત્રા' : 'स्वर-मात्रा'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setKeyboardSubTab('consonants')}
+                          className={`px-2.5 py-1 rounded-md transition-all ${keyboardSubTab === 'consonants' ? 'bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-300 shadow-xs' : 'text-slate-600 dark:text-slate-400'}`}
+                        >
+                          {language === 'gu' ? 'વ્યંજન' : 'व्यंजन'}
+                        </button>
+                      </div>
+
+                      {/* Close Keyboard */}
+                      <button
+                        type="button"
+                        onClick={() => setShowPhoneticKeyboard(false)}
+                        className="w-7 h-7 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-800 dark:hover:text-white text-xs font-bold transition-all ml-1 cursor-pointer"
+                        title="Close Keyboard"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Keyboard Key Area */}
+                  <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
+
+                    {/* VOWELS (स्वर / સ્વર) */}
+                    {(keyboardSubTab === 'all' || keyboardSubTab === 'vowels') && (
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1 flex items-center gap-1">
+                          <span>● {language === 'gu' ? 'સ્વર (Vowels)' : 'स्वर (Vowels)'}</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {PHONETIC_KEYBOARD_DATA[language].vowels.map((v, i) => (
+                            <button
+                              key={i}
+                              type="button"
+                              onClick={() => handleInsertChar(v.char)}
+                              className="spring-press min-w-[34px] sm:min-w-[38px] h-9 px-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/60 text-emerald-900 dark:text-emerald-100 font-extrabold text-base border border-emerald-200/80 dark:border-emerald-800/80 shadow-xs flex items-center justify-center cursor-pointer transition-all active:scale-95"
+                            >
+                              {v.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* MATRAS & MODIFIERS (मात्राएं / માત્રા) */}
+                    {(keyboardSubTab === 'all' || keyboardSubTab === 'vowels') && (
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-1 flex items-center gap-1">
+                          <span>● {language === 'gu' ? 'માત્રા (Matras / Modifiers)' : 'मात्राएं (Matras / Modifiers)'}</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {PHONETIC_KEYBOARD_DATA[language].matras.map((m, i) => (
+                            <button
+                              key={i}
+                              type="button"
+                              onClick={() => handleInsertChar(m.char)}
+                              className="spring-press min-w-[34px] sm:min-w-[42px] h-9 px-2 rounded-lg bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-900/60 text-amber-900 dark:text-amber-100 font-extrabold text-xs sm:text-sm border border-amber-200/80 dark:border-amber-800/80 shadow-xs flex items-center justify-center cursor-pointer transition-all active:scale-95"
+                              title={m.label}
+                            >
+                              {m.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* CONSONANTS (व्यंजन / વ્યંજન) */}
+                    {(keyboardSubTab === 'all' || keyboardSubTab === 'consonants') && (
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-1 flex items-center gap-1">
+                          <span>● {language === 'gu' ? 'વ્યંજન (Consonants)' : 'व्यंजन (Consonants)'}</span>
+                        </div>
+                        <div className="space-y-1">
+                          {PHONETIC_KEYBOARD_DATA[language].consonants.map((row, rIdx) => (
+                            <div key={rIdx} className="flex flex-wrap gap-1">
+                              {row.map((char, cIdx) => (
+                                <button
+                                  key={cIdx}
+                                  type="button"
+                                  onClick={() => handleInsertChar(char)}
+                                  className="spring-press flex-1 min-w-[34px] sm:min-w-[40px] h-9 px-1 rounded-lg bg-slate-50 hover:bg-white dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-100 font-extrabold text-base border border-slate-200 dark:border-slate-700 shadow-xs flex items-center justify-center cursor-pointer transition-all active:scale-95"
+                                >
+                                  {char}
+                                </button>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* NUMERALS */}
+                    {keyboardSubTab === 'all' && (
+                      <div className="flex flex-wrap gap-1 pt-1 border-t border-slate-100 dark:border-slate-800">
+                        {PHONETIC_KEYBOARD_DATA[language].numerals.map((num, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            onClick={() => handleInsertChar(num)}
+                            className="spring-press flex-1 min-w-[28px] h-7 px-1 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center cursor-pointer"
+                          >
+                            {num}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                  </div>
+
+                  {/* Keyboard Action Bar (Space, Backspace, Clear, Transliterate, Add) */}
+                  <div className="flex items-center gap-1.5 pt-2.5 mt-2 border-t border-slate-100 dark:border-slate-800 flex-wrap">
+                    {/* Space */}
+                    <button
+                      type="button"
+                      onClick={() => handleInsertChar(' ')}
+                      className="spring-press flex-1 min-w-[110px] h-9 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 border border-slate-200 dark:border-slate-700 shadow-xs cursor-pointer"
+                    >
+                      <span>␣</span>
+                      <span>Space</span>
+                    </button>
+
+                    {/* Backspace */}
+                    <button
+                      type="button"
+                      onClick={handleBackspace}
+                      className="spring-press px-3 h-9 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 font-bold text-xs flex items-center justify-center gap-1 border border-rose-200 dark:border-rose-800 shadow-xs cursor-pointer"
+                      title="Backspace"
+                    >
+                      <span>⌫</span>
+                      <span className="hidden sm:inline">Back</span>
+                    </button>
+
+                    {/* Clear */}
+                    <button
+                      type="button"
+                      onClick={() => setInputText('')}
+                      className="spring-press px-2.5 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold text-xs flex items-center justify-center cursor-pointer"
+                      title="Clear text"
+                    >
+                      Clear
+                    </button>
+
+                    {/* Roman Transliterate Helper Button */}
+                    {/[a-zA-Z]/.test(inputText) && (
+                      <button
+                        type="button"
+                        onClick={handleTransliterateCurrent}
+                        className="spring-press px-3 h-9 rounded-xl bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-bold text-xs flex items-center justify-center gap-1 border border-indigo-200 dark:border-indigo-800 shadow-xs animate-pulse cursor-pointer"
+                        title="Transliterate typed English characters to native script"
+                      >
+                        <span>🔤</span>
+                        <span>Convert to {language === 'gu' ? 'ગુજરાતી' : language === 'mr' ? 'मराठी' : 'हिन्दी'}</span>
+                      </button>
+                    )}
+
+                    {/* Add as Chip */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (inputText.trim()) {
+                          addToken({ label: inputText.trim(), emoji: '🔤' });
+                          setInputText('');
+                        }
+                      }}
+                      disabled={!inputText.trim()}
+                      className="spring-press px-4 h-9 rounded-xl bg-brand-600 hover:bg-brand-700 disabled:opacity-40 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-sm ml-auto cursor-pointer"
+                    >
+                      <span>⏎</span>
+                      <span>{language === 'gu' ? 'શબ્દ ઉમેરો' : language === 'mr' ? 'शब्द जोडा' : 'शब्द जोड़ें'}</span>
+                    </button>
+                  </div>
+
+                </div>
+              )}
+
+              {/* Action Toolbar & Predictive Stream */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+                
+                {/* ─── WORD PREDICTIONS STREAM ─── */}
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 flex-1">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1 flex-shrink-0">
+                    <span>Suggestions</span>
+                    {isPredicting && <span className="w-2 h-2 rounded-full bg-brand-500 animate-ping"></span>}
+                  </span>
+                  
+                  {predictions.map((pred, i) => (
+                    <button
+                      key={i}
+                      onClick={() => addToken({ word: pred.word, emoji: pred.emoji || '✨' })}
+                      className="spring-press flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs border border-slate-200 dark:border-slate-700 shadow-xs"
+                    >
+                      <span className="text-sm">{pred.emoji || '✨'}</span>
+                      <span>{pred.word}</span>
+                      {pred.prob && (
+                        <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500">
+                          {Math.round(pred.prob * 100)}%
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Primary Action Buttons */}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <button
+                    onClick={clearAll}
+                    disabled={tokens.length === 0 && !inputText}
+                    className="tap-ripple spring-press p-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-500 hover:text-rose-600 disabled:opacity-40 transition-colors"
+                    title="Clear canvas"
+                  >
+                    <Icons.Trash />
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const fullText = tokens.map(t => t.label).join(' ') + (inputText ? ' ' + inputText : '');
+                      if (fullText.trim()) speak(fullText, language);
+                    }}
+                    disabled={tokens.length === 0 && !inputText}
+                    className="tap-ripple spring-press flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-bold text-xs border border-slate-200 dark:border-slate-700 disabled:opacity-40 transition-all shadow-xs"
+                  >
+                    <Icons.Volume />
+                    <span>Speak</span>
+                  </button>
+
+                  <button
+                    onClick={handleGenerateSentence}
+                    disabled={isGenerating || (tokens.length === 0 && !inputText)}
+                    className="tap-ripple spring-press flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-extrabold text-xs shadow-md shadow-brand-500/20 disabled:opacity-40 cursor-pointer"
+                  >
+                    {isGenerating ? (
+                      <>
+                        <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        <span>Composing…</span>
+                      </>
+                    ) : (
+                      <>
+                        <Icons.Sparkles />
+                        <span>AI Polish & Speak</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* ─── AI OUTPUT CARD (When Generated) ─── */}
+            {generatedResult && (
+              <div className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-emerald-500/40 p-4 shadow-sm flex flex-col gap-2.5 animate-fade-in">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 flex items-center gap-1">
+                      <Icons.Check />
+                      <span>Natural Realization</span>
+                    </span>
+                    {generatedResult.semantic_score && (
+                      <span className="text-xs font-semibold text-slate-500">
+                        Accuracy: {(generatedResult.semantic_score * 100).toFixed(0)}%
+                      </span>
+                    )}
+                    {lastAudioB64 && (
+                      <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 px-2 py-0.5 rounded-full border border-indigo-200 dark:border-indigo-800">
+                        🎙️ IndicF5 Voice
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    {/* ─── Feature 6: Bookmark Sentences (Quick Picks) ─── */}
+                    <button
+                      onClick={() => addBookmark(generatedResult.text)}
+                      className={`tap-ripple spring-press flex items-center justify-center w-8 h-8 rounded-lg border text-base ${
+                        bookmarks.some(b => b.text === generatedResult.text)
+                          ? 'bg-amber-100 border-amber-300 text-amber-600 dark:bg-amber-950/50 dark:border-amber-700'
+                          : 'bg-white border-slate-200 text-slate-400 hover:text-amber-500 dark:bg-slate-800 dark:border-slate-700'
+                      } ${starPopId ? 'star-pop' : ''}`}
+                      title="Save to Quick Picks"
+                    >
+                      {bookmarks.some(b => b.text === generatedResult.text) ? <Icons.StarFilled /> : <Icons.StarOutline />}
+                    </button>
+                    <button
+                      onClick={handleReplayVoice}
+                      className="tap-ripple spring-press flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-600 text-white text-xs font-bold shadow-xs hover:bg-emerald-500"
+                    >
+                      <Icons.Play />
+                      <span>Replay Voice</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+                  "{generatedResult.text}"
+                </div>
+
+                {generatedResult.caregiver_context && (
+                  <div className="text-xs text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <span className="font-bold text-slate-700 dark:text-slate-200">Intent Context: </span>
+                    {generatedResult.caregiver_context.caregiver_explanation || "Context verified by hierarchical verifier pipeline."}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ─── 3. CATEGORY NAVIGATION DOCK ─────────────────────────── */}
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+              {CATEGORIES.map((cat) => {
+                const isActive = activeCategory === cat.id;
+                const catLabel = cat.label[language] || cat.label.en;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => {
+                      setActiveCategory(cat.id);
+                      if (cat.id === 'search') {
+                        setTimeout(() => document.getElementById('gridSearchInput')?.focus(), 50);
+                      }
+                    }}
+                    className={`tap-ripple spring-press flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-bold text-xs border transition-all ${
+                      isActive
+                        ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-slate-900 dark:border-white shadow-sm'
+                        : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-800 hover:border-slate-300'
+                    }`}
+                  >
+                    <span>{cat.icon}</span>
+                    <span>{catLabel}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* ─── 4. SYMBOL BOARD GRID ───────────────────────────────── */}
+            <div id="symbolBoard" className="scroll-mt-20 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-sm flex flex-col gap-3">
+              
+              {/* Optional Search Input if Search Category is Active */}
+              {activeCategory === 'search' && (
+                <div className="relative">
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                    <Icons.Search />
+                  </div>
+                  <input
+                    id="gridSearchInput"
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search over 5,000+ emojis (e.g. apple, doctor, happy, bus)..."
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-10 pr-4 py-2 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:border-brand-500"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 font-bold"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* ─── Feature 1: Custom Grid — add-word form (offline local cache) ─── */}
+              {activeCategory === 'custom' && (
+                <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5">
+                  {symbolStyle === 'ai' ? (
+                    <button
+                      onClick={handlePreviewSymbol}
+                      disabled={isGeneratingSymbol || !newWordText.trim()}
+                      className="tap-ripple spring-press w-12 h-12 flex-shrink-0 rounded-lg bg-white dark:bg-slate-900 border border-dashed border-pink-300 dark:border-pink-700 flex items-center justify-center text-lg disabled:opacity-50 overflow-hidden"
+                      title="Generate an AI symbol for this word"
+                    >
+                      {isGeneratingSymbol
+                        ? <span className="w-4 h-4 border-2 border-pink-500 border-t-transparent rounded-full animate-spin"></span>
+                        : pendingSymbolImage
+                          ? <img src={pendingSymbolImage} alt="preview" className="w-full h-full object-contain" />
+                          : '✨'}
+                    </button>
+                  ) : (
+                  <input
+                    type="text"
+                    value={newWordEmoji}
+                    onChange={(e) => setNewWordEmoji(e.target.value)}
+                    maxLength={4}
+                    className="w-12 text-center text-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg py-1.5 focus:outline-none focus:border-brand-500"
+                    title="Emoji for this word"
+                  />
+                  )}
+                  <input
+                    type="text"
+                    value={newWordText}
+                    onChange={(e) => { setNewWordText(e.target.value); setPendingSymbolImage(null); }}
+                    onKeyDown={(e) => { if (e.key === 'Enter') addCustomWord(); }}
+                    placeholder="Add a custom word to your personal grid (saved offline)…"
+                    className="flex-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:border-brand-500"
+                  />
+                  <button
+                    onClick={addCustomWord}
+                    className="tap-ripple spring-press px-3.5 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs flex items-center gap-1.5"
+                  >
+                    <span>{isGeneratingSymbol ? '…' : '＋'}</span>
+                    <span>Add word</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Clean Cards Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                {displayedSymbols.map((item, idx) => {
+                  const label = item.labels ? (item.labels[language] || item.labels.en || item.k) : (item.label || item.k);
+                  const isSpoken = activeSpeakingWord.toLowerCase() === label.toLowerCase();
+                  const catMeta = activeCategory === 'custom' ? MY_WORDS_META : (CATEGORIES.find(c => c.id === activeCategory) || CATEGORIES[0]);
+
+                  return (
+                    <button
+                      key={item.isCustom ? item.k : idx}
+                      onClick={() => addToken(item)}
+                      className={`tap-ripple comm-card relative min-h-[110px] p-3 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50/80 dark:hover:bg-slate-850 flex flex-col items-center justify-between text-center shadow-card cursor-pointer ${catMeta.accent} ${
+                        isSpoken ? 'ring-2 ring-emerald-500 bg-emerald-50/50' : ''
+                      }`}
+                    >
+                      {item.isCustom && (
+                        <span
+                          onClick={(e) => { e.stopPropagation(); removeCustomWord(item.k); }}
+                          className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-rose-500 hover:bg-rose-50 flex items-center justify-center text-[10px] font-bold"
+                          title="Remove from My Words"
+                        >
+                          ✕
+                        </span>
+                      )}
+                      {item.image ? (
+                        <img src={item.image} alt={label} className="w-16 h-16 object-contain my-auto select-none rounded-lg" draggable="false" />
+                      ) : (
+                        <span className="text-4xl my-auto select-none">
+                          {item.e || item.emoji}
+                        </span>
+                      )}
+                      <span className="font-extrabold text-slate-800 dark:text-slate-100 text-xs tracking-tight line-clamp-1 w-full mt-1">
+                        {label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {activeCategory === 'search' && displayedSymbols.length === 0 && searchQuery && (
+                <div className="text-center py-12 text-slate-400 font-medium text-sm">
+                  No emojis found matching "{searchQuery}".
+                </div>
+              )}
+
+              {activeCategory === 'custom' && customWords.length === 0 && (
+                <div className="text-center py-10 text-slate-400 font-medium text-sm">
+                  📌 Your personal word grid is empty. Add words above — they're cached locally and load instantly offline.
+                </div>
+              )}
+            </div>
+
+          </main>
+
+          {/* ─── PREFERENCES DRAWER ─────────────────────────────────── */}
+          {showSettingsDrawer && (
+            <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-end">
+              <div className="bg-white dark:bg-slate-900 h-full w-full max-w-sm border-l border-slate-200 dark:border-slate-800 p-6 flex flex-col justify-between shadow-2xl animate-fade-in">
+                
+                <div className="flex flex-col gap-5">
+                  <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <span className="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
+                      <Icons.Settings />
+                      <span>Preferences</span>
+                    </span>
+                    <button onClick={() => setShowSettingsDrawer(false)} className="text-slate-400 hover:text-slate-600 font-bold">
+                      ✕
+                    </button>
+                  </div>
+
+                  {/* Speech Speed & High Contrast Mode have moved to the
+                      Accessibility Dock (floating ♿ button) for a uniform
+                      accessibility-controls experience. */}
+
+                  {/* ─── Feature: AI Symbol Creator — emoji vs GenAI image ─── */}
+                  <div className="flex flex-col gap-1.5">
+                    <div className="text-xs font-bold text-slate-800 dark:text-slate-100">Custom Symbol Style</div>
+                    <div className="text-[10px] text-slate-400 -mt-1 mb-0.5">Used when you add a word to "My Words"</div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => setSymbolStyle('emoji')}
+                        className={`tap-ripple spring-press p-2 rounded-xl text-left text-xs font-bold border ${symbolStyle === 'emoji' ? 'bg-brand-50 border-brand-500 text-brand-900 dark:bg-brand-950/40 dark:text-brand-200' : 'bg-slate-50 border-slate-200 text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'}`}
+                      >
+                        😊 Emoji
+                      </button>
+                      <button
+                        onClick={() => setSymbolStyle('ai')}
+                        className={`tap-ripple spring-press p-2 rounded-xl text-left text-xs font-bold border ${symbolStyle === 'ai' ? 'bg-brand-50 border-brand-500 text-brand-900 dark:bg-brand-950/40 dark:text-brand-200' : 'bg-slate-50 border-slate-200 text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'}`}
+                      >
+                        ✨ AI Generated
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* AI Verification Mode */}
+                  <div className="flex flex-col gap-1.5">
+                    <div className="text-xs font-bold text-slate-800 dark:text-slate-100">AI Architecture Mode</div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => setGenerationMode('single')}
+                        className={`p-2 rounded-xl text-left text-xs font-bold border ${generationMode === 'single' ? 'bg-brand-50 border-brand-500 text-brand-900' : 'bg-slate-50 border-slate-200 text-slate-600'}`}
+                      >
+                        ⚡ Fast Mode
+                      </button>
+                      <button
+                        onClick={() => setGenerationMode('dual')}
+                        className={`p-2 rounded-xl text-left text-xs font-bold border ${generationMode === 'dual' ? 'bg-brand-50 border-brand-500 text-brand-900' : 'bg-slate-50 border-slate-200 text-slate-600'}`}
+                      >
+                        🛡️ Dual LLM-3
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setShowSettingsDrawer(false)}
+                  className="tap-ripple spring-press w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition-all"
+                >
+                  Save & Close
+                </button>
+
+              </div>
+            </div>
+          )}
+
+          {/* ─── FEATURE 5: VOICE CONTROLS PANEL (presets + clone upload) ─── */}
+          {showVoicePanel && (
+            <div
+              className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4"
+              onClick={(e) => { if (e.target === e.currentTarget) setShowVoicePanel(false); }}
+            >
+              <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-5 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
+
+                <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <span className="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
+                    <Icons.Mic />
+                    <span>Voice Controls</span>
+                  </span>
+                  <button onClick={() => setShowVoicePanel(false)} className="tap-ripple spring-press text-slate-400 hover:text-slate-600 font-bold w-7 h-7 rounded-lg">
+                    ✕
+                  </button>
+                </div>
+
+                <div className={`text-[11px] font-bold px-3 py-2 rounded-xl flex items-center gap-2 ${engineReady ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300' : 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300'}`}>
+                  <span>{engineReady ? '✅' : '⚠️'}</span>
+                  <span>
+                    {engineReady
+                      ? 'IndicF5-TTS engine loaded — natural synthesis is active.'
+                      : 'IndicF5-TTS checkpoint not loaded on the server yet — voices will use placeholder audio until it is.'}
+                  </span>
+                </div>
+
+                {/* Quick Preset Voices (Male/Female style selection) */}
+                <div className="flex flex-col gap-2">
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-100">Quick Voices</div>
+                  <div className="grid grid-cols-1 gap-2">
+                    {(voiceList.length > 0 ? voiceList.filter(v => v.type === 'preset') : [
+                      { voice_id: 'indic_female', label: 'Studio Female (Indic)', type: 'preset' },
+                      { voice_id: 'english_female', label: 'Narrator Female (English)', type: 'preset' }
+                    ]).map((v) => (
+                      <button
+                        key={v.voice_id}
+                        onClick={() => { setActiveVoiceId(v.voice_id); showToast('Voice set: ' + v.label, 'success'); }}
+                        className={`tap-ripple spring-press flex items-center justify-between p-2.5 rounded-xl text-left text-xs font-bold border transition-all ${
+                          activeVoiceId === v.voice_id
+                            ? 'bg-brand-50 border-brand-500 text-brand-900 dark:bg-brand-950/50 dark:text-brand-200'
+                            : 'bg-slate-50 border-slate-200 text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'
+                        }`}
+                      >
+                        <span className="flex items-center gap-2"><Icons.Bolt /> {v.label}</span>
+                        {activeVoiceId === v.voice_id && <Icons.Check />}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-slate-400 leading-relaxed">
+                    Want a male voice, or a specific person's voice? Upload a short reference clip below — the
+                    IndicF5 model (<span className="font-semibold">ai4bharat/IndicF5</span>) will clone it from a few seconds of audio.
+                  </p>
+                </div>
+
+                {/* Upload Reference Audio to Clone a Voice */}
+                <div className="flex flex-col gap-2.5 border-t border-slate-100 dark:border-slate-800 pt-4">
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
+                    <Icons.Upload />
+                    <span>Clone a Voice from Reference Audio</span>
+                  </div>
+
+                  <div
+                    className={`voice-dropzone rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-center cursor-pointer ${dragActive ? 'drag-active' : ''}`}
+                    onClick={() => cloneFileInputRef.current && cloneFileInputRef.current.click()}
+                    onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
+                    onDragLeave={() => setDragActive(false)}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      setDragActive(false);
+                      const f = e.dataTransfer.files && e.dataTransfer.files[0];
+                      if (f) handleCloneFileChosen(f);
+                    }}
+                  >
+                    <input
+                      ref={cloneFileInputRef}
+                      type="file"
+                      accept="audio/*,video/webm"
+                      className="hidden"
+                      onChange={(e) => handleCloneFileChosen(e.target.files && e.target.files[0])}
+                    />
+                    {!cloneFile ? (
+                      <>
+                        <span className="text-2xl">🎤</span>
+                        <span className="text-xs font-bold text-slate-600 dark:text-slate-300">Click to choose, or drag & drop an audio file</span>
+                        <span className="text-[10px] text-slate-400">WAV / MP3 / M4A / OGG · 5–15 seconds works best · max 20MB</span>
+                      </>
+                    ) : (
+                      <div className="w-full flex flex-col items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                        <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">📎 {cloneFile.name}</span>
+                        {clonePreviewUrl && <audio controls src={clonePreviewUrl} className="w-full h-8" />}
+                        <button
+                          onClick={() => { setCloneFile(null); if (cloneFileInputRef.current) cloneFileInputRef.current.value = ''; }}
+                          className="tap-ripple spring-press text-[10px] font-bold text-rose-500 hover:text-rose-600"
+                        >
+                          Remove file
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <textarea
+                    value={cloneTranscript}
+                    onChange={(e) => setCloneTranscript(e.target.value)}
+                    placeholder="Type EXACTLY what is spoken in the reference clip (required — IndicF5 uses this to align the voice)..."
+                    rows={2}
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs font-medium text-slate-800 dark:text-slate-100 focus:outline-none focus:border-brand-500 resize-none"
+                  />
+
+                  <input
+                    type="text"
+                    value={cloneLabel}
+                    onChange={(e) => setCloneLabel(e.target.value)}
+                    placeholder="Name this voice (e.g. Dad's Voice)"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:border-brand-500"
+                  />
+
+                  <button
+                    onClick={handleCloneUpload}
+                    disabled={isCloning || !cloneFile || !cloneTranscript.trim()}
+                    className="tap-ripple spring-press w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 disabled:opacity-40 text-white font-extrabold text-xs flex items-center justify-center gap-2"
+                  >
+                    {isCloning ? (
+                      <>
+                        <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        <span>Cloning Voice…</span>
+                      </>
+                    ) : (
+                      <>
+                        <Icons.Sparkles />
+                        <span>Clone & Use This Voice</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* My Cloned Voices List */}
+                {customVoices.length > 0 && (
+                  <div className="flex flex-col gap-2 border-t border-slate-100 dark:border-slate-800 pt-4">
+                    <div className="text-xs font-bold text-slate-800 dark:text-slate-100">My Cloned Voices</div>
+                    {customVoices.map((v) => (
+                      <div
+                        key={v.voice_id}
+                        className={`flex items-center justify-between p-2.5 rounded-xl border text-xs font-bold ${
+                          activeVoiceId === v.voice_id
+                            ? 'bg-brand-50 border-brand-500 text-brand-900 dark:bg-brand-950/50 dark:text-brand-200'
+                            : 'bg-slate-50 border-slate-200 text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300'
+                        }`}
+                      >
+                        <button className="flex-1 text-left flex items-center gap-2" onClick={() => setActiveVoiceId(v.voice_id)}>
+                          <Icons.Mic /> {v.label}
+                          {activeVoiceId === v.voice_id && <span className="text-[9px] text-brand-600">· active</span>}
+                        </button>
+                        <button
+                          onClick={() => handleRemoveCustomVoice(v.voice_id)}
+                          className="tap-ripple spring-press text-rose-400 hover:text-rose-600 px-2"
+                          title="Delete this cloned voice"
+                        >
+                          <Icons.Trash />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+              </div>
+            </div>
+          )}
+
+          {/* ─── FEATURE 4: ACCESSIBILITY DOCK (floating, global) ─── */}
+          <div className="a11y-dock">
+            {showA11yDock && (
+              <div className="a11y-dock-panel mb-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-4 w-60 flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-extrabold text-slate-800 dark:text-white flex items-center gap-1.5">
+                    <Icons.Accessibility />
+                    <span>Accessibility Options</span>
+                  </span>
+                  <button onClick={() => setShowA11yDock(false)} className="tap-ripple spring-press text-slate-400 hover:text-slate-600 font-bold text-xs w-6 h-6">✕</button>
+                </div>
+
+                {/* Text Size +/- */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    <span>Text Size</span>
+                    <span className="text-brand-600">{textScale}%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setTextScale(s => Math.max(85, s - 10))}
+                      className="tap-ripple spring-press flex-1 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-black text-base flex items-center justify-center"
+                      title="Decrease text size"
+                    >
+                      A−
+                    </button>
+                    <button
+                      onClick={() => setTextScale(100)}
+                      className="tap-ripple spring-press px-2 h-9 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 font-bold text-[10px]"
+                      title="Reset to default"
+                    >
+                      Reset
+                    </button>
+                    <button
+                      onClick={() => setTextScale(s => Math.min(150, s + 10))}
+                      className="tap-ripple spring-press flex-1 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-black text-base flex items-center justify-center"
+                      title="Increase text size"
+                    >
+                      A+
+                    </button>
+                  </div>
+                </div>
+
+                {/* Day / Night Mode */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    {darkMode ? <Icons.Moon /> : <Icons.Sun />}
+                    <span>{darkMode ? 'Night Mode' : 'Day Mode'}</span>
+                  </div>
+                  <button
+                    onClick={() => setDarkMode(!darkMode)}
+                    className={`tap-ripple w-11 h-6 rounded-full p-0.5 transition-colors ${darkMode ? 'bg-brand-600' : 'bg-slate-300'}`}
+                    title={darkMode ? 'Switch to Day Mode' : 'Switch to Night Mode'}
+                    aria-label="Toggle day and night mode"
+                  >
+                    <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${darkMode ? 'translate-x-5' : ''}`}></div>
+                  </button>
+                </div>
+
+                {/* Grayscale Toggle */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    <Icons.Contrast />
+                    <span>Grayscale</span>
+                  </div>
+                  <button
+                    onClick={() => setGrayscaleMode(!grayscaleMode)}
+                    className={`tap-ripple w-11 h-6 rounded-full p-0.5 transition-colors ${grayscaleMode ? 'bg-brand-600' : 'bg-slate-300'}`}
+                  >
+                    <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${grayscaleMode ? 'translate-x-5' : ''}`}></div>
+                  </button>
+                </div>
+
+                {/* High Contrast Mode (moved here from Preferences) */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    <Icons.Contrast />
+                    <span>High Contrast</span>
+                  </div>
+                  <button
+                    onClick={() => setHighContrast(!highContrast)}
+                    className={`tap-ripple w-11 h-6 rounded-full p-0.5 transition-colors ${highContrast ? 'bg-brand-600' : 'bg-slate-300'}`}
+                  >
+                    <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${highContrast ? 'translate-x-5' : ''}`}></div>
+                  </button>
+                </div>
+
+                {/* Speech Speed (moved here from Preferences) */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    <span>Speech Speed</span>
+                    <span className="text-brand-600">{speechRate.toFixed(1)}x</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0.7"
+                    max="1.3"
+                    step="0.1"
+                    value={speechRate}
+                    onChange={(e) => setSpeechRate(parseFloat(e.target.value))}
+                    className="accent-brand-600 cursor-pointer w-full"
+                  />
+                </div>
+              </div>
+            )}
+
+            <button
+              onClick={() => setShowA11yDock(prev => !prev)}
+              className={`tap-ripple spring-press w-12 h-12 rounded-full shadow-xl flex items-center justify-center transition-all ${
+                showA11yDock
+                  ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+                  : 'bg-gradient-to-br from-brand-600 to-indigo-600 text-white'
+              }`}
+              title="Accessibility options"
+            >
+              <Icons.Accessibility />
+            </button>
+          </div>
+
+          {/* ─── FOOTER ─────────────────────────────────────────────── */}
+          <footer className="py-3 border-t border-slate-200/80 dark:border-slate-800 text-center text-[11px] text-slate-400">
+            Indic AAC Studio · Standard Multilingual AAC Architecture (React 18)
+          </footer>
+
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

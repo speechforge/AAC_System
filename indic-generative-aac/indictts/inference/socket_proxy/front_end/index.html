@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <!-- <link href="dist/output.css" rel="stylesheet"> -->
+    <script defer src="https://use.fontawesome.com/6da64fcf5b.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app">
+
+        <nav class="navbar is-orange">
+        </nav>
+
+        <section class="section">
+            <div class="container">
+                <h1 class="title is-1">
+                    <span class="orange-color">AI4Bharat</span> Text to Speech <span class="tag is-warning">Beta</span>
+                </h1>
+                <p class="subtitle">
+                    <strong>TTS</strong> for Indian Languages!
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+
+                <div v-if="process">
+                    <progress class="progress is-small is-warning" max="100">15%</progress>
+                </div>
+
+                <br>
+
+                <h1 class="title is-4">Input</h1>
+
+                <div class="select is-link">
+                    <select id="option-language">
+                        <option value="as">Assamese - অসমীয়া</option>
+                        <option value="bn">Bangla - বাংলা</option>
+                        <option value="brx">Boro - बड़ो</option>
+                        <option value="gu">Gujarati - ગુજરાતી</option>
+                        <option value="hi">Hindi - हिंदी</option>
+                        <option value="kn">Kannada - ಕನ್ನಡ</option>
+                        <option value="ml">Malayalam - മലയാളം</option>
+                        <option value="mni">Manipuri - মিতৈলোন</option>
+                        <option value="mr">Marathi - मराठी</option>
+                        <option value="or">Oriya - ଓଡ଼ିଆ</option>
+                        <option value="raj">Rajasthani - राजस्थानी</option>
+                        <option value="ta">Tamil - தமிழ்</option>
+                        <option value="te">Telugu - తెలుగు</option>
+                    </select>
+                </div>
+
+                <div class="select is-link">
+                    <select id="option-speaker">
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                    </select>
+                </div>
+
+                <br><br>
+
+                <textarea id="transcript" class="textarea is-link is-large"
+                    placeholder="">{{ transcription }}</textarea>
+
+                <br><br>
+
+                <div class="file is-centered is-medium has-name is-boxed" id="text_submit">
+                    <label class="file-label" style="align-items: center">
+                        <input class="file-input" type="submit" v-on:click="handleText">
+                        <span class="file-cta is-orange">
+                            <span class="file-label">
+                                Convert
+                            </span>
+                        </span>
+                    </label>
+                </div>
+
+                <br><br>
+
+                <h1 class="title is-4">Output</h1>
+
+                <audio id="audio-output" controls style="display: none">
+                    <source src="" type="audio/wav">
+                    Your browser does not support the audio element.
+                </audio>
+
+            </div>
+        </section>
+
+
+    </div>
+</body>
+
+
+<script src="node_modules/socket.io/client-dist/socket.io.js"></script>
+<script src="main.js"></script>
+<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!',
+            file_message: 'No file uploaded',
+            picked: 'Testing',
+            transcription: '',
+            statusClass: 'is-primary',
+            recordStatusClass: 'is-link',
+            process: false,
+            record: 'Record',
+            isRecording: false,
+            rec: null,
+            imageSource: 'https://gist.githubusercontent.com/bietkul/20f702276adff150f3cc4502254665d2/raw/02a339636df69878b48608468f4f25333d3ef8c9/mic.gif',
+            reader: new FileReader(),
+            type: 'text',
+            number_mode: false
+        },
+        methods: {
+            // handleFileUpload: function () {
+            //     console.log(this.$refs.file.files)
+            //     this.file_message = this.$refs.file.files[0].name;
+            //     console.log(this.$refs.file.files[0])
+            //     this.message = 'Calling from same function!';
+            //     this.submitFile();
+            // },
+            handleText: function () {
+                this.statusClass = 'is-warning';
+                this.transcription = 'Processing..';
+                this.process = true;
+                var transcript = document.getElementById("transcript");
+                var language = document.getElementById("option-language").value
+                var speaker = document.getElementById("option-speaker").value
+
+                // this.request = {
+                //     "language": language,
+                //     "text": transcript.value,
+                //     "speaker": speaker
+                // };
+                this.request = {
+                    "input": [
+                        {
+                            "source": transcript.value,
+                        }
+                    ],
+                    "config": {
+                        "gender": speaker,
+                        "language": {
+                            "sourceLanguage": language
+                        }
+                    }
+                }
+                /*
+                Make the request to the POST /single-file URL
+                */
+                // console.log(this.request)
+                socket_tts.emit('infer', this.request, (response) => {
+                    if (response["audio"]) {
+                        this.statusClass = 'is-success'
+                        this.statusText = 'Upload text'
+                        this.process = false
+                        let arrayString = 'data:audio/wav;base64,' + response["audio"][0]["audioContent"]
+                        console.log(arrayString)
+                        // let arrayBuffer = atob(arrayString)
+                        // console.log(arrayBuffer)
+                        // const blob = new Blob([arrayBuffer], { type: "audio/wav; codecs=MS_PCM" });
+                        // const url = window.URL.createObjectURL(blob);
+                        audioElement = document.getElementById("audio-output")
+                        audioElement.src = arrayString;
+                        audioElement.style.display = 'block'
+                    }
+                    else {
+                        // console.log("error")
+                        transcript.value = 'Error'
+                        this.statusClass = 'is-danger'
+                        this.statusText = 'Upload text'
+                        this.transcription = 'Please check console.'
+                        this.process = false
+                    }
+                })
+            },
+
+        }
+    })
+</script>
+
+
+</html>

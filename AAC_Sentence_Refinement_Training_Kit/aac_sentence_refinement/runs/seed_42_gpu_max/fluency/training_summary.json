@@ -1,0 +1,7 @@
+{
+  "completed_steps": 500,
+  "best_validation_loss": 0.1097187766047124,
+  "elapsed_this_invocation_s": 88.60829459794331,
+  "peak_allocated_vram_gib": 2.588508129119873,
+  "output": "/home/linux/Documents/AACsystem/AAC_System-jaydeep/AAC_Sentence_Refinement_Training_Kit/aac_sentence_refinement/runs/seed_42_gpu_max/fluency"
+}
