@@ -1,0 +1,12 @@
+aksharamukha==1.9.7
+translators
+num2words
+indic-numtowords
+nemo-text-processing
+pyenchant
+nltk
+regex
+
+ffmpeg-python
+librosa
+soundfile
