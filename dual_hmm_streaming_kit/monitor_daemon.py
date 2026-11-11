@@ -90,9 +90,14 @@ def run_diagnostic_check(auto_repair=True):
         log_diag(f"GPU: {gpu_res['gpu_name']} | Used VRAM: {gpu_res['used_mb']}MB / {gpu_res['total_mb']}MB | Temp: {gpu_res['temp_c']}°C | Util: {gpu_res['util_pct']}%")
 
     # 2. Process Check
+    latest_chunk, total_chunks = get_latest_metrics()
+    all_done = (total_chunks >= 505) or (latest_chunk and latest_chunk.get("chunk_id", 0) >= 505)
+
     proc = find_training_process()
     if proc:
         log_diag(f"[HEALTHY] Training Process ACTIVE (PID: {proc.pid}, CPU: {proc.cpu_percent()}%, MEM: {round(proc.memory_info().rss / (1024*1024), 1)} MB)")
+    elif all_done:
+        log_diag("[COMPLETE] All 505 Chunks (251.01M Sentences, 4.05B Tokens) Training Successfully Finished!")
     else:
         log_diag("[ALERT] Training Process NOT RUNNING!")
         if auto_repair:

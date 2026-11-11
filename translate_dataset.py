@@ -115,8 +115,8 @@ class AACTranslator:
 
 def main():
     parser = argparse.ArgumentParser(description="Translate English AAC dataset to Hindi")
-    parser.add_argument("--input_dir", default="/media/linux/ShreejiPers1/Future_Conference_Works/aac_system_demo_track/english_AAC_Dataset")
-    parser.add_argument("--output_dir", default="/media/linux/ShreejiPers1/Future_Conference_Works/aac_system_demo_track/hindi_AAC_Dataset")
+    parser.add_argument("--input_dir", default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "english_AAC_Dataset"))
+    parser.add_argument("--output_dir", default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "hindi_AAC_Dataset"))
     parser.add_argument("--pattern", default="*augmented.jsonl", help="Pattern to match input jsonl files")
     parser.add_argument("--max_lines", type=int, default=None, help="Limit number of lines for testing")
     parser.add_argument("--batch_size", type=int, default=16, help="Inference batch size")

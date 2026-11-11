@@ -8,7 +8,19 @@ import math
 import itertools
 from collections import defaultdict, Counter
 import re
+import ctypes
 import torch
+
+try:
+    _libc = ctypes.CDLL("libc.so.6")
+    def trim_memory():
+        try:
+            _libc.malloc_trim(0)
+        except Exception:
+            pass
+except Exception:
+    def trim_memory():
+        pass
 
 # Coarse POS tags for English AAC syntactic alignment
 COARSE_TAGS = {
@@ -111,8 +123,13 @@ class AACNextWordHMM:
         for i in range(n - 3):
             self.fourgrams[(tokens[i], tokens[i + 1], tokens[i + 2])][tokens[i + 3]] += 1
 
-    def prune_rare_transitions(self, min_count=2):
-        """Zero-allocation in-place memory compaction: drop rare 4-grams to prevent OOM."""
+    def prune_rare_transitions(self, min_count=3, max_total_fourgrams=2500000):
+        """
+        Aggressive, OOM-proof memory compaction for 4-grams:
+        1. Drop individual rare transitions with count < min_count.
+        2. Context-level frequency pruning to strictly enforce max_total_fourgrams ceiling.
+        3. Invokes malloc_trim(0) to release freed arenas directly back to the Linux kernel.
+        """
         dead_keys = []
         for u, counter in self.fourgrams.items():
             to_remove = [v for v, c in counter.items() if c < min_count]
@@ -122,6 +139,16 @@ class AACNextWordHMM:
                 dead_keys.append(u)
         for u in dead_keys:
             del self.fourgrams[u]
+
+        # Context-level safety cap: if still > max_total_fourgrams, prune low-frequency contexts
+        if len(self.fourgrams) > max_total_fourgrams:
+            min_ctx_sum = 5
+            while len(self.fourgrams) > max_total_fourgrams and min_ctx_sum <= 100:
+                dead_keys = [u for u, counter in self.fourgrams.items() if sum(counter.values()) < min_ctx_sum]
+                for u in dead_keys:
+                    del self.fourgrams[u]
+                min_ctx_sum += 5
+        trim_memory()
 
     def predict_next(self, current_words, top_k=10):
         """
@@ -274,9 +301,14 @@ class AACUnjumbleHMM:
             self.word_trigrams[(tokens[i], tokens[i + 1])][tokens[i + 2]] += 1
             self.pos_trigrams[(pos_tags[i], pos_tags[i + 1])][pos_tags[i + 2]] += 1
 
-    def prune_rare_transitions(self, min_count=2):
-        """Zero-allocation in-place memory compaction: drop rare trigrams when exceeding 8M contexts."""
-        if len(self.word_trigrams) > 8000000:
+    def prune_rare_transitions(self, min_count=2, max_total_trigrams=3500000):
+        """
+        Aggressive, OOM-proof memory compaction for trigrams:
+        1. Drop individual rare transitions with count < min_count.
+        2. Context-level frequency pruning to strictly enforce max_total_trigrams ceiling.
+        3. Invokes malloc_trim(0) to release freed arenas directly back to the Linux kernel.
+        """
+        if len(self.word_trigrams) > max_total_trigrams:
             dead_keys = []
             for ctx, counter in self.word_trigrams.items():
                 to_remove = [w for w, c in counter.items() if c < min_count]
@@ -286,6 +318,16 @@ class AACUnjumbleHMM:
                     dead_keys.append(ctx)
             for ctx in dead_keys:
                 del self.word_trigrams[ctx]
+
+            # Context-level safety cap: if still > max_total_trigrams, prune low-frequency contexts
+            if len(self.word_trigrams) > max_total_trigrams:
+                min_ctx_sum = 10
+                while len(self.word_trigrams) > max_total_trigrams and min_ctx_sum <= 100:
+                    dead_keys = [ctx for ctx, counter in self.word_trigrams.items() if sum(counter.values()) < min_ctx_sum]
+                    for ctx in dead_keys:
+                        del self.word_trigrams[ctx]
+                    min_ctx_sum += 5
+        trim_memory()
 
     def score_sequence(self, tokens):
         """

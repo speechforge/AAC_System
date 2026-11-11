@@ -5,8 +5,9 @@ import pickle
 from collections import defaultdict, Counter
 import re
 
-DATASET_DIR = "/media/linux/ShreejiPers1/Future_Conference_Works/aac_system_demo_track/hindi_AAC_Dataset"
-OUTPUT_PATH = "/media/linux/ShreejiPers1/Future_Conference_Works/aac_system_demo_track/indic-generative-aac/backend/hmm_hindi.pkl"
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATASET_DIR = os.path.join(_SCRIPT_DIR, "hindi_AAC_Dataset")
+OUTPUT_PATH = os.path.join(_SCRIPT_DIR, "indic-generative-aac", "backend", "hmm_hindi.pkl")
 
 HINDI_SYMBOL_EMOJIS = {
     "माँ": "👩", "पापा": "👨", "दादी": "👵", "दादा": "👴",

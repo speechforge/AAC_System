@@ -13,8 +13,11 @@ An end-to-end Augmentative and Alternative Communication (AAC) system incorporat
   - **LLM-2 Refiner**: Refines and blends concepts.
   - **LLM-3 Verifier**: Strict authority hierarchy preserving semantic fidelity, negation, and preventing hallucinations.
   - **Deterministic Fallback**: Zero-hallucination rule-based fallback for speech reliability.
-- **N-Gram Predictive Text**:
-  - HMM Markov model (63,000+ bigram states for English, AAC-tuned model for Hindi) for real-time symbol suggestion.
+- **Infinity-Gram (∞-gram) Predictive Text**:
+  - Primary next-word engine (`backend/infinity_gram.py`): an arbitrary-depth suffix trie that matches context of *any* length (1, 2, 5, 8, 15+ words) with backoff smoothing, English / Hindi / code-mixed, with fast in-memory lookups and a small RAM footprint. Each suggestion reports the context order it matched.
+  - Falls back to the legacy fixed 3-/4-gram HMM Markov model (63,000+ bigram states for English, AAC-tuned model for Hindi) if the ∞-gram engine returns nothing.
+- **Dual HMM (HMM-1 next-word / HMM-2 un-jumble)**:
+  - `dual_hmm_streaming_kit/` trains and serves a next-word 4-gram model plus a syntactic *un-jumble* model that re-orders scrambled symbol selections into grammatical order (memory-safe streaming training with pruning and a monitor daemon).
 - **Speech Synthesis (TTS)**:
   - Powered by **IndicF5-TTS** (CFM DiT architecture with 24kHz Vocos neural vocoder) supporting zero-shot speaker adaptation across Indic languages and English.
 - **Accessible Web Frontend**:
@@ -32,6 +35,14 @@ An end-to-end Augmentative and Alternative Communication (AAC) system incorporat
 - **Accessibility Dock** (floating ♿ button): Text size (A−/A+), Day/Night mode, Grayscale, High Contrast and Speech Speed in one uniform panel.
 - **Button Animations**: Tactile press/ripple feedback on every button.
 - **Browser tab**: Custom ⚡ favicon and a clean "Indic AAC Studio" title.
+- **∞-gram Next-Word Shelf**: A dedicated prediction ribbon under the Sentence Canvas shows live next-word suggestions with probability, and an `∞-Ng` badge when a deep (4+ word) context was matched.
+- **1-Tap Quick Express**: A row of emergency/essential phrases (Help, Water, Bathroom, Pain, Food, Thank you, …) spoken instantly, localised for English, Hindi, Gujarati and Marathi.
+- **Un-Jumble**: Re-orders the words on the canvas into canonical grammatical order using the HMM-2 syntax model (`POST /api/unjumble`).
+- **Delete Last & Copy**: A dedicated backspace for the last symbol, and a one-tap *Copy* of the generated sentence.
+- **Universal Core Words row**: The core vocabulary stays one tap away on every category.
+- **Card Size / Touch Targets**: Compact · Standard · Large ♿ density, switchable from the category bar or Preferences, applied to emoji and AI-symbol cards alike, and remembered in the local cache.
+- **Speaking indicator**: The Sentence Canvas gets a green highlight while speech is playing.
+- **Offline-first transliteration**: Common Roman → Devanagari/Gujarati/Marathi words resolve from a built-in map with no network; Google Input Tools is only a fast-timeout fallback.
 
 ---
 
@@ -39,7 +50,7 @@ An end-to-end Augmentative and Alternative Communication (AAC) system incorporat
 
 ```
 ├── indic-generative-aac/        # Core Generative AAC application
-│   ├── backend/                 # FastAPI server (app.py), LLM pipeline (llm.py), TTS engine (tts.py), HMM (hmm.py)
+│   ├── backend/                 # FastAPI server (app.py), LLM pipeline (llm.py), TTS engine (tts.py), HMM (hmm.py), ∞-gram engine (infinity_gram.py)
 │   ├── frontend/                # Interactive Web UI (index.html, all_emojis.js)
 │   ├── evaluation/              # Benchmarks and evaluation scripts
 │   └── tests/                   # Unit and integration tests
@@ -48,7 +59,9 @@ An end-to-end Augmentative and Alternative Communication (AAC) system incorporat
 ├── hindi_AAC_Dataset/           # Hindi AAC dataset and translated pairs
 ├── IndicF5/                     # IndicF5 TTS module and reference voice prompts
 ├── AI4Bharat-Indic-TTS/         # AI4Bharat Indic-TTS configs and checkpoints utilities
-├── download_models.sh           # Script to download FastPitch and HiFi-GAN acoustic checkpoints
+├── dual_hmm_streaming_kit/      # Dual HMM (next-word + un-jumble) streaming trainer, models and monitor daemon
+├── aac_system_dashboard.html    # Standalone project status / architecture dashboard
+├── download_models.sh           # DEPRECATED no-op (legacy FastPitch checkpoints); see "Download Checkpoints"
 ├── run.sh                       # Quick launcher for local backend & frontend
 └── francis25_interspeech.pdf    # Baseline reference paper (Interspeech 2025)
 ```
@@ -70,13 +83,17 @@ Install backend dependencies:
 pip install fastapi uvicorn torch transformers scipy pydantic safetensors vocos
 ```
 
-### 2. Download Checkpoints
+### 2. Model Checkpoints
 
-Download required TTS model checkpoints:
-```bash
-chmod +x download_models.sh
-./download_models.sh
-```
+The active TTS engine is **IndicF5**. Its weights are not stored in git (`*.safetensors`, `checkpoint/` are ignored): place them at
+`AI4Bharat-Indic-TTS/checkpoint/` (see https://github.com/AI4Bharat/IndicF5), with reference prompts in `IndicF5/prompts/`.
+Without them the backend still runs and returns placeholder audio (mock mode).
+
+`download_models.sh` is **deprecated** — it targeted the legacy FastPitch checkpoints and now just prints a notice.
+
+The `*.pkl` HMM models under `dual_hmm_streaming_kit/models/` and `indic-generative-aac/backend/` are tracked with **Git LFS**
+(`git lfs install && git lfs pull`). If they are missing, the backend falls back to a small built-in vocabulary and the ∞-gram engine
+(which builds itself from the bundled AAC datasets in ~0.6 s).
 
 ### 3. Launch System
 
@@ -133,3 +150,7 @@ Open your browser and navigate to:
 | `POST /api/voice/clone` | Upload reference audio and transcript to clone a voice (IndicF5) |
 | `DELETE /api/voice/{voice_id}` | Remove a cloned voice |
 | `POST /api/generate_symbol` | Text-to-image AAC symbol (needs `OPENAI_API_KEY`) |
+| `POST /predict_next` | Next-word suggestions (∞-gram first, Markov fallback); each item includes `order` / `order_label` |
+| `POST /api/unjumble` | Re-order scrambled words with HMM-2 |
+| `GET /api/hmm_info` | Model sizes, plus `infinity_gram_enabled` / `infinity_gram_stats` |
+| `POST /api/transliterate` | Roman → Indic script (offline map first, Google Input Tools fallback; response includes `source`) |

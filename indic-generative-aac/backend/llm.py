@@ -380,7 +380,7 @@ class IndicLLM:
         raw, metrics = self._call_llm(
             [{"role": "system", "content": LLM3_SYSTEM_PROMPT},
              {"role": "user", "content": user_content}],
-            max_new_tokens=220, temperature=0.01
+            max_new_tokens=120, temperature=0.0
         )
 
         # Parse structured JSON decision
