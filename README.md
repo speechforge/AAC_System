@@ -1,156 +1,138 @@
-# Indic & English Generative AAC System (Demo Track)
+# Indic AAC Studio — final snapshot, 16 November 2026
 
-An end-to-end Augmentative and Alternative Communication (AAC) system incorporating hierarchical LLM verification, HMM next-symbol prediction, and high-fidelity zero-shot speech synthesis for Indic languages and English.
+This branch preserves the working AAC website accepted on 16 November 2026: the existing ivory-and-violet GUI, separate welcome/login pages, sentence canvas, real speech playback, and the backend-only Un-Jumble repair.
 
----
+**Saved branch:** `november_16_2026_branch`
 
-## 🌟 Key Features
+**Application:** `indic-generative-aac/`
 
-- **Multilingual AAC Vocabulary**:
-  - Structured AAC symbols, intents (*I WANT*, *DON'T WANT*, *I FEEL / SAY*, *I'M ASKING*), and categorised symbol grids for English, Hindi (हिन्दी), Gujarati (ગુજરાતી), and Marathi (मराठी).
-- **Hierarchical LLM Generation Pipeline**:
-  - **LLM-1 Realizer**: Realizes symbol selections into natural target sentences using `Qwen2.5-0.5B-Instruct`.
-  - **LLM-2 Refiner**: Refines and blends concepts.
-  - **LLM-3 Verifier**: Strict authority hierarchy preserving semantic fidelity, negation, and preventing hallucinations.
-  - **Deterministic Fallback**: Zero-hallucination rule-based fallback for speech reliability.
-- **Infinity-Gram (∞-gram) Predictive Text**:
-  - Primary next-word engine (`backend/infinity_gram.py`): an arbitrary-depth suffix trie that matches context of *any* length (1, 2, 5, 8, 15+ words) with backoff smoothing, English / Hindi / code-mixed, with fast in-memory lookups and a small RAM footprint. Each suggestion reports the context order it matched.
-  - Falls back to the legacy fixed 3-/4-gram HMM Markov model (63,000+ bigram states for English, AAC-tuned model for Hindi) if the ∞-gram engine returns nothing.
-- **Dual HMM (HMM-1 next-word / HMM-2 un-jumble)**:
-  - `dual_hmm_streaming_kit/` trains and serves a next-word 4-gram model plus a syntactic *un-jumble* model that re-orders scrambled symbol selections into grammatical order (memory-safe streaming training with pruning and a monitor daemon).
-- **Speech Synthesis (TTS)**:
-  - Powered by **IndicF5-TTS** (CFM DiT architecture with 24kHz Vocos neural vocoder) supporting zero-shot speaker adaptation across Indic languages and English.
-- **Accessible Web Frontend**:
-  - High-contrast, dyslexia-friendly layout with audio MOS rating, latency metrics, and caregiver intent breakdown.
+**Local URL:** <http://localhost:8000/>
 
-### ✨ Latest Web App Features (`indic-generative-aac/frontend/index.html`)
+“Final snapshot” identifies this saved version. It does not mean every item in the vNext research roadmap is complete. The active communicator is `frontend/index.html`; `index_new.html` and `vnext.jsx` are alternate/historical implementations.
 
-- **Google Sign-In + Cloud Sync (Firebase)**: Top-bar sign-in button. When signed in, *My Words* and *Quick Picks* sync across devices through Firestore (merged by ID, never overwritten). The app still works fully offline and signed-out. See [Firebase setup](#-firebase-google-sign-in-setup).
-- **Local Cache**: Language, theme, accessibility settings, voices, custom words and bookmarks are stored in `localStorage` for instant, offline-ready loading.
-- **My Words (custom grid)**: A pinned 📌 button in the top bar opens a personal word grid. Custom words are highlighted in pink on the Sentence Canvas.
-- **AI Symbol Creator**: In *Preferences → Custom Symbol Style*, choose **Emoji** or **AI Generated**. With AI selected, *+ Add word* generates a communication pictogram from the word (text-to-image via `POST /api/generate_symbol`). Images are downscaled to 256 px so many symbols fit in the cache and in Firestore. If generation fails, the word falls back to its emoji.
-- **Bookmark Sentences (Quick Picks)**: A ⭐ next to the generated sentence saves it to a highlighted *Quick Picks* shelf. Tap a saved phrase to speak it instantly.
-- **F5-TTS Pipeline**: The Sentence Canvas is sent to the backend, and the synthesized IndicF5 audio is played (browser speech is the fallback). Replay is available on the output card.
-- **Voice Controls**: Pick a preset voice, or upload a reference audio clip plus its exact transcript to clone a voice with IndicF5 (`/api/voice/clone`).
-- **Accessibility Dock** (floating ♿ button): Text size (A−/A+), Day/Night mode, Grayscale, High Contrast and Speech Speed in one uniform panel.
-- **Button Animations**: Tactile press/ripple feedback on every button.
-- **Browser tab**: Custom ⚡ favicon and a clean "Indic AAC Studio" title.
-- **∞-gram Next-Word Shelf**: A dedicated prediction ribbon under the Sentence Canvas shows live next-word suggestions with probability, and an `∞-Ng` badge when a deep (4+ word) context was matched.
-- **1-Tap Quick Express**: A row of emergency/essential phrases (Help, Water, Bathroom, Pain, Food, Thank you, …) spoken instantly, localised for English, Hindi, Gujarati and Marathi.
-- **Un-Jumble**: Re-orders the words on the canvas into canonical grammatical order using the HMM-2 syntax model (`POST /api/unjumble`).
-- **Delete Last & Copy**: A dedicated backspace for the last symbol, and a one-tap *Copy* of the generated sentence.
-- **Universal Core Words row**: The core vocabulary stays one tap away on every category.
-- **Card Size / Touch Targets**: Compact · Standard · Large ♿ density, switchable from the category bar or Preferences, applied to emoji and AI-symbol cards alike, and remembered in the local cache.
-- **Speaking indicator**: The Sentence Canvas gets a green highlight while speech is playing.
-- **Offline-first transliteration**: Common Roman → Devanagari/Gujarati/Marathi words resolve from a built-in map with no network; Google Input Tools is only a fast-timeout fallback.
+## What this version includes
 
----
+- English, हिन्दी, ગુજરાતી, and मराठी vocabulary and interface workflows.
+- A split canvas showing selected words beside the intended message, with **Speak / Pause / Resume**, **Stop audio**, and **Make sentence**.
+- Comma-separated paste into **Type custom word**, preserving word order, Indic text, and multiword phrases. The three-dot canvas menu closes when the pointer leaves its combined button/popup area.
+- The existing intent and polarity analysis, gated sentence generation, and checked template previews. Technical intent metadata is hidden in the normal communicator.
+- **Un-Jumble:** a local English grammar rule, then Qwen, with the trained English HMM2 as an optional fallback for known vocabulary. The backend validates chip permutations and retains repeated input labels.
+- Real **English-trained F5-TTS** for English and **IndicF5** for Hindi, Gujarati, and Marathi. Pausing and resuming reuse the existing audio; Stop cancels active and pending playback.
+- **Online / Offline** controls. Online can generate new sentences and speech through the local backend. Offline uses installed public phrases, checked templates, and exact saved audio on the device; it cannot synthesize arbitrary unseen text.
+- Local username/password accounts and optional verified Google sign-in, Redis-backed account history/bookmarks, profile-scoped My Words/photo preferences, and CSV history export.
+- Shared themes, motion controls, reduced-motion support, and accessibility preferences.
 
-## 📁 Repository Structure
+## Restore the saved source
 
-```
-├── indic-generative-aac/        # Core Generative AAC application
-│   ├── backend/                 # FastAPI server (app.py), LLM pipeline (llm.py), TTS engine (tts.py), HMM (hmm.py), ∞-gram engine (infinity_gram.py)
-│   ├── frontend/                # Interactive Web UI (index.html, all_emojis.js)
-│   ├── evaluation/              # Benchmarks and evaluation scripts
-│   └── tests/                   # Unit and integration tests
-├── baseline_english_system_demo/# Baseline English AAC implementation (AIImageAAC React Native Expo app)
-├── english_AAC_Dataset/         # English AAC training and evaluation corpus
-├── hindi_AAC_Dataset/           # Hindi AAC dataset and translated pairs
-├── IndicF5/                     # IndicF5 TTS module and reference voice prompts
-├── AI4Bharat-Indic-TTS/         # AI4Bharat Indic-TTS configs and checkpoints utilities
-├── dual_hmm_streaming_kit/      # Dual HMM (next-word + un-jumble) streaming trainer, models and monitor daemon
-├── aac_system_dashboard.html    # Standalone project status / architecture dashboard
-├── download_models.sh           # DEPRECATED no-op (legacy FastPitch checkpoints); see "Download Checkpoints"
-├── run.sh                       # Quick launcher for local backend & frontend
-└── francis25_interspeech.pdf    # Baseline reference paper (Interspeech 2025)
+```bash
+git clone --branch november_16_2026_branch git@github.com:speechforge/AAC_System.git
+cd AAC_System
+git lfs install
+git lfs pull
 ```
 
----
+The HMM `.pkl` files use Git LFS. Neural model weights, account databases, generated audio caches, credentials, and Python environments are separate from the source repository. A GitHub checkout alone is not a pre-provisioned speech installation.
 
-## 🚀 Quickstart
+## Run the existing local setup
 
-### 1. Environment Setup
+The verified setup uses Linux, Python 3.10 in `taac_env`, Chrome, local Redis, and CUDA for neural inference. From the project root:
 
-Create or activate the conda environment:
 ```bash
 conda activate taac_env
-```
-(Created with Python 3.10)
 
-Install backend dependencies:
-```bash
-pip install fastapi uvicorn torch transformers scipy pydantic safetensors vocos
-```
+# First setup of the project-local Redis binaries and account dependencies:
+bash indic-generative-aac/scripts/setup_personal_storage.sh
 
-### 2. Model Checkpoints
+# Prepare the English F5 checkpoint; existing IndicF5 weights are also required:
+python indic-generative-aac/scripts/setup_speech_models.py
 
-The active TTS engine is **IndicF5**. Its weights are not stored in git (`*.safetensors`, `checkpoint/` are ignored): place them at
-`AI4Bharat-Indic-TTS/checkpoint/` (see https://github.com/AI4Bharat/IndicF5), with reference prompts in `IndicF5/prompts/`.
-Without them the backend still runs and returns placeholder audio (mock mode).
+# Start the application and persistent local Redis:
+python indic-generative-aac/backend/run_local.py start
 
-`download_models.sh` is **deprecated** — it targeted the legacy FastPitch checkpoints and now just prints a notice.
-
-The `*.pkl` HMM models under `dual_hmm_streaming_kit/models/` and `indic-generative-aac/backend/` are tracked with **Git LFS**
-(`git lfs install && git lfs pull`). If they are missing, the backend falls back to a small built-in vocabulary and the ∞-gram engine
-(which builds itself from the bundled AAC datasets in ~0.6 s).
-
-### 3. Launch System
-
-Start the server:
-```bash
-chmod +x run.sh
-./run.sh
-```
-Or start manually:
-```bash
-cd indic-generative-aac/backend
-python app.py
+# Inspect readiness:
+python indic-generative-aac/backend/run_local.py status
 ```
 
-### 4. Optional: Enable AI symbols and Google sign-in
+The scripts default to `/home/linux/miniconda3/envs/taac_env/bin/python` on the verified machine. On another installation, set `AAC_PYTHON` to your Python executable when using the shell setup/launcher scripts. Install the existing F5 implementation's dependencies from `IndicF5/requirements.txt` as appropriate for your Torch/CUDA environment; FastAPI, Uvicorn, Transformers, SciPy, Pydantic, and `python-multipart` are also needed by the backend. Account dependencies are listed in `backend/requirements-personal.txt`. These are setup requirements, not a promise of a one-command fresh-machine installation.
+
+Open:
+
+| Route | Purpose |
+| --- | --- |
+| `/welcome` | Landing page |
+| `/login` | Sign in |
+| `/signup` | Create a local account |
+| `/` | AAC communicator |
+| `/api/health` | Backend, speech, and storage readiness |
+| `/docs` | API documentation |
+
+The bundled demo login is `demo` / `AACdemo@2026`. It is a shared demonstration account. For personal data, create a separate account. Google sign-in uses Firebase identity verification and requires its Google provider and authorized domain configuration; Redis remains the backend account store. My Words/photos remain device-cached by profile and are not a general cloud-sync service.
+
+Stop only when needed:
 
 ```bash
-# AI Symbol Creator (key stays on the server, never sent to the browser)
-export OPENAI_API_KEY="sk-..."
-# optional: choose another image model (default: gpt-image-1)
-export SYMBOL_IMAGE_MODEL="gpt-image-1"
+python indic-generative-aac/backend/run_local.py stop
 ```
 
-Restart the backend after changing environment variables.
+This stops AAC and leaves Redis running. Account data and sessions are not shipped with the saved source.
 
-#### 🔐 Firebase Google Sign-In setup
+## Model files and speech setup
 
-1. Create a project at https://console.firebase.google.com and register a **Web app**.
-2. Enable **Authentication → Sign-in method → Google**.
-3. Create a **Firestore Database**, then publish these rules so each user can only access their own data:
+| Component | Expected location / behavior |
+| --- | --- |
+| Qwen2.5-0.5B-Instruct | Local `indic-generative-aac/models/Qwen2.5-0.5B-Instruct/` when present; otherwise the Hugging Face cache/download |
+| IndicF5 | `AI4Bharat-Indic-TTS/checkpoint/model.safetensors` and `vocab.txt` |
+| English F5 | `.runtime/models/f5-english/F5TTS_Base/model_1200000.safetensors` and `vocab.txt` |
+| Vocos | Local `indic-generative-aac/models/vocos/` when present; otherwise the configured upstream cache/download |
+| HMM1 / HMM2 | `dual_hmm_streaming_kit/models/`, retrieved through Git LFS |
+| Hindi HMM | `indic-generative-aac/backend/hmm_hindi.pkl`, retrieved through Git LFS |
+| Voice references | `IndicF5/prompts/`, the English F5 example reference, and `backend/reference_audio/` |
+
+See [INDICF5_LOCAL_SETUP.md](INDICF5_LOCAL_SETUP.md), [SPEECH_QUALITY_FIX.md](SPEECH_QUALITY_FIX.md), [ACCOUNTS_GUIDE.md](ACCOUNTS_GUIDE.md), and [PERSONAL_SERVICE_SETUP.md](PERSONAL_SERVICE_SETUP.md) for implementation details. Some older setup/evaluation documents describe earlier snapshots; this README and the current [handoff](docs/aac-redesign/FINAL_CONTEXT.md) identify the active version. Missing speech dependencies or weights produce an explicit unavailable/error state, not placeholder speech.
+
+## Verify the Un-Jumble repair
+
+1. Select English and paste this list into **Type custom word**:
+
+   ```text
+   share, AAC, clearly, students, the, helps, system, thoughts, their
    ```
-   rules_version = '2';
-   service cloud.firestore {
-     match /databases/{db}/documents {
-       match /users/{uid} {
-         allow read, write: if request.auth != null && request.auth.uid == uid;
-       }
-     }
-   }
+
+2. Select **⋯ → Un-Jumble**. The existing GUI applies the order directly. It should arrange the nine chips as:
+
+   ```text
+   the AAC system helps students share their thoughts clearly
    ```
-4. Put your web config in `FIREBASE_CONFIG` inside `indic-generative-aac/frontend/index.html`. Web config values are public by design; the Firestore rules protect the data.
-5. Open the app at `http://localhost:8000` (`localhost` is an authorized domain by default; add other domains under *Authentication → Settings → Authorized domains*).
 
-Open your browser and navigate to:
-- **Web UI**: `http://localhost:8001/` (or `http://localhost:8000/`)
-- **API Docs**: `http://localhost:8001/docs`
+3. Use **Speak**. The order-only operation retains the authored casing and punctuation of the chips.
 
-### New API endpoints
+The imported fix changed the backend; the downloaded replacement GUI and its “Use this order” preview were intentionally not applied.
 
-| Endpoint | Purpose |
-|---|---|
-| `POST /generate` | Full pipeline; accepts optional `voice_id` and returns `audio_b64` |
-| `GET /api/voice/list` | Preset and cloned voices, plus engine status |
-| `POST /api/voice/clone` | Upload reference audio and transcript to clone a voice (IndicF5) |
-| `DELETE /api/voice/{voice_id}` | Remove a cloned voice |
-| `POST /api/generate_symbol` | Text-to-image AAC symbol (needs `OPENAI_API_KEY`) |
-| `POST /predict_next` | Next-word suggestions (∞-gram first, Markov fallback); each item includes `order` / `order_label` |
-| `POST /api/unjumble` | Re-order scrambled words with HMM-2 |
-| `GET /api/hmm_info` | Model sizes, plus `infinity_gram_enabled` / `infinity_gram_stats` |
-| `POST /api/transliterate` | Roman → Indic script (offline map first, Google Input Tools fallback; response includes `source`) |
+```bash
+# Pure backend ordering checks; run from the project root:
+python -m unittest discover -s indic-generative-aac/backend -p test_word_order.py -v
+
+# Other backend regression checks:
+python -m unittest discover -s indic-generative-aac/backend -p test_tts_contract.py -v
+```
+
+For the current browser regression scripts, prepare Playwright under the project-local runtime directory, keep the backend running, and use the installed Chrome path expected by the scripts:
+
+```bash
+npm install --prefix .runtime/browser playwright@1.51.1
+node indic-generative-aac/tests/browser/reference-unjumble.cjs
+node indic-generative-aac/tests/browser/reference-canvas-paste.cjs
+node indic-generative-aac/tests/browser/reference-play-pause.cjs
+node indic-generative-aac/tests/browser/reference-modes-layout.cjs
+node indic-generative-aac/tests/browser/reference-offline-pack.cjs
+```
+
+The `reference-*` scripts cover the restored active communicator. Older `vnext-*` scripts and paired metrics describe an earlier experimental UI and are not all release gates for this saved GUI. Evidence and limitations are recorded in [docs/aac-redesign/FINAL_CONTEXT.md](docs/aac-redesign/FINAL_CONTEXT.md) and [the release record](docs/releases/2026-11-16.md).
+
+## Known limits of this snapshot
+
+- Qwen cannot reliably reorder every construction. A valid permutation alone is not proof of grammatical or semantic correctness. The exact nine-chip example passed both the live API and the existing browser flow.
+- The unchanged GUI still has older handling for no-suggestion responses, duplicate chip identities, and edits during an outstanding Un-Jumble request. The backend returns status and position information, but the current GUI does not consume all of it. Its Un-Jumble payload omits locale; explicit non-English routing has been checked at the API.
+- Offline use requires setup while online. Only installed/saved matching audio is available without the backend; initial provisioning and new speech need services.
+- Stable reserved core slots across categories, a full board editor, switch scanning, interoperability/import, and the broader research evaluation remain unfinished.
+- Automated playback checks verify browser media events. No claim is made of native-reader grammar review, physical assistive-hardware testing, screen-reader certification, or a completed AAC-user study.

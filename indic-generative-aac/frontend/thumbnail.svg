@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+<defs><radialGradient id="a" cx="12%" cy="20%" r="55%"><stop offset="0" stop-color="#e3d6f8"/><stop offset="1" stop-color="#faf8f3" stop-opacity="0"/></radialGradient>
+<radialGradient id="b" cx="95%" cy="85%" r="50%"><stop offset="0" stop-color="#f6d3b0"/><stop offset="1" stop-color="#faf8f3" stop-opacity="0"/></radialGradient></defs>
+<rect width="1200" height="630" fill="#faf8f3"/><rect width="1200" height="630" fill="url(#a)"/><rect width="1200" height="630" fill="url(#b)"/>
+<circle cx="900" cy="315" r="230" fill="none" stroke="#c9c1d6" stroke-dasharray="6 8"/><circle cx="900" cy="315" r="300" fill="none" stroke="#c9c1d6" stroke-dasharray="6 8" opacity=".5"/>
+<rect x="80" y="80" width="84" height="84" rx="22" fill="#6044be"/>
+<g transform="translate(86 78) scale(2.6)" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h14a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4H13l-6 4V11a4 4 0 0 1 4-4Z"/><path d="M12 13h8m-8 5h5"/></g>
+<text x="184" y="136" font-family="system-ui,Segoe UI,sans-serif" font-size="40" font-weight="750" fill="#25283b" letter-spacing="-1">Indic AAC Studio</text>
+<text x="80" y="318" font-family="system-ui,Segoe UI,sans-serif" font-size="66" font-weight="740" fill="#25283b" letter-spacing="-3">Your words,</text>
+<text x="80" y="408" font-family="system-ui,Segoe UI,sans-serif" font-size="66" font-weight="740" fill="#6044be" letter-spacing="-3">clearly expressed.</text>
+<path d="M84 426 Q330 412 590 422" stroke="#efa06b" stroke-width="8" stroke-linecap="round" fill="none"/>
+<text x="80" y="500" font-family="system-ui,Segoe UI,sans-serif" font-size="30" fill="#626273">Communication support in English, हिन्दी, ગુજરાતી, मराठी</text>
+<g transform="translate(60 0) rotate(-5 900 330)"><rect x="710" y="190" width="380" height="270" rx="26" fill="#fffefa" stroke="#e0d9e6" stroke-width="2"/>
+<text x="740" y="262" font-family="system-ui,sans-serif" font-size="38" font-weight="650" fill="#25283b">I want water</text><rect x="965" y="236" width="3" height="34" fill="#8671ba"/>
+<rect x="740" y="300" width="100" height="120" rx="16" fill="#f8e6d6"/><rect x="855" y="300" width="100" height="120" rx="16" fill="#eee7fa"/><rect x="970" y="300" width="100" height="120" rx="16" fill="#e3ecdd"/>
+<text x="790" y="372" text-anchor="middle" font-family="system-ui,sans-serif" font-size="30" font-weight="700" fill="#554335">I</text><text x="905" y="372" text-anchor="middle" font-family="system-ui,sans-serif" font-size="26" font-weight="700" fill="#433d58">want</text><text x="1020" y="372" text-anchor="middle" font-family="system-ui,sans-serif" font-size="24" font-weight="700" fill="#30493d">water</text></g>
+</svg>

@@ -1,0 +1,13 @@
+{
+  "installed": {
+    "pairs": 84,
+    "bytes": 5693646
+  },
+  "apiCalls": 0,
+  "coldPage": true,
+  "backendKeptRunning": true,
+  "browserOffline": true,
+  "text": "I want food.",
+  "realAudioPlayback": true,
+  "pauseResume": true
+}

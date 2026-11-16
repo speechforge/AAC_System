@@ -1,0 +1,101 @@
+{
+  "url": "http://localhost:8000/",
+  "css": [
+    "http://localhost:8000/static/vendor/tailwind.css",
+    "http://localhost:8000/static/responsive.css",
+    null,
+    "http://localhost:8000/static/workspace.css",
+    "http://localhost:8000/static/motion.css",
+    "http://localhost:8000/static/ambient.css",
+    "http://localhost:8000/static/studio-theme.css"
+  ],
+  "scripts": [
+    "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js",
+    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js",
+    "http://localhost:8000/static/vendor/react.js",
+    "http://localhost:8000/static/vendor/react-dom.js",
+    "http://localhost:8000/static/vendor/babel.js",
+    "http://localhost:8000/static/all_emojis.js",
+    "http://localhost:8000/static/locales.js",
+    "http://localhost:8000/static/photos/catalog.js",
+    "http://localhost:8000/static/aac-visuals.js",
+    "http://localhost:8000/static/motion.js",
+    "http://localhost:8000/static/history.js",
+    "http://localhost:8000/static/studio-core.js"
+  ],
+  "board": [
+    {
+      "id": "YES",
+      "text": "👍\nहाँ"
+    },
+    {
+      "id": "NO",
+      "text": "🙅\nनहीं"
+    },
+    {
+      "id": "WANT",
+      "text": "🤲\nचाहिए"
+    },
+    {
+      "id": "HELP",
+      "text": "🆘\nमदद"
+    },
+    {
+      "id": "MORE",
+      "text": "➕\nऔर"
+    },
+    {
+      "id": "STOP",
+      "text": "🛑\nरुकें"
+    },
+    {
+      "id": "ME",
+      "text": "👤\nमैं"
+    },
+    {
+      "id": "YOU",
+      "text": "👉\nआप"
+    },
+    {
+      "id": "GOOD",
+      "text": "✨\nअच्छा"
+    },
+    {
+      "id": "BAD",
+      "text": "⚠️\nखराब"
+    }
+  ],
+  "storageKeys": [
+    "aac_studio_cache_v1",
+    "aac_routine_v1",
+    "aac_photos_f117d05509091025a77922ce6599e37780eaf09de00ed11ca39df261fe6610e5",
+    "aac_words_f117d05509091025a77922ce6599e37780eaf09de00ed11ca39df261fe6610e5"
+  ],
+  "buttons": [
+    {
+      "id": "",
+      "label": ""
+    },
+    {
+      "id": "",
+      "label": ""
+    },
+    {
+      "id": "",
+      "label": ""
+    },
+    {
+      "id": "speak-button",
+      "label": "बोलो"
+    },
+    {
+      "id": "stop-audio-button",
+      "label": "आवाज़ रोकें"
+    },
+    {
+      "id": "polish-button",
+      "label": "सुधारें"
+    }
+  ],
+  "errors": []
+}

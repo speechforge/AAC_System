@@ -54,3 +54,19 @@ hf_space/
 *.bak*
 *.backup*
 
+
+# Local account/session data, credentials, binaries, and verification artifacts
+.runtime/
+
+# Local builds, device data, old distribution copies, and private configuration
+.cloudflare/
+.agents/
+AAC_CPU_Portable/
+audio_datastore/cache/
+github_release/*.zip.part*
+AI4Bharat-Indic-TTS/checkpoint
+.env
+.env.*
+!.env.example
+*.pem
+*.key

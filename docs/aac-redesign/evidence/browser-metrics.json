@@ -1,0 +1,182 @@
+[
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 0,
+    "ms": 25.100000143051147,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 1,
+    "ms": 31.5,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 2,
+    "ms": 32.299999952316284,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 3,
+    "ms": 32.09999990463257,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 4,
+    "ms": 32,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 5,
+    "ms": 32.09999990463257,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 6,
+    "ms": 32.5,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 7,
+    "ms": 32.5,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 8,
+    "ms": 32.39999985694885,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 9,
+    "ms": 32.40000009536743,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 10,
+    "ms": 30.799999952316284,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 11,
+    "ms": 32.09999990463257,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 12,
+    "ms": 31.799999952316284,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 13,
+    "ms": 31.399999856948853,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 14,
+    "ms": 31.90000009536743,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 15,
+    "ms": 32.40000009536743,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 16,
+    "ms": 32.40000009536743,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 17,
+    "ms": 31.90000009536743,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 18,
+    "ms": 32.10000014305115,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  },
+  {
+    "condition": "after",
+    "scenario": "yes-visible-feedback",
+    "language": "en",
+    "run": 19,
+    "ms": 32.299999952316284,
+    "success": true,
+    "method": "click receipt to second animation frame; not audible latency"
+  }
+]

@@ -8,7 +8,7 @@ import urllib.parse
 import os
 import traceback
 import scipy.io.wavfile
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -17,12 +17,25 @@ from llm import IndicLLM
 from tts import IndicTTSEngine
 from hmm import hmm_engine
 from semantic import SemanticValidator
+from aac_lexicon import BOARD, resolve_label
+import concept_predict
+from word_order import LANGUAGES, split_context, suggest_word_order
+import pipeline
+import torch
+
+import personal_service
 
 app = FastAPI()
+personal_service.install(app)
+import local_accounts
+app.include_router(local_accounts.router)
+import voice_profiles
+app.include_router(voice_profiles.router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:8000", "http://127.0.0.1:8000",
+                   "http://localhost:8001", "http://127.0.0.1:8001"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,7 +48,13 @@ validator = SemanticValidator(llm)
 print("Initialization Complete.")
 
 class AACRequest(BaseModel):
-    intent: str
+    intent: str = "REQUEST"        # legacy field (REQUEST / STATEMENT / QUESTION / NEGATION) kept for older clients
+    # act and polarity are separate fields (repaired protocol).  `act_source`: 'client' (inferred by the browser),
+    # 'user' (explicit choice, never overridden) or omitted for legacy payloads.
+    act: str | None = None         # REQUEST | FEELING | FEELING_REQUEST | QUESTION | GREETING | UNKNOWN
+    act_source: str | None = None
+    polarity: str | None = None    # optional alias: 'negative' == negation true
+    concept_ids: list[str | None] = []   # board concept IDs aligned with `entities` (null for typed / personal words)
     actor: str = "USER"
     entities: list[str]
     attributes: list[str] = []
@@ -44,13 +63,19 @@ class AACRequest(BaseModel):
     location: str | None = None
     people: list[str] = []
     actions: list[str] = []
-    negation: bool = False
+    negation: bool | None = None
     speaker_role: str = "USER"
-    language: str = "en"
+    language: str = "hi"
     code_mix: bool = False
     generation_mode: str = "dual"  # 'single' or 'dual'
-    voice_id: str | None = None   # preset key ("indic_female"/"english_female") or a cloned custom_* voice_id
+    voice_id: str | None = None   # hi, gu, or mr; must match language
     debug: bool = False
+    # evaluation switches (the web client never sends them)
+    policy: str = "hybrid"          # hybrid | ungated | template_only
+    seed: int | None = None         # seeds the sampling path (English / code-mixed realiser); attempt k uses seed + 1000 * k
+    reconcile_legacy: bool = True
+    skip_deterministic_retry: bool = False
+    include_audio: bool = True      # False: text-only suggestion (Polish); the client speaks explicitly through /api/tts
 
 
 class ContextRequest(BaseModel):
@@ -58,6 +83,10 @@ class ContextRequest(BaseModel):
     current_words: list[str] = []
     language: str = "hi"
     intent: str = "REQUEST"
+
+
+class UnjumbleRequest(ContextRequest):
+    language: str = "en"
 
 
 class TransliterateRequest(BaseModel):
@@ -172,64 +201,60 @@ def generate_symbol(req: SymbolRequest):
         raise HTTPException(status_code=502, detail="Image provider request failed.")
 
 
+class SpeechRequest(BaseModel):
+    text: str
+    language: str = "hi"
+    voice_id: str | None = None
+
+
+def synthesize(text, language, voice_id=None, session=None):
+    reference=voice_profiles.resolve(session,language) if session else None
+    try:
+        audio, sr = tts.generate_speech(text, lang=language, speaker_name=voice_id, voice_reference=reference)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"IndicF5 speech unavailable: {exc}")
+    buf = io.BytesIO()
+    scipy.io.wavfile.write(buf, sr, audio)
+    return {"audio_b64": base64.b64encode(buf.getvalue()).decode("ascii"),
+            "voice_source":"personal" if reference else "default", "voice_id":reference["voice_id"] if reference else language,
+            "audio_kind": tts.last_audio_kind, "cache_hit": getattr(tts,"last_cache_hit",False), "sample_rate": sr, "language": language}
+
+
+@app.post("/api/tts")
+def speech(req: SpeechRequest, session=Depends(personal_service.require_session)):
+    return synthesize(req.text, req.language, req.voice_id, session)
+
+
+@app.get("/api/audio-cache")
+def audio_cache_status(session=Depends(personal_service.require_session)):
+    import audio_cache
+    return audio_cache.stats()
+
+@app.delete("/api/audio-cache")
+def clear_audio_cache(session=Depends(personal_service.require_write)):
+    import audio_cache
+    return audio_cache.clear()
+
 @app.get("/api/voice/list")
 def list_voices():
-    """Lists built-in TTS voice presets plus any custom voices cloned this session."""
-    return {"voices": tts.list_voices(), "engine_ready": tts.model is not None}
+    return {"voices": tts.list_voices(), "engine_ready": tts.ready,
+            "engine": "local-f5", "error": tts.init_error,
+            "supported_languages": list(tts.LANG_PROMPT_CONFIGS)}
 
-
-@app.post("/api/voice/clone")
-async def clone_voice(
-    file: UploadFile = File(...),
-    transcript: str = Form(...),
-    label: str = Form("My Cloned Voice"),
-):
-    """
-    Registers a user-uploaded reference audio clip as a new zero-shot voice
-    using the IndicF5 model (https://huggingface.co/ai4bharat/IndicF5), which
-    requires the reference audio plus its exact spoken transcript.
-    """
-    allowed_types = ("audio/", "video/webm")  # browsers sometimes tag mic recordings as video/webm
-    if file.content_type and not any(file.content_type.startswith(t) for t in allowed_types):
-        raise HTTPException(status_code=400, detail=f"Unsupported file type: {file.content_type}")
-
-    audio_bytes = await file.read()
-    max_bytes = 20 * 1024 * 1024  # 20MB cap
-    if len(audio_bytes) > max_bytes:
-        raise HTTPException(status_code=400, detail="Reference audio file is too large (max 20MB).")
-
-    try:
-        voice_id = tts.register_custom_voice(audio_bytes, transcript, label=label)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except RuntimeError as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-    return {
-        "voice_id": voice_id,
-        "label": label,
-        "status": "ready" if tts.model is not None else "queued_mock_mode",
-        "message": (
-            "Voice cloned successfully."
-            if tts.model is not None
-            else "Upload accepted. Install the IndicF5 checkpoint to hear the real cloned voice; using placeholder audio until then."
-        ),
-    }
-
-
-@app.delete("/api/voice/{voice_id}")
-def delete_voice(voice_id: str):
-    if not voice_id.startswith("custom_"):
-        raise HTTPException(status_code=400, detail="Only custom cloned voices can be removed.")
-    removed = tts.remove_custom_voice(voice_id)
-    if not removed:
-        raise HTTPException(status_code=404, detail="Voice not found.")
-    return {"status": "removed", "voice_id": voice_id}
 
 
 @app.get("/api/health")
 def read_root():
-    return {"status": "ok", "message": "Indic Generative AAC Backend Running"}
+    try:
+        storage_ready = personal_service.store.redis.ping()
+    except personal_service.redis.RedisError:
+        storage_ready = False
+    return {"status": "ok" if tts.ready and storage_ready else "degraded",
+            "message": "Indic Generative AAC Backend Running",
+            "tts_engine": "local-f5", "tts_ready": tts.ready, "tts_error": tts.init_error,
+            "personal_storage": "redis", "personal_storage_ready": storage_ready}
 
 @app.get("/api/hmm_info")
 def hmm_info():
@@ -259,144 +284,166 @@ def hmm_reload():
     }
 
 @app.post("/predict_next")
-def predict_next(req: ContextRequest):
+def predict_next(req: ContextRequest, request: Request):
     if req.current_words:
         words = req.current_words
     else:
         words = req.context.strip().split() if req.context.strip() else []
 
-    preds = hmm_engine.predict_next(words, language=req.language, top_k=10)
-    return {"predictions": preds, "suggestions": preds}
+    if req.language not in tts.LANG_PROMPT_CONFIGS:
+        raise HTTPException(status_code=400, detail="Supported languages: en, hi, gu, mr")
+    lang = req.language
+    # 1) Concept grammar: reacts to every selected word, identical in all four languages.
+    context_preds = concept_predict.predict(words, lang, top_k=10)
+    # 2) Statistical model (infinity-gram / Markov), localised and script-filtered.
+    try:
+        preds = hmm_engine.predict_next(words, language=lang, top_k=10)
+    except Exception:
+        preds = []
+    stat, seen_stat = [], set()
+    native = r"[A-Za-z]" if lang == "en" else (r"[\u0a80-\u0aff]" if lang == "gu" else r"[\u0900-\u097f]")
+    foreign = r"[\u0900-\u0aff]" if lang == "en" else r"[A-Za-z]"
+    for pred in preds:
+        label = pred.get("word", "")
+        cid = resolve_label(label)
+        if cid:
+            label = BOARD[cid][lang]
+        if not re.search(native, label) or re.search(foreign, label) or label in seen_stat:
+            continue
+        seen_stat.add(label)
+        stat.append({**pred, "word": label, "source": pred.get("source", "model")})
+    # 3) Merge: with a sentence in progress context leads (interleaved with the model so both show);
+    #    with an empty sentence the user's own frequent words lead.
+    personalized = []
+    token = request.cookies.get(personal_service.COOKIE)
+    if token:
+        try:
+            session = personal_service.store.read(token)
+            personalized = [{**item, "source": "personal", "emoji": "⭐"}
+                            for item in personal_service.store.frequent(session, lang, 7)]
+        except (HTTPException, personal_service.redis.RedisError):
+            pass
+    selected, used = [], set()
+    def push(item):
+        if item["word"] not in used and item["word"] not in {w.strip() for w in words}:
+            used.add(item["word"]); selected.append(item)
+    if words:
+        for i in range(max(len(context_preds), len(stat))):
+            if i < len(context_preds): push(context_preds[i])
+            if i < len(stat) and i % 2 == 1: push(stat[i])
+        for item in personalized[:2]:      # personal words only fill spare slots once context is known
+            push(item)
+    else:
+        for item in personalized[:4]: push(item)
+        for item in context_preds: push(item)
+        for item in stat: push(item)
+    selected = selected[:10]
+    return {"predictions": selected, "suggestions": selected, "personalized": bool(personalized)}
 
 @app.post("/api/unjumble")
-def unjumble(req: ContextRequest):
-    if req.current_words:
-        words = req.current_words
-    else:
-        words = req.context.strip().split() if req.context.strip() else []
-    ordered, score = hmm_engine.unjumble(words)
-    return {
-        "jumbled": words,
-        "unjumbled": ordered,
-        "score": round(score, 3),
-        "sentence": " ".join(ordered)
-    }
+def unjumble(req: UnjumbleRequest):
+    if req.language not in LANGUAGES:
+        raise HTTPException(status_code=400, detail="Supported languages: en, hi, gu, mr")
+    words = req.current_words or split_context(req.context)
+    return suggest_word_order(words, req.language, llm._call_llm, hmm_engine.unjumble_model)
 
 @app.post("/generate")
-def generate(req: AACRequest):
+def generate(req: AACRequest, session=Depends(personal_service.require_session)):
     t0 = time.time()
     t_sem, t_tts = 0.0, 0.0
-    sentence = ""
-    is_valid = False
-    validation_data = {}
-    ledger_data = {}
-    candidate_llm1 = None
-    candidate_llm2 = None
-    llm3_decision  = {}
-    telemetry_data = {}
-    fallback_used  = False
-    audio_b64      = None
+    audio_b64 = None
+    audio_kind = "none"
+    audio_error = None
+    if req.language not in tts.LANG_PROMPT_CONFIGS:
+        raise HTTPException(status_code=400, detail="Supported languages: en, hi, gu, mr")
+    if req.voice_id not in (None, req.language):
+        raise HTTPException(status_code=400, detail="Voice must match the selected language.")
+    reference=voice_profiles.resolve(session,req.language)
+    ctx = pipeline.normalize_request(req.model_dump(), reconcile=req.reconcile_legacy)
+    lang = req.language
+    live_attempts = []
 
-    context = {
-        "intent":         req.intent,
-        "actor":          req.actor,
-        "entities":       req.entities,
-        "attributes":     req.attributes,
-        "relations":      req.relations,
-        "temporal_state": req.temporal_state,
-        "location":       req.location,
-        "people":         req.people,
-        "actions":        req.actions,
-        "negation":       req.negation or (req.intent.upper() == "NEGATION") or ("NOT" in req.intent.upper()),
-        "speaker_role":   req.speaker_role
-    }
-
-    # ── Authority Hierarchy Pipeline with Bounded Retry (MAX_RETRIES = 1) ──
-    MAX_RETRIES = 2
-    for attempt in range(MAX_RETRIES):
+    def get_attempt(k):
+        """Generate the k-th candidate (LLM-1 -> LLM-2 -> LLM-3); seeds the sampling path when requested."""
+        if req.seed is not None:
+            torch.manual_seed(req.seed + 1000 * k)
+            if torch.cuda.is_available():
+                torch.cuda.manual_seed_all(req.seed + 1000 * k)
         try:
-            # Stages 1, 2, 3: LLM-1 Realizer -> LLM-2 Refiner -> LLM-3 Verifier
-            gen, structured_ctx, ledger, c_llm1, c_llm2, decision, telem = llm.generate_sentence(
-                context, language=req.language, code_mix=req.code_mix, mode=req.generation_mode
-            )
-            ledger_data    = ledger
-            candidate_llm1 = c_llm1
-            candidate_llm2 = c_llm2
-            llm3_decision  = decision
-            telemetry_data = telem
-
-            print(f"[PIPELINE Attempt {attempt+1}] "
-                  f"LLM-1={c_llm1!r} | LLM-2={c_llm2!r} | LLM-3={decision.get('decision')} | Output={gen!r}")
-
-            # ── Stage 4: Hard Semantic Validator ────────────────────
-            t_sem_start = time.time()
-            valid, val_data = validator.validate(context, ledger, gen, req.language)
-            t_sem += (time.time() - t_sem_start)
-
-            print(f"[HARD VALIDATOR Attempt {attempt+1}] Valid={valid} Score={val_data.get('semantic_score')} Data={val_data}")
-
-            if valid:
-                sentence = gen
-                is_valid = True
-                validation_data = val_data
-                break
-            else:
-                sentence = gen
-                validation_data = val_data
-
-        except Exception as e:
-            print(f"[PIPELINE ERROR] Attempt {attempt+1}: {e}")
+            gen, sctx, ledger, c1, c2, decision, telem = llm.generate_sentence(ctx, language=lang, code_mix=req.code_mix, mode=req.generation_mode)
+            at = dict(text=gen, llm1=c1, llm2=c2, llm3_text=decision.get("final_text"), llm3_decision=decision.get("decision"),
+                      edit_type=decision.get("edit_type"), latency=telem.get("latencies", {}).get("pipeline_llm_total"), ledger=ledger, telemetry=telem)
+        except Exception as e:                                # technical failure of a stage: recorded, never hidden
+            print(f"[PIPELINE ERROR] attempt {k + 1}: {e}")
             traceback.print_exc()
+            at = dict(text=None, error=repr(e), latency=None)
+        live_attempts.append(at)
+        return at
 
-    # ── Stage 5: Deterministic Fallback Strategy ────────────────────
-    # If all LLM refinement fails, use safe deterministic realization based directly on user concepts
-    if not is_valid:
-        print("[FALLBACK TRIGGERED] Applying zero-hallucination deterministic fallback.")
-        fallback_sentence = llm.generate_deterministic_fallback(context, language=req.language, code_mix=req.code_mix)
-        fallback_valid, fallback_val_data = validator.validate(context, ledger_data, fallback_sentence, req.language)
-        
-        sentence = fallback_sentence
-        is_valid = True  # Safe fallback directly realizes user selections, always valid for speech
-        validation_data = fallback_val_data
-        fallback_used = True
-        llm3_decision["fallback_applied"] = True
-        llm3_decision["edit_type"] = "deterministic_fallback"
+    res = pipeline.decide(ctx, lang, get_attempt, validator, llm, policy=req.policy, skip_deterministic_retry=req.skip_deterministic_retry)
+    sentence = res.get("text") or ""
+    outcome = res["outcome"]
+    last = live_attempts[-1] if live_attempts else {}
+    telemetry_data = last.get("telemetry", {}) if isinstance(last, dict) else {}
+    ledger_data = last.get("ledger", {}) if isinstance(last, dict) else {}
 
-    # ── Stage 6: Speech Synthesis ───────────────────────────────────
-    try:
-        t_tts_start = time.time()
-        audio_data, sr = tts.generate_speech(
-            sentence, lang=req.language, code_mix=req.code_mix, speaker_name=(req.voice_id or "female")
-        )
-        t_tts = time.time() - t_tts_start
-        byte_io = io.BytesIO()
-        scipy.io.wavfile.write(byte_io, sr, audio_data)
-        audio_b64 = base64.b64encode(byte_io.getvalue()).decode("utf-8")
-    except Exception as e:
-        print(f"[TTS ERROR] {e}")
-        traceback.print_exc()
-        audio_b64 = None
+    # ── Speech: only a complete sentence is spoken; clarification and literal previews wait for the user ──
+    speak_ok = outcome in ("sentence_model", "sentence_template", "sentence_ungated")
+    if speak_ok and req.include_audio:
+        try:
+            t_tts_start = time.time()
+            audio_data, sr = tts.generate_speech(sentence, lang=req.language, code_mix=req.code_mix, speaker_name=(req.voice_id or "female"), voice_reference=reference)
+            t_tts = time.time() - t_tts_start
+            audio_kind = getattr(tts, "last_audio_kind", "none")
+            byte_io = io.BytesIO()
+            scipy.io.wavfile.write(byte_io, sr, audio_data)
+            audio_b64 = base64.b64encode(byte_io.getvalue()).decode("utf-8")
+        except Exception as e:
+            print(f"[TTS ERROR] {e}")
+            traceback.print_exc()
+            audio_b64 = None
+            audio_kind = "error"
+            audio_error = str(e)
 
     t_total = time.time() - t0
     telemetry_latencies = telemetry_data.get("latencies", {})
     tokens = telemetry_data.get("tokens", {"total_in": 0, "total_out": 0})
-
-    caregiver_ctx = llm.parse_and_repair_context(context, sentence, language=req.language)
+    caregiver_ctx = llm.parse_and_repair_context(ctx, sentence, language=req.language) if outcome != "clarification" else None
+    n_att = len(res["attempts"])
+    sem_score = (res["attempts"][-1].get("score") if res["attempts"] else None)
+    if outcome in ("sentence_template",):
+        sem_score = 1.0 if res.get("validated") else 0.0
 
     return {
         "text":            sentence,
+        "outcome":         outcome,                      # sentence_model | sentence_template | clarification | literal_preview | failure | sentence_ungated
+        "route":           res.get("route"),
+        "act":             res.get("act"),
+        "negation":        res.get("negation"),
+        "act_source":      res.get("act_source"),
+        "clarification":   ({"options": res.get("options", []), "literal": res.get("literal")} if outcome == "clarification" else None),
+        "literal_preview": (res.get("literal") if outcome == "literal_preview" else None),
         "mode":            req.generation_mode,
-        "semantic_score":  validation_data.get("semantic_score", 0.0),
-        "validated":       is_valid,
-        "semantic_valid":  is_valid,
-        "fallback_used":   fallback_used,
-        "validation_data": validation_data,
+        "semantic_score":  sem_score,
+        "validated":       bool(res.get("validated")),
+        "semantic_valid":  bool(res.get("validated")),
+        "fallback_used":   outcome in ("sentence_template", "literal_preview"),
+        "gate":            {"version": res.get("gate_version"), "attempts": [
+                               {k2: v2 for k2, v2 in at.items() if k2 in ("k", "text", "accepted", "reasons", "latency", "error")} for at in res["attempts"]],
+                            "template_status": res.get("template_status"), "template_gate": res.get("template_gate"),
+                            "rejected_template_text": res.get("rejected_template_text")},
+        "validation_data": {"violations_detected": [x for at in res["attempts"] for x in at.get("reasons", [])] if outcome not in ("sentence_model",) else []},
         "ledger":          ledger_data,
-        "candidate_llm1":  candidate_llm1,
-        "candidate_llm2":  candidate_llm2,
-        "llm3_decision":   llm3_decision,
+        "candidate_llm1":  last.get("llm1") if isinstance(last, dict) else None,
+        "candidate_llm2":  last.get("llm2") if isinstance(last, dict) else None,
+        "llm3_decision":   {"decision": last.get("llm3_decision"), "final_text": last.get("llm3_text"), "edit_type": last.get("edit_type"),
+                            "fallback_applied": outcome in ("sentence_template", "literal_preview")} if isinstance(last, dict) else {},
         "caregiver_context": caregiver_ctx,
         "audio_b64":       audio_b64,
+        "audio_kind":      audio_kind,
+        "voice_source":    "personal" if reference else "default",
+        "voice_id":        reference["voice_id"] if reference else req.language,
+        "audio_error":     audio_error,
         "metrics": {
             "t_llm1":  telemetry_latencies.get("llm1", 0.0),
             "t_llm2":  telemetry_latencies.get("llm2", 0.0),
@@ -404,10 +451,53 @@ def generate(req: AACRequest):
             "t_sem":   round(t_sem, 2),
             "t_tts":   round(t_tts, 2),
             "t_total": round(t_total, 2),
+            "n_attempts": n_att,
             "tokens_in":  tokens.get("total_in", 0),
             "tokens_out": tokens.get("total_out", 0)
         }
     }
+
+# Dedicated account pages and authenticated AAC entry.
+from fastapi.responses import FileResponse, RedirectResponse, JSONResponse
+
+@app.middleware("http")
+async def account_gate(request, call_next):
+    import posixpath
+    path = posixpath.normpath('/' + request.url.path.lstrip('/'))
+    protected = (path in ('/generate', '/predict_next')
+                 or path.startswith('/api/') and not path.startswith(('/api/auth/', '/api/session'))
+                 and path != '/api/health')
+    if protected:
+        try:
+            session = personal_service.store.read(request.cookies.get(personal_service.COOKIE))
+            if session['service'] not in ('local', 'google'):
+                raise HTTPException(401, 'Sign in to open AAC Studio.')
+        except HTTPException:
+            if path in ('/', '/index.html', '/static/index.html'):
+                return RedirectResponse('/welcome', status_code=303, headers={'Cache-Control':'no-store'})
+            return JSONResponse({'detail':'Sign in to continue.'}, status_code=401)
+        except personal_service.redis.RedisError:
+            return JSONResponse({'detail':'Account storage is unavailable. Please retry.'},status_code=503)
+    response = await call_next(request)
+    if path in ('/', '/index.html', '/static/index.html', '/login', '/signup', '/welcome') or path.startswith('/api/auth/'):
+        response.headers['Cache-Control'] = 'no-store'
+    return response
+
+@app.get('/aac-sw.js', include_in_schema=False)
+def public_service_worker():
+    return FileResponse(os.path.join(os.path.dirname(__file__), '../frontend/aac-sw.js'), media_type='application/javascript', headers={'Service-Worker-Allowed':'/','Cache-Control':'no-cache'})
+
+@app.get('/welcome', include_in_schema=False)
+def welcome_page():
+    return FileResponse(os.path.join(os.path.dirname(__file__), '../frontend/welcome.html'))
+
+@app.get('/login', include_in_schema=False)
+def login_page():
+    return FileResponse(os.path.join(os.path.dirname(__file__), '../frontend/login.html'))
+
+@app.get('/signup', include_in_schema=False)
+def signup_page():
+    return FileResponse(os.path.join(os.path.dirname(__file__), '../frontend/signup.html'))
 
 # Mount static frontend
 _frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../frontend"))

@@ -1,0 +1,21 @@
+/* Short, spatially stable transitions. Scale controls speed, not target size. */
+html[data-motion=on] .aac-app .settings-overlay{animation:aac-scrim var(--motion-enter) ease both}
+html[data-motion=on] .aac-app .settings-drawer{animation:aac-drawer var(--motion-drawer) cubic-bezier(.2,.75,.25,1) both}
+html[data-motion=on] .aac-app .animate-fade-in,html[data-motion=on] .aac-app .symbol-grid{animation:aac-reveal var(--motion-enter) ease both!important}
+html[data-motion=on] .aac-app button{transition:box-shadow var(--motion-fast) ease,opacity var(--motion-fast) ease!important}
+html[data-motion=on] .aac-app button:hover{box-shadow:0 0 0 2px var(--studio-line)}
+html[data-motion=on] .aac-app .star-pop{animation-duration:var(--motion-enter)!important}
+html[data-motion=on] .floating-bubble{animation-duration:var(--motion-float)!important}
+html[data-motion=on] .sound-wave i{animation-duration:var(--motion-wave)!important}
+html[data-motion=on] .expressed>svg{animation-duration:var(--motion-draw)!important}
+html[data-motion=on] .hero-copy{animation-duration:var(--motion-hero)!important}
+html[data-motion=on] .board-preview{animation-duration:var(--motion-board)!important}
+html[data-motion=on] .card{animation-duration:var(--motion-enter)!important}
+html[data-motion=on] .primary-cta,html[data-motion=on] .feature{transition-duration:var(--motion-fast)!important}
+html[data-motion=on] .aac-app .a11y-dock-panel,html[data-motion=on] .aac-app .voice-popup{animation-duration:var(--motion-enter)!important}
+html[data-motion=off] *,html[data-motion=off] *:before,html[data-motion=off] *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+.motion-toggle-group{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0 16px}.motion-toggle-group button,.motion-speed-grid button{min-height:44px;border:1px solid;border-radius:10px;font-size:13px;font-weight:650;padding:8px}.motion-speed-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}.motion-settings label{display:block;font-size:13px;font-weight:650}.motion-preview{display:flex;align-items:center;gap:12px;border:1px solid var(--studio-line);border-radius:10px;padding:12px;margin-top:14px;color:var(--studio-muted);font-size:12px;overflow:hidden}.motion-preview-dot{width:16px;height:16px;flex-shrink:0;border-radius:50%;background:var(--button-selected-bg);animation:aac-preview var(--motion-enter) ease both}.motion-preview span:last-child{margin-left:8px}
+@keyframes aac-preview{from{opacity:.3;transform:translateX(-6px) scale(.8)}to{opacity:1;transform:none}}@keyframes aac-scrim{from{opacity:0}to{opacity:1}}@keyframes aac-drawer{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}@keyframes aac-reveal{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){html *,html *:before,html *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+html[data-motion=on] .aac-app .sound-bar{animation-duration:var(--motion-sound)!important}html[data-motion=on] .aac-app .animate-spin,html[data-motion=on] .aac-app .animate-ping{animation-duration:var(--motion-spin)!important}html[data-motion=on] .aac-app .animate-pulse{animation-duration:var(--motion-wave)!important}html[data-motion=on] .aac-app .animate-fadeIn,html[data-motion=on] .aac-app .animate-bounce-short{animation-duration:var(--motion-enter)!important}

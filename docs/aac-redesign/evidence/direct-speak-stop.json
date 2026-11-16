@@ -1,0 +1,33 @@
+{
+  "starts": [
+    {
+      "status": "playing",
+      "text": "Hello. I want water.",
+      "language": "en",
+      "eventId": "205104d4-ef9a-415b-9982-b2b6b80dcdb0",
+      "profile": "f117d05509091025a77922ce6599e37780eaf09de00ed11ca39df261fe6610e5",
+      "onsetMs": 39.40000009536743,
+      "kind": "message"
+    },
+    {
+      "status": "playing",
+      "text": "Water",
+      "language": "en",
+      "eventId": "37173412-34b5-42d7-bab5-a43db800ef8a",
+      "profile": "f117d05509091025a77922ce6599e37780eaf09de00ed11ca39df261fe6610e5",
+      "onsetMs": 12,
+      "kind": "tile"
+    },
+    {
+      "status": "playing",
+      "text": "Water",
+      "language": "en",
+      "eventId": "3f243695-2492-45d4-b547-c52c23e54352",
+      "profile": "f117d05509091025a77922ce6599e37780eaf09de00ed11ca39df261fe6610e5",
+      "onsetMs": 8.299999952316284,
+      "kind": "message"
+    }
+  ],
+  "stopVerified": true,
+  "method": "Direct typed draft and direct selected tile -> Speak; real F5 response and HTMLMediaElement playing; active audio stopped."
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "language": "en",
+    "text": "Hello. I want water.",
+    "engine": "f5tts",
+    "http_status": 200,
+    "sample_rate": 24000,
+    "wav_bytes": 94764,
+    "onset_ms": 49.59999990463257,
+    "cache_hit": true,
+    "method": "Real model/cache response, real HTMLMediaElement playing event; no physical audible measurement"
+  },
+  {
+    "language": "hi",
+    "text": "मुझे पानी चाहिए।",
+    "engine": "indicf5",
+    "http_status": 200,
+    "sample_rate": 24000,
+    "wav_bytes": 59948,
+    "onset_ms": 9.299999952316284,
+    "cache_hit": true,
+    "method": "Real model/cache response, real HTMLMediaElement playing event; no physical audible measurement"
+  },
+  {
+    "language": "gu",
+    "text": "મને પાણી જોઈએ છે.",
+    "engine": "indicf5",
+    "http_status": 200,
+    "sample_rate": 24000,
+    "wav_bytes": 60460,
+    "onset_ms": 9.700000047683716,
+    "cache_hit": true,
+    "method": "Real model/cache response, real HTMLMediaElement playing event; no physical audible measurement"
+  },
+  {
+    "language": "mr",
+    "text": "मला पाणी हवे आहे.",
+    "engine": "indicf5",
+    "http_status": 200,
+    "sample_rate": 24000,
+    "wav_bytes": 58924,
+    "onset_ms": 10.299999952316284,
+    "cache_hit": true,
+    "method": "Real model/cache response, real HTMLMediaElement playing event; no physical audible measurement"
+  }
+]

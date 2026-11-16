@@ -1,0 +1,149 @@
+{
+  "generation": {
+    "text": "મને ચા નથી જોઈતી.",
+    "outcome": "sentence_template",
+    "route": "template_after_rejection",
+    "act": "REQUEST",
+    "negation": true,
+    "act_source": "client",
+    "clarification": null,
+    "literal_preview": null,
+    "mode": "dual",
+    "semantic_score": 1,
+    "validated": true,
+    "semantic_valid": true,
+    "fallback_used": true,
+    "gate": {
+      "version": "gate-v2",
+      "attempts": [
+        {
+          "k": 0,
+          "text": "મારે ચા.",
+          "latency": 7.004,
+          "error": null,
+          "accepted": false,
+          "reasons": [
+            "negation_missing"
+          ]
+        },
+        {
+          "k": 1,
+          "text": "મારે ચા.",
+          "latency": 6.944,
+          "error": null,
+          "accepted": false,
+          "reasons": [
+            "negation_missing"
+          ]
+        }
+      ],
+      "template_status": "ok",
+      "template_gate": {
+        "accepted": true,
+        "reasons": []
+      },
+      "rejected_template_text": null
+    },
+    "validation_data": {
+      "violations_detected": [
+        "negation_missing",
+        "negation_missing"
+      ]
+    },
+    "ledger": {
+      "required": [
+        "INTENT:REQUEST",
+        "ACTOR:USER",
+        "ચા",
+        "NEGATION (MUST BE NEGATIVE)"
+      ],
+      "optional": [],
+      "forbidden": [
+        "breakfast",
+        "lunch",
+        "dinner",
+        "today",
+        "tomorrow",
+        "yesterday",
+        "morning",
+        "night",
+        "evening",
+        "tonight",
+        "planning",
+        "going to",
+        "restaurant",
+        "store",
+        "shop",
+        "buying",
+        "eating out",
+        "hungry",
+        "delicious",
+        "future",
+        "past"
+      ]
+    },
+    "candidate_llm1": "મારે ચા.",
+    "candidate_llm2": "મારે ચા.",
+    "llm3_decision": {
+      "decision": "PASS",
+      "final_text": "મારે ચા.",
+      "edit_type": "kept_unchanged",
+      "fallback_applied": true
+    },
+    "caregiver_context": {
+      "addressee": null,
+      "user_state": null,
+      "core_request": "ચા (ચા)",
+      "natural_sentence": "મને ચા નથી જોઈતી.",
+      "caregiver_explanation": "The user is indicating that they do not want ચા."
+    },
+    "audio_b64": null,
+    "audio_kind": "none",
+    "voice_source": "default",
+    "voice_id": "gu",
+    "audio_error": null,
+    "metrics": {
+      "t_llm1": 0.843,
+      "t_llm2": 0,
+      "t_llm3": 6.097,
+      "t_sem": 0,
+      "t_tts": 0,
+      "t_total": 13.95,
+      "n_attempts": 2,
+      "tokens_in": 1805,
+      "tokens_out": 132
+    }
+  },
+  "speech": {
+    "status": "playing",
+    "text": "મને ચા નથી જોઈતી.",
+    "language": "gu",
+    "eventId": "0e41771a-ad46-4962-936e-f8ed962f61b7",
+    "profile": "f117d05509091025a77922ce6599e37780eaf09de00ed11ca39df261fe6610e5",
+    "onsetMs": 41,
+    "kind": "message"
+  },
+  "anchors": [
+    {
+      "concept": "YES",
+      "slot": "legacy:cell-0"
+    },
+    {
+      "concept": "NO",
+      "slot": "legacy:cell-1"
+    },
+    {
+      "concept": "WANT",
+      "slot": "legacy:cell-2"
+    },
+    {
+      "concept": "MORE",
+      "slot": "legacy:cell-4"
+    },
+    {
+      "concept": "STOP",
+      "slot": "legacy:cell-5"
+    }
+  ],
+  "note": "Real hybrid generation, explicit TTS and HTMLMediaElement playing event; not audible/listener-validated speech."
+}

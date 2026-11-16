@@ -1,0 +1,667 @@
+          <main id="communication-board" className="aac-main flex-1 w-full mx-auto flex flex-col">
+
+
+
+            {/* ─── 1-TAP QUICK EXPRESS & EMERGENCY PHRASES ─── */}
+            <div className="quick-express" role="region" tabIndex={0} aria-label={ui("Quick Express",language)}>
+              <span className="text-[10px] font-black uppercase tracking-wider text-rose-600 dark:text-rose-400 flex items-center gap-1 flex-shrink-0 bg-rose-50 dark:bg-rose-950/60 px-2.5 py-1.5 rounded-xl border border-rose-200 dark:border-rose-900 shadow-xs">
+                <span>{ui("🚨 Quick Express", language)}</span>
+              </span>
+              <SupportHub language={language} onSpeak={supportSpeak} />
+              {quickPhrases.map((phrase, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    generationEpoch.current++;setIsGenerating(false);
+                    speak(phrase.text, language);
+                    recordActivity('conversation', phrase.text, language);
+                    setLastAudioB64(null); // so "Replay Voice" replays THIS phrase, not an older IndicF5 clip
+                    setGeneratedResult({
+                      text: phrase.text,
+                      quick_express: true,
+                      semantic_score: 1.0,
+                      context_intent: QUICK_INTENT[phrase.emoji]?.act,
+                      caregiver_context: { caregiver_explanation: sstr(QUICK_INTENT[phrase.emoji]?.key || 'intentUnknown',language) }
+                    });
+                    showToast(`Speaking: "${phrase.text}"`, 'info');
+                  }}
+                  className="tap-ripple spring-press flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-brand-50 hover:border-brand-300 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 font-bold text-xs border border-slate-200/90 dark:border-slate-800 shadow-xs transition-all cursor-pointer"
+                  title={`Tap to speak: "${phrase.text}"`}
+                >
+                  <SymbolVisual item={visualItem(phrase.label,phrase.emoji)} style={visualStyle} photos={photoOverrides} />
+                  <span>{phrase.label}</span>
+                </button>
+              ))}
+            </div>
+
+            <section className="composition-workspace" aria-label={ui("Sentence Canvas",language)} tabIndex={0}>
+            {/* ─── COMMUNICATOR STAGE (Standard Hero Box) ─── */}
+            <div hidden={compositionView==='result' && Boolean(generatedResult)} className={`composer-panel bg-white dark:bg-slate-900 rounded-2xl border-2 transition-all p-4 sm:p-5 flex flex-col gap-3.5 shadow-sm ${
+              isSpeaking ? 'border-emerald-500 ring-4 ring-emerald-500/15' : 'border-slate-200/90 dark:border-slate-800'
+            }`}>
+
+              {/* Header row inside stage: Live Status & Top 5 High-Peaked Words */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2 border-b border-slate-100 dark:border-slate-800/80">
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500">{ui("Sentence Canvas", language)}</span>
+                  {tokens.length > 0 && (
+                    <span className="bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 font-bold text-[10px] px-2 py-0.5 rounded-full">
+                      {tokens.length} {tokens.length === 1 ? 'word' : 'words'}
+                    </span>
+                  )}
+                  {isSpeaking && (
+                    <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-semibold pl-2">
+                      <span className="sound-bar"></span>
+                      <span className="sound-bar"></span>
+                      <span className="sound-bar"></span>
+                      <span className="sound-bar"></span>
+                      <span className="text-[11px] ml-1">{ui("Speaking: \"", language)}{activeSpeakingWord}"</span>
+                    </span>
+                  )}
+                </div>
+
+
+              </div>
+
+              {contextWords.length > 0 && <IntentContext id="selection-intent-context" act={liveIntent.act} negation={liveIntent.negation} words={contextWords} language={language} />}
+
+              {/* The Sentence Strip */}
+              <div className="sentence-strip min-h-[85px] p-3 rounded-xl bg-slate-50/80 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center gap-2 focus-within:ring-2 focus-within:ring-brand-500/20 focus-within:border-brand-500 transition-all">
+                {tokens.length === 0 && !inputText ? (
+                  <span className="text-slate-400 dark:text-slate-500 text-sm font-medium italic pl-1">{ui("Select symbols below or type to compose message…", language)}</span>
+                ) : null}
+
+                {/* Active Sentence Tokens */}
+                {tokens.map((token) => (
+                  <div
+                    key={token.id}
+                    className={`spring-press inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl shadow-xs group ${token.isCustom ? "bg-pink-50 dark:bg-pink-950/30 border-2 border-pink-300 dark:border-pink-700" : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-brand-400"}`}
+                  >
+                    <button onClick={() => speak(token.label,language)} className="token-speak" title={ui('Speak word',language)}>
+                      <SymbolVisual item={{...visualItem(token.label,token.emoji),k:token.visualId || token.cid || visualItem(token.label,token.emoji).k,image:token.image}} style={visualStyle} photos={photoOverrides}/>
+                      <span>{token.label}</span>
+                    </button>
+                    <button
+                      onClick={() => removeToken(token.id)}
+                      className="text-slate-400 hover:text-rose-500 font-bold text-sm ml-0.5 p-0.5"
+                      title={ui("Remove", language)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+
+                {/* Direct Inline Typing (Physical Keyboard Friendly) */}
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  onKeyDown={handleInputKeyDown}
+                  placeholder={
+                    tokens.length > 0 
+                      ? (language !== 'en' ? ui("+ शब्द जोड़ें / Add word...", language) : ui("+ Add word...", language))
+                      : (language === 'gu' ? ui("શબ્દ લખો / Type custom word...", language) : language === 'mr' ? ui("शब्द टाइप करा / Type custom word...", language) : language === 'hi' ? ui("शब्द लिखें / Type custom word...", language) : ui("Type custom word...", language))
+                  }
+                  className="flex-1 min-w-[130px] bg-transparent border-none text-slate-800 dark:text-slate-100 font-semibold text-sm focus:outline-none placeholder-slate-400 px-1 py-1"
+                />
+
+                {/* Phonetic Keyboard Explicit Toggle Button */}
+                {language !== 'en' && (
+                  <button
+                    type="button"
+                    onClick={() => setShowPhoneticKeyboard(prev => !prev)}
+                    className={`flex-shrink-0 px-2.5 py-1 text-xs font-bold rounded-lg border transition-all flex items-center gap-1.5 shadow-xs cursor-pointer ${
+                      showPhoneticKeyboard
+                        ? 'bg-brand-600 text-white border-brand-700 shadow-sm'
+                        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-brand-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+                    }`}
+                    title={showPhoneticKeyboard ? ui("Hide on-screen keyboard", language) : ui("Open on-screen keyboard for mouse/touch", language)}
+                  >
+                    <span className="text-sm">⌨️</span>
+                    <span className="text-[11px] font-bold">
+                      {showPhoneticKeyboard
+                        ? ui("Hide Keyboard", language)
+                        : (language === 'gu' ? 'ગુજરાતી કીબોર્ડ' : language === 'mr' ? 'मराठी कीबोर्ड' : 'हिन्दी कीबोर्ड')}
+                    </span>
+                    <span className="text-[10px] opacity-75">{showPhoneticKeyboard ? '▲' : '▼'}</span>
+                  </button>
+                )}
+              </div>
+
+              {/* ─── NATIVE PHONETIC ON-SCREEN KEYBOARD (Indic: Hindi, Gujarati, Marathi) ─── */}
+              {showPhoneticKeyboard && language !== 'en' && PHONETIC_KEYBOARD_DATA[language] && (
+                <div className="phonetic-overlay rounded-2xl bg-white dark:bg-slate-900 border-2 border-brand-500/30 dark:border-brand-500/40 p-3 sm:p-4 shadow-xl transition-all animate-fadeIn">
+                
+                  {/* Keyboard Header */}
+                  <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 dark:border-slate-800 gap-2 flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">⌨️</span>
+                      <span className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white">
+                        {PHONETIC_KEYBOARD_DATA[language].langName}{ui("Phonetic Keyboard", language)}</span>
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800">{ui("Touch & Type", language)}</span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5">
+                      {/* Section Tabs */}
+                      <div className="inline-flex rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 text-xs font-bold">
+                        <button
+                          type="button"
+                          onClick={() => setKeyboardSubTab('all')}
+                          className={`px-2.5 py-1 rounded-md transition-all ${keyboardSubTab === 'all' ? 'bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-300 shadow-xs' : 'text-slate-600 dark:text-slate-400'}`}
+                        >{ui("All", language)}</button>
+                        <button
+                          type="button"
+                          onClick={() => setKeyboardSubTab('vowels')}
+                          className={`px-2.5 py-1 rounded-md transition-all ${keyboardSubTab === 'vowels' ? 'bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-300 shadow-xs' : 'text-slate-600 dark:text-slate-400'}`}
+                        >
+                          {language === 'gu' ? 'સ્વર-માત્રા' : 'स्वर-मात्रा'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setKeyboardSubTab('consonants')}
+                          className={`px-2.5 py-1 rounded-md transition-all ${keyboardSubTab === 'consonants' ? 'bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-300 shadow-xs' : 'text-slate-600 dark:text-slate-400'}`}
+                        >
+                          {language === 'gu' ? 'વ્યંજન' : 'व्यंजन'}
+                        </button>
+                      </div>
+
+                      {/* Close Keyboard */}
+                      <button
+                        type="button"
+                        onClick={() => setShowPhoneticKeyboard(false)}
+                        className="w-7 h-7 flex items-center justify-center rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-800 dark:hover:text-white text-xs font-bold transition-all ml-1 cursor-pointer"
+                        title={ui("Close Keyboard", language)}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Keyboard Key Area */}
+                  <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
+
+                    {/* VOWELS (स्वर / સ્વર) */}
+                    {(keyboardSubTab === 'all' || keyboardSubTab === 'vowels') && (
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1 flex items-center gap-1">
+                          <span>● {language === 'gu' ? ui("સ્વર (Vowels)", language) : ui("स्वर (Vowels)", language)}</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {PHONETIC_KEYBOARD_DATA[language].vowels.map((v, i) => (
+                            <button
+                              key={i}
+                              type="button"
+                              onClick={() => handleInsertChar(v.char)}
+                              className="spring-press min-w-[34px] sm:min-w-[38px] h-9 px-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/60 text-emerald-900 dark:text-emerald-100 font-extrabold text-base border border-emerald-200/80 dark:border-emerald-800/80 shadow-xs flex items-center justify-center cursor-pointer transition-all active:scale-95"
+                            >
+                              {v.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* MATRAS & MODIFIERS (मात्राएं / માત્રા) */}
+                    {(keyboardSubTab === 'all' || keyboardSubTab === 'vowels') && (
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-1 flex items-center gap-1">
+                          <span>● {language === 'gu' ? ui("માત્રા (Matras / Modifiers)", language) : ui("मात्राएं (Matras / Modifiers)", language)}</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {PHONETIC_KEYBOARD_DATA[language].matras.map((m, i) => (
+                            <button
+                              key={i}
+                              type="button"
+                              onClick={() => handleInsertChar(m.char)}
+                              className="spring-press min-w-[34px] sm:min-w-[42px] h-9 px-2 rounded-lg bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-900/60 text-amber-900 dark:text-amber-100 font-extrabold text-xs sm:text-sm border border-amber-200/80 dark:border-amber-800/80 shadow-xs flex items-center justify-center cursor-pointer transition-all active:scale-95"
+                              title={m.label}
+                            >
+                              {m.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* CONSONANTS (व्यंजन / વ્યંજન) */}
+                    {(keyboardSubTab === 'all' || keyboardSubTab === 'consonants') && (
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-1 flex items-center gap-1">
+                          <span>● {language === 'gu' ? ui("વ્યંજન (Consonants)", language) : ui("व्यंजन (Consonants)", language)}</span>
+                        </div>
+                        <div className="space-y-1">
+                          {PHONETIC_KEYBOARD_DATA[language].consonants.map((row, rIdx) => (
+                            <div key={rIdx} className="flex flex-wrap gap-1">
+                              {row.map((char, cIdx) => (
+                                <button
+                                  key={cIdx}
+                                  type="button"
+                                  onClick={() => handleInsertChar(char)}
+                                  className="spring-press flex-1 min-w-[34px] sm:min-w-[40px] h-9 px-1 rounded-lg bg-slate-50 hover:bg-white dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-100 font-extrabold text-base border border-slate-200 dark:border-slate-700 shadow-xs flex items-center justify-center cursor-pointer transition-all active:scale-95"
+                                >
+                                  {char}
+                                </button>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* NUMERALS */}
+                    {keyboardSubTab === 'all' && (
+                      <div className="flex flex-wrap gap-1 pt-1 border-t border-slate-100 dark:border-slate-800">
+                        {PHONETIC_KEYBOARD_DATA[language].numerals.map((num, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            onClick={() => handleInsertChar(num)}
+                            className="spring-press flex-1 min-w-[28px] h-7 px-1 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center cursor-pointer"
+                          >
+                            {num}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                  </div>
+
+                  {/* Keyboard Action Bar (Space, Backspace, Clear, Transliterate, Add) */}
+                  <div className="flex items-center gap-1.5 pt-2.5 mt-2 border-t border-slate-100 dark:border-slate-800 flex-wrap">
+                    {/* Space */}
+                    <button
+                      type="button"
+                      onClick={() => handleInsertChar(' ')}
+                      className="spring-press flex-1 min-w-[110px] h-9 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 border border-slate-200 dark:border-slate-700 shadow-xs cursor-pointer"
+                    >
+                      <span>␣</span>
+                      <span>{ui("Space", language)}</span>
+                    </button>
+
+                    {/* Backspace */}
+                    <button
+                      type="button"
+                      onClick={handleBackspace}
+                      className="spring-press px-3 h-9 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 font-bold text-xs flex items-center justify-center gap-1 border border-rose-200 dark:border-rose-800 shadow-xs cursor-pointer"
+                      title={ui("Backspace", language)}
+                    >
+                      <span>⌫</span>
+                      <span className="hidden sm:inline">{ui("Back", language)}</span>
+                    </button>
+
+                    {/* Clear */}
+                    <button
+                      type="button"
+                      onClick={() => setInputText('')}
+                      className="spring-press px-2.5 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold text-xs flex items-center justify-center cursor-pointer"
+                      title={ui("Clear text", language)}
+                    >{ui("Clear", language)}</button>
+
+                    {/* Roman Transliterate Helper Button */}
+                    {/[a-zA-Z]/.test(inputText) && (
+                      <button
+                        type="button"
+                        onClick={handleTransliterateCurrent}
+                        className="spring-press px-3 h-9 rounded-xl bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-bold text-xs flex items-center justify-center gap-1 border border-indigo-200 dark:border-indigo-800 shadow-xs animate-pulse cursor-pointer"
+                        title={ui("Transliterate typed English characters to native script", language)}
+                      >
+                        <span>🔤</span>
+                        <span>{ui("Convert to", language)}{language === 'gu' ? 'ગુજરાતી' : language === 'mr' ? 'मराठी' : 'हिन्दी'}</span>
+                      </button>
+                    )}
+
+                    {/* Add as Chip */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (inputText.trim()) {
+                          addToken({ label: inputText.trim(), emoji: '🔤' });
+                          setInputText('');
+                        }
+                      }}
+                      disabled={!inputText.trim()}
+                      className="spring-press px-4 h-9 rounded-xl bg-brand-600 hover:bg-brand-700 disabled:opacity-40 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-sm ml-auto cursor-pointer"
+                    >
+                      <span>⏎</span>
+                      <span>{language === 'gu' ? 'શબ્દ ઉમેરો' : language === 'mr' ? 'शब्द जोडा' : 'शब्द जोड़ें'}</span>
+                    </button>
+                  </div>
+
+                </div>
+              )}
+
+              {/* ─── PRIMARY ACTION TOOLBAR (Large, Accessible Touch Targets) ─── */}
+              <div className="action-toolbar flex flex-wrap items-center justify-between gap-2.5 pt-1 border-t border-slate-100 dark:border-slate-800">
+
+                {/* Secondary utilities (Clear, Backspace, Un-Jumble) */}
+                <details className="message-utilities"><summary aria-label={sstr('moreActions',language)} title={sstr('moreActions',language)}>⋯</summary><div className="message-utilities-menu">
+                  <button
+                    onClick={clearAll}
+                    disabled={tokens.length === 0 && !inputText}
+                    className="tap-ripple spring-press p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white hover:bg-rose-50 text-slate-500 hover:text-rose-600 dark:bg-slate-900 dark:hover:bg-rose-950/40 disabled:opacity-40 transition-colors shadow-xs cursor-pointer"
+                    title={ui("Clear entire sentence canvas", language)}
+                  >
+                    <Icons.Trash />
+                  </button>
+
+                  <button
+                    onClick={removeLastToken}
+                    disabled={tokens.length === 0}
+                    className="tap-ripple spring-press flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs border border-slate-200 dark:border-slate-700 disabled:opacity-40 transition-all shadow-xs cursor-pointer"
+                    title={ui("Delete last word (Backspace)", language)}
+                  >
+                    <Icons.Backspace />
+                    <span className="toolbar-label">{ui("Delete Last", language)}</span>
+                  </button>
+
+                  <button
+                    onClick={handleUnjumble}
+                    disabled={tokens.length < 2}
+                    className="tap-ripple spring-press flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-900/60 text-amber-800 dark:text-amber-200 font-bold text-xs border border-amber-300 dark:border-amber-700 disabled:opacity-40 transition-all shadow-xs cursor-pointer"
+                    title={ui("Re-order scrambled words into grammatical order using HMM-2 syntax model", language)}
+                  >
+                    <span>🔀</span>
+                    <span className="toolbar-label">{ui("Un-Jumble", language)}</span>
+                  </button>
+                {generatedResult && <button type="button" className="view-result" onClick={()=>setCompositionView('result')}>{sstr('viewResult',language)} →</button>}
+              {/* ─── FEATURE 6: QUICK PICKS — Bookmarked Sentences Shelf ─── */}
+              {bookmarks.length > 0 && (
+                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 -mt-1">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-500 flex items-center gap-1 flex-shrink-0">
+                    <Icons.StarFilled />
+                    <span>{ui("Bookmarks", language)}</span>
+                  </span>
+                  {bookmarks.filter(bm => bm.language === language).map((bm) => (
+                    <div
+                      key={bm.id}
+                      className="tap-ripple spring-press flex-shrink-0 inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900/50 dark:to-yellow-900/30 border-2 border-amber-400 dark:border-amber-500 text-amber-900 dark:text-amber-100 text-xs font-bold shadow-md shadow-amber-400/30 ring-2 ring-amber-300/30 group"
+                    >
+                      <button onClick={() => speakBookmark(bm)} className="hover:underline" title={ui("Speak this saved phrase", language)}>
+                        {bm.text.length > 36 ? bm.text.slice(0, 36) + '…' : bm.text}
+                      </button>
+                      <button
+                        onClick={() => removeBookmark(bm.id)}
+                        className="text-amber-400 hover:text-rose-500 font-bold text-[11px] px-1 opacity-60 group-hover:opacity-100"
+                        title={ui("Remove from Bookmarks", language)}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+</div></details>
+
+                {/* Primary actions: Speak (exact visible text), Stop audio, secondary Polish */}
+                <div className="flex items-center gap-2.5 flex-wrap composer-actions">
+                  <button
+                    id="speak-button"
+                    onClick={() => {
+                      const fullText = tokens.map(t => t.label).join(' ') + (inputText ? ' ' + inputText : '');
+                      if (fullText.trim()) { speak(fullText, language); recordActivity('conversation', fullText.trim(), language); }
+                    }}
+                    disabled={tokens.length === 0 && !inputText}
+                    className="primary-action tap-ripple spring-press flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-extrabold text-sm disabled:opacity-50"
+                    aria-label={ui("Speak", language)} title={ui("Pronounce current sentence aloud", language)}
+                  >
+                    <Icons.Volume />
+                    <span className="toolbar-label">{ui("Speak", language)}</span>
+                  </button>
+                  <button
+                    id="stop-audio-button" type="button" onClick={stopAllSpeech}
+                    className="support-btn" data-tone="stop" aria-label={ui("Stop audio", language)} title={ui("Stop audio", language)}
+                    disabled={!isSpeaking}
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+                    <span className="toolbar-label">{ui("Stop audio", language)}</span>
+                  </button>
+
+                  <label className="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    <span>{sstr('msgType', language)}</span>
+                    <select
+                      id="message-type-select" aria-label={sstr('msgType',language)}
+                      value={userAct}
+                      onChange={(e) => setUserAct(e.target.value)}
+                      className="px-2 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-xs font-bold cursor-pointer"
+                      title={ui("Message type: leave on Auto to let the app decide; choose one to override", language)}
+                    >
+                      <option value="auto">{sstr('typeAuto', language)}</option>
+                      <option value="REQUEST">{sstr('typeRequest', language)}</option>
+                      <option value="FEELING">{sstr('typeFeeling', language)}</option>
+                      <option value="QUESTION">{sstr('typeQuestion', language)}</option>
+                    </select>
+                  </label>
+
+                  <button
+                    id="polish-button"
+                    onClick={handleGenerateSentence}
+                    disabled={isGenerating || (tokens.length === 0 && !inputText)}
+                    className="support-btn tap-ripple spring-press"
+                    aria-label={ui("Polish",language)} title={ui("Polish: suggest a clearer sentence. Nothing is spoken until you choose.",language)}
+                  >
+                    {isGenerating ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></span>
+                        <span>{ui("Composing Sentence…", language)}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Icons.Sparkles />
+                        <span className="toolbar-label">{ui("Polish", language)}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+              </div>
+
+              {/* ─── DEDICATED INFINITY-GRAM PREDICTIONS SHELF ─── */}
+              <div className="prediction-shelf rounded-xl bg-slate-50/80 dark:bg-slate-950/60 border border-slate-200/90 dark:border-slate-800 p-3 flex flex-col gap-2 transition-all">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-black uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+                      <span>{ui("⚡ Next Word Predictions", language)}</span>
+                      {isPredicting && <span className="w-2 h-2 rounded-full bg-brand-500 animate-ping"></span>}
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold">
+                    {tokens.length > 0 ? `Context: ${tokens.length} words` : ui("Conversation Starters", language)}
+                  </span>
+                </div>
+
+                {/* Prediction Pills Ribbon */}
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+                  {predictions.map((pred, i) => (
+                    <button
+                      key={i}
+                      onClick={() => addToken({ word: pred.word, emoji: pred.emoji || '✨' })}
+                      className="tap-ripple spring-press flex-shrink-0 inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white hover:bg-brand-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-extrabold text-xs sm:text-sm border-2 border-slate-200 hover:border-brand-500 dark:border-slate-700 shadow-xs cursor-pointer transition-all"
+                      title={pred.order_label ? `Matched ${pred.order_label}` : undefined}
+                    >
+                      <SymbolVisual item={visualItem(pred.word,pred.emoji)} style={visualStyle} photos={photoOverrides} />
+                      <span>{pred.word}</span>
+                      {pred.order >= 4 && (
+                        <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                          ∞-{pred.order}{ui("g", language)}</span>
+                      )}
+                      {pred.prob > 0 && (
+                        <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500">
+                          {Math.round(pred.prob * 100)}%
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            <div className="output-workspace" hidden={!generatedResult || compositionView!=='result'}>
+              <button type="button" className="back-to-message" onClick={()=>setCompositionView('compose')}>← {sstr('backMessage',language)}</button>
+            {/* ─── AI OUTPUT CARD (When Generated) ─── */}
+            {generatedResult && generatedResult.outcome === 'clarification' && (
+              <div id="result-clarification" className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-amber-500/50 p-4 shadow-sm flex flex-col gap-2.5 animate-fade-in">
+                <div className="text-sm font-black text-amber-800 dark:text-amber-300">{sstr('clarifyQ', language)}</div>
+                <div className="text-lg font-extrabold text-slate-900 dark:text-white">"{(generatedResult.clarification && generatedResult.clarification.literal) || tokens.map(t => t.label).join(' ')}"</div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <button id="clarify-request" onClick={() => handleGenerateSentence('REQUEST')} className="tap-ripple spring-press px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-extrabold shadow-xs cursor-pointer">{sstr('optRequest', language)}</button>
+                  <button id="clarify-feeling" onClick={() => handleGenerateSentence('FEELING')} className="tap-ripple spring-press px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-extrabold shadow-xs cursor-pointer">{sstr('optFeeling', language)}</button>
+                </div>
+              </div>
+            )}
+            {generatedResult && generatedResult.outcome === 'literal_preview' && (
+              <div id="result-literal" className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-slate-400/60 p-4 shadow-sm flex flex-col gap-2.5 animate-fade-in">
+                <span className="self-start px-2.5 py-0.5 rounded-full text-[10px] font-black bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-200">{sstr('literalChip', language)}</span>
+                <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">"{generatedResult.text}"</div>
+                <div className="flex items-center gap-2">
+                  <button id="speak-literal" onClick={() => speak(generatedResult.text, language)} className="tap-ripple spring-press flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-700 text-white text-xs font-bold shadow-xs cursor-pointer"><Icons.Volume /><span>{sstr('speakLiteral', language)}</span></button>
+                </div>
+              </div>
+            )}
+            {generatedResult && generatedResult.outcome === 'failure' && (
+              <div id="result-failure" className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-rose-500/50 p-4 shadow-sm animate-fade-in text-sm font-black text-rose-700">{sstr('failChip', language)}</div>
+            )}
+            {generatedResult && generatedResult.outcome !== 'clarification' && generatedResult.outcome !== 'literal_preview' && generatedResult.outcome !== 'failure' && (
+              <div className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-emerald-500/40 p-4 shadow-sm flex flex-col gap-2.5 animate-fade-in">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 flex items-center gap-1">
+                      <Icons.Check />
+                      <span>{generatedResult.outcome === 'sentence_template' ? sstr('templateChip', language) : sstr('modelChip', language)}</span>
+                    </span>
+                    {lastAudioB64 && (
+                      <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 px-2 py-0.5 rounded-full border border-indigo-200 dark:border-indigo-800">
+                        {generatedResult.audio_kind === 'indicf5' ? ui("🎙️ IndicF5", language) : generatedResult.audio_kind === 'f5tts' ? '🎙️ F5-TTS' : ui("Speech unavailable", language)}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    {/* ─── Feature 6: Bookmark Sentences (Quick Picks) ─── */}
+                    <button
+                      onClick={() => addBookmark(generatedResult.text)}
+                      className={`tap-ripple spring-press flex items-center justify-center w-8 h-8 rounded-lg border text-base ${
+                        bookmarks.some(b => b.text === generatedResult.text)
+                          ? 'bg-amber-100 border-amber-300 text-amber-600 dark:bg-amber-950/50 dark:border-amber-700'
+                          : 'bg-white border-slate-200 text-slate-400 hover:text-amber-500 dark:bg-slate-800 dark:border-slate-700'
+                      } ${starPopId ? 'star-pop' : ''}`}
+                      title={ui("Save to Bookmarks", language)}
+                    >
+                      {bookmarks.some(b => b.text === generatedResult.text) ? <Icons.StarFilled /> : <Icons.StarOutline />}
+                    </button>
+                    <button
+                      onClick={() => copyToClipboard(generatedResult.text)}
+                      className="tap-ripple spring-press flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold border border-slate-200 dark:border-slate-700 shadow-xs cursor-pointer"
+                      title={ui("Copy sentence to clipboard", language)}
+                    >
+                      <Icons.Copy />
+                      <span>{ui("Copy", language)}</span>
+                    </button>
+                    <button
+                      id="use-suggestion" onClick={useSuggestion}
+                      className="tap-ripple spring-press flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-600 text-white text-xs font-bold shadow-xs hover:bg-emerald-500"
+                    >
+                      <Icons.Play />
+                      <span className="toolbar-label">{ui("Use suggestion & speak", language)}</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div id="result-sentence" className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+                  "{generatedResult.text}"
+                </div>
+
+                <IntentContext id="result-intent-context" act={generatedResult.context_intent || generatedResult.act} negation={generatedResult.context_negation} words={generatedResult.selected_words} explanation={generatedResult.caregiver_context?.caregiver_explanation} language={language} />
+              </div>
+            )}
+
+            </div>
+            </section>
+            <section className="vocabulary-workspace" aria-label={ui("Word categories",language)}>
+            {/* ─── 3. CATEGORY NAVIGATION DOCK & CARD SIZING ─── */}
+            <div className="category-dock">
+              <div className="category-tabs" aria-label={ui("Word categories", language)}>
+                {CATEGORIES.map((cat) => {
+                  const isActive = activeCategory === cat.id;
+                  const catLabel = cat.label[language] || cat.label.en;
+                  return (
+                    <button
+                      key={cat.id}
+                      data-category={cat.id}
+                      aria-pressed={isActive}
+                      onClick={() => {
+                        setActiveCategory(cat.id);
+                        if (cat.id === 'search') {
+                          setTimeout(() => document.getElementById('gridSearchInput')?.focus(), 50);
+                        }
+                      }}
+                      className={`tap-ripple spring-press flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-bold text-xs border transition-all cursor-pointer ${
+                        isActive
+                          ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-slate-900 dark:border-white shadow-sm'
+                          : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-800 hover:border-slate-300'
+                      }`}
+                    >
+                      <SymbolVisual item={{k:{core:'MORE',actions:'GO',food:'FOOD',feelings:'HAPPY',people:'ME',places:'HOME',body:'HEART',chat:'NAMASTE',emergency:'HELP_EMERGENCY',search:'LOOK'}[cat.id],e:cat.icon}} style={visualStyle} photos={photoOverrides} />
+                      <span className="category-label">{catLabel}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+            </div>
+
+            {/* ─── 4. SYMBOL BOARD GRID ───────────────────────────────── */}
+            <div id="symbolBoard" className="scroll-mt-20 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 shadow-sm flex flex-col gap-3">
+            
+              {/* Optional Search Input if Search Category is Active */}
+              {activeCategory === 'search' && (
+                <div className="relative">
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                    <Icons.Search />
+                  </div>
+                  <input
+                    id="gridSearchInput"
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={ui("Search over 5,000+ emojis (e.g. apple, doctor, happy, bus)...", language)}
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-10 pr-4 py-2 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:border-brand-500"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 font-bold"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* ─── Feature 1: Custom Grid — add-word form (offline local cache) ─── */}
+              <div key={activeCategory} className="symbol-grid" data-density={cardSize} data-category={activeCategory}>
+                {displayedSymbols.map(item => {
+                  const label=item.labels ? (item.labels[language] || item.labels.en || item.k) : (item.label || item.k);
+                  const content=<><SymbolVisual item={item} style={visualStyle} photos={photoOverrides} /><span className="card-label">{label}</span></>;
+                  return item.isCustom ? (
+                    <div className="custom-symbol-cell" key={item.k}>
+                      <button className="symbol-card comm-card flex flex-col items-center text-center border" data-symbol-id={item.k} onClick={() => addToken(item)}>{content}</button>
+                      <button className="custom-symbol-remove" aria-label={ui('Remove from My Words',language)+': '+label} onClick={() => removeCustomWord(item.k)}>×</button>
+                    </div>
+                  ) : <button key={item.k} className="symbol-card comm-card flex flex-col items-center text-center border" data-symbol-id={item.k} onClick={() => addToken(item)}>{content}</button>;
+                })}
+              </div>
+
+              {activeCategory === 'search' && displayedSymbols.length === 0 && searchQuery && (
+                <div className="text-center py-12 text-slate-400 font-medium text-sm">{ui("No emojis found matching \"", language)}{searchQuery}".
+                </div>
+              )}
+
+
+            </div>
+
+
+
+            </section>
+          </main>

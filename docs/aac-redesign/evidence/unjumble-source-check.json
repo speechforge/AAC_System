@@ -1,0 +1,12 @@
+{
+  "frontend_unchanged": true,
+  "frontend_sha256": {
+    "frontend/index.html": "d6466e35c7eb43c334b1301060b25980c063f0d30d8b377d527c525287f50cd0",
+    "frontend/locales.js": "10cc3fb4366058496b9d1f9c23ebd64a6463bb69c7828786d49cafb9777d4fef",
+    "frontend/communicator-layout.css": "3857f0ed909741a5b4bbb44e570aca1b060c5e4a09dd8eedfab3890323fc518e",
+    "frontend/public-assets.json": "3984bb6102034edf9028b11819b9acc52ea29d629bc8bdc12fbb4bac884b09e1",
+    "frontend/offline-adapter.js": "0ab3afa9a5e9411b67c98b96df6029a4cb2c0de48e8a669dc64ba20408581efd"
+  },
+  "word_order_matches_download": true,
+  "tests_match_download": true
+}

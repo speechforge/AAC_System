@@ -1,0 +1,13 @@
+{
+  "path": "paper/CLAUDE_WRITTEN/naacl2027_demo/eval/fixtures/scenarios.jsonl",
+  "sha256": "61607e1b9011747f7ba7638b97d647ec3fee81a732dc29de69895e5bb9cb0a34",
+  "scenarios": 192,
+  "modes": [
+    "explicit",
+    "inferred"
+  ],
+  "policy": "template_only",
+  "model_attempts": 0,
+  "seed": 2026,
+  "exclusions": 0
+}

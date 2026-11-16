@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "phrases": [
+    {
+      "key": "help",
+      "language": "en",
+      "text": "Please help me.",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.472,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/en-help.wav",
+      "sha256": "b4ab68f2c4b17e367ba9fc7bb14e55e1a0af99681eb79139704375de5922841e"
+    },
+    {
+      "key": "water",
+      "language": "en",
+      "text": "I want water.",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.28,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/en-water.wav",
+      "sha256": "4776217e9802f33a884d04947908c9c6fbcc1c1969c08c48bbe86f73d4866a57"
+    },
+    {
+      "key": "bathroom",
+      "language": "en",
+      "text": "I need to use the bathroom.",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 2.6666666666666665,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/en-bathroom.wav",
+      "sha256": "73da7dafa09ca8377976fa90f1f13ec12c4eef410ee4c18a44540e4f9d516ca1"
+    },
+    {
+      "key": "pain",
+      "language": "en",
+      "text": "I am in pain.",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.28,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/en-pain.wav",
+      "sha256": "d86f682a71581a6e1a53c89e98790fa8080bb4ae9ea7f9200baaf3bd34be21c9"
+    },
+    {
+      "key": "help",
+      "language": "hi",
+      "text": "कृपया मेरी मदद कीजिए।",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.6213333333333333,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/hi-help.wav",
+      "sha256": "218193d7b1a8c7be709aa3b2e0c6296580682ba346367602dd5c01d3638a086d"
+    },
+    {
+      "key": "water",
+      "language": "hi",
+      "text": "मुझे पानी चाहिए।",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.248,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/hi-water.wav",
+      "sha256": "440368d0ab9d70f51d15059ae4a662ab16d239a31563526614a4fbe5d613c94b"
+    },
+    {
+      "key": "bathroom",
+      "language": "hi",
+      "text": "मुझे बाथरूम जाना है।",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.536,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/hi-bathroom.wav",
+      "sha256": "08f089d74420fed67e4858a9e9b28704d301c8f78d5bec383a18dad11cf4fe0a"
+    },
+    {
+      "key": "pain",
+      "language": "hi",
+      "text": "मुझे दर्द हो रहा है।",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.4826666666666666,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/hi-pain.wav",
+      "sha256": "113ba884c46bd0d9577069a59ba7577a8836d9256bad4f2c34d87b87cfa57658"
+    },
+    {
+      "key": "help",
+      "language": "gu",
+      "text": "કૃપા કરીને મને મદદ કરો.",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.7386666666666666,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/gu-help.wav",
+      "sha256": "6b512d376c79f1c592e95bb4a39fcb793407b24d558bbc134b059b0354c52221"
+    },
+    {
+      "key": "water",
+      "language": "gu",
+      "text": "મને પાણી જોઈએ છે.",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.2586666666666666,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/gu-water.wav",
+      "sha256": "5d2a3600241ed65499a680fd81a02ab932b48b72081773a7fa49d648abcc64a8"
+    },
+    {
+      "key": "bathroom",
+      "language": "gu",
+      "text": "મારે બાથરૂમ જવું છે.",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.536,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/gu-bathroom.wav",
+      "sha256": "0acd489599b00d417a26fa042c20f78766163aa55a37f0cf16021c52f908b00b"
+    },
+    {
+      "key": "pain",
+      "language": "gu",
+      "text": "મને દુખાવો થાય છે.",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.3546666666666667,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/gu-pain.wav",
+      "sha256": "5799f9c92606a77068cc0229d46ab3566b877731905119619f29ec54e194d2d6"
+    },
+    {
+      "key": "help",
+      "language": "mr",
+      "text": "कृपया मला मदत करा.",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.312,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/mr-help.wav",
+      "sha256": "c629ec71fc51b24737a7c619149d81aac9a96924278140b746d5dbd9bfcb5cb0"
+    },
+    {
+      "key": "water",
+      "language": "mr",
+      "text": "मला पाणी हवे आहे.",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.2266666666666666,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/mr-water.wav",
+      "sha256": "5c528c93baa0b1733954c4beca457f00fdc1b8ea87d709eff24784fe60532224"
+    },
+    {
+      "key": "bathroom",
+      "language": "mr",
+      "text": "मला शौचालयात जायचे आहे.",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.7386666666666666,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/mr-bathroom.wav",
+      "sha256": "34467d3bee2a562a0e1e3b9d68af491d958b34bd54774f45917f61db6d32e6da"
+    },
+    {
+      "key": "pain",
+      "language": "mr",
+      "text": "मला वेदना होत आहेत.",
+      "review": "machine-checked; native/audio-listener review pending",
+      "duration_seconds": 1.3973333333333333,
+      "sample_rate": 24000,
+      "audio": "/static/audio/quick-v1/mr-pain.wav",
+      "sha256": "f4fec6a098d0b1f91aace2ae2e37b4bd212dbb8efa4131401ea00aea56557e8a"
+    }
+  ]
+}

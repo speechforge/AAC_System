@@ -5,6 +5,9 @@ import re
 import time
 import os
 
+import templates as _templates
+import aac_lexicon as _lex
+
 # ─────────────────────────────────────────────────────────────
 #  LLM-3: THE FINAL CONTEXT-LEVEL SEMANTIC VERIFIER & MINIMAL REFINER
 #  Authority Hierarchy:
@@ -78,12 +81,12 @@ class IndicLLM:
             ) if os.path.exists(local_path) else False
             model_name = local_path if has_weights else "Qwen/Qwen2.5-0.5B-Instruct"
 
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.device = "cpu" if os.getenv("AAC_DEVICE") == "cpu" else ("cuda" if torch.cuda.is_available() else "cpu")
         print(f"Loading {model_name} on {self.device}")
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name,
-            torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+            torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
         ).to(self.device)
 
     # ─── 1. BUILD STRUCTURED AAC CONTEXT & CONCEPT LEDGER ─────
@@ -103,7 +106,9 @@ class IndicLLM:
             "temporal_state": context.get("temporal_state", None),
             "location": context.get("location", None),
             "people": context.get("people", []),
-            "code_mixing": code_mix
+            "code_mixing": code_mix,
+            "act": context.get("act"),
+            "concept_ids": context.get("concept_ids", []),
         }
 
     def build_concept_ledger(self, structured_context):
@@ -118,6 +123,9 @@ class IndicLLM:
         ]
 
         intent = structured_context.get("intent", "")
+        act = (structured_context.get("act") or "").upper()
+        if act in ("FEELING", "FEELING_REQUEST"):
+            intent = "FEELING" if act == "FEELING" else intent       # the act is a state of the speaker; polarity is a separate field
         if intent:
             required.append(f"INTENT:{intent.upper()}")
 
@@ -215,7 +223,8 @@ class IndicLLM:
                     ("Input Sequence: मुझे चाहिए + प्यास + पानी", "मुझे प्यास लगी है, मुझे पानी चाहिए।"),
                     ("Input Sequence: मुझे चाहिए + बीमार + दवा", "मैं बीमार हूँ, मुझे दवा चाहिए।"),
                     ("Input Sequence: मुझे चाहिए + पानी", "मुझे पानी चाहिए।"),
-                    ("Input Sequence: क्या मुझे मिल सकता है + शिक्षक + मदद", "शिक्षक, क्या आप मेरी मदद कर सकते हैं?")
+                    ("Input Sequence: क्या मुझे मिल सकता है + शिक्षक + मदद", "शिक्षक, क्या आप मेरी मदद कर सकते हैं?"),
+                    ("Input Sequence: मैं कह रहा हूँ + नहीं + चिंतित", "मैं चिंतित नहीं हूँ।")
                 ]
             },
             "gu": {
@@ -235,6 +244,7 @@ class IndicLLM:
                     ("ઈનપુટ ક્રમ: હું કહું છું + દુખાવો", "મને દુખાવો થાય છે."),
                     ("ઈનપુટ ક્રમ: શું મને મળી શકે + ડૉક્ટર", "મને ડૉક્ટર મળી શકે?"),
                     ("ઈનપુટ ક્રમ: શું મને મળી શકે + મદદ", "શું તમે મને મદદ કરી શકો?"),
+                    ("ઈનપુટ ક્રમ: હું કહું છું + નથી + ચિંતિત", "હું ચિંતિત નથી."),
                 ]
             },
             "mr": {
@@ -254,6 +264,7 @@ class IndicLLM:
                     ("इनपुट क्रम: मी सांगत आहे + वेदना", "मला वेदना होत आहेत."),
                     ("इनपुट क्रम: मला मिळू शकेल का + डॉक्टर", "मला डॉक्टर मिळू शकेल का?"),
                     ("इनपुट क्रम: मला मिळू शकेल का + मदत", "तुम्ही मला मदत करू शकता का?"),
+                    ("इनपुट क्रम: मी सांगत आहे + नाही + चिंतित", "मी चिंतित नाही."),
                 ]
             }
         }
@@ -263,18 +274,28 @@ class IndicLLM:
             intent = aac_context.get("intent", "REQUEST").upper()
             negation = bool(aac_context.get("negation", False))
             entities = aac_context.get("entities", [])
+            act = (aac_context.get("act") or "").upper()
 
             if language == "hi":
                 intent_prefix = "नहीं चाहिए" if negation else ("मुझे चाहिए" if intent in ["REQUEST", "WANT"] else ("मैं कह रहा हूँ" if intent in ["STATEMENT", "FEEL"] else "क्या मुझे मिल सकता है"))
-                seq_parts = [intent_prefix] + entities if entities else [intent_prefix, "यह"]
+                if negation and act == "FEELING":                      # negated state, not a negated want
+                    seq_parts = ["मैं कह रहा हूँ", "नहीं"] + entities
+                else:
+                    seq_parts = [intent_prefix] + entities if entities else [intent_prefix, "यह"]
                 q = f"Input Sequence: {' + '.join(seq_parts)}"
             elif language == "gu":
                 intent_prefix = "નથી જોઈતું" if negation else ("મને જોઈએ છે" if intent in ["REQUEST", "WANT"] else ("હું કહું છું" if intent in ["STATEMENT", "FEEL"] else "શું મને મળી શકે"))
-                seq_parts = [intent_prefix] + entities if entities else [intent_prefix, "આ"]
+                if negation and act == "FEELING":
+                    seq_parts = ["હું કહું છું", "નથી"] + entities
+                else:
+                    seq_parts = [intent_prefix] + entities if entities else [intent_prefix, "આ"]
                 q = f"ઈનપુટ ક્રમ: {' + '.join(seq_parts)}"
             elif language == "mr":
                 intent_prefix = "नको आहे" if negation else ("मला हवे आहे" if intent in ["REQUEST", "WANT"] else ("मी सांगत आहे" if intent in ["STATEMENT", "FEEL"] else "मला मिळू शकेल का"))
-                seq_parts = [intent_prefix] + entities if entities else [intent_prefix, "हे"]
+                if negation and act == "FEELING":
+                    seq_parts = ["मी सांगत आहे", "नाही"] + entities
+                else:
+                    seq_parts = [intent_prefix] + entities if entities else [intent_prefix, "हे"]
                 q = f"इनपुट क्रम: {' + '.join(seq_parts)}"
 
             msgs = [{"role": "system", "content": cfg["system"]}]
@@ -444,62 +465,35 @@ class IndicLLM:
         decision_data["final_text"] = final_sentence
         return final_sentence, decision_data, metrics
 
-    # ─── DETERMINISTIC FALLBACK REALIZER ─────────────────────
+    # ─── DETERMINISTIC FALLBACK REALIZER (compositional templates) ──────────
+    def realize_template(self, context, language="en"):
+        """Compose a sentence from the user's own concepts (templates.py).  Returns the template result dict
+        (status ok | ambiguous | unsupported); never guesses an act."""
+        items = context.get("content")
+        if items is None:
+            ents = context.get("entities", [])
+            ids = context.get("concept_ids") or [None] * len(ents)
+            items = [dict(cid=(i or None), label=e) for e, i in zip(ents, ids)]
+        else:                                           # content items carry the quantity flag; hand MORE to the template as its own symbol
+            expanded = []
+            for i in items:
+                if i.get("more"):
+                    expanded.append(dict(cid="MORE", label=""))
+                expanded.append(i)
+            items = expanded
+        act = (context.get("act") or "").upper()
+        forced = act if act and act != "UNKNOWN" else None
+        language = {"english": "en", "hindi": "hi", "gujarati": "gu", "marathi": "mr", "hinglish": "hi"}.get(str(language).lower(), language)
+        # act and polarity are separate request fields (already reconciled by the caller); the frame is derived from the items
+        res = _templates.realize([dict(cid=i.get("cid"), label=i.get("label", "")) for i in items], language, forced_act=forced,
+                                 negation=bool(context.get("negation", False)))
+        return res
+
     def generate_deterministic_fallback(self, context, language="en", code_mix=False):
-        """
-        Zero-hallucination safe deterministic fallback based directly on user selection.
-        Invoked if all LLM stages / retries fail semantic validation.
-        """
-        intent = context.get("intent", "WANT").upper()
-        negation = bool(context.get("negation", False))
-        entities = context.get("entities", [])
-        ent_str = " ".join(entities) if entities else "this"
-
-        lang_code = language.lower()
-
-        if "hi" in lang_code or "hindi" in lang_code:
-            if "WANT" in intent or "REQUEST" in intent:
-                return f"मुझे {ent_str} नहीं चाहिए।" if negation else f"मुझे {ent_str} चाहिए।"
-            elif "FEEL" in intent or "STATEMENT" in intent:
-                return f"मुझे {ent_str} महसूस नहीं हो रहा है।" if negation else f"मुझे {ent_str} महसूस हो रहा है।"
-            elif "QUESTION" in intent:
-                return f"क्या मुझे {ent_str} मिल सकता है?"
-            else:
-                return f"मुझे {ent_str} चाहिए।"
-        elif "mr" in lang_code or "marathi" in lang_code:
-            if "WANT" in intent or "REQUEST" in intent:
-                return f"मला {ent_str} नको आहे." if negation else f"मला {ent_str} हवे आहे."
-            elif "FEEL" in intent or "STATEMENT" in intent:
-                return f"मला {ent_str} वाटत नाही." if negation else f"मला {ent_str} वाटते."
-            elif "QUESTION" in intent:
-                return f"मला {ent_str} मिळू शकेल का?"
-            else:
-                return f"मला {ent_str} हवे आहे."
-        elif "gu" in lang_code or "gujarati" in lang_code:
-            if "WANT" in intent or "REQUEST" in intent:
-                return f"મને {ent_str} નથી જોઈતું." if negation else f"મને {ent_str} જોઈએ છે."
-            elif "FEEL" in intent or "STATEMENT" in intent:
-                return f"મને {ent_str} લાગતું નથી." if negation else f"મને {ent_str} લાગે છે."
-            elif "QUESTION" in intent:
-                return f"મને {ent_str} મળી શકે?"
-            else:
-                return f"મને {ent_str} જોઈએ છે."
-        else: # Default: English
-            emotions = ["happy", "sad", "sick", "tired", "angry", "cold", "hot", "well"]
-            is_emotion = any(e in ent_str.lower() for e in emotions)
-
-            if "WANT" in intent or "REQUEST" in intent:
-                return f"I don't want {ent_str}." if negation else f"I want {ent_str}."
-            elif "FEEL" in intent or "STATEMENT" in intent:
-                if negation:
-                    return f"I do not feel {ent_str}."
-                return f"I feel {ent_str}." if is_emotion else f"I feel like {ent_str}."
-            elif "QUESTION" in intent:
-                return f"Can I have {ent_str}?"
-            elif "GREETING" in intent:
-                return f"Hello {ent_str}."
-            else:
-                return f"I want {ent_str}."
+        """Archived entry point (kept): returns a sentence string.  Uses the compositional templates; when no complete
+        sentence can be composed it returns the labelled literal selection rather than guessing an act."""
+        res = self.realize_template(context, language)
+        return res["text"] if res.get("status") == "ok" else res.get("literal", "")
 
     # ─── AAC SEMANTIC PARSER & CONTEXT REPAIR AGENT ─────────
     def parse_and_repair_context(self, context, natural_sentence, language="hi"):

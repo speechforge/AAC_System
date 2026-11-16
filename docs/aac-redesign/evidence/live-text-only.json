@@ -1,0 +1,258 @@
+[
+  {
+    "language": "en",
+    "duration_ms": 15.161077957600355,
+    "response": {
+      "text": "I do not want tea.",
+      "outcome": "sentence_template",
+      "route": "template_only",
+      "act": "REQUEST",
+      "negation": true,
+      "act_source": "client",
+      "clarification": null,
+      "literal_preview": null,
+      "mode": "dual",
+      "semantic_score": 1.0,
+      "validated": true,
+      "semantic_valid": true,
+      "fallback_used": true,
+      "gate": {
+        "version": "gate-v2",
+        "attempts": [],
+        "template_status": "ok",
+        "template_gate": {
+          "accepted": true,
+          "reasons": []
+        },
+        "rejected_template_text": null
+      },
+      "validation_data": {
+        "violations_detected": []
+      },
+      "ledger": {},
+      "candidate_llm1": null,
+      "candidate_llm2": null,
+      "llm3_decision": {
+        "decision": null,
+        "final_text": null,
+        "edit_type": null,
+        "fallback_applied": true
+      },
+      "caregiver_context": {
+        "addressee": null,
+        "user_state": null,
+        "core_request": "Tea (Tea)",
+        "natural_sentence": "I do not want tea.",
+        "caregiver_explanation": "The user is indicating that they do not want Tea."
+      },
+      "audio_b64": null,
+      "audio_kind": "none",
+      "voice_source": "default",
+      "voice_id": "en",
+      "audio_error": null,
+      "metrics": {
+        "t_llm1": 0.0,
+        "t_llm2": 0.0,
+        "t_llm3": 0.0,
+        "t_sem": 0.0,
+        "t_tts": 0.0,
+        "t_total": 0.01,
+        "n_attempts": 0,
+        "tokens_in": 0,
+        "tokens_out": 0
+      }
+    }
+  },
+  {
+    "language": "hi",
+    "duration_ms": 3.788757137954235,
+    "response": {
+      "text": "मुझे चाय नहीं चाहिए।",
+      "outcome": "sentence_template",
+      "route": "template_only",
+      "act": "REQUEST",
+      "negation": true,
+      "act_source": "client",
+      "clarification": null,
+      "literal_preview": null,
+      "mode": "dual",
+      "semantic_score": 1.0,
+      "validated": true,
+      "semantic_valid": true,
+      "fallback_used": true,
+      "gate": {
+        "version": "gate-v2",
+        "attempts": [],
+        "template_status": "ok",
+        "template_gate": {
+          "accepted": true,
+          "reasons": []
+        },
+        "rejected_template_text": null
+      },
+      "validation_data": {
+        "violations_detected": []
+      },
+      "ledger": {},
+      "candidate_llm1": null,
+      "candidate_llm2": null,
+      "llm3_decision": {
+        "decision": null,
+        "final_text": null,
+        "edit_type": null,
+        "fallback_applied": true
+      },
+      "caregiver_context": {
+        "addressee": null,
+        "user_state": null,
+        "core_request": "चाय (tea)",
+        "natural_sentence": "मुझे चाय नहीं चाहिए।",
+        "caregiver_explanation": "The user is indicating that they do not want tea."
+      },
+      "audio_b64": null,
+      "audio_kind": "none",
+      "voice_source": "default",
+      "voice_id": "hi",
+      "audio_error": null,
+      "metrics": {
+        "t_llm1": 0.0,
+        "t_llm2": 0.0,
+        "t_llm3": 0.0,
+        "t_sem": 0.0,
+        "t_tts": 0.0,
+        "t_total": 0.0,
+        "n_attempts": 0,
+        "tokens_in": 0,
+        "tokens_out": 0
+      }
+    }
+  },
+  {
+    "language": "gu",
+    "duration_ms": 3.2470859587192535,
+    "response": {
+      "text": "મને ચા નથી જોઈતી.",
+      "outcome": "sentence_template",
+      "route": "template_only",
+      "act": "REQUEST",
+      "negation": true,
+      "act_source": "client",
+      "clarification": null,
+      "literal_preview": null,
+      "mode": "dual",
+      "semantic_score": 1.0,
+      "validated": true,
+      "semantic_valid": true,
+      "fallback_used": true,
+      "gate": {
+        "version": "gate-v2",
+        "attempts": [],
+        "template_status": "ok",
+        "template_gate": {
+          "accepted": true,
+          "reasons": []
+        },
+        "rejected_template_text": null
+      },
+      "validation_data": {
+        "violations_detected": []
+      },
+      "ledger": {},
+      "candidate_llm1": null,
+      "candidate_llm2": null,
+      "llm3_decision": {
+        "decision": null,
+        "final_text": null,
+        "edit_type": null,
+        "fallback_applied": true
+      },
+      "caregiver_context": {
+        "addressee": null,
+        "user_state": null,
+        "core_request": "ચા (ચા)",
+        "natural_sentence": "મને ચા નથી જોઈતી.",
+        "caregiver_explanation": "The user is indicating that they do not want ચા."
+      },
+      "audio_b64": null,
+      "audio_kind": "none",
+      "voice_source": "default",
+      "voice_id": "gu",
+      "audio_error": null,
+      "metrics": {
+        "t_llm1": 0.0,
+        "t_llm2": 0.0,
+        "t_llm3": 0.0,
+        "t_sem": 0.0,
+        "t_tts": 0.0,
+        "t_total": 0.0,
+        "n_attempts": 0,
+        "tokens_in": 0,
+        "tokens_out": 0
+      }
+    }
+  },
+  {
+    "language": "mr",
+    "duration_ms": 3.305833088234067,
+    "response": {
+      "text": "मला चहा नको आहे.",
+      "outcome": "sentence_template",
+      "route": "template_only",
+      "act": "REQUEST",
+      "negation": true,
+      "act_source": "client",
+      "clarification": null,
+      "literal_preview": null,
+      "mode": "dual",
+      "semantic_score": 1.0,
+      "validated": true,
+      "semantic_valid": true,
+      "fallback_used": true,
+      "gate": {
+        "version": "gate-v2",
+        "attempts": [],
+        "template_status": "ok",
+        "template_gate": {
+          "accepted": true,
+          "reasons": []
+        },
+        "rejected_template_text": null
+      },
+      "validation_data": {
+        "violations_detected": []
+      },
+      "ledger": {},
+      "candidate_llm1": null,
+      "candidate_llm2": null,
+      "llm3_decision": {
+        "decision": null,
+        "final_text": null,
+        "edit_type": null,
+        "fallback_applied": true
+      },
+      "caregiver_context": {
+        "addressee": null,
+        "user_state": null,
+        "core_request": "चहा (चहा)",
+        "natural_sentence": "मला चहा नको आहे.",
+        "caregiver_explanation": "The user is indicating that they do not want चहा."
+      },
+      "audio_b64": null,
+      "audio_kind": "none",
+      "voice_source": "default",
+      "voice_id": "mr",
+      "audio_error": null,
+      "metrics": {
+        "t_llm1": 0.0,
+        "t_llm2": 0.0,
+        "t_llm3": 0.0,
+        "t_sem": 0.0,
+        "t_tts": 0.0,
+        "t_total": 0.0,
+        "n_attempts": 0,
+        "tokens_in": 0,
+        "tokens_out": 0
+      }
+    }
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "clipboard": "native Chromium clipboard",
+  "inputOrder": true,
+  "emptySegmentsIgnored": true,
+  "multiwordLabels": true,
+  "IndicLabels": true,
+  "singlePasteUnchanged": true,
+  "selectionReplacement": true,
+  "hoverOutCloses": true,
+  "popupHoverStaysOpen": true,
+  "escapeFocusRestored": true,
+  "menuActionWorks": true,
+  "mobileWidth": 390,
+  "verticalPageScroll": false,
+  "ttsCalls": 0,
+  "pageErrors": []
+}

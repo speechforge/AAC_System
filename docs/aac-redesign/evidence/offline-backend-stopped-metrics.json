@@ -1,0 +1,310 @@
+[
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "help",
+    "language": "en",
+    "ms": 34.5,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "water",
+    "language": "en",
+    "ms": 5,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "bathroom",
+    "language": "en",
+    "ms": 6.200000047683716,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "pain",
+    "language": "en",
+    "ms": 5.200000047683716,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "help",
+    "language": "hi",
+    "ms": 6.1000001430511475,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "water",
+    "language": "hi",
+    "ms": 4.700000047683716,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "bathroom",
+    "language": "hi",
+    "ms": 4.799999952316284,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "pain",
+    "language": "hi",
+    "ms": 5.3999998569488525,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "help",
+    "language": "gu",
+    "ms": 6.400000095367432,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "water",
+    "language": "gu",
+    "ms": 5.299999952316284,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "bathroom",
+    "language": "gu",
+    "ms": 5.5,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "pain",
+    "language": "gu",
+    "ms": 5.099999904632568,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "help",
+    "language": "mr",
+    "ms": 4.700000047683716,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "water",
+    "language": "mr",
+    "ms": 4.8999998569488525,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "bathroom",
+    "language": "mr",
+    "ms": 6.299999952316284,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-cold-browser",
+    "scenario": "pain",
+    "language": "mr",
+    "ms": 5.8999998569488525,
+    "success": true,
+    "onset": "HTMLMediaElement playing event; audible output not measured"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 0,
+    "ms": 5.400000095367432,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 1,
+    "ms": 5.400000095367432,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 2,
+    "ms": 4.299999952316284,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 3,
+    "ms": 5.299999952316284,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 4,
+    "ms": 4.599999904632568,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 5,
+    "ms": 4.799999952316284,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 6,
+    "ms": 4.5,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 7,
+    "ms": 4.700000047683716,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 8,
+    "ms": 5.599999904632568,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 9,
+    "ms": 4.300000190734863,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 10,
+    "ms": 4.699999809265137,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 11,
+    "ms": 4.6000001430511475,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 12,
+    "ms": 5,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 13,
+    "ms": 5.299999952316284,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 14,
+    "ms": 5,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 15,
+    "ms": 5,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 16,
+    "ms": 5.299999952316284,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 17,
+    "ms": 4.8999998569488525,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 18,
+    "ms": 5.299999952316284,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  },
+  {
+    "condition": "offline-warm",
+    "scenario": "water",
+    "language": "en",
+    "run": 19,
+    "ms": 5.6000001430511475,
+    "success": true,
+    "onset": "HTMLMediaElement playing event"
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "dataset": "google/fleurs",
+  "config": "gu_in",
+  "split": "validation",
+  "file": "10175145172467691870.wav",
+  "id": "1560",
+  "text": "તમે પ્રવાહમાંથી બહાર આવો પછી, પાછા તરવું એ સામાન્ય રીતે હોય તેના કરતાં વધારે મુશ્કેલ નથી.",
+  "speaker_gender": "female",
+  "source": "Human-read Gujarati speech, not synthesized audio",
+  "license": "CC-BY-4.0",
+  "attribution": "FLEURS, Google and the FLEURS contributors (Conneau et al., 2023)",
+  "dataset_url": "https://huggingface.co/datasets/google/fleurs",
+  "archive_url": "https://huggingface.co/datasets/google/fleurs/resolve/main/data/gu_in/audio/dev.tar.gz",
+  "transcript_url": "https://huggingface.co/datasets/google/fleurs/resolve/main/data/gu_in/dev.tsv",
+  "sha256": "3c8bcd5804aaf4212fbaca262f8b6243011d7ff425ae128e98320c3e32f8fae6"
+}

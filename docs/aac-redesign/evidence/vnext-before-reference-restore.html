@@ -1,0 +1,2394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Indic AAC Studio</title>
+
+
+  <!-- Premium Typography -->
+
+  <!-- Tailwind CSS CDN -->
+  <link rel="stylesheet" href="/static/vendor/tailwind.css">
+
+
+  <!-- Firebase Google authentication; account records are stored in Redis. -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+  <!-- React 18, ReactDOM 18, and Babel Standalone -->
+  <script src="/static/vendor/react.js"></script>
+  <script src="/static/vendor/react-dom.js"></script>
+  <script src="/static/vendor/babel.js"></script>
+
+  <script src="/static/board-registry.js?v=1"></script><script src="/static/vnext-logic.js?v=1"></script><script src="/static/vnext-media.js?v=1.2"></script><script type="text/babel" src="/static/vnext.jsx?v=1.4"></script>
+  <!-- 5000+ Emoji Database from static directory -->
+  <script src="/static/all_emojis.js"></script>
+  <script src="/static/locales.js"></script>
+  <script src="/static/photos/catalog.js"></script>
+  <script src="/static/aac-visuals.js"></script>
+  <link rel="stylesheet" href="/static/responsive.css" />
+
+  <style>
+    /* Design Tokens */
+    :root {
+      --aac-card-radius: 16px;
+    }
+
+    /* Spring Button Physics */
+    .spring-press {
+      transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.15s ease,
+                  background-color 0.15s ease,
+                  border-color 0.15s ease;
+      touch-action: manipulation;
+      user-select: none;
+    }
+    .spring-press:hover {
+      transform: translateY(-2px);
+    }
+    .spring-press:active {
+      transform: scale(0.95);
+    }
+
+    /* Modern Card Elevate */
+    .comm-card {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .comm-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px -6px rgba(15, 23, 42, 0.08);
+    }
+    .comm-card:active {
+      transform: scale(0.94);
+    }
+
+    /* Subtle Category Indicator Bar on Card Left */
+    .card-accent-amber { border-top: 3px solid #f59e0b; }
+    .card-accent-emerald { border-top: 3px solid #10b981; }
+    .card-accent-sky { border-top: 3px solid #0284c7; }
+    .card-accent-purple { border-top: 3px solid #a855f7; }
+    .card-accent-yellow { border-top: 3px solid #eab308; }
+    .card-accent-indigo { border-top: 3px solid #6366f1; }
+    .card-accent-rose { border-top: 3px solid #f43f5e; }
+    .card-accent-teal { border-top: 3px solid #14b8a6; }
+    .card-accent-red { border-top: 3px solid #ef4444; }
+    .card-accent-pink { border-top: 3px solid #ec4899; }
+
+    /* Custom Minimal Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.4);
+      border-radius: 99px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.6);
+    }
+
+    /* Soundwave Visualizer Bar */
+    @keyframes soundWaveAnim {
+      0%, 100% { height: 4px; }
+      50% { height: 18px; }
+    }
+    .sound-bar {
+      width: 3px;
+      background-color: currentColor;
+      border-radius: 99px;
+      animation: soundWaveAnim 0.9s ease-in-out infinite;
+    }
+    .sound-bar:nth-child(2) { animation-delay: 0.15s; }
+    .sound-bar:nth-child(3) { animation-delay: 0.3s; }
+    .sound-bar:nth-child(4) { animation-delay: 0.45s; }
+
+    /* Glass Blur effect */
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .dark .glass-nav {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* High Contrast Mode */
+    .high-contrast .comm-card,
+    .high-contrast button {
+      border-width: 2px !important;
+      border-color: #000000 !important;
+      box-shadow: none !important;
+    }
+    .dark.high-contrast .comm-card,
+    .dark.high-contrast button {
+      border-color: #ffffff !important;
+    }
+
+    /* ─── Feature: Accessibility Dock (text scale + grayscale) ─── */
+    html {
+      font-size: var(--a11y-text-scale, 100%);
+      transition: font-size 0.18s ease;
+    }
+    html.a11y-grayscale {
+      filter: grayscale(1);
+    }
+
+    /* ─── Feature: Premium Tactile Button Animations (ripple) ─── */
+    .tap-ripple {
+      position: relative;
+      isolation: isolate;
+    }
+    .tap-ripple::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle, currentColor 10%, transparent 10.5%);
+      background-repeat: no-repeat;
+      background-position: 50%;
+      background-size: 3000% 3000%;
+      opacity: 0;
+      pointer-events: none;
+      transition: background-size 0s, opacity 0.5s ease;
+    }
+    .tap-ripple:active::after {
+      background-size: 0% 0%;
+      opacity: 0.12;
+      transition: background-size 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.1s ease;
+    }
+
+    /* Button press depth + glow, layered on top of spring-press */
+    .spring-press, .comm-card, button {
+      will-change: transform;
+    }
+    .spring-press:active, .comm-card:active {
+      filter: brightness(0.97);
+    }
+
+    /* Bookmark star pop animation */
+    @keyframes starPop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.5) rotate(-8deg); }
+      70% { transform: scale(0.9) rotate(4deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    .star-pop {
+      animation: starPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Floating Accessibility Dock */
+    .a11y-dock {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      z-index: 60;
+    }
+    .a11y-dock-panel {
+      transform-origin: bottom right;
+      animation: dockPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes dockPop {
+      0% { opacity: 0; transform: scale(0.9) translateY(8px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Voice clone dropzone */
+    .voice-dropzone {
+      border: 2px dashed rgba(100, 116, 139, 0.35);
+      transition: all 0.15s ease;
+    }
+    .voice-dropzone.drag-active {
+      border-color: #0c8fe6;
+      background-color: rgba(12, 143, 230, 0.06);
+    }
+
+    /* Generic fade-in utility used across new panels */
+    .animate-fade-in { animation: genericFadeIn 0.18s ease; }
+    @keyframes genericFadeIn {
+      0% { opacity: 0; transform: translateY(4px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+<link rel="stylesheet" href="/static/workspace.css"><link rel="stylesheet" href="/static/motion.css"><script src="/static/motion.js"></script><script src="/static/history.js"></script><link rel="icon" type="image/svg+xml" href="/static/favicon.svg"><meta name="theme-color" content="#6044be"><meta name="description" content="Indic AAC Studio: communication support in English, Hindi, Gujarati and Marathi."><meta property="og:type" content="website"><meta property="og:site_name" content="Indic AAC Studio"><meta property="og:title" content="Indic AAC Studio"><meta property="og:description" content="Your words, clearly expressed. Communication support in English, Hindi, Gujarati and Marathi."><meta property="og:image" content="/static/thumbnail.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="/static/thumbnail.png"><link rel="apple-touch-icon" href="/static/apple-touch-icon.png"><link rel="manifest" href="/static/site.webmanifest"><!--studio-global--><link rel="stylesheet" href="/static/ambient.css"><link rel="stylesheet" href="/static/studio-theme.css"><script src="/static/studio-core.js"></script><!--/studio-global--><link rel="stylesheet" href="/static/vnext.css?v=1"></head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen antialiased selection:bg-brand-500 selection:text-white transition-colors duration-200">
+  <div id="root"></div>
+
+  <!-- React 18 Application Script -->
+  <script type="text/babel">
+    const UI_TRANSLATIONS = window.AAC_UI_TRANSLATIONS;
+    const ui = (text, language) => UI_TRANSLATIONS[language]?.[text] || text;
+
+    const { useState, useEffect, useRef, useCallback, useMemo } = React;
+    const {THEMES, STYLES, PLAYBACK_SPEEDS, formatSpeed, themeVariables, SymbolVisual} = window.AAC_VISUALS;
+
+    // ─── CLEAN SVG ICONS (Standard Modern App Feel) ─────────────
+    const Icons = {
+      Volume: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+      ),
+      Mute: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+      ),
+      Trash: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 6h18"></path>
+          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+        </svg>
+      ),
+      Backspace: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+          <line x1="18" y1="9" x2="12" y2="15"></line>
+          <line x1="12" y1="9" x2="18" y2="15"></line>
+        </svg>
+      ),
+      Copy: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      ),
+      Sparkles: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+          <path d="M5 3v4"></path>
+          <path d="M19 17v4"></path>
+          <path d="M3 5h4"></path>
+          <path d="M17 19h4"></path>
+        </svg>
+      ),
+      Play: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+      ),
+      Settings: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      ),
+      Search: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      ),
+      Check: () => (
+        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      ),
+      Moon: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      ),
+      Sun: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="m4.93 4.93 1.41 1.41"></path>
+          <path d="m17.66 17.66 1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="m6.34 17.66-1.41 1.41"></path>
+          <path d="m19.07 4.93-1.41 1.41"></path>
+        </svg>
+      ),
+      StarOutline: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      ),
+      StarFilled: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1" strokeLinejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      ),
+      Mic: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+          <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
+          <line x1="12" y1="18" x2="12" y2="22"></line>
+          <line x1="8" y1="22" x2="16" y2="22"></line>
+        </svg>
+      ),
+      Upload: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+      ),
+      Accessibility: () => (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="4" r="1.6" fill="currentColor" stroke="none"></circle>
+          <path d="M5 8.5c2.3.8 4.6 1.2 7 1.2s4.7-.4 7-1.2"></path>
+          <path d="M12 9.7V14"></path>
+          <path d="M12 14l-3.5 7"></path>
+          <path d="M12 14l3.5 7"></path>
+          <path d="M9 12.5 7 19"></path>
+          <path d="M15 12.5 17 19"></path>
+        </svg>
+      ),
+      Contrast: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 2a10 10 0 0 1 0 20Z" fill="currentColor" stroke="none"></path>
+        </svg>
+      ),
+      Bolt: () => (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+      )
+    };
+
+    // ─── VOCABULARY CATEGORIES ──────────────────────────────────
+    const CATEGORIES = [
+      { id: 'core', label: { en: 'Core Words', hi: 'मुख्य शब्द', gu: 'મુખ્ય શબ્દો', mr: 'मुख्य शब्द' }, icon: '⭐', accent: 'card-accent-amber' },
+      { id: 'actions', label: { en: 'Actions', hi: 'क्रियाएं', gu: 'ક્રિયાઓ', mr: 'कृती' }, icon: '⚡', accent: 'card-accent-emerald' },
+      { id: 'food', label: { en: 'Food & Drink', hi: 'खान-पान', gu: 'ખોરાક', mr: 'अन्न' }, icon: '🍎', accent: 'card-accent-sky' },
+      { id: 'feelings', label: { en: 'Feelings', hi: 'भावनाएं', gu: 'લાગણીઓ', mr: 'भावना' }, icon: '😊', accent: 'card-accent-purple' },
+      { id: 'people', label: { en: 'People', hi: 'लोग', gu: 'લોકો', mr: 'व्यक्ती' }, icon: '👤', accent: 'card-accent-yellow' },
+      { id: 'places', label: { en: 'Places', hi: 'स्थान', gu: 'સ્થળો', mr: 'ठिकाणे' }, icon: '🏠', accent: 'card-accent-indigo' },
+      { id: 'body', label: { en: 'Health & Body', hi: 'शरीर व सेहत', gu: 'શરીર', mr: 'शरीर' }, icon: '🫁', accent: 'card-accent-rose' },
+      { id: 'chat', label: { en: 'Social', hi: 'संवाद', gu: 'સંવાદ', mr: 'संवाद' }, icon: '💬', accent: 'card-accent-teal' },
+      { id: 'emergency', label: { en: 'Urgent', hi: 'आपातकालीन', gu: 'તાત્કાલિક', mr: 'तातडीचे' }, icon: '🆘', accent: 'card-accent-red' },
+      { id: 'search', label: { en: '5,000+ Emojis', hi: '5000+ इमोजी', gu: '5000+ ઈમોજી', mr: '5000+ इमोजी' }, icon: '🔍', accent: 'card-accent-sky' }
+    ];
+
+    const MY_WORDS_META = { id: 'custom', label: { en: 'My Words', hi: 'मेरे शब्द', gu: 'મારા શબ્દો', mr: 'माझे शब्द' }, icon: '📌', accent: 'card-accent-pink' };
+
+    // ─── MULTILINGUAL SYMBOL DATABASE ────────────────────────────
+    const SYMBOL_DATABASE = {
+      core: [
+        { e: '👍', k: 'YES', labels: { en: 'Yes', hi: 'हाँ', gu: 'હા', mr: 'हो' } },
+        { e: '🙅', k: 'NO', labels: { en: 'No', hi: 'नहीं', gu: 'ના', mr: 'नाही' } },
+        { e: '🤲', k: 'WANT', labels: { en: 'Want', hi: 'चाहिए', gu: 'જોઈએ', mr: 'पाहिजे' } },
+        { e: '🆘', k: 'HELP', labels: { en: 'Help', hi: 'मदद', gu: 'મદદ', mr: 'मदत' } },
+        { e: '➕', k: 'MORE', labels: { en: 'More', hi: 'और', gu: 'વધુ', mr: 'आणखी' } },
+        { e: '🛑', k: 'STOP', labels: { en: 'Stop', hi: 'रुकें', gu: 'ઊભા રહો', mr: 'थांबा' } },
+        { e: '👤', k: 'ME', labels: { en: 'I / Me', hi: 'मैं', gu: 'હું', mr: 'मी' } },
+        { e: '👉', k: 'YOU', labels: { en: 'You', hi: 'आप', gu: 'તમે', mr: 'तुम्ही' } },
+        { e: '✨', k: 'GOOD', labels: { en: 'Good', hi: 'अच्छा', gu: 'સારું', mr: 'चांगले' } },
+        { e: '⚠️', k: 'BAD', labels: { en: 'Bad', hi: 'खराब', gu: 'ખરાબ', mr: 'वाईट' } }
+      ],
+      actions: [
+        { e: '🍽️', k: 'EAT', labels: { en: 'Eat', hi: 'खाना', gu: 'જમવું', mr: 'खाणे' } },
+        { e: '💧', k: 'DRINK', labels: { en: 'Drink', hi: 'पीना', gu: 'પીવું', mr: 'पिणे' } },
+        { e: '🎮', k: 'PLAY', labels: { en: 'Play', hi: 'खेलना', gu: 'રમવું', mr: 'खेळणे' } },
+        { e: '🛌', k: 'SLEEP', labels: { en: 'Sleep', hi: 'सोना', gu: 'ઊંઘવું', mr: 'झोपणे' } },
+        { e: '🚶', k: 'GO', labels: { en: 'Go', hi: 'जाना', gu: 'જવું', mr: 'जाणे' } },
+        { e: '📚', k: 'STUDY', labels: { en: 'Study', hi: 'पढ़ना', gu: 'ભણવું', mr: 'अभ्यास' } },
+        { e: '🚿', k: 'BATH', labels: { en: 'Bathe', hi: 'नहाना', gu: 'નાહવું', mr: 'आंघोळ' } },
+        { e: '📞', k: 'CALL', labels: { en: 'Call', hi: 'फ़ोन करना', gu: 'ફોન કરવો', mr: 'फोन करणे' } },
+        { e: '✏️', k: 'WRITE', labels: { en: 'Write', hi: 'लिखना', gu: 'લખવું', mr: 'लिहिणे' } },
+        { e: '👀', k: 'LOOK', labels: { en: 'Look', hi: 'देखना', gu: 'જોવું', mr: 'पाहणे' } }
+      ],
+      food: [
+        { e: '💧', k: 'WATER', labels: { en: 'Water', hi: 'पानी', gu: 'પાણી', mr: 'पाणी' } },
+        { e: '🍎', k: 'FOOD', labels: { en: 'Food', hi: 'खाना', gu: 'ખોરાક', mr: 'जेवण' } },
+        { e: '🥛', k: 'MILK', labels: { en: 'Milk', hi: 'दूध', gu: 'દૂધ', mr: 'दूध' } },
+        { e: '🍚', k: 'RICE', labels: { en: 'Rice', hi: 'चावल', gu: 'ભાત', mr: 'भात' } },
+        { e: '🍞', k: 'ROTI', labels: { en: 'Bread/Roti', hi: 'रोटी', gu: 'રોટલી', mr: 'पोळी' } },
+        { e: '🍌', k: 'FRUIT', labels: { en: 'Fruit', hi: 'फल', gu: 'ફળ', mr: 'फळ' } },
+        { e: '🫖', k: 'TEA', labels: { en: 'Tea', hi: 'चाय', gu: 'ચા', mr: 'चहा' } },
+        { e: '🧃', k: 'JUICE', labels: { en: 'Juice', hi: 'जूस', gu: 'જ્યુસ', mr: 'रस' } },
+        { e: '🍪', k: 'SNACK', labels: { en: 'Biscuit', hi: 'बिस्कुट', gu: 'બિસ્કિટ', mr: 'बिस्किट' } },
+        { e: '🍕', k: 'PIZZA', labels: { en: 'Pizza', hi: 'पिज़्ज़ा', gu: 'પિઝા', mr: 'पिझ्झा' } }
+      ],
+      feelings: [
+        { e: '😊', k: 'HAPPY', labels: { en: 'Happy', hi: 'खुश', gu: 'ખુશ', mr: 'आनंदी' } },
+        { e: '😢', k: 'SAD', labels: { en: 'Sad', hi: 'उदास', gu: 'ઉદાસ', mr: 'दुःखी' } },
+        { e: '😡', k: 'ANGRY', labels: { en: 'Angry', hi: 'गुस्सा', gu: 'ગુસ્સો', mr: 'रागात' } },
+        { e: '😴', k: 'TIRED', labels: { en: 'Tired', hi: 'थका हुआ', gu: 'થાકેલું', mr: 'दमलेला' } },
+        { e: '🤒', k: 'SICK', labels: { en: 'Sick', hi: 'बीमार', gu: 'બીમાર', mr: 'आजारी' } },
+        { e: '😨', k: 'SCARED', labels: { en: 'Scared', hi: 'डरा हुआ', gu: 'ડરેલું', mr: 'घाबरलेला' } },
+        { e: '❤️', k: 'LOVE', labels: { en: 'Love', hi: 'प्यार', gu: 'પ્રેમ', mr: 'प्रेम' } },
+        { e: '😁', k: 'EXCITED', labels: { en: 'Excited', hi: 'उत्साहित', gu: 'ઉત્સાહિત', mr: 'उत्साही' } }
+      ],
+      people: [
+        { e: '👩', k: 'MOTHER', labels: { en: 'Mother', hi: 'माँ', gu: 'માતા', mr: 'आई' } },
+        { e: '👨', k: 'FATHER', labels: { en: 'Father', hi: 'पिताजी', gu: 'પિતાજી', mr: 'बाबा' } },
+        { e: '👧', k: 'SISTER', labels: { en: 'Sister', hi: 'बहन', gu: 'બહેન', mr: 'बहीण' } },
+        { e: '👦', k: 'BROTHER', labels: { en: 'Brother', hi: 'भाई', gu: 'ભાઈ', mr: 'भाऊ' } },
+        { e: '👩‍🏫', k: 'TEACHER', labels: { en: 'Teacher', hi: 'शिक्षक', gu: 'શિક્ષક', mr: 'शिक्षक' } },
+        { e: '👨‍⚕️', k: 'DOCTOR', labels: { en: 'Doctor', hi: 'डॉक्टर', gu: 'ડૉક્ટર', mr: 'डॉक्टर' } },
+        { e: '👫', k: 'FRIEND', labels: { en: 'Friend', hi: 'दोस्त', gu: 'મિત્ર', mr: 'मित्र' } }
+      ],
+      places: [
+        { e: '🏠', k: 'HOME', labels: { en: 'Home', hi: 'घर', gu: 'ઘર', mr: 'घर' } },
+        { e: '🏫', k: 'SCHOOL', labels: { en: 'School', hi: 'स्कूल', gu: 'શાળા', mr: 'शाळा' } },
+        { e: '🏥', k: 'HOSPITAL', labels: { en: 'Hospital', hi: 'अस्पताल', gu: 'હોસ્પિટલ', mr: 'रुग्णालय' } },
+        { e: '🚽', k: 'TOILET', labels: { en: 'Toilet', hi: 'शौचालय', gu: 'શૌચાલય', mr: 'शौचालय' } },
+        { e: '🛏️', k: 'ROOM', labels: { en: 'Bedroom', hi: 'कमरा', gu: 'ઓરડો', mr: 'खोली' } },
+        { e: '🛒', k: 'MARKET', labels: { en: 'Market', hi: 'बाज़ार', gu: 'બજાર', mr: 'बाजार' } }
+      ],
+      body: [
+        { e: '🫁', k: 'LUNGS', labels: { en: 'Lungs', hi: 'फेफड़े', gu: 'ફેફસાં', mr: 'फुप्फुसे' } },
+        { e: '🫀', k: 'HEART', labels: { en: 'Heart', hi: 'दिल', gu: 'હૃદય', mr: 'हृदय' } },
+        { e: '🧠', k: 'BRAIN', labels: { en: 'Brain', hi: 'दिमाग', gu: 'મગજ', mr: 'मेंदू' } },
+        { e: '🦴', k: 'BONE', labels: { en: 'Bone', hi: 'हड्डी', gu: 'હાડકું', mr: 'हाड' } },
+        { e: '🦷', k: 'TOOTH', labels: { en: 'Tooth', hi: 'दांत', gu: 'દાંત', mr: 'दात' } },
+        { e: '👁️', k: 'EYE', labels: { en: 'Eye', hi: 'आँख', gu: 'આંખ', mr: 'डोळा' } },
+        { e: '👂', k: 'EAR', labels: { en: 'Ear', hi: 'कान', gu: 'કાન', mr: 'कान' } },
+        { e: '👃', k: 'NOSE', labels: { en: 'Nose', hi: 'नाक', gu: 'નાક', mr: 'नाक' } }
+      ],
+      chat: [
+        { e: '🙏', k: 'NAMASTE', labels: { en: 'Hello', hi: 'नमस्ते', gu: 'નમસ્તે', mr: 'नमस्ते' } },
+        { e: '🙌', k: 'THANKS', labels: { en: 'Thank You', hi: 'धन्यवाद', gu: 'આભાર', mr: 'धन्यवाद' } },
+        { e: '❓', k: 'HOW', labels: { en: 'How are you?', hi: 'कैसे हैं?', gu: 'કેમ છો?', mr: 'कसे आहात?' } },
+        { e: '👋', k: 'BYE', labels: { en: 'Goodbye', hi: 'अलविदा', gu: 'આવજો', mr: 'बाय' } },
+        { e: '🤝', k: 'PLEASE', labels: { en: 'Please', hi: 'कृपया', gu: 'મહેરબાની કરીને', mr: 'कृपया' } }
+      ],
+      emergency: [
+        { e: '🆘', k: 'HELP_EMERGENCY', labels: { en: 'Help!', hi: 'मदद चाहिए!', gu: 'મદદ કરો!', mr: 'मदत हवी!' } },
+        { e: '😖', k: 'PAIN', labels: { en: 'Pain', hi: 'दर्द', gu: 'દુખાવો', mr: 'वेदना' } },
+        { e: '💊', k: 'MEDICINE', labels: { en: 'Medicine', hi: 'दवा', gu: 'દવા', mr: 'औषध' } },
+        { e: '🚑', k: 'AMBULANCE', labels: { en: 'Ambulance', hi: 'एम्बुलेंस', gu: 'એમ્બ્યુલન્સ', mr: 'रुग्णवाहिका' } },
+        { e: '🔥', k: 'FIRE', labels: { en: 'Danger / Fire', hi: 'खतरा / आग', gu: 'જોખમ', mr: 'धोका' } }
+      ]
+    };
+
+    function visualItem(label, emoji) {
+      const found=Object.values(SYMBOL_DATABASE).flat().find(item=>Object.values(item.labels).some(value=>value.toLowerCase()===(label||'').toLowerCase()));
+      const id={'🆘':'HELP_EMERGENCY','💧':'WATER','🚻':'TOILET','🤕':'PAIN','🍎':'FOOD','✨':'THANKS','❤️':'LOVE','🙏':'NAMASTE'}[emoji];
+      return found || {k:id,e:emoji};
+    }
+
+    // ─── MESSAGE ANALYSIS (act and polarity are separate fields; stable concept IDs) ─────────────
+    // JavaScript port of backend/aac_lexicon.py analyze_selection.  Concept IDs are the board's own `k` values; typed,
+    // predicted and "My Words" entries have no ID and are matched only as WHOLE tokens (so "Nose" is not a negation).
+    const CONCEPT_CAT = {};
+    const LABEL_INDEX = {};
+    Object.keys(SYMBOL_DATABASE).forEach(cat => (SYMBOL_DATABASE[cat] || []).forEach(it => {
+      CONCEPT_CAT[it.k] = cat;
+      ['en', 'hi', 'gu', 'mr'].forEach(lg => {
+        const lab = (it.labels[lg] || '').toLowerCase().replace(/[.,!?;:।"'()]/g, '').trim();
+        if (lab) { (LABEL_INDEX[lab] = LABEL_INDEX[lab] || []).push({ k: it.k, lg }); }
+      });
+    }));
+    const FEELING_IDS = ['HAPPY', 'SAD', 'ANGRY', 'TIRED', 'SICK', 'SCARED', 'LOVE', 'EXCITED', 'PAIN'];
+    const NEGATOR_TOKENS = ['no', 'not', 'नहीं', 'नही', 'ना', 'ના', 'नाही', 'नको'];
+    const GREETING_IDS = ['NAMASTE', 'THANKS', 'BYE'];
+    const normLabel = (x) => (x || '').toLowerCase().replace(/[.,!?;:।"'()]/g, '').replace(/\s+/g, ' ').trim();
+    function resolveTypedLabel(label, lang) {
+      const hits = LABEL_INDEX[normLabel(label)];
+      if (!hits || !hits.length) return null;
+      const own = hits.filter(h => h.lg === lang);
+      const cands = (own.length ? own : hits).map(h => h.k).filter((v, i, a) => a.indexOf(v) === i);
+      if (cands.length === 1) return cands[0];
+      const objs = cands.filter(c => CONCEPT_CAT[c] === 'food'); const acts = cands.filter(c => CONCEPT_CAT[c] === 'actions');
+      return objs.length ? objs[0] : cands[0];
+    }
+    function analyzeSelection(items, lang, forcedAct) {
+      let negN = 0, more = false, explicitWant = false; const content = []; const kept = [];
+      const resolved = items.map(it => it.cid || resolveTypedLabel(it.label, lang) || null);
+      resolved.forEach((cid, i) => {
+        const label = items[i].label;
+        if (!cid && NEGATOR_TOKENS.indexOf(normLabel(label)) >= 0) { cid = 'NO'; }
+        if (cid === 'NO') { negN += 1; return; }
+        if (cid === 'WANT') { explicitWant = true; return; }
+        if (cid === 'PLEASE' || cid === 'YES' || cid === 'ME') return;
+        kept.push({ cid: cid || null, label: label });
+        if (cid === 'MORE') { more = true; return; }
+        content.push({ cid: cid, label: label, cat: cid ? CONCEPT_CAT[cid] : 'custom', more: false });
+      });
+      if (more) { const f = content.find(c => c.cat === 'food' || c.cid === 'MEDICINE'); if (f) f.more = true; }
+      const negation = negN % 2 === 1; let amb = negN > 1;
+      const isF = (c) => FEELING_IDS.indexOf(c.cid) >= 0 || ((forcedAct === 'FEELING' || forcedAct === 'FEELING_REQUEST') && (c.cid === 'GOOD' || c.cid === 'BAD'));
+      let feel = content.filter(isF);
+      let objs = content.filter(c => c.cat === 'food' || c.cid === 'MEDICINE');
+      const acts = content.filter(c => c.cat === 'actions');
+      let ppl = content.filter(c => c.cat === 'people');
+      const help_ = content.filter(c => c.cid === 'HELP' || c.cid === 'HELP_EMERGENCY');
+      let custom = content.filter(c => !c.cid);
+      if (explicitWant && !feel.length && !acts.length && !help_.length && !objs.length && (ppl.length || custom.length)) { objs = ppl.concat(custom); ppl = []; custom = []; }
+      const known = feel.concat(objs, acts, ppl, help_, custom);
+      const other = content.filter(c => known.indexOf(c) < 0);
+      let act = 'UNKNOWN', frame = null;
+      if (amb || !content.length) { amb = true; }
+      else if (other.length) {
+        amb = content.length === 1;
+        if (content.length === 1 && GREETING_IDS.indexOf(content[0].cid) >= 0) { act = 'GREETING'; amb = false; }
+        else if (content.length === 2 && content.some(c => GREETING_IDS.indexOf(c.cid) >= 0)) { act = 'GREETING'; }
+        else if (acts.some(c => c.cid === 'GO')) { act = 'REQUEST'; }
+      }
+      else if (feel.length) {
+        if (feel.length > 1) { act = 'UNKNOWN'; amb = true; }
+        else if (content.length === 1) { act = 'FEELING'; frame = 'feeling'; }
+        else if (negation) { act = 'UNKNOWN'; amb = true; }
+        else { act = 'FEELING_REQUEST'; frame = 'feeling_request'; }
+      }
+      else if (help_.length) { act = 'REQUEST'; frame = 'help'; }
+      else if (acts.length) { act = 'REQUEST'; frame = 'action'; }
+      else if (objs.length) { act = 'REQUEST'; frame = 'object'; }
+      else { amb = true; }
+      if (forcedAct) { act = forcedAct; amb = false; }
+      return { act: act, negation: negation, ambiguous: amb || act === 'UNKNOWN', frame: frame, content: content, kept: kept };
+    }
+    const AAC_STR = {
+      backMessage: {"en": "Back to message", "hi": "संदेश पर वापस जाएँ", "gu": "સંદેશ પર પાછા જાઓ", "mr": "संदेशाकडे परत जा"},
+      viewResult: {"en": "View result", "hi": "नतीजा देखें", "gu": "પરિણામ જુઓ", "mr": "निकाल पहा"},
+      moreActions: {"en": "More message actions", "hi": "संदेश के अन्य विकल्प", "gu": "સંદેશના વધુ વિકલ્પો", "mr": "संदेशाचे आणखी पर्याय"},
+
+      chooseEmoji: {"en": "Choose an emoji", "hi": "इमोजी चुनें", "gu": "ઇમોજી પસંદ કરો", "mr": "इमोजी निवडा"},
+      findEmoji: {"en": "Find an emoji", "hi": "इमोजी खोजें", "gu": "ઇમોજી શોધો", "mr": "इमोजी शोधा"},
+      emojiSearchHint: {"en": "Search emojis, e.g. smile, heart, apple", "hi": "इमोजी खोजें, जैसे smile, heart, apple", "gu": "ઇમોજી શોધો, જેમ કે smile, heart, apple", "mr": "इमोजी शोधा, उदा. smile, heart, apple"},
+      emojiPopular: {"en": "Popular emojis", "hi": "लोकप्रिय इमोजी", "gu": "લોકપ્રિય ઇમોજી", "mr": "लोकप्रिय इमोजी"},
+      emojiAll: {"en": "All emojis", "hi": "सभी इमोजी", "gu": "બધા ઇમોજી", "mr": "सर्व इमोजी"},
+      emojiMore: {"en": "Show more emojis", "hi": "और इमोजी दिखाएँ", "gu": "વધુ ઇમોજી બતાવો", "mr": "आणखी इमोजी दाखवा"},
+      emojiEmpty: {"en": "No emojis found. Try a different word.", "hi": "कोई इमोजी नहीं मिला। दूसरा शब्द खोजें।", "gu": "ઇમોજી મળ્યા નથી. બીજો શબ્દ શોધો.", "mr": "इमोजी सापडले नाहीत. दुसरा शब्द शोधा."},
+
+      exportCsv: {"en": "Export CSV", "hi": "CSV निर्यात करें", "gu": "CSV નિકાસ કરો", "mr": "CSV निर्यात करा"},
+
+      animations: {"en": "Animations", "hi": "एनिमेशन", "gu": "એનિમેશન", "mr": "अ‍ॅनिमेशन"},
+      motionOn: {"en": "On", "hi": "चालू", "gu": "ચાલુ", "mr": "चालू"},
+      motionOff: {"en": "Off", "hi": "बंद", "gu": "બંધ", "mr": "बंद"},
+      animationSpeed: {"en": "Animation speed", "hi": "एनिमेशन की गति", "gu": "એનિમેશનની ગતિ", "mr": "अ‍ॅनिमेशनचा वेग"},
+      motionHint: {"en": "Smooth visual transitions. 1× is the standard speed.", "hi": "सहज दृश्य बदलाव। 1× सामान्य गति है।", "gu": "સરળ દૃશ્ય પરિવર્તન. 1× સામાન્ય ગતિ છે.", "mr": "सहज दृश्य बदल. 1× हा सामान्य वेग आहे."},
+      motionReduced: {"en": "Your device’s reduced-motion setting is active.", "hi": "आपके डिवाइस पर कम गति की सेटिंग सक्रिय है।", "gu": "તમારા ઉપકરણ પર ઓછી ગતિની સેટિંગ ચાલુ છે.", "mr": "तुमच्या उपकरणावर कमी हालचालींची सेटिंग सक्रिय आहे."},
+      motionPreview: {"en": "Transition preview", "hi": "बदलाव का पूर्वावलोकन", "gu": "પરિવર્તનનું પૂર્વદર્શન", "mr": "बदलाचे पूर्वावलोकन"},
+
+      coreIntent: {"en": "Core Intent", "hi": "मुख्य आशय", "gu": "મુખ્ય ઉદ્દેશ", "mr": "मुख्य हेतू"},
+      selectedWords: {"en": "Selected words", "hi": "चुने गए शब्द", "gu": "પસંદ કરેલા શબ્દો", "mr": "निवडलेले शब्द"},
+      intentUnknown: {"en": "Not yet clear", "hi": "अभी स्पष्ट नहीं", "gu": "હજુ સ્પષ્ટ નથી", "mr": "अजून स्पष्ट नाही"},
+      intentCombined: {"en": "Feeling and request", "hi": "भावना और अनुरोध", "gu": "લાગણી અને વિનંતી", "mr": "भावना आणि विनंती"},
+      intentGreeting: {"en": "Social expression", "hi": "सामाजिक अभिव्यक्ति", "gu": "સામાજિક અભિવ્યક્તિ", "mr": "सामाजिक अभिव्यक्ती"},
+      intentNegative: {"en": "Negative", "hi": "नकारात्मक", "gu": "નકારાત્મક", "mr": "नकारात्मक"},
+      quickHelp: {"en": "Asking for help.", "hi": "मदद माँगना।", "gu": "મદદ માંગવી.", "mr": "मदत मागणे."},
+      quickWater: {"en": "Asking for water.", "hi": "पानी माँगना।", "gu": "પાણી માંગવું.", "mr": "पाणी मागणे."},
+      quickBathroom: {"en": "Expressing a need to use the bathroom.", "hi": "बाथरूम जाने की ज़रूरत बताना।", "gu": "બાથરૂમ જવાની જરૂર જણાવવી.", "mr": "शौचालयात जाण्याची गरज सांगणे."},
+      quickPain: {"en": "Expressing pain.", "hi": "दर्द बताना।", "gu": "દુખાવો વ્યક્ત કરવો.", "mr": "वेदना व्यक्त करणे."},
+      quickFood: {"en": "Expressing hunger.", "hi": "भूख बताना।", "gu": "ભૂખ વ્યક્ત કરવી.", "mr": "भूक व्यक्त करणे."},
+      quickThanks: {"en": "Expressing thanks.", "hi": "धन्यवाद देना।", "gu": "આભાર વ્યક્ત કરવો.", "mr": "आभार व्यक्त करणे."},
+      quickLove: {"en": "Expressing affection.", "hi": "स्नेह व्यक्त करना।", "gu": "સ્નેહ વ્યક્ત કરવો.", "mr": "प्रेम व्यक्त करणे."},
+      quickHello: {"en": "Greeting someone.", "hi": "अभिवादन करना।", "gu": "અભિવાદન કરવું.", "mr": "अभिवादन करणे."},
+
+      clarifyQ: { en: 'What do you want to say?', hi: 'आप क्या कहना चाहते हैं?', gu: 'તમે શું કહેવા માંગો છો?', mr: 'तुम्हाला काय म्हणायचे आहे?' },
+      optRequest: { en: 'I want something', hi: 'मुझे कुछ चाहिए', gu: 'મને કંઈક જોઈએ છે', mr: 'मला काहीतरी हवे आहे' },
+      optFeeling: { en: 'I feel something', hi: 'मुझे कुछ महसूस हो रहा है', gu: 'મને કંઈક લાગે છે', mr: 'मला काहीतरी वाटते आहे' },
+      literalChip: { en: 'Literal preview — no safe sentence', hi: 'शब्दशः पूर्वावलोकन — सुरक्षित वाक्य नहीं', gu: 'શાબ્દિક પૂર્વાવલોકન — સલામત વાક્ય નથી', mr: 'शब्दशः पूर्वावलोकन — सुरक्षित वाक्य नाही' },
+      speakLiteral: { en: 'Speak literal words', hi: 'शब्द बोलें', gu: 'શબ્દો બોલો', mr: 'शब्द बोला' },
+      failChip: { en: 'Could not compose a sentence', hi: 'वाक्य नहीं बन सका', gu: 'વાક્ય બનાવી શકાયું નથી', mr: 'वाक्य तयार करता आले नाही' },
+      templateChip: { en: 'Checked template sentence', hi: 'जाँचा हुआ टेम्पलेट वाक्य', gu: 'ચકાસેલું ટેમ્પ્લેટ વાક્ય', mr: 'तपासलेले टेम्प्लेट वाक्य' },
+      modelChip: { en: 'Model sentence, passed all checks', hi: 'मॉडल वाक्य, सभी जाँच पास', gu: 'મોડેલ વાક્ય, બધી ચકાસણી પાસ', mr: 'मॉडेल वाक्य, सर्व तपासण्या पास' },
+      msgType: { en: 'Message type', hi: 'संदेश का प्रकार', gu: 'સંદેશનો પ્રકાર', mr: 'संदेशाचा प्रकार' },
+      typeAuto: { en: 'Auto', hi: 'स्वतः', gu: 'આપોઆપ', mr: 'आपोआप' },
+      typeRequest: { en: 'Request', hi: 'माँग', gu: 'માંગ', mr: 'मागणी' },
+      typeFeeling: { en: 'Feeling', hi: 'भावना', gu: 'લાગણી', mr: 'भावना' },
+      typeQuestion: { en: 'Question', hi: 'प्रश्न', gu: 'પ્રશ્ન', mr: 'प्रश्न' },
+    };
+    const sstr = (key, lang) => (AAC_STR[key] && (AAC_STR[key][lang] || AAC_STR[key].en)) || key;
+
+    // Explanations for authored one-tap phrases are explicit, rather than inferred from translated text.
+    const QUICK_INTENT = {
+      '🆘': {act:'REQUEST', key:'quickHelp'}, '💧': {act:'REQUEST', key:'quickWater'},
+      '🚻': {act:'REQUEST', key:'quickBathroom'}, '🤕': {act:'FEELING', key:'quickPain'},
+      '🍎': {act:'FEELING', key:'quickFood'}, '✨': {act:'GREETING', key:'quickThanks'},
+      '❤️': {act:'FEELING', key:'quickLove'}, '🙏': {act:'GREETING', key:'quickHello'}
+    };
+    function IntentContext({act, negation, words, explanation, language, id}) {
+      const key = {REQUEST:'typeRequest', FEELING:'typeFeeling', FEELING_REQUEST:'intentCombined', QUESTION:'typeQuestion', GREETING:'intentGreeting'}[act] || 'intentUnknown';
+      return <div id={id} className="intent-context" role="status" aria-live="polite" aria-atomic="true">
+        <strong className="intent-context-label">{ui('Intent Context:',language)}</strong>{' '}
+        <span className="intent-context-value"><strong>{sstr('coreIntent',language)}:</strong>{' '}{sstr(key,language)}{negation ? ' · '+sstr('intentNegative',language) : ''}
+          {words?.length > 0 && <span className="intent-context-words">{' — '}{sstr('selectedWords',language)}: {words.join(' · ')}</span>}
+          {explanation && <span className="intent-context-explanation">{' — '}{explanation}</span>}
+        </span>
+      </div>;
+    }
+
+    // ─── TOP 5 HIGH-PEAKED WORDS PER LANGUAGE ───────────────────
+    const TOP_5_HIGH_PEAKED_WORDS = {
+      en: [
+        { word: 'Yes', emoji: '👍', badge: '1' },
+        { word: 'No', emoji: '🙅', badge: '2' },
+        { word: 'Want', emoji: '🤲', badge: '3' },
+        { word: 'Help', emoji: '🆘', badge: '4' },
+        { word: 'More', emoji: '➕', badge: '5' }
+      ],
+      hi: [
+        { word: 'हाँ', emoji: '👍', badge: '1' },
+        { word: 'नहीं', emoji: '🙅', badge: '2' },
+        { word: 'चाहिए', emoji: '🤲', badge: '3' },
+        { word: 'मदद', emoji: '🆘', badge: '4' },
+        { word: 'और', emoji: '➕', badge: '5' }
+      ],
+      gu: [
+        { word: 'હા', emoji: '👍', badge: '1' },
+        { word: 'ના', emoji: '🙅', badge: '2' },
+        { word: 'જોઈએ', emoji: '🤲', badge: '3' },
+        { word: 'મદદ', emoji: '🆘', badge: '4' },
+        { word: 'વધુ', emoji: '➕', badge: '5' }
+      ],
+      mr: [
+        { word: 'हो', emoji: '👍', badge: '1' },
+        { word: 'नाही', emoji: '🙅', badge: '2' },
+        { word: 'पाहिजे', emoji: '🤲', badge: '3' },
+        { word: 'मदत', emoji: '🆘', badge: '4' },
+        { word: 'आणखी', emoji: '➕', badge: '5' }
+      ]
+    };
+
+    // ─── 1-TAP QUICK EXPRESS & EMERGENCY PHRASES ────────────────
+    const QUICK_EXPRESS_PHRASES = {
+      en: [
+        { text: "Help me please!", emoji: "🆘", label: "Help Me!" },
+        { text: "I want water.", emoji: "💧", label: "Water" },
+        { text: "I need bathroom.", emoji: "🚻", label: "Bathroom" },
+        { text: "I have pain.", emoji: "🤕", label: "I Hurt" },
+        { text: "I am hungry.", emoji: "🍎", label: "Food" },
+        { text: "Thank you!", emoji: "✨", label: "Thank You" },
+        { text: "I love you.", emoji: "❤️", label: "Love" }
+      ],
+      hi: [
+        { text: "मेरी मदद करें!", emoji: "🆘", label: "मदद करें!" },
+        { text: "मुझे पानी चाहिए।", emoji: "💧", label: "पानी" },
+        { text: "मुझे बाथरूम जाना है।", emoji: "🚻", label: "बाथरूम" },
+        { text: "मुझे दर्द हो रहा है।", emoji: "🤕", label: "दर्द" },
+        { text: "मुझे भूख लगी है।", emoji: "🍎", label: "खाना" },
+        { text: "बहुत धन्यवाद!", emoji: "✨", label: "धन्यवाद" },
+        { text: "नमस्ते!", emoji: "🙏", label: "नमस्ते" }
+      ],
+      gu: [
+        { text: "મને મદદ કરો!", emoji: "🆘", label: "મદદ કરો!" },
+        { text: "મને પાણી જોઈએ છે.", emoji: "💧", label: "પાણી" },
+        { text: "મારે બાથરૂમ જવું છે.", emoji: "🚻", label: "બાથરૂમ" },
+        { text: "મને દુખાવો થાય છે.", emoji: "🤕", label: "દર્દ" },
+        { text: "મને ભૂખ લાગી છે.", emoji: "🍎", label: "ખોરાક" },
+        { text: "ખૂબ ખૂબ આભાર!", emoji: "✨", label: "આભાર" }
+      ],
+      mr: [
+        { text: "मला मदत करा!", emoji: "🆘", label: "मदत करा!" },
+        { text: "मला पाणी पाहिजे.", emoji: "💧", label: "पाणी" },
+        { text: "मला बाथरूमला जायचे आहे.", emoji: "🚻", label: "बाथरूम" },
+        { text: "मला दुखत आहे.", emoji: "🤕", label: "दुखणे" },
+        { text: "मला भूक लागली आहे.", emoji: "🍎", label: "अन्न" },
+        { text: "खूप खूप धन्यवाद!", emoji: "✨", label: "धन्यवाद" }
+      ]
+    };
+
+    // ─── NATIVE PHONETIC KEYBOARD LAYOUTS (Hindi, Gujarati, Marathi) ───
+    const PHONETIC_KEYBOARD_DATA = {
+      hi: {
+        langName: "हिन्दी",
+        script: "Devanagari",
+        vowels: [
+          { char: 'अ', label: 'अ' }, { char: 'आ', label: 'आ' }, { char: 'इ', label: 'इ' },
+          { char: 'ई', label: 'ई' }, { char: 'उ', label: 'उ' }, { char: 'ऊ', label: 'ऊ' },
+          { char: 'ऋ', label: 'ऋ' }, { char: 'ए', label: 'ए' }, { char: 'ऐ', label: 'ऐ' },
+          { char: 'ओ', label: 'ओ' }, { char: 'औ', label: 'औ' }, { char: 'अं', label: 'अं' },
+          { char: 'अः', label: 'अः' }
+        ],
+        matras: [
+          { char: 'ा', label: '◌ा (aa)' }, { char: 'ि', label: '◌ि (i)' }, { char: 'ी', label: '◌ी (ee)' },
+          { char: 'ु', label: '◌ु (u)' }, { char: 'ू', label: '◌ू (oo)' }, { char: 'ृ', label: '◌ृ (ri)' },
+          { char: 'े', label: '◌े (e)' }, { char: 'ै', label: '◌ै (ai)' }, { char: 'ो', label: '◌ो (o)' },
+          { char: 'ौ', label: '◌ौ (au)' }, { char: 'ं', label: '◌ं (anuswar)' }, { char: 'ः', label: '◌ः (visarga)' },
+          { char: 'ँ', label: '◌ँ (chandra)' }, { char: '्', label: '◌् (halant)' }
+        ],
+        consonants: [
+          ['क', 'ख', 'ग', 'घ', 'ङ'],
+          ['च', 'छ', 'ज', 'झ', 'ञ'],
+          ['ट', 'ठ', 'ड', 'ढ', 'ण'],
+          ['त', 'थ', 'द', 'ध', 'न'],
+          ['प', 'फ', 'ब', 'भ', 'म'],
+          ['य', 'र', 'ल', 'व'],
+          ['श', 'ष', 'स', 'ह'],
+          ['क्ष', 'त्र', 'ज्ञ', 'श्र', 'ड़', 'ढ़']
+        ],
+        numerals: ['१', '२', '३', '४', '५', '६', '७', '८', '९', '०']
+      },
+      gu: {
+        langName: "ગુજરાતી",
+        script: "Gujarati",
+        vowels: [
+          { char: 'અ', label: 'અ' }, { char: 'આ', label: 'આ' }, { char: 'ઇ', label: 'ઇ' },
+          { char: 'ઈ', label: 'ઈ' }, { char: 'ઉ', label: 'ઉ' }, { char: 'ઊ', label: 'ઊ' },
+          { char: 'ઋ', label: 'ઋ' }, { char: 'એ', label: 'એ' }, { char: 'ઐ', label: 'ઐ' },
+          { char: 'ઓ', label: 'ઓ' }, { char: 'ઔ', label: 'ઔ' }, { char: 'અં', label: 'અં' },
+          { char: 'અઃ', label: 'અઃ' }
+        ],
+        matras: [
+          { char: 'ા', label: '◌ા (aa)' }, { char: 'િ', label: '◌િ (i)' }, { char: 'ી', label: '◌ી (ee)' },
+          { char: 'ુ', label: '◌ુ (u)' }, { char: 'ૂ', label: '◌ૂ (oo)' }, { char: 'ૃ', label: '◌ૃ (ri)' },
+          { char: 'ે', label: '◌ે (e)' }, { char: 'ૈ', label: '◌ૈ (ai)' }, { char: 'ો', label: '◌ો (o)' },
+          { char: 'ૌ', label: '◌ૌ (au)' }, { char: 'ં', label: '◌ં (anuswar)' }, { char: 'ઃ', label: '◌ઃ (visarga)' },
+          { char: '્', label: '◌્ (virama)' }
+        ],
+        consonants: [
+          ['ક', 'ખ', 'ગ', 'ઘ', 'ઙ'],
+          ['ચ', 'છ', 'જ', 'ઝ', 'ઞ'],
+          ['ટ', 'ઠ', 'ડ', 'ઢ', 'ણ'],
+          ['ત', 'થ', 'દ', 'ધ', 'ન'],
+          ['પ', 'ફ', 'બ', 'ભ', 'મ'],
+          ['ય', 'ર', 'લ', 'વ'],
+          ['શ', 'ષ', 'સ', 'હ'],
+          ['ળ', 'ક્ષ', 'જ્ઞ']
+        ],
+        numerals: ['૧', '૨', '૩', '૪', '૫', '૬', '૭', '૮', '૯', '૦']
+      },
+      mr: {
+        langName: "मराठी",
+        script: "Devanagari",
+        vowels: [
+          { char: 'अ', label: 'अ' }, { char: 'आ', label: 'आ' }, { char: 'इ', label: 'इ' },
+          { char: 'ई', label: 'ई' }, { char: 'उ', label: 'उ' }, { char: 'ऊ', label: 'ऊ' },
+          { char: 'ऋ', label: 'ऋ' }, { char: 'ऌ', label: 'ऌ' }, { char: 'ए', label: 'ए' },
+          { char: 'ऐ', label: 'ऐ' }, { char: 'ओ', label: 'ओ' }, { char: 'औ', label: 'औ' },
+          { char: 'अं', label: 'अं' }, { char: 'अः', label: 'अः' }, { char: 'ॲ', label: 'ॲ' },
+          { char: 'ऑ', label: 'ऑ' }
+        ],
+        matras: [
+          { char: 'ा', label: '◌ा (aa)' }, { char: 'ि', label: '◌ि (i)' }, { char: 'ी', label: '◌ी (ee)' },
+          { char: 'ु', label: '◌ु (u)' }, { char: 'ू', label: '◌ू (oo)' }, { char: 'ृ', label: '◌ृ (ri)' },
+          { char: 'े', label: '◌े (e)' }, { char: 'ै', label: '◌ै (ai)' }, { char: 'ो', label: '◌ो (o)' },
+          { char: 'ौ', label: '◌ौ (au)' }, { char: 'ं', label: '◌ं (anuswar)' }, { char: 'ः', label: '◌ः (visarga)' },
+          { char: 'ँ', label: '◌ँ (chandra)' }, { char: 'ॅ', label: '◌ॅ' }, { char: 'ॉ', label: '◌ॉ' },
+          { char: '्', label: '◌् (halant)' }
+        ],
+        consonants: [
+          ['क', 'ख', 'ग', 'घ', 'ङ'],
+          ['च', 'छ', 'ज', 'झ', 'ञ'],
+          ['ट', 'ठ', 'ड', 'ढ', 'ण'],
+          ['त', 'थ', 'द', 'ध', 'न'],
+          ['प', 'फ', 'ब', 'भ', 'म'],
+          ['य', 'र', 'ल', 'व'],
+          ['श', 'ष', 'स', 'ह'],
+          ['ळ', 'क्ष', 'ज्ञ', 'श्र']
+        ],
+        numerals: ['१', '२', '३', '४', '५', '६', '७', '८', '९', '०']
+      }
+    };
+
+    // ─── FIREBASE CONFIG ─────────────────────────────────────────
+    // Paste your web-app config from Firebase Console → Project settings → Your apps.
+    // Enable Authentication → Google and authorize this app's localhost domain.
+    // Project: indicaacsystemnaacl2026. Web config is public; backend tokens are verified.
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyC4UZOUCAiO18L_yZ4ZuwrefDQLBzBr7yA",
+      authDomain: "indicaacsystemnaacl2026.firebaseapp.com",
+      projectId: "indicaacsystemnaacl2026",
+      storageBucket: "indicaacsystemnaacl2026.firebasestorage.app",
+      messagingSenderId: "731997066981",
+      appId: "1:731997066981:web:b1208f5c8bc971e099660c"
+    };
+    let fbAuth = null;
+    try {
+      if (window.firebase && !FIREBASE_CONFIG.apiKey.startsWith("YOUR_")) {
+        firebase.initializeApp(FIREBASE_CONFIG);
+        fbAuth = firebase.auth();
+
+      }
+    } catch (e) { console.warn("Firebase init failed:", e); }
+
+    // ─── FEATURE 1: LOCAL CACHE (offline-ready preferences & custom grids) ───
+    const CACHE_KEY = 'aac_studio_cache_v1';
+    const loadCache = () => {
+      try {
+        const raw = localStorage.getItem(CACHE_KEY);
+        if (raw && !localStorage.getItem('aac_legacy_shared_cache_v1')) {
+          localStorage.setItem('aac_legacy_shared_cache_v1', raw);
+        }
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        return {};
+      }
+    };
+    const CACHED = loadCache();
+
+    // ─── MAIN REACT APPLICATION ──────────────────────────────────
+    // ─── LIVE CLOCK: current time and date in the selected language ─────────
+    const CLOCK_LOCALE = {en:'en-IN', hi:'hi-IN', gu:'gu-IN', mr:'mr-IN'};
+    function LiveClock({language}) {
+      const [now, setNow] = useState(() => new Date());
+      useEffect(() => { const id = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(id); }, []);
+      const locale = CLOCK_LOCALE[language] || 'en-IN';
+      const time = now.toLocaleTimeString(locale, {hour: '2-digit', minute: '2-digit', second: '2-digit'});
+      const date = now.toLocaleDateString(locale, {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'});
+      return <div className="live-clock" role="timer" aria-live="off" aria-label={time + ', ' + date} translate="no">
+        <span className="live-clock-time">{time}</span>
+        <span className="live-clock-date">{date}</span>
+      </div>;
+    }
+    const MW_T = {
+      en:{add:'Add a word',list:'Your words',search:'Search my words',hint:'Pick a picture, type the word, then press Add.',none:'No word matches your search.',close:'Close',tap:'Tap a word to add it to your message.'},
+      hi:{add:'शब्द जोड़ें',list:'आपके शब्द',search:'मेरे शब्द खोजें',hint:'चित्र चुनें, शब्द लिखें, फिर जोड़ें दबाएँ।',none:'खोज से कोई शब्द नहीं मिला।',close:'बंद करें',tap:'संदेश में जोड़ने के लिए शब्द दबाएँ।'},
+      gu:{add:'શબ્દ ઉમેરો',list:'તમારા શબ્દો',search:'મારા શબ્દો શોધો',hint:'ચિત્ર પસંદ કરો, શબ્દ લખો, પછી ઉમેરો દબાવો.',none:'શોધ સાથે કોઈ શબ્દ મળ્યો નથી.',close:'બંધ કરો',tap:'સંદેશમાં ઉમેરવા શબ્દ દબાવો.'},
+      mr:{add:'शब्द जोडा',list:'तुमचे शब्द',search:'माझे शब्द शोधा',hint:'चित्र निवडा, शब्द लिहा, मग जोडा दाबा.',none:'शोधात कोणताही शब्द सापडला नाही.',close:'बंद करा',tap:'संदेशात जोडण्यासाठी शब्द दाबा.'}
+    };
+
+    // ─── SUPPORT HUB: feelings, sensory needs, My Day routine, calm corner ─────
+    // Designed with autistic, anxious and sensory-sensitive users in mind: every tool is one tap,
+    // predictable, speaks aloud, and works offline. Visual rules: /DESIGN_RULES.md
+    const SUPPORT_T = {
+      en:{feel:'How I feel',day:'My day',calm:'Calm',feelTitle:'How I feel',feelSub:'Tap one to say it out loud.',needs:'What I need',dayTitle:'My day',daySub:'Add steps in order. Tap a step to speak it, tick it when it is done.',calmTitle:'Calm corner',calmSub:'Follow the circle. Breathe slowly. There is no hurry.',add:'Add a step',addBtn:'Add',done:'Done',undo:'Undo',remove:'Remove',first:'First',then:'Then',nothing:'Nothing yet',reset:'Start over',close:'Close',inn:'Breathe in…',hold:'Hold…',out:'Breathe out…',empty:'No steps yet. Add the first one below.',allDone:'All done. Well done!'},
+      hi:{feel:'मैं कैसा हूँ',day:'मेरा दिन',calm:'शांत',feelTitle:'मैं कैसा महसूस करता हूँ',feelSub:'बोलने के लिए एक चुनें।',needs:'मुझे क्या चाहिए',dayTitle:'मेरा दिन',daySub:'क्रम से कदम जोड़ें। बोलने के लिए कदम दबाएँ, पूरा होने पर टिक करें।',calmTitle:'शांत कोना',calmSub:'घेरे को देखें। धीरे-धीरे साँस लें। कोई जल्दी नहीं है।',add:'एक कदम जोड़ें',addBtn:'जोड़ें',done:'हो गया',undo:'वापस',remove:'हटाएँ',first:'पहले',then:'फिर',nothing:'अभी कुछ नहीं',reset:'फिर से शुरू',close:'बंद करें',inn:'साँस लें…',hold:'रोकें…',out:'साँस छोड़ें…',empty:'अभी कोई कदम नहीं। नीचे पहला जोड़ें।',allDone:'सब हो गया। शाबाश!'},
+      gu:{feel:'હું કેવું અનુભવું છું',day:'મારો દિવસ',calm:'શાંત',feelTitle:'હું કેવું અનુભવું છું',feelSub:'બોલવા માટે એક પસંદ કરો.',needs:'મને શું જોઈએ',dayTitle:'મારો દિવસ',daySub:'ક્રમમાં પગલાં ઉમેરો. બોલવા માટે પગલું દબાવો, પૂરું થાય ત્યારે ટિક કરો.',calmTitle:'શાંત ખૂણો',calmSub:'વર્તુળને અનુસરો. ધીમેથી શ્વાસ લો. કોઈ ઉતાવળ નથી.',add:'પગલું ઉમેરો',addBtn:'ઉમેરો',done:'થઈ ગયું',undo:'પાછું',remove:'કાઢો',first:'પહેલા',then:'પછી',nothing:'હજી કંઈ નથી',reset:'ફરી શરૂ કરો',close:'બંધ કરો',inn:'શ્વાસ લો…',hold:'રોકો…',out:'શ્વાસ છોડો…',empty:'હજી કોઈ પગલું નથી. નીચે પહેલું ઉમેરો.',allDone:'બધું થઈ ગયું. શાબાશ!'},
+      mr:{feel:'मला कसे वाटते',day:'माझा दिवस',calm:'शांत',feelTitle:'मला कसे वाटते',feelSub:'बोलण्यासाठी एक निवडा.',needs:'मला काय हवे',dayTitle:'माझा दिवस',daySub:'क्रमाने पायऱ्या जोडा. बोलण्यासाठी पायरी दाबा, पूर्ण झाल्यावर टिक करा.',calmTitle:'शांत कोपरा',calmSub:'वर्तुळ पाहा. हळूहळू श्वास घ्या. घाई नाही.',add:'एक पायरी जोडा',addBtn:'जोडा',done:'झाले',undo:'परत',remove:'काढा',first:'आधी',then:'नंतर',nothing:'अजून काही नाही',reset:'पुन्हा सुरू करा',close:'बंद करा',inn:'श्वास घ्या…',hold:'थांबा…',out:'श्वास सोडा…',empty:'अजून पायरी नाही. खाली पहिली जोडा.',allDone:'सर्व झाले. शाबास!'}
+    };
+    const FEELINGS = [
+      ['😊',{en:['Happy','I feel happy'],hi:['खुश','मैं खुश हूँ'],gu:['ખુશ','હું ખુશ છું'],mr:['आनंदी','मी आनंदी आहे']}],
+      ['😢',{en:['Sad','I feel sad'],hi:['उदास','मैं उदास हूँ'],gu:['ઉદાસ','હું ઉદાસ છું'],mr:['दुःखी','मी दुःखी आहे']}],
+      ['😠',{en:['Angry','I feel angry'],hi:['गुस्सा','मुझे गुस्सा आ रहा है'],gu:['ગુસ્સો','મને ગુસ્સો આવે છે'],mr:['राग','मला राग आला आहे']}],
+      ['😨',{en:['Scared','I feel scared'],hi:['डर','मुझे डर लग रहा है'],gu:['ડર','મને ડર લાગે છે'],mr:['भीती','मला भीती वाटते']}],
+      ['😴',{en:['Tired','I feel tired'],hi:['थका','मैं थका हुआ हूँ'],gu:['થાકેલો','હું થાકેલો છું'],mr:['थकलेला','मी थकलो आहे']}],
+      ['🤕',{en:['Hurt','I am hurting'],hi:['दर्द','मुझे दर्द हो रहा है'],gu:['દુખાવો','મને દુખાવો થાય છે'],mr:['वेदना','मला दुखत आहे']}],
+      ['😟',{en:['Worried','I feel worried'],hi:['चिंता','मुझे चिंता हो रही है'],gu:['ચિંતા','મને ચિંતા થાય છે'],mr:['काळजी','मला काळजी वाटते']}],
+      ['😌',{en:['Calm','I feel calm'],hi:['शांत','मैं शांत हूँ'],gu:['શાંત','હું શાંત છું'],mr:['शांत','मी शांत आहे']}]
+    ];
+    const SENSORY_NEEDS = [
+      ['🔊',{en:['Too loud','It is too loud'],hi:['बहुत शोर','बहुत शोर है'],gu:['બહુ અવાજ','બહુ અવાજ છે'],mr:['खूप आवाज','खूप आवाज आहे']}],
+      ['💡',{en:['Too bright','It is too bright'],hi:['तेज़ रोशनी','रोशनी बहुत तेज़ है'],gu:['તેજ પ્રકાશ','પ્રકાશ બહુ તેજ છે'],mr:['तेजस्वी','प्रकाश खूप तेजस्वी आहे']}],
+      ['👥',{en:['Too crowded','There are too many people'],hi:['भीड़','यहाँ बहुत लोग हैं'],gu:['ભીડ','અહીં બહુ લોકો છે'],mr:['गर्दी','इथे खूप लोक आहेत']}],
+      ['🤫',{en:['Quiet place','I need a quiet place'],hi:['शांत जगह','मुझे शांत जगह चाहिए'],gu:['શાંત જગ્યા','મને શાંત જગ્યા જોઈએ'],mr:['शांत जागा','मला शांत जागा हवी']}],
+      ['⏸️',{en:['I need a break','I need a break'],hi:['ब्रेक','मुझे ब्रेक चाहिए'],gu:['વિરામ','મને વિરામ જોઈએ'],mr:['विश्रांती','मला विश्रांती हवी']}],
+      ['🚶',{en:['Need to move','I need to move'],hi:['चलना है','मुझे चलना है'],gu:['ફરવું છે','મારે ફરવું છે'],mr:['फिरायचे','मला फिरायचे आहे']}],
+      ['⏳',{en:['More time','Please give me time'],hi:['समय दें','कृपया मुझे समय दें'],gu:['સમય આપો','કૃપા કરીને મને સમય આપો'],mr:['वेळ द्या','कृपया मला वेळ द्या']}],
+      ['✋',{en:['No touching','Please do not touch me'],hi:['न छुएँ','कृपया मुझे न छुएँ'],gu:['સ્પર્શ નહીં','કૃપા કરીને મને સ્પર્શ ન કરો'],mr:['स्पर्श नको','कृपया मला स्पर्श करू नका']}]
+    ];
+    function StudioDialog({title, subtitle, closeLabel, onClose, children}) {
+      const ref = useRef(null);
+      useEffect(() => {
+        const previous = document.activeElement;
+        ref.current?.querySelector('button, input')?.focus();
+        const key = event => {
+          if (event.key === 'Escape') { onClose(); return; }
+          if (event.key !== 'Tab') return;
+          const nodes = [...ref.current.querySelectorAll('button:not([disabled]), input')];
+          if (!nodes.length) return;
+          const first = nodes[0], last = nodes[nodes.length - 1];
+          if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+          else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+        };
+        document.addEventListener('keydown', key);
+        return () => { document.removeEventListener('keydown', key); previous?.focus?.(); };
+      }, []);
+      return <div className="studio-scrim" onPointerDown={event => { if (event.target === event.currentTarget) onClose(); }}>
+        <div className="studio-dialog" role="dialog" aria-modal="true" aria-label={title} ref={ref}>
+          <div className="studio-dialog-head"><div><h2>{title}</h2><p>{subtitle}</p></div><button type="button" className="studio-close" aria-label={closeLabel} onClick={onClose}>✕</button></div>
+          {children}
+        </div>
+      </div>;
+    }
+    function SupportHub({language, onSpeak}) {
+      const t = SUPPORT_T[language] || SUPPORT_T.en;
+      const [open, setOpen] = useState(null);
+      const [steps, setSteps] = useState(() => { try { return JSON.parse(localStorage.getItem('aac_routine_v1') || '[]') || []; } catch (_) { return []; } });
+      const [draft, setDraft] = useState('');
+      const [phase, setPhase] = useState(0);
+      useEffect(() => { try { localStorage.setItem('aac_routine_v1', JSON.stringify(steps)); } catch (_) {} }, [steps]);
+      useEffect(() => {
+        if (open !== 'calm') return;
+        setPhase(0);
+        const id = setInterval(() => setPhase(p => (p + 1) % 3), 4000);
+        return () => clearInterval(id);
+      }, [open]);
+      const close = () => setOpen(null);
+      const pick = (map) => { const [, phrase] = map[language] || map.en; onSpeak(phrase); };
+      const nextIndex = steps.findIndex(s => !s.done);
+      const addStep = event => { event.preventDefault(); const text = draft.trim(); if (!text) return; setSteps(list => [...list, {id: Date.now() + Math.random(), text, done: false}]); setDraft(''); };
+      const Icon = ({d}) => <svg viewBox="0 0 24 24" aria-hidden="true"><path d={d}/></svg>;
+      return <>
+        <button type="button" className="support-btn tap-ripple" data-support="feel" onClick={() => setOpen('feel')} aria-haspopup="dialog"><Icon d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM8 14q4 4 8 0M9 9.5v.5M15 9.5v.5"/><span>{t.feel}</span></button>
+        <button type="button" className="support-btn tap-ripple" data-support="day" onClick={() => setOpen('day')} aria-haspopup="dialog"><Icon d="M4 6h16M4 12h16M4 18h10M18 17l2 2 3-4"/><span>{t.day}</span></button>
+        <button type="button" className="support-btn tap-ripple" data-tone="calm" data-support="calm" onClick={() => setOpen('calm')} aria-haspopup="dialog"><Icon d="M12 21c-5 0-8-3-8-8 5 0 8 3 8 8ZM12 21c0-5 3-8 8-8 0 5-3 8-8 8ZM12 13V3"/><span>{t.calm}</span></button>
+        {open === 'feel' && <StudioDialog title={t.feelTitle} subtitle={t.feelSub} closeLabel={t.close} onClose={close}>
+          <div className="support-grid" role="group" aria-label={t.feelTitle}>{FEELINGS.map(([emoji, map]) => <button type="button" key={emoji} className="support-tile" onClick={() => pick(map)}><span className="big" aria-hidden="true">{emoji}</span><span>{(map[language] || map.en)[0]}</span></button>)}</div>
+          <h3 style={{margin:'20px 0 10px',fontSize:16}}>{t.needs}</h3>
+          <div className="support-grid" role="group" aria-label={t.needs}>{SENSORY_NEEDS.map(([emoji, map]) => <button type="button" key={emoji} className="support-tile" onClick={() => pick(map)}><span className="big" aria-hidden="true">{emoji}</span><span>{(map[language] || map.en)[0]}</span></button>)}</div>
+        </StudioDialog>}
+        {open === 'day' && <StudioDialog title={t.dayTitle} subtitle={t.daySub} closeLabel={t.close} onClose={close}>
+          <div className="first-then"><div><b>{t.first}</b><span>{steps[nextIndex]?.text || t.nothing}</span></div><div><b>{t.then}</b><span>{(nextIndex >= 0 && steps.slice(nextIndex + 1).find(s => !s.done)?.text) || t.nothing}</span></div></div>
+          {steps.length === 0 ? <p>{t.empty}</p> : <ol className="routine-list">{steps.map((s, i) => <li key={s.id} className={'routine-item' + (s.done ? ' done' : '')}>
+            <span className="num" aria-hidden="true">{i + 1}</span>
+            <button type="button" className="label" style={{border:0,background:'none',textAlign:'left',color:'inherit',font:'inherit',cursor:'pointer',minHeight:44}} onClick={() => onSpeak(s.text)}>{s.text}</button>
+            <button type="button" aria-pressed={s.done} onClick={() => setSteps(list => list.map(x => x.id === s.id ? {...x, done: !x.done} : x))}>{s.done ? t.undo : t.done}</button>
+            <button type="button" aria-label={t.remove + ': ' + s.text} onClick={() => setSteps(list => list.filter(x => x.id !== s.id))}>✕</button>
+          </li>)}</ol>}
+          {steps.length > 0 && nextIndex < 0 && <p role="status" style={{fontWeight:700}}>{t.allDone}</p>}
+          <form className="routine-add" onSubmit={addStep}><input value={draft} onChange={event => setDraft(event.target.value)} placeholder={t.add} aria-label={t.add} maxLength={80}/><button type="submit" className="support-btn">{t.addBtn}</button></form>
+          {steps.some(s => s.done) && <button type="button" className="support-btn" style={{marginTop:10}} onClick={() => setSteps(list => list.map(s => ({...s, done: false})))}>{t.reset}</button>}
+        </StudioDialog>}
+        {open === 'calm' && <StudioDialog title={t.calmTitle} subtitle={t.calmSub} closeLabel={t.close} onClose={close}>
+          <div className="breath-stage"><div className="breath-orb" aria-hidden="true"/></div>
+          <div className="breath-label" role="status" aria-live="polite">{[t.inn, t.hold, t.out][phase]}</div>
+        </StudioDialog>}
+      </>;
+    }
+    function ComfortSettings({language}) {
+      const L = {
+        en:{legend:'Comfort & sensory support',hint:'Changes the whole site, including the home and sign-in pages.',profile:'Comfort profile',standard:'Standard',calm:'Calm: soft colors, no animation',focus:'Focus: no decoration',large:'Large touch: bigger buttons and text',readable:'Easy-to-read text (wider spacing)',guard:'Ignore accidental double taps'},
+        hi:{legend:'आराम और संवेदी सहायता',hint:'पूरी साइट बदलती है, होम और साइन-इन पेज भी।',profile:'आराम प्रोफ़ाइल',standard:'सामान्य',calm:'शांत: हल्के रंग, कोई एनिमेशन नहीं',focus:'फ़ोकस: कोई सजावट नहीं',large:'बड़ा स्पर्श: बड़े बटन और अक्षर',readable:'आसान पढ़ने वाला पाठ (अधिक दूरी)',guard:'गलती से दो बार दबाने को अनदेखा करें'},
+        gu:{legend:'આરામ અને સંવેદનાત્મક સહાય',hint:'આખી સાઇટ બદલાય છે, હોમ અને સાઇન-ઇન પેજ પણ.',profile:'આરામ પ્રોફાઇલ',standard:'સામાન્ય',calm:'શાંત: હળવા રંગ, એનિમેશન નહીં',focus:'ફોકસ: સજાવટ નહીં',large:'મોટો સ્પર્શ: મોટા બટન અને અક્ષર',readable:'સરળ વાંચન (વધુ અંતર)',guard:'ભૂલથી બે વાર દબાવવાનું અવગણો'},
+        mr:{legend:'आराम आणि संवेदी मदत',hint:'संपूर्ण साइट बदलते, होम आणि साइन-इन पेज देखील.',profile:'आराम प्रोफाइल',standard:'सामान्य',calm:'शांत: मऊ रंग, अ‍ॅनिमेशन नाही',focus:'फोकस: सजावट नाही',large:'मोठा स्पर्श: मोठी बटणे आणि अक्षरे',readable:'सोपे वाचन (जास्त अंतर)',guard:'चुकून दोनदा दाबणे दुर्लक्षित करा'}
+      }[language] || {};
+      const [prefs, setPrefs] = useState(() => window.AACComfort.get());
+      useEffect(() => { const update = event => setPrefs(event.detail); window.addEventListener('aac-comfort-change', update); return () => window.removeEventListener('aac-comfort-change', update); }, []);
+      return <fieldset className="comfort-settings"><legend>{L.legend}</legend>
+        <p>{L.hint}</p>
+        <label htmlFor="comfort-profile" style={{fontSize:13,fontWeight:650}}>{L.profile}</label>
+        <select id="comfort-profile" value={prefs.profile} onChange={event => window.AACComfort.set({profile: event.target.value})}>{window.AACComfort.profiles.map(id => <option key={id} value={id}>{L[id]}</option>)}</select>
+        <label style={{display:'flex',gap:10,alignItems:'center',marginTop:12,fontSize:14,fontWeight:600,minHeight:44}}><input type="checkbox" checked={prefs.readable} onChange={event => window.AACComfort.set({readable: event.target.checked})} style={{width:22,height:22}}/><span>{L.readable}</span></label>
+        <label style={{display:'flex',gap:10,alignItems:'center',fontSize:14,fontWeight:600,minHeight:44}}><input type="checkbox" checked={prefs.guard} onChange={event => window.AACComfort.set({guard: event.target.checked})} style={{width:22,height:22}}/><span>{L.guard}</span></label>
+      </fieldset>;
+    }
+
+    function App() {
+      // Core State
+      const [language, setLanguage] = useState(['en', 'hi', 'gu', 'mr'].includes(CACHED.language) ? CACHED.language : 'hi');
+      const currentLanguageRef = useRef(language);
+      currentLanguageRef.current = language;
+      const [tokens, setTokens] = useState([]);
+      const [inputText, setInputText] = useState('');
+      const [showPhoneticKeyboard, setShowPhoneticKeyboard] = useState(false);
+      const [keyboardSubTab, setKeyboardSubTab] = useState('all');
+      const [activeCategory, setActiveCategory] = useState('core');
+      const [searchQuery, setSearchQuery] = useState('');
+
+      // Predictions & Output
+      const [predictions, setPredictions] = useState([]);
+      const [isPredicting, setIsPredicting] = useState(false);
+      const [isGenerating, setIsGenerating] = useState(false);
+      const [generatedResult, setGeneratedResult] = useState(null);
+      const [compositionView,setCompositionView]=useState('compose');
+      useEffect(()=>{if(generatedResult)setCompositionView('result');},[generatedResult]);
+      const [userAct, setUserAct] = useState('auto');
+      const lastRequestRef = React.useRef(null);
+      const generationEpoch=useRef(0);
+      const [lastAudioB64, setLastAudioB64] = useState(null);
+
+      // Preferences & Accessibility
+      const [darkMode, setDarkMode] = useState(window.AACTheme.get()==='dark');
+      useEffect(() => { window.AACTheme.set(darkMode?'dark':'light'); }, [darkMode]);
+      useEffect(() => { const sync = event => setDarkMode(event.detail.theme==='dark'); window.addEventListener('aac-theme-change', sync); return () => window.removeEventListener('aac-theme-change', sync); }, []);
+      const [highContrast, setHighContrast] = useState(CACHED.highContrast || false);
+      const [cardSize, setCardSize] = useState(CACHED.cardSize || 'standard'); // 'compact' | 'standard' | 'large'
+      const [speechRate, setSpeechRate] = useState(1);
+      const [motionPrefs,setMotionPrefs]=useState(()=>window.AACMotion.get());
+      useEffect(()=>{const update=event=>setMotionPrefs(event.detail);window.addEventListener('aac-motion-change',update);return()=>window.removeEventListener('aac-motion-change',update);},[]);
+      const [buttonTheme, setButtonTheme] = useState(THEMES.some(t => t.id === CACHED.buttonTheme) ? CACHED.buttonTheme : 'lavender');
+      const [visualStyle, setVisualStyle] = useState(STYLES.some(t => t.id === CACHED.visualStyle) ? CACHED.visualStyle : 'emoji');
+      const [photoOverrides, setPhotoOverrides] = useState({});
+      const [photoConcept, setPhotoConcept] = useState('WATER');
+      const [autoSpeakOnSelect, setAutoSpeakOnSelect] = useState(
+        CACHED.autoSpeakOnSelect !== undefined ? CACHED.autoSpeakOnSelect : true
+      );
+      const [generationMode, setGenerationMode] = useState(CACHED.generationMode || 'dual');
+      const [showSettingsDrawer, setShowSettingsDrawer] = useState(false);
+      const [showHistory, setShowHistory] = useState(false);
+      const [settingsTab, setSettingsTab] = useState('prefs');
+      const [myWordsQuery, setMyWordsQuery] = useState('');
+      const [showMyWords,setShowMyWords]=useState(false);
+      const [showProfileSettings, setShowProfileSettings] = useState(false);
+      const [personalVoice,setPersonalVoice]=useState(null);
+      const [voiceFile,setVoiceFile]=useState(null);
+      const [voiceTranscript,setVoiceTranscript]=useState('');
+      const [voiceBusy,setVoiceBusy]=useState(false);
+      const [voiceNotice,setVoiceNotice]=useState('');
+
+      // Accessibility Dock (text size + grayscale)
+      const [textScale, setTextScale] = useState(CACHED.textScale || 100);
+      const [grayscaleMode, setGrayscaleMode] = useState(CACHED.grayscaleMode || false);
+      const [showA11yDock, setShowA11yDock] = useState(false);
+
+      // Voice Controls (presets + upload-to-clone)
+      const [voiceList, setVoiceList] = useState([]);
+      const [activeVoiceId, setActiveVoiceId] = useState(['en', 'hi', 'gu', 'mr'].includes(CACHED.language) ? CACHED.language : 'hi');
+      const [customVoices, setCustomVoices] = useState([]); // [{voice_id,label}]
+      const [showVoicePanel, setShowVoicePanel] = useState(false);
+      const [engineReady, setEngineReady] = useState(false);
+
+      // Bookmark Sentences (Quick Picks)
+      const [bookmarks, setBookmarks] = useState([]);
+      const [starPopId, setStarPopId] = useState(null);
+      const [personalSession, setPersonalSession] = useState(null);
+      const personalRef = useRef(null);
+      const personalEpoch = useRef(0);
+      const personalLoad = useRef(0);
+      const sessionQueue = useRef(Promise.resolve());
+      const connectedGoogleUid = useRef(null);
+      const [recentConversations, setRecentConversations] = useState([]);
+      const [frequentWords, setFrequentWords] = useState([]);
+      const [storageError, setStorageError] = useState('');
+      const [storageBusy, setStorageBusy] = useState(false);
+
+      // Custom grids (locally cached custom words, offline-ready)
+      const [customWords, setCustomWords] = useState([]);
+
+      // ─── Feature: AI Symbol Creator (emoji vs GenAI image) ─────
+      const [symbolStyle, setSymbolStyle] = useState(CACHED.symbolStyle || 'emoji'); // 'emoji' | 'ai'
+      const [isGeneratingSymbol, setIsGeneratingSymbol] = useState(false);
+      const [pendingSymbolImage, setPendingSymbolImage] = useState(null); // data URI preview before "Add"
+
+      // ─── Feature: Firebase Google Sign-In + cross-account sync ─────
+      const [authUser, setAuthUser] = useState(null); // {uid, name, email, photoURL} | null
+      const [authReady, setAuthReady] = useState(false);
+      const [firebaseEnabled, setFirebaseEnabled] = useState(false);
+
+      // Speech state
+      const [isSpeaking, setIsSpeaking] = useState(false);
+      const [activeSpeakingWord, setActiveSpeakingWord] = useState('');
+      const [toast, setToast] = useState(null);
+
+      const inputRef = useRef(null);
+      const audioElRef = useRef(null);
+
+      // ─── PERSIST PREFERENCES + CUSTOM GRIDS TO LOCAL CACHE ─────
+      useEffect(() => {
+        const payload = {
+          language, darkMode, highContrast, buttonTheme, visualStyle, autoSpeakOnSelect,
+          generationMode, textScale, grayscaleMode, activeVoiceId, customVoices,
+          symbolStyle, cardSize
+        };
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+        } catch (e) { /* storage full or disabled — fail silently, app still works */ }
+      }, [
+        language, darkMode, highContrast, speechRate, autoSpeakOnSelect,
+        generationMode, textScale, grayscaleMode, activeVoiceId, customVoices,
+        bookmarks, customWords, symbolStyle, cardSize, buttonTheme, visualStyle
+      ]);
+
+      useEffect(() => {
+        const header=document.querySelector('header');
+        const observer=new ResizeObserver(() => document.documentElement.style.setProperty('--aac-header-height', header.getBoundingClientRect().height+'px'));
+        observer.observe(header);return ()=>observer.disconnect();
+      }, []);
+      useEffect(() => {
+        const outside=event=>{const menu=document.querySelector('.account-dropdown[open]');if(menu && !menu.contains(event.target))menu.removeAttribute('open');};
+        const escape=event=>{if(event.key==='Escape'){const menu=document.querySelector('.account-dropdown[open]');if(menu){menu.removeAttribute('open');menu.querySelector('summary')?.focus();}}};
+        document.addEventListener('pointerdown',outside);document.addEventListener('keydown',escape);
+        return ()=>{document.removeEventListener('pointerdown',outside);document.removeEventListener('keydown',escape);};
+      }, []);
+      useEffect(() => {
+        if (!showSettingsDrawer && !showProfileSettings && !showMyWords && !showHistory) return;
+        const previous=showProfileSettings?document.querySelector('.account-dropdown summary'):document.activeElement;
+        const dialog=document.querySelector(showHistory?'.history-panel':showMyWords?'.mywords-panel':showProfileSettings?'.profile-panel':'.settings-drawer');
+        const oldOverflow=document.body.style.overflow;document.body.style.overflow='hidden';
+        const focusable=()=>[...dialog.querySelectorAll('button:not([disabled]), select, input:not([disabled]), textarea, summary, a[href]')].filter(node=>node.offsetParent!==null);
+        focusable()[0]?.focus();
+        const handler=event=>{
+          if(event.key==='Escape'){setShowSettingsDrawer(false);setShowProfileSettings(false);setShowMyWords(false);setShowHistory(false);return;}
+          if(event.key!=='Tab')return;
+          const nodes=focusable(),first=nodes[0],last=nodes[nodes.length-1];
+          if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}
+          else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
+        };
+        document.addEventListener('keydown',handler);
+        return ()=>{document.removeEventListener('keydown',handler);document.body.style.overflow=oldOverflow;previous?.focus();};
+      }, [showSettingsDrawer,showProfileSettings,showMyWords,showHistory]);
+      useEffect(() => {
+        if (!showA11yDock && !showVoicePanel) return;
+        const id=showVoicePanel?'voice-panel':'accessibility-panel';
+        const panel=document.getElementById(id), previous=document.activeElement;
+        const trigger=document.querySelector('[aria-controls="'+id+'"]');
+        let leaveTimer;
+        const cancelLeave=()=>{clearTimeout(leaveTimer);leaveTimer=undefined;};
+        const close=()=>{cancelLeave();setShowA11yDock(false);setShowVoicePanel(false);};
+        const inside=target=>target instanceof Node && (panel?.contains(target) || trigger?.contains(target));
+        panel?.querySelector('button')?.focus();
+        const outside=event=>{if(!inside(event.target))close();};
+        const move=event=>{
+          if(event.pointerType!=='mouse' || !window.matchMedia('(hover: hover) and (pointer: fine)').matches)return;
+          if(inside(event.target)){cancelLeave();return;}
+          // Allow crossing the small gap from the header button to its popup.
+          if(leaveTimer===undefined)leaveTimer=setTimeout(close,220);
+        };
+        const escape=event=>{if(event.key==='Escape')close();};
+        document.addEventListener('pointerdown',outside);
+        document.addEventListener('pointermove',move);
+        document.addEventListener('keydown',escape);
+        return ()=>{cancelLeave();document.removeEventListener('pointerdown',outside);document.removeEventListener('pointermove',move);document.removeEventListener('keydown',escape);previous?.focus();};
+      }, [showA11yDock,showVoicePanel]);
+
+      useEffect(() => {
+        if (audioElRef.current) {
+          audioElRef.current.playbackRate = PLAYBACK_SPEEDS.includes(speechRate) ? speechRate : 1;
+          audioElRef.current.preservesPitch = true;
+        }
+      }, [speechRate]);
+
+      // Accessibility Dock effects: text scale + grayscale applied globally
+      useEffect(() => {
+        document.documentElement.style.setProperty('--a11y-text-scale', textScale + '%');
+      }, [textScale]);
+
+      useEffect(() => {
+        if (grayscaleMode) document.documentElement.classList.add('a11y-grayscale');
+        else document.documentElement.classList.remove('a11y-grayscale');
+      }, [grayscaleMode]);
+
+      // All speech actions use the same IndicF5 endpoint. A sequence number
+      // prevents an old request from playing after a newer selection or switch.
+      const speechSeq = React.useRef(0);
+      const speak = useCallback(async (text,targetLang=language) => window.AACPlayback.play(text,targetLang,{kind:'message',rate:speechRate,profile:personalRef.current?.profile_id||null}),[language,speechRate]);
+
+      useEffect(()=>{const stopLegacy=()=>{speechSeq.current++;try{audioElRef.current?.pause()}catch(_){}setIsSpeaking(false);setActiveSpeakingWord('');};window.addEventListener('aac-stop-all',stopLegacy);return()=>window.removeEventListener('aac-stop-all',stopLegacy)},[]);
+
+      // Dark Mode & Contrast Sync
+      useEffect(() => {
+        const root = document.documentElement;
+        if (darkMode) root.classList.add('dark');
+        else root.classList.remove('dark');
+
+        if (highContrast) document.body.classList.add('high-contrast');
+        else document.body.classList.remove('high-contrast');
+      }, [darkMode, highContrast]);
+
+      // Toast feedback
+      const showToast = useCallback((message, type = 'info') => {
+        setToast({ message, type });
+        setTimeout(() => setToast(null), 2800);
+      }, []);
+
+      // Account data is always scoped by the verified backend session.
+      // Never merge browser-global or guest records into a Google account.
+      const personalJson = useCallback(async (path, options = {}, session = personalRef.current) => {
+        if (!session) throw new Error('Account storage is connecting.');
+        const response = await fetch(path, {...options, credentials: 'same-origin', headers: {
+          'Content-Type': 'application/json', 'X-CSRF-Token': session.csrf_token,
+          ...(options.headers || {})
+        }});
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || 'Storage request failed.');
+        return data;
+      }, []);
+
+      useEffect(()=>{
+        let cancelled=false;setPersonalVoice(null);setVoiceFile(null);setVoiceTranscript('');setVoiceNotice('');
+        if(!personalSession || window.AAC_OFFLINE_DEMO)return;
+        personalJson('/api/personal/voice/'+language).then(data=>{if(!cancelled){setPersonalVoice(data.voice);setVoiceTranscript(data.voice?.transcript||'');}}).catch(error=>{if(!cancelled)setVoiceNotice(error.message);});
+        return ()=>{cancelled=true;};
+      },[language,personalSession,personalJson]);
+      const changePersonalVoice=async(method,body)=>{
+        const session=personalRef.current,target=language;setVoiceBusy(true);setVoiceNotice('');
+        try{
+          const response=await fetch('/api/personal/voice/'+target,{method,credentials:'same-origin',headers:{'X-CSRF-Token':session.csrf_token,...(body instanceof FormData?{}:{'Content-Type':'application/json'})},body:body instanceof FormData?body:body?JSON.stringify(body):undefined});
+          const data=await response.json();if(!response.ok)throw Error(typeof data.detail==='string'?data.detail:'Please check the recording and transcript.');
+          if(personalRef.current===session && currentLanguageRef.current===target){setPersonalVoice(data.voice);setVoiceNotice(method==='DELETE'?'Personal voice removed. Default voice selected.':'Voice preference saved for this account and language.');}
+        }catch(error){if(personalRef.current===session && currentLanguageRef.current===target)setVoiceNotice(error.message);}finally{setVoiceBusy(false);}
+      };
+      const refreshPersonal = useCallback(async (targetLanguage = currentLanguageRef.current, session = personalRef.current) => {
+        if (!session) return;
+        const load = ++personalLoad.current;
+        try {
+          const data = await personalJson('/api/personal/dashboard?language=' + targetLanguage, {}, session);
+          if (personalRef.current !== session || currentLanguageRef.current !== targetLanguage || load !== personalLoad.current) return;
+          setRecentConversations(data.recent_conversations);
+          setFrequentWords(data.frequent_words);
+          setBookmarks(data.bookmarks);
+          setStorageError('');
+        } catch (err) {
+          if (personalRef.current === session) setStorageError(err.message);
+        }
+      }, [personalJson]);
+
+      useEffect(()=>{
+        const started=event=>{const item=event.detail,session=personalRef.current;if(!session||item.profile!==session.profile_id)return;
+          personalJson('/api/personal/activity',{method:'POST',body:JSON.stringify({event_id:item.eventId,kind:'conversation',text:item.text,language:item.language})},session).then(()=>refreshPersonal(item.language,session)).catch(()=>{});
+        };
+        window.addEventListener('aac-utterance-start',started);return()=>window.removeEventListener('aac-utterance-start',started);
+      },[personalJson,refreshPersonal]);
+
+      const recordActivity = useCallback(async (kind, text, targetLanguage = currentLanguageRef.current) => {
+        const session = personalRef.current;
+        if (!session) return;
+        try {
+          await personalJson('/api/personal/activity', {method: 'POST', body: JSON.stringify({
+            event_id: crypto.randomUUID(), kind, text, language: targetLanguage
+          })}, session);
+          await refreshPersonal(targetLanguage, session);
+        } catch (err) {
+          if (personalRef.current === session) setStorageError(err.message);
+        }
+      }, [personalJson, refreshPersonal]);
+
+      const connectAccount = useCallback(async (user) => {
+        const epoch = ++personalEpoch.current;
+        const previousProfile = personalRef.current?.profile_id || null;
+        const sameGoogleAccount = !!user && connectedGoogleUid.current === user.uid;
+        personalRef.current = null;
+        setPersonalSession(null); setAuthUser(null); setStorageBusy(true);
+        setBookmarks([]); setRecentConversations([]); setFrequentWords([]); setCustomWords([]); setPhotoOverrides({});
+        if (!sameGoogleAccount && previousProfile) {
+          setTokens([]); setInputText(''); setGeneratedResult(null); setLastAudioB64(null); setPredictions([]);
+        }
+        speechSeq.current++;
+        if (audioElRef.current) audioElRef.current.pause();
+        setIsSpeaking(false); setActiveSpeakingWord('');
+        try {
+          const idToken = user ? await user.getIdToken() : null;
+          if (epoch !== personalEpoch.current) return;
+          const transition = sessionQueue.current.catch(() => {}).then(async () => {
+            if (epoch !== personalEpoch.current) return null;
+            const response = await fetch(user ? '/api/session/google' : '/api/session', {
+              method: user ? 'POST' : 'GET', credentials: 'same-origin', headers: {'Content-Type': 'application/json'},
+              body: user ? JSON.stringify({id_token: idToken}) : undefined
+            });
+            const value = await response.json();
+            if (!response.ok) { throw new Error(value.detail || 'Sign in for personal data. Public communication is still available.'); }
+            return value;
+          });
+          sessionQueue.current = transition;
+          const session = await transition;
+          if (epoch !== personalEpoch.current) return;
+          personalRef.current = session;
+          connectedGoogleUid.current = user?.uid || null;
+          setPersonalSession(session);
+          setAuthUser(user ? {uid: user.uid, name: user.displayName, email: user.email, photoURL: user.photoURL} : session.service === 'local' ? {uid:session.profile_id, name:session.username || 'Account'} : null);
+          try { setCustomWords(JSON.parse(localStorage.getItem('aac_words_' + session.profile_id) || '[]')); } catch (_) {}
+          try { setPhotoOverrides(JSON.parse(localStorage.getItem('aac_photos_' + session.profile_id) || '{}')); } catch (_) {}
+          try {
+            const saved = JSON.parse(sessionStorage.getItem('aac_speech_speed') || 'null');
+            setSpeechRate(saved && saved.profile === session.profile_id && saved.session > Date.now() / 1000 && PLAYBACK_SPEEDS.includes(saved.rate) ? saved.rate : 1);
+          } catch (_) { setSpeechRate(1); }
+
+          setStorageError('');
+          await refreshPersonal(currentLanguageRef.current, session);
+        } catch (err) {
+          if (epoch === personalEpoch.current) setStorageError(err.message);
+        } finally {
+          if (epoch === personalEpoch.current) { setStorageBusy(false); setAuthReady(true); }
+        }
+      }, [refreshPersonal]);
+
+      useEffect(() => {
+        setFirebaseEnabled(!!fbAuth);
+        let cancelled = false, unsubscribe;
+        fetch('/api/session', {credentials:'same-origin'}).then(r=>r.ok?r.json():null).then(session=>{
+          if(cancelled) return;
+          // Keep a local login selected even if Firebase remembers an older Google user.
+          if(session?.service === 'local' || !fbAuth) connectAccount(null);
+          else unsubscribe = fbAuth.onIdTokenChanged(user => connectAccount(user));
+        }).catch(()=>{if(!cancelled) connectAccount(null);});
+        return ()=>{cancelled=true; if(unsubscribe) unsubscribe();};
+      }, [connectAccount]);
+
+      useEffect(() => {
+        setRecentConversations([]); setFrequentWords([]); setBookmarks([]);
+        refreshPersonal(language);
+      }, [language, personalSession, refreshPersonal]);
+
+      useEffect(() => {
+        if (!personalSession) return;
+        try { localStorage.setItem('aac_words_' + personalSession.profile_id, JSON.stringify(customWords)); } catch (_) {}
+      }, [personalSession, customWords]);
+
+      useEffect(() => {
+        if (!personalSession) return;
+        try { sessionStorage.setItem('aac_speech_speed', JSON.stringify({profile: personalSession.profile_id, session: personalSession.expires_at, rate: speechRate})); } catch (_) {}
+      }, [speechRate, personalSession]);
+      useEffect(() => {
+        if (!personalSession) return;
+        try { localStorage.setItem('aac_photos_' + personalSession.profile_id, JSON.stringify(photoOverrides)); }
+        catch (_) { showToast(ui('Photo storage is full. Remove a photo and retry.', language), 'warning'); }
+      }, [photoOverrides, personalSession]);
+      const uploadSymbolPhoto = useCallback(async (event) => {
+        const file = event.target.files?.[0]; event.target.value = '';
+        const session = personalRef.current;
+        const concept = photoConcept;
+        if (!file || !session) return;
+        if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 8 * 1024 * 1024) {
+          showToast(ui('Choose a JPG, PNG or WebP photo smaller than 8 MB.', language), 'warning'); return;
+        }
+        const url = URL.createObjectURL(file);
+        try {
+          const image = new Image();
+          await new Promise((resolve,reject) => { image.onload=resolve; image.onerror=reject; image.src=url; });
+          const canvas=document.createElement('canvas');
+          const scale=Math.min(1,256/Math.max(image.width,image.height));
+          canvas.width=Math.max(1,Math.round(image.width*scale)); canvas.height=Math.max(1,Math.round(image.height*scale));
+          const context=canvas.getContext('2d');context.fillStyle='#ffffff';context.fillRect(0,0,canvas.width,canvas.height);context.drawImage(image,0,0,canvas.width,canvas.height);
+          const data=canvas.toDataURL('image/jpeg',.82);
+          if (personalRef.current !== session) return;
+          setPhotoOverrides(prev => ({...prev,[concept]:data}));setVisualStyle('photo');
+        } catch (_) { showToast(ui('This photo could not be opened.', language), 'warning'); }
+        finally { URL.revokeObjectURL(url); }
+      }, [photoConcept, language]);
+
+      const handleSignIn = useCallback(async () => {
+        if (!fbAuth) { showToast('Google sign-in is unavailable.', 'warning'); return; }
+        try { await fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
+        catch (err) { if (err.code !== 'auth/popup-closed-by-user') showToast(err.message, 'warning'); }
+      }, [showToast]);
+
+      const handleSignOut = useCallback(async () => {
+        try {
+          if (personalRef.current) await personalJson('/api/session', {method: 'DELETE'});
+          try { sessionStorage.removeItem('aac_speech_speed'); } catch (_) {}
+          setSpeechRate(1);
+          if (fbAuth && fbAuth.currentUser) await fbAuth.signOut();
+          if (!window.AAC_OFFLINE_DEMO) window.location.replace('/login');
+          else await connectAccount(null);
+        } catch (err) { setStorageError(err.message); }
+      }, [personalJson, connectAccount]);
+
+      // ─── FEATURE 3: F5-TTS BACKEND PIPELINE — PLAY SYNTHESIZED AUDIO ───
+      // Plays the real IndicF5-synthesized WAV (base64) returned by /generate,
+      // instead of (or in addition to) the local browser Web Speech voice.
+      const playBackendAudio = useCallback((audioB64, label = '') => {
+        if (!audioB64) return false;
+        try {
+          speechSeq.current++; if (audioElRef.current) audioElRef.current.pause();
+          if (audioElRef.current) {
+            audioElRef.current.pause();
+            audioElRef.current = null;
+          }
+          const audio = new Audio('data:audio/wav;base64,' + audioB64);
+          audio.playbackRate = (PLAYBACK_SPEEDS.includes(speechRate) ? speechRate : 1);
+          audio.preservesPitch = true;
+          audioElRef.current = audio;
+          audio.onplay = () => { setIsSpeaking(true); setActiveSpeakingWord(label); };
+          audio.onended = () => { setIsSpeaking(false); setActiveSpeakingWord(''); };
+          audio.onerror = () => { setIsSpeaking(false); setActiveSpeakingWord(''); };
+          audio.play().catch(() => { setIsSpeaking(false); setActiveSpeakingWord(''); });
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }, [speechRate]);
+
+      // ─── FEATURE 5: VOICE CONTROLS — fetch available presets / clones ───
+      const fetchVoiceList = useCallback(async () => {
+        try {
+          const res = await fetch('/api/voice/list');
+          if (res.ok) {
+            const data = await res.json();
+            setVoiceList(data.voices || []);
+            setEngineReady(!!data.engine_ready);
+          }
+        } catch (e) { /* backend offline — presets panel still shows local defaults */ }
+      }, []);
+
+      useEffect(() => { fetchVoiceList(); }, [fetchVoiceList]);
+
+      // ─── FEATURE 6: BOOKMARK SENTENCES (Quick Picks) ───────────
+      const addBookmark = useCallback(async (text) => {
+        if (!text || !personalRef.current) return;
+        const session = personalRef.current;
+        try {
+          const item = await personalJson('/api/personal/bookmarks', {method: 'POST',
+            body: JSON.stringify({text: text.trim(), language})}, session);
+          if (personalRef.current !== session) return;
+          setStarPopId(item.id); setTimeout(() => setStarPopId(null), 450);
+          await refreshPersonal(language, session);
+        } catch (err) { if (personalRef.current === session) setStorageError(err.message); }
+      }, [language, personalJson, refreshPersonal]);
+
+      const removeBookmark = useCallback(async (id) => {
+        const session = personalRef.current;
+        if (!session) return;
+        try {
+          await personalJson('/api/personal/bookmarks/' + encodeURIComponent(id) + '?language=' + language,
+                             {method: 'DELETE'}, session);
+          await refreshPersonal(language, session);
+        } catch (err) { if (personalRef.current === session) setStorageError(err.message); }
+      }, [language, personalJson, refreshPersonal]);
+
+      const speakBookmark = useCallback((item) => {
+        speak(item.text, item.language || language);
+      }, [language, speak]);
+
+      const fetchPredictions = useCallback(async (currentWords) => {
+        setIsPredicting(true);
+        try {
+          const res = await fetch('/predict_next', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              current_words: currentWords,
+              language: language,
+              intent: 'REQUEST'
+            })
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            if (currentLanguageRef.current !== language) return;
+            const native = language === 'en' ? /[A-Za-z]/ : language === 'gu' ? /[\u0a80-\u0aff]/ : /[\u0900-\u097f]/;
+            const foreign = language === 'en' ? /[\u0900-\u0aff]/ : /[a-zA-Z]/;
+            const suggestions = (data.suggestions || data.predictions || []).filter(p => native.test(p.word) && !foreign.test(p.word));
+            if (suggestions.length > 0) {
+              setPredictions(suggestions.slice(0, 7));
+              setIsPredicting(false);
+              return;
+            }
+          }
+        } catch (e) {
+          // Backend offline or busy, fall through to smart fallback
+        }
+
+        const fallbacks = {
+          en: [
+            { word: 'Water', emoji: '💧', prob: 0.94 },
+            { word: 'Food', emoji: '🍎', prob: 0.88 },
+            { word: 'Please', emoji: '🤝', prob: 0.81 },
+            { word: 'Go', emoji: '🚶', prob: 0.76 },
+            { word: 'Play', emoji: '🎮', prob: 0.70 }
+          ],
+          hi: [
+            { word: 'पानी', emoji: '💧', prob: 0.95 },
+            { word: 'खाना', emoji: '🍎', prob: 0.89 },
+            { word: 'घर', emoji: '🏠', prob: 0.82 },
+            { word: 'मदद', emoji: '🆘', prob: 0.75 }
+          ],
+          gu: [
+            { word: 'પાણી', emoji: '💧', prob: 0.95 },
+            { word: 'ખોરાક', emoji: '🍎', prob: 0.89 },
+            { word: 'ઘર', emoji: '🏠', prob: 0.82 }
+          ],
+          mr: [
+            { word: 'पाणी', emoji: '💧', prob: 0.95 },
+            { word: 'जेवण', emoji: '🍎', prob: 0.89 },
+            { word: 'घर', emoji: '🏠', prob: 0.82 }
+          ]
+        };
+
+        if (currentLanguageRef.current !== language) return;
+        setPredictions(fallbacks[language] || fallbacks.hi);
+        setIsPredicting(false);
+      }, [language]);
+
+      useEffect(() => {
+        if(window.AACPhaseOne)return;
+        const words = tokens.map(t => t.label);
+        fetchPredictions(words);
+      }, [tokens, language, fetchPredictions, personalSession, frequentWords]);
+
+      // ─── ADD TOKEN TO SENTENCE CANVAS ─────────────────────────
+      const addToken = useCallback((item) => {
+        const wordLabel = item.labels ? (item.labels[language] || item.labels.en || item.k) : (item.word || item.label || item.k);
+        const emoji = item.e || item.emoji || '💬';
+        const newToken = {
+          id: 'tok_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+          label: wordLabel,
+          emoji: emoji,
+          image: item.image || null,
+          isCustom: !!item.isCustom,
+          visualId: item.k || item.cid || null,
+          // stable board concept ID (null for typed, predicted, emoji-search and "My Words" entries)
+          cid: (!item.isCustom && item.k && CONCEPT_CAT[item.k]) ? item.k : null
+        };
+
+        setTokens(prev => [...prev, newToken]);
+        recordActivity('word', wordLabel, language);
+
+        // Real Pronunciation on Word Selection
+        if (autoSpeakOnSelect) {
+          window.AACPlayback.play(wordLabel,language,{kind:'tile',rate:speechRate,profile:personalRef.current?.profile_id||null});
+        }
+
+        // Haptic feedback
+        if (window.AACAccess?.vibration && navigator.vibrate) navigator.vibrate(20);
+      }, [language, autoSpeakOnSelect, speak, recordActivity]);
+
+      // Remove single token
+      const removeToken = useCallback((id) => {
+        setTokens(prev => prev.filter(t => t.id !== id));
+      }, []);
+
+      // Remove last token (dedicated backspace)
+      const removeLastToken = useCallback(() => {
+        setTokens(prev => {
+          if (prev.length === 0) return prev;
+          return prev.slice(0, -1);
+        });
+        if (navigator.vibrate) navigator.vibrate(15);
+      }, []);
+
+      // Copy text to clipboard
+      const copyToClipboard = useCallback((text) => {
+        if (!text) return;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text)
+            .then(() => showToast('Copied to clipboard!', 'info'))
+            .catch(() => showToast('Copy failed — clipboard is blocked in this browser context.', 'warning'));
+        } else {
+          showToast('Copy is not available in this browser context.', 'warning');
+        }
+      }, [showToast]);
+
+      // Clear all
+      const clearAll = useCallback(() => {
+        setTokens([]);
+        setInputText('');
+        setGeneratedResult(null);
+        speechSeq.current++; if (audioElRef.current) audioElRef.current.pause();
+      }, []);
+
+      // Close keyboard when switching to English
+      useEffect(() => {
+        if (language === 'en') {
+          setShowPhoneticKeyboard(false);
+        }
+      }, [language]);
+
+      useEffect(() => {
+        document.documentElement.lang = language;
+        speechSeq.current++;
+        if (audioElRef.current) audioElRef.current.pause();
+        setIsSpeaking(false); setActiveSpeakingWord('');
+        setActiveVoiceId(language);
+        setLastAudioB64(null); setGeneratedResult(null); setPredictions([]);
+        setSearchQuery('');
+        const symbols = Object.values(SYMBOL_DATABASE).flat();
+        setTokens(prev => prev.map(token => {
+          const item = token.cid ? symbols.find(item => item.k === token.cid) : null;
+          return item ? {...token, label: item.labels[language]} : token;
+        }));
+      }, [language]);
+
+      // Native character insertion from phonetic keyboard
+      const handleInsertChar = useCallback((char) => {
+        setInputText(prev => {
+          if (inputRef.current && inputRef.current.selectionStart !== null) {
+            const start = inputRef.current.selectionStart;
+            const end = inputRef.current.selectionEnd;
+            const nextVal = prev.substring(0, start) + char + prev.substring(end);
+            setTimeout(() => {
+              if (inputRef.current) {
+                inputRef.current.focus();
+                inputRef.current.setSelectionRange(start + char.length, start + char.length);
+              }
+            }, 0);
+            return nextVal;
+          }
+          return prev + char;
+        });
+        if (navigator.vibrate) navigator.vibrate(10);
+      }, []);
+
+      // Backspace handler for phonetic keyboard
+      const handleBackspace = useCallback(() => {
+        setInputText(prev => {
+          if (!prev) return '';
+          if (inputRef.current && inputRef.current.selectionStart !== null) {
+            const start = inputRef.current.selectionStart;
+            const end = inputRef.current.selectionEnd;
+            if (start !== end) {
+              const nextVal = prev.substring(0, start) + prev.substring(end);
+              setTimeout(() => {
+                if (inputRef.current) {
+                  inputRef.current.focus();
+                  inputRef.current.setSelectionRange(start, start);
+                }
+              }, 0);
+              return nextVal;
+            }
+            if (start > 0) {
+              const nextVal = prev.substring(0, start - 1) + prev.substring(start);
+              setTimeout(() => {
+                if (inputRef.current) {
+                  inputRef.current.focus();
+                  inputRef.current.setSelectionRange(start - 1, start - 1);
+                }
+              }, 0);
+              return nextVal;
+            }
+          }
+          return prev.slice(0, -1);
+        });
+      }, []);
+
+      // Roman-to-Native transliteration helper
+      const handleTransliterateCurrent = useCallback(async () => {
+        if (!inputText.trim() || language === 'en') return;
+        try {
+          const res = await fetch('/api/transliterate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: inputText.trim(), language: language })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.transliterated) {
+              setInputText(data.transliterated);
+              showToast('Transliterated: ' + data.transliterated, 'success');
+            }
+          }
+        } catch (err) {}
+      }, [inputText, language, showToast]);
+
+      // Manual word submission + smart space transliteration
+      const handleInputKeyDown = useCallback(async (e) => {
+        if (e.key === ' ' && language !== 'en' && inputText.trim()) {
+          // If user types Roman letters and hits Space, auto-transliterate
+          if (/[a-zA-Z]/.test(inputText)) {
+            e.preventDefault();
+            try {
+              const res = await fetch('/api/transliterate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: inputText.trim(), language: language })
+              });
+              if (res.ok) {
+                const data = await res.json();
+                if (data.transliterated) {
+                  setInputText(data.transliterated + ' ');
+                  return;
+                }
+              }
+            } catch (err) {}
+          }
+        }
+
+        if (e.key === 'Enter' && inputText.trim()) {
+          e.preventDefault();
+          let cleanText = inputText.trim();
+          if (language !== 'en' && /[a-zA-Z]/.test(cleanText)) {
+            try {
+              const res = await fetch('/api/transliterate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: cleanText, language: language })
+              });
+              if (res.ok) {
+                const data = await res.json();
+                if (data.transliterated) cleanText = data.transliterated;
+              }
+            } catch (err) {}
+          }
+          addToken({ label: cleanText, emoji: '🔤' });
+          setInputText('');
+        }
+      }, [inputText, language, addToken]);
+
+      // ─── UN-JUMBLE (HMM-2 Reorder) ───────────────────────────────
+      const handleUnjumble = useCallback(async () => {
+        if (tokens.length < 2) {
+          showToast('Select at least 2 words to un-jumble!', 'warning');
+          return;
+        }
+        try {
+          const res = await fetch('/api/unjumble', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ current_words: tokens.map(t => t.label) })
+          });
+          if (!res.ok) throw new Error('Unjumble API error');
+          const data = await res.json();
+          if (data.unjumbled && Array.isArray(data.unjumbled)) {
+            const reordered = data.unjumbled.map(word => {
+              const existing = tokens.find(t => t.label.toLowerCase() === word.toLowerCase());
+              return existing || { id: 'tok_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4), label: word, emoji: '💬' };
+            });
+            setTokens(reordered);
+            showToast(`Re-ordered to canonical form (confidence: ${(data.score * 100).toFixed(0)}%)`, 'info');
+          }
+        } catch (e) {
+          showToast('Un-Jumble unavailable — HMM-2 not loaded', 'warning');
+        }
+      }, [tokens, showToast]);
+
+      // ─── AI GENERATION (FastAPI Backend) ───────────────────────
+      const handleGenerateSentence = useCallback(async (overrideAct) => {
+        if (typeof overrideAct !== 'string') overrideAct = null;
+        if (tokens.length === 0 && !inputText.trim()) {
+          showToast('Please select or type at least one word!', 'warning');
+          return;
+        }
+
+        const entitiesList = tokens.map(t => t.label);
+        const idsList = tokens.map(t => t.cid || null);
+        if (inputText.trim()) { entitiesList.push(inputText.trim()); idsList.push(null); }
+
+        // Act and polarity are separate fields: symbols are analysed by concept ID (typed words only as whole tokens).
+        const forced = overrideAct || (userAct !== 'auto' ? userAct : null);
+        const items = entitiesList.map((label, i) => ({ label: label, cid: idsList[i] }));
+        const an = analyzeSelection(items, language, forced);
+        const kept = an.kept;
+        const reqBody = {
+          intent: ({ REQUEST: 'REQUEST', FEELING: 'STATEMENT', FEELING_REQUEST: 'REQUEST', QUESTION: 'QUESTION', GREETING: 'STATEMENT', UNKNOWN: 'REQUEST' })[an.act] || 'REQUEST',
+          act: an.act,
+          act_source: forced ? 'user' : 'client',
+          negation: an.negation,
+          entities: kept.length ? kept.map(c => c.label) : entitiesList,
+          concept_ids: kept.length ? kept.map(c => c.cid) : idsList,
+          language: language,
+          code_mix: false,
+          generation_mode: generationMode,
+          voice_id: language,
+          include_audio: false   // Polish only suggests text; Speak / Use suggestion speak it explicitly
+        };
+        lastRequestRef.current = reqBody;
+        window.__lastGenerateRequest = reqBody;
+
+        const requestEpoch=++generationEpoch.current;
+        setIsGenerating(true);
+        setGeneratedResult(null);
+        setLastAudioB64(null);
+
+        try {
+          const res = await fetch('/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reqBody)
+          });
+
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+          const data = await res.json();
+          if (currentLanguageRef.current !== language || generationEpoch.current!==requestEpoch) return;
+          setGeneratedResult({...data, context_intent:data.act || an.act, context_negation:data.negation ?? an.negation, selected_words:entitiesList});
+
+          // Polish never speaks by itself: the user reviews the suggestion, then chooses Use suggestion & speak.
+        } catch (err) {
+          if(generationEpoch.current!==requestEpoch)return;
+          // Server unreachable: show the selection as a labelled literal preview (no guessed act, nothing spoken).
+          setGeneratedResult({
+            text: entitiesList.join(' '),
+            outcome: 'literal_preview',
+            route: 'client_offline',
+            literal_preview: entitiesList.join(' '),
+            fallback_used: true,
+            metrics: { t_total: 0.0 }
+          });
+          showToast('Server unreachable — showing the selected words only.', 'warning');
+        } finally {
+          if(generationEpoch.current===requestEpoch)setIsGenerating(false);
+        }
+      }, [tokens, inputText, language, generationMode, activeVoiceId, userAct, speak, playBackendAudio, showToast, recordActivity]);
+
+      // Replay the last generated sentence — prefers the real IndicF5 audio.
+      const handleReplayVoice = useCallback(() => {
+        if (lastAudioB64) {
+          const played = playBackendAudio(lastAudioB64, generatedResult && generatedResult.text);
+          if (played) return;
+        }
+        if (generatedResult && generatedResult.text) speak(generatedResult.text, language);
+      }, [lastAudioB64, generatedResult, language, speak, playBackendAudio]);
+
+      // Stop audio: cancels queued and active playback and any pending speech request.
+      const stopAllSpeech = useCallback(() => {
+        speechSeq.current++;
+        if (audioElRef.current) { try { audioElRef.current.pause(); } catch (_) {} }
+        try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (_) {}
+        setIsSpeaking(false); setActiveSpeakingWord('');
+      }, []);
+      const useSuggestion = useCallback(() => {
+        if (!generatedResult || !generatedResult.text) return;
+        speak(generatedResult.text, language);
+        recordActivity('conversation', generatedResult.text, language);
+      }, [generatedResult, language, speak, recordActivity]);
+
+      // Filtered symbols
+      const displayedSymbols = useMemo(() => {
+        if (activeCategory === 'search') {
+          if (!searchQuery.trim() || !window.ALL_EMOJIS) return [];
+          const q = searchQuery.toLowerCase().trim();
+          return window.ALL_EMOJIS
+            .filter(item => item.l.toLowerCase().includes(q) || item.k.toLowerCase().includes(q))
+            .slice(0, 48)
+            .map(item => ({
+              e: item.e,
+              k: item.k,
+              labels: { en: item.l, hi: item.l, gu: item.l, mr: item.l }
+            }));
+        }
+        // ─── Feature 1: Custom Grid (locally cached, offline-ready) ───
+        if (activeCategory === 'custom') {
+          return customWords.map(w => ({
+            e: w.emoji,
+            image: w.image || null,
+            k: w.id,
+            labels: { en: w.label, hi: w.label, gu: w.label, mr: w.label },
+            isCustom: true
+          }));
+        }
+        return SYMBOL_DATABASE[activeCategory] || SYMBOL_DATABASE.core;
+      }, [activeCategory, searchQuery, customWords]);
+
+      // Add / remove words from the local "My Words" custom grid
+      const [newWordText, setNewWordText] = useState('');
+      const [newWordEmoji, setNewWordEmoji] = useState('✨');
+      const [showWordEmojiPicker,setShowWordEmojiPicker]=useState(false);
+      const [wordEmojiQuery,setWordEmojiQuery]=useState('');
+      const [wordEmojiLimit,setWordEmojiLimit]=useState(120);
+      const emojiTriggerRef=useRef(null),emojiSearchRef=useRef(null);
+      const wordEmojiMatches=useMemo(()=>{
+        const query=wordEmojiQuery.trim().toLowerCase();
+        const translatedMatches=Object.values(SYMBOL_DATABASE).flat().filter(item=>Object.values(item.labels).some(label=>label.toLowerCase().includes(query))).map(item=>item.e);
+        return (window.ALL_EMOJIS||[]).filter(item=>!query||item.e.includes(query)||query.split(/\s+/).every(term=>(item.l+' '+item.k).toLowerCase().includes(term))||translatedMatches.includes(item.e));
+      },[wordEmojiQuery]);
+      useEffect(()=>{if(showWordEmojiPicker)emojiSearchRef.current?.focus();},[showWordEmojiPicker]);
+      useEffect(()=>{if(!showMyWords){setShowWordEmojiPicker(false);setWordEmojiQuery('');setWordEmojiLimit(120);}},[showMyWords]);
+      const chooseWordEmoji=emoji=>{setNewWordEmoji(emoji);setShowWordEmojiPicker(false);document.getElementById('myword-label')?.focus();};
+
+      const generateSymbolImage = useCallback(async (label) => {
+        const res = await fetch('/api/generate_symbol', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ word: label, language })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.detail || ('HTTP ' + res.status));
+        // Downscale images so account-scoped browser word grids remain compact.
+        const src = 'data:image/png;base64,' + data.image_b64;
+        return await new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => {
+            const c = document.createElement('canvas');
+            c.width = c.height = 256;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, 256, 256);
+            ctx.drawImage(img, 0, 0, 256, 256);
+            resolve(c.toDataURL('image/jpeg', 0.85));
+          };
+          img.onerror = () => resolve(src);
+          img.src = src;
+        });
+      }, [language]);
+
+      const handlePreviewSymbol = useCallback(async () => {
+        const label = newWordText.trim();
+        if (!label) { showToast('Type a word first, then generate its symbol.', 'warning'); return; }
+        setIsGeneratingSymbol(true);
+        try {
+          setPendingSymbolImage(await generateSymbolImage(label));
+        } catch (err) {
+          showToast('AI image failed: ' + err.message + ' — using emoji instead.', 'warning');
+        } finally {
+          setIsGeneratingSymbol(false);
+        }
+      }, [newWordText, generateSymbolImage, showToast]);
+
+      const addCustomWord = useCallback(async () => {
+        const label = newWordText.trim();
+        if (!label) {
+          showToast('Type a word to add it to My Words.', 'warning');
+          return;
+        }
+        let image = null;
+        if (symbolStyle === 'ai') {
+          image = pendingSymbolImage;
+          if (!image) {
+            setIsGeneratingSymbol(true);
+            try { image = await generateSymbolImage(label); }
+            catch (err) { showToast('AI image failed (' + err.message + ') — saved with emoji.', 'warning'); }
+            finally { setIsGeneratingSymbol(false); }
+          }
+        }
+        const word = { id: 'cw_' + Date.now(), label, emoji: newWordEmoji.trim() || '✨', image };
+        setCustomWords(prev => [...prev, word]);
+        setNewWordText('');
+        setPendingSymbolImage(null);
+        showToast('Added "' + label + '" to My Words' + (image ? ' with an AI symbol.' : '.'), 'success');
+      }, [newWordText, newWordEmoji, symbolStyle, pendingSymbolImage, generateSymbolImage, showToast]);
+      const removeCustomWord = useCallback((id) => {
+        setCustomWords(prev => prev.filter(w => w.id !== id));
+      }, []);
+
+      const top5Words = TOP_5_HIGH_PEAKED_WORDS[language] || TOP_5_HIGH_PEAKED_WORDS.en;
+      const quickPhrases = QUICK_EXPRESS_PHRASES[language] || QUICK_EXPRESS_PHRASES.en;
+      const supportSpeak = text => { generationEpoch.current++; setIsGenerating(false); speak(text, language); setLastAudioB64(null); showToast('Speaking: "' + text + '"', 'info'); };
+
+      const contextWords = [...tokens.map(t=>t.label), ...(inputText.trim() ? [inputText.trim()] : [])];
+      const liveIntent = analyzeSelection([...tokens, ...(inputText.trim() ? [{label:inputText.trim()}] : [])], language, userAct==='auto'?null:userAct);
+      useEffect(()=>{generationEpoch.current++;setIsGenerating(false);setGeneratedResult(null);setLastAudioB64(null);setCompositionView('compose');},[tokens,inputText,userAct]);
+
+      const historyGroups=window.AACHistory.groups(recentConversations);
+      const historyLocale=({en:'en-IN',hi:'hi-IN',gu:'gu-IN',mr:'mr-IN'})[language];
+      const exportHistory=()=>{
+        const blob=new Blob([window.AACHistory.csv(recentConversations)],{type:'text/csv;charset=utf-8;'});
+        const url=URL.createObjectURL(blob),link=document.createElement('a');
+        link.href=url;link.download='indic-aac-history-'+language+'-'+window.AACHistory.dateKey(new Date())+'.csv';
+        document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+      };
+
+      const accountUser=authUser || (window.AAC_OFFLINE_DEMO && personalSession ? {name:ui('Personal account',language)} : null);
+      return (
+        <div className="aac-app flex flex-col min-h-screen" data-button-theme={buttonTheme} data-symbol-style={visualStyle} data-high-contrast={highContrast} style={themeVariables(buttonTheme, darkMode, highContrast)}>
+
+          <a className="skip-link" href="#vnext-draft">{ui("Skip to communication board",language)}</a>
+          {/* Toast Notification */}
+          {toast && (
+            <div className={`toast-notice fixed top-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-xl shadow-lg font-semibold text-xs text-white flex items-center gap-2 animate-bounce-short ${
+              toast.type === 'warning' ? 'bg-amber-600' : 'bg-brand-600'
+            }`}>
+              <span>{toast.type === 'warning' ? '⚠️' : 'ℹ️'}</span>
+              <span>{toast.message}</span>
+            </div>
+          )}
+
+          {/* ─── 1. MODERN APP HEADER (Linear / Stripe Grade) ─────────── */}
+          <header className="sticky top-0 z-40 glass-nav border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
+            <div className="app-header-inner">
+
+              {/* App Brand */}
+              <div className="app-brand" translate="no" lang="en">
+                <div className="app-logo" role="img" aria-label="Indic AAC Studio logo">
+                  <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 7h14a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4H13l-6 4V11a4 4 0 0 1 4-4Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/><path d="M12 13h8m-8 5h5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="app-brand-name">Indic AAC Studio</span>
+                </div>
+                <LiveClock language={language} />
+              </div>
+
+                {/* Language Switcher */}
+                <select
+                  aria-label={ui("Language", language)}
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  className="language-select bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-bold text-xs px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 focus:outline-none cursor-pointer transition-all shadow-xs"
+                >
+                  <option value="en">🇬🇧 English</option>
+                  <option value="hi">🇮🇳 हिन्दी</option>
+                  <option value="gu">🇮🇳 ગુજરાતી</option>
+                  <option value="mr">🇮🇳 मराठी</option>
+                </select>
+
+              {/* Utility Controls */}
+              <div className="header-controls">
+
+                {/* My Words — pinned top-bar shortcut */}
+                <button
+                  onClick={() => {
+                    setShowMyWords(true);setShowSettingsDrawer(false);setShowProfileSettings(false);setShowVoicePanel(false);setShowA11yDock(false);
+                  }}
+                  className={`tap-ripple spring-press flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-extrabold border shadow-sm ${
+                    showMyWords
+                      ? 'bg-pink-600 text-white border-pink-700'
+                      : 'bg-gradient-to-r from-pink-50 to-amber-50 text-pink-700 border-pink-200 dark:from-pink-950/40 dark:to-amber-950/30 dark:text-pink-300 dark:border-pink-800'
+                  }`}
+                  aria-expanded={showMyWords} aria-controls="mywords-panel" aria-label={MY_WORDS_META.label[language]} title={ui("Open My Words — your personal grid", language)}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="m8 3 8 0-1 7 4 4H5l4-4-1-7Zm4 11v7" strokeLinejoin="round" strokeLinecap="round"/></svg>
+                  <span className="sr-only">{MY_WORDS_META.label[language] || 'My Words'}</span>
+                  {customWords.length > 0 && <span className="text-[10px] opacity-80">({customWords.length})</span>}
+                </button>
+
+
+                {/* Voice Pronunciation Toggle */}
+                <button
+                  aria-pressed={autoSpeakOnSelect}
+                  aria-label={ui("Speak words on selection", language)}
+                  onClick={() => setAutoSpeakOnSelect(!autoSpeakOnSelect)}
+                  className={`tap-ripple spring-press p-2 rounded-lg border text-xs font-semibold transition-all ${
+                    autoSpeakOnSelect
+                      ? 'bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950/60 dark:border-emerald-800 dark:text-emerald-300'
+                      : 'bg-white border-slate-200 text-slate-400 dark:bg-slate-900 dark:border-slate-800'
+                  }`}
+                  title={autoSpeakOnSelect ? ui("Voice on click active", language) : ui("Voice on click muted", language)}
+                >
+                  {autoSpeakOnSelect ? <Icons.Volume /> : <Icons.Mute />}
+                </button>
+
+
+                <button onClick={() => {setSettingsTab('access');setShowA11yDock(false);setShowVoicePanel(false);setShowSettingsDrawer(true);}} aria-expanded={showSettingsDrawer && settingsTab==="access"} aria-controls="settings-drawer" aria-label={ui('Accessibility options',language)} title={ui('Accessibility options',language)} className="rounded-lg border"><Icons.Accessibility /></button>
+
+                {/* Settings Drawer Button */}
+                <button
+                  onClick={() => {setSettingsTab('prefs');setShowSettingsDrawer(true);setShowA11yDock(false);setShowVoicePanel(false);}} aria-expanded={showSettingsDrawer} aria-controls="settings-drawer"
+                  className="tap-ripple spring-press p-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+                  aria-label={ui("Preferences", language)} title={ui("Preferences", language)}
+                >
+                  <Icons.Settings />
+                </button>
+                {/* Account menu is the last control, after Settings. */}
+                {accountUser ? (
+                  <details className="header-account account-dropdown" onToggle={event=>{if(event.currentTarget.open){setShowSettingsDrawer(false);setShowVoicePanel(false);setShowA11yDock(false);}}}>
+                    <summary aria-label={accountUser.name || accountUser.email || 'Account'}>
+                      {accountUser.photoURL ? <img src={accountUser.photoURL} alt="" referrerPolicy="no-referrer"/> : <span className="account-avatar" aria-hidden="true">{(accountUser.name||'?')[0]}</span>}
+                      <span className="account-name">{accountUser.name || accountUser.email || 'Account'}</span>
+                      <span className="account-caret" aria-hidden="true">⌄</span>
+                    </summary>
+                    <div className="account-menu">
+                      <strong>{accountUser.name || accountUser.email || 'Account'}</strong>
+                      {accountUser.email && <p>{accountUser.email}</p>}
+                      <button type="button" data-open-profile onClick={event=>{event.currentTarget.closest('details').removeAttribute('open');setShowProfileSettings(true);setShowSettingsDrawer(false);setShowVoicePanel(false);setShowA11yDock(false);if(personalSession)refreshPersonal(language);}}>{ui('Profile settings',language)}</button>
+                      <button type="button" onClick={handleSignOut}>{ui('Sign out',language)}</button>
+                    </div>
+                  </details>
+                ) : (
+
+                  <button
+                    onClick={()=>window.location.assign('/login')}
+                    className="tap-ripple spring-press flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-xs"
+                    title={firebaseEnabled ? ui("Sign in with Google to sync your words and phrases", language) : ui("Firebase not configured yet", language)}
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.9 2.4 30.4 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+                    <span className="hidden sm:inline">{ui("Sign in", language)}</span>
+                  </button>
+
+                )}
+
+              </div>
+
+            </div>
+          </header>
+
+          {/* ─── 2. MAIN COMMUNICATOR CANVAS ─────────────────────────── */}
+          <window.AACPhaseOne keyboard={PHONETIC_KEYBOARD_DATA[language]} language={language} tokens={tokens} setTokens={setTokens} inputText={inputText} setInputText={setInputText} profile={['local','google'].includes(personalSession?.service)?personalSession.profile_id:null} rate={speechRate} autoPronounce={autoSpeakOnSelect} onSoundChange={setAutoSpeakOnSelect} onWord={word=>recordActivity('word',word,language)} renderSymbol={item=><SymbolVisual item={item} style={visualStyle} photos={photoOverrides}/>} support={['local','google'].includes(personalSession?.service)?<SupportHub language={language} onSpeak={supportSpeak}/>:null} />
+
+          {showMyWords && (
+            <div className="settings-overlay mywords-overlay fixed inset-0 z-50" onPointerDown={event=>{if(event.target===event.currentTarget)setShowMyWords(false);}}>
+              <div id="mywords-panel" className="settings-drawer mywords-panel mywords-window" role="dialog" aria-modal="true" aria-label={MY_WORDS_META.label[language]}>
+                <div className="profile-panel-heading mywords-head"><div><h2>{MY_WORDS_META.label[language]} <span className="mywords-count">{customWords.length}</span></h2><p>{(MW_T[language]||MW_T.en).tap}</p></div><button type="button" className="mywords-close" aria-label={(MW_T[language]||MW_T.en).close} onClick={()=>setShowMyWords(false)}>✕</button></div>
+                <div className="mywords-body"><section className="mywords-add" aria-label={(MW_T[language]||MW_T.en).add}><h3>{(MW_T[language]||MW_T.en).add}</h3><p className="mywords-hint">{(MW_T[language]||MW_T.en).hint}</p>
+                <div className="custom-word-form flex items-center gap-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5">
+                  {symbolStyle === 'ai' ? (
+                    <button
+                      onClick={handlePreviewSymbol}
+                      disabled={isGeneratingSymbol || !newWordText.trim()}
+                      className="tap-ripple spring-press w-12 h-12 flex-shrink-0 rounded-lg bg-white dark:bg-slate-900 border border-dashed border-pink-300 dark:border-pink-700 flex items-center justify-center text-lg disabled:opacity-50 overflow-hidden"
+                      title={ui("Generate an AI symbol for this word", language)}
+                    >
+                      {isGeneratingSymbol
+                        ? <span className="w-4 h-4 border-2 border-pink-500 border-t-transparent rounded-full animate-spin"></span>
+                        : pendingSymbolImage
+                          ? <img src={pendingSymbolImage} alt="preview" className="w-full h-full object-contain" />
+                          : '✨'}
+                    </button>
+                  ) : (
+                  <button type="button" className="word-emoji-trigger" ref={emojiTriggerRef} aria-label={sstr('chooseEmoji',language)} title={sstr('chooseEmoji',language)} aria-expanded={showWordEmojiPicker} aria-controls="word-emoji-picker" onClick={()=>{setWordEmojiQuery('');setWordEmojiLimit(120);setShowWordEmojiPicker(value=>!value);}}><span aria-hidden="true">{newWordEmoji}</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>
+                  )}
+                  <input
+                    type="text"
+                    id="myword-label" aria-label={ui("Add word",language)} value={newWordText}
+                    onChange={(e) => { setNewWordText(e.target.value); setPendingSymbolImage(null); }}
+                    onKeyDown={(e) => { if (e.key === 'Enter') addCustomWord(); }}
+                    placeholder={ui("Word",language)}
+                    className="flex-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:border-brand-500"
+                  />
+                  <button
+                    aria-label={ui("Add word",language)} title={ui("Add word",language)} onClick={addCustomWord}
+                    className="tap-ripple spring-press px-3.5 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs flex items-center gap-1.5"
+                  >
+                    <span>{isGeneratingSymbol ? '…' : '＋'}</span>
+                    <span className="sr-only">{ui("Add word", language)}</span>
+                  </button>
+                </div>
+
+                {showWordEmojiPicker && <section id="word-emoji-picker" className="word-emoji-picker" role="region" aria-label={sstr('chooseEmoji',language)} onKeyDown={event=>{if(event.key==='Escape'){event.stopPropagation();setShowWordEmojiPicker(false);emojiTriggerRef.current?.focus();}}}>
+                  <label htmlFor="word-emoji-search">{sstr('findEmoji',language)}</label>
+                  <input id="word-emoji-search" type="search" ref={emojiSearchRef} value={wordEmojiQuery} placeholder={sstr('emojiSearchHint',language)} onChange={event=>{setWordEmojiQuery(event.target.value);setWordEmojiLimit(120);}} autoComplete="off"/>
+                  <div className="word-emoji-results">
+                    {!wordEmojiQuery.trim() && <><h3>{sstr('emojiPopular',language)}</h3><div className="word-emoji-grid">{['😀','😊','😂','🥰','😢','👍','🙏','❤️','💧','🍎','🏠','✨'].map(emoji=><button type="button" key={emoji} aria-label={(window.ALL_EMOJIS||[]).find(item=>item.e===emoji)?.l||emoji} aria-pressed={newWordEmoji===emoji} onClick={()=>chooseWordEmoji(emoji)}>{emoji}</button>)}</div></>}
+                    <h3>{sstr('emojiAll',language)} <span role="status" aria-live="polite">({wordEmojiMatches.length})</span></h3>
+                    {!wordEmojiMatches.length && <p>{sstr('emojiEmpty',language)}</p>}
+                    <div className="word-emoji-grid">{wordEmojiMatches.slice(0,wordEmojiLimit).map((item,index)=><button type="button" key={item.e+'-'+index} title={item.l} aria-label={item.l} aria-pressed={newWordEmoji===item.e} onClick={()=>chooseWordEmoji(item.e)}>{item.e}</button>)}</div>
+                    {wordEmojiMatches.length>wordEmojiLimit && <button type="button" className="word-emoji-more" onClick={()=>setWordEmojiLimit(value=>value+120)}>{sstr('emojiMore',language)}</button>}
+                  </div>
+                </section>}
+
+                </section>
+                <section className="mywords-list" aria-label={(MW_T[language]||MW_T.en).list}><div className="mywords-list-head"><h3>{(MW_T[language]||MW_T.en).list}</h3><input type="search" className="mywords-search" value={myWordsQuery} onChange={event=>setMyWordsQuery(event.target.value)} placeholder={(MW_T[language]||MW_T.en).search} aria-label={(MW_T[language]||MW_T.en).search}/></div>
+                <div key={activeCategory} className="symbol-grid" data-density={cardSize}>
+                  {customWords.filter(word=>!myWordsQuery.trim()||word.label.toLowerCase().includes(myWordsQuery.trim().toLowerCase())).map(word=>{const item={k:word.id,e:word.emoji,image:word.image,isCustom:true,labels:{[language]:word.label}};return <div key={word.id} className="custom-symbol-cell">
+                    <button className="symbol-card comm-card" data-personal-word={word.id} onClick={()=>{addToken(item);setShowMyWords(false);}}><SymbolVisual item={item} style={visualStyle} photos={photoOverrides}/><span className="card-label">{word.label}</span></button>
+                    <button className="custom-symbol-remove" aria-label={ui('Remove from My Words',language)+': '+word.label} onClick={()=>removeCustomWord(word.id)}>×</button>
+                  </div>;})}
+                </div>
+                {customWords.length>0 && !customWords.some(word=>!myWordsQuery.trim()||word.label.toLowerCase().includes(myWordsQuery.trim().toLowerCase())) && <p className="mywords-empty">{(MW_T[language]||MW_T.en).none}</p>}
+                {!customWords.length && <p className="mywords-empty">{ui("📌 Your personal word grid is empty. Add words above — they're cached locally and load instantly offline.",language)}</p>}
+                </section></div>
+                <button type="button" className="mywords-done" onClick={()=>setShowMyWords(false)}>{ui('Save & Close',language)}</button>
+              </div>
+            </div>
+          )}
+
+          {showProfileSettings && (
+            <div className="profile-overlay" onPointerDown={event=>{if(event.target===event.currentTarget)setShowProfileSettings(false);}}>
+              <div id="profile-settings" className="profile-panel" role="dialog" aria-modal="true" aria-label={ui('Profile settings',language)}>
+                <div className="profile-panel-heading"><h2>{ui('Profile settings',language)}</h2><button aria-label={ui('Close profile settings',language)} onClick={()=>setShowProfileSettings(false)}>✕</button></div>
+                <section className="personal-voice" aria-labelledby="personal-voice-heading">
+                  <h3 id="personal-voice-heading">{ui('Personal voice',language)}</h3>
+                  <p>{ui('Upload 3–12 seconds of clear speech in the selected language and type the exact words spoken. Your choice is saved to this account.',language)}</p>
+                  {window.AAC_OFFLINE_DEMO ? <p>{ui('Voice cloning requires the full backend. The static demo uses recorded voices.',language)}</p> : <>
+                    <label htmlFor="personal-voice-mode">{ui('Speech voice',language)}</label>
+                    <select id="personal-voice-mode" disabled={voiceBusy||!personalVoice} value={personalVoice?.active?'personal':'default'} onChange={event=>changePersonalVoice('PATCH',{active:event.target.value==='personal'})}>
+                      <option value="default">{ui('Default voice',language)}</option>
+                      {personalVoice && <option value="personal">{ui('My uploaded voice',language)}</option>}
+                    </select>
+                    <form onSubmit={event=>{event.preventDefault();const form=new FormData();form.append('audio',voiceFile);form.append('transcript',voiceTranscript);changePersonalVoice('POST',form);}}>
+                      <label htmlFor="personal-voice-file">{ui('Reference WAV recording',language)}</label>
+                      <input id="personal-voice-file" key={language} type="file" accept=".wav,audio/wav,audio/x-wav" disabled={voiceBusy} required onChange={event=>setVoiceFile(event.target.files?.[0]||null)}/>
+                      <label htmlFor="personal-voice-transcript">{ui('Exact recording transcript',language)}</label>
+                      <textarea id="personal-voice-transcript" value={voiceTranscript} disabled={voiceBusy} required maxLength={2000} rows={3} onChange={event=>setVoiceTranscript(event.target.value)}/>
+                      <p>{ui('Use your own voice or a voice you have permission to use. Avoid music, noise, and multiple speakers.',language)}</p>
+                      <button type="submit" disabled={voiceBusy||!voiceFile||!voiceTranscript.trim()}>{voiceBusy?ui('Saving…',language):ui('Save and use my voice',language)}</button>
+                    </form>
+                    {personalVoice && <button type="button" disabled={voiceBusy} onClick={()=>changePersonalVoice('DELETE')}>{ui('Delete uploaded voice',language)}</button>}
+                    <p role="status" aria-live="polite">{ui(voiceNotice,language)}</p>
+                  </>}
+                </section>
+
+            <section id="personal-dashboard" className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 flex flex-col gap-3">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="font-extrabold text-sm">{ui(personalSession?.service === 'google' ? 'Google account' : 'Personal account', language)}</h2>
+                <span role="status" className="text-xs text-slate-500">{ui(storageBusy ? 'Connecting…' : personalSession ? 'Saved to your account' : 'Storage unavailable', language)}</span>
+                <button className="text-xs underline" onClick={() => personalSession ? refreshPersonal(language) : connectAccount(fbAuth?.currentUser || null)}>{ui('Refresh', language)}</button>
+                <button className="text-xs underline" disabled={storageBusy || !personalSession} onClick={handleSignOut}>{ui('End session', language)}</button>
+              </div>
+              {storageError && <p role="alert" className="text-xs text-rose-600">{ui('Storage unavailable. Changes could not be saved.', language)} <span>{ui(storageError, language)}</span></p>}
+              <div className="profile-data-grid">
+                <div><h3 className="text-xs font-bold mb-2">{ui('Recent conversations', language)}</h3>
+                  <ul id="recent-conversations" className="flex flex-col gap-2">
+                    {recentConversations.slice(0, 5).map(item => <li key={item.id} className="flex gap-2 text-xs">
+                      <button className="text-left flex-1 hover:underline" onClick={() => speak(item.text, language)}>{item.text}</button>
+                      <button title={ui('Bookmark', language)} onClick={() => addBookmark(item.text)}>☆</button>
+                    </li>)}
+                  </ul>
+                  {!recentConversations.length && <p className="text-xs text-slate-400">{ui('No conversations yet', language)}</p>}
+                </div>
+                <div><h3 className="text-xs font-bold mb-2">{ui('Frequent words', language)}</h3>
+                  <div id="frequent-words" className="flex flex-wrap gap-2">{frequentWords.slice(0, 12).map(item =>
+                    <button key={item.word} className="text-xs rounded-lg border px-2 py-1" onClick={() => addToken({word: item.word})}>{item.word} <span className="text-slate-400">{item.count}</span></button>)}</div>
+                  {!frequentWords.length && <p className="text-xs text-slate-400">{ui('Select words to build your list', language)}</p>}
+                </div>
+                <div><h3 className="text-xs font-bold mb-2">{ui('Bookmarks', language)}</h3>
+                  <ul id="account-bookmarks" className="flex flex-col gap-2">{bookmarks.slice(0, 5).map(item => <li key={item.id} className="flex gap-2 text-xs">
+                    <button className="text-left flex-1 hover:underline" onClick={() => speakBookmark(item)}>{item.text}</button>
+                    <button title={ui('Remove bookmark', language)} onClick={() => removeBookmark(item.id)}>×</button>
+                  </li>)}</ul>
+                  {!bookmarks.length && <p className="text-xs text-slate-400">{ui('No bookmarks yet', language)}</p>}
+                </div>
+              </div>
+            </section>
+              </div>
+            </div>
+          )}
+
+          {/* ─── PREFERENCES DRAWER ─────────────────────────────────── */}
+          {showSettingsDrawer && (
+            <div className="settings-overlay fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-end" onPointerDown={event=>{if(event.target===event.currentTarget)setShowSettingsDrawer(false);}}>
+              <div className="settings-drawer bg-white dark:bg-slate-900 w-full border-l border-slate-200 dark:border-slate-800 flex flex-col shadow-2xl" id="settings-drawer" role="dialog" aria-modal="true" aria-label={ui("Preferences",language)}>
+
+                <div className="settings-sections">
+                  <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <span className="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
+                      <Icons.Settings />
+                      <span>{ui("Preferences", language)}</span>
+                    </span>
+                    <button aria-label={ui("Close settings",language)} onClick={() => setShowSettingsDrawer(false)} className="text-slate-400 hover:text-slate-600 font-bold">
+                      ✕
+                    </button>
+                  </div>
+
+                  <div className="settings-tabs" onKeyDown={event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;const tabs=[...event.currentTarget.querySelectorAll('[role=tab]')],i=tabs.indexOf(document.activeElement),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(i+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;event.preventDefault();tabs[next].click();tabs[next].focus();}} role="tablist" aria-label={ui("Preferences",language)}>
+                    {[['prefs',ui('Preferences',language)],['access',ui('Accessibility Options',language)],['voice',ui('Voice Controls',language)],['history',ui('History',language)]].map(([id,label])=><button type="button" role="tab" id={'settings-tab-'+id} aria-selected={settingsTab===id} aria-controls={'settings-panel-'+id} key={id} className={'settings-tab'+(settingsTab===id?' is-active':'')} onClick={()=>{setSettingsTab(id);if(id==='history'&&personalSession)refreshPersonal(language);}}>{label}</button>)}
+                  </div>
+                  {settingsTab==='prefs' && <div role="tabpanel" id="settings-panel-prefs" aria-labelledby="settings-tab-prefs" className="settings-panel">
+                  <fieldset><legend>{ui('Button colors',language)}</legend>
+                    <p>{ui('Soft colors for buttons only. Text stays readable.',language)}</p>
+                    <details className="color-picker">
+                      <summary><span className="color-preview" style={{background:darkMode?THEMES.find(t=>t.id===buttonTheme).dark:THEMES.find(t=>t.id===buttonTheme).light}} aria-hidden="true"/><span>{ui(THEMES.find(t=>t.id===buttonTheme).name,language)}</span></summary>
+                      <div className="theme-grid" role="group" aria-label={ui('Button colors',language)}>{THEMES.map(theme => <button type="button" key={theme.id} className="theme-swatch" data-theme-choice={theme.id} title={ui(theme.name,language)} aria-label={ui(theme.name,language)} aria-pressed={buttonTheme===theme.id} style={{'--swatch-bg':darkMode?theme.dark:theme.light,'--swatch-fg':darkMode?theme.darkText:theme.lightText}} onClick={() => setButtonTheme(theme.id)}><span aria-hidden="true">{buttonTheme===theme.id?'✓':''}</span></button>)}</div>
+                    </details>
+                  </fieldset>
+                  <fieldset><legend>{ui('Symbol appearance',language)}</legend>
+                    <select id="settings-symbol-style" aria-label={ui('Symbol appearance',language)} value={visualStyle} onChange={event=>setVisualStyle(event.target.value)}>{STYLES.map(style=><option key={style.id} value={style.id}>{ui(style.label,language)}</option>)}</select>
+                    <p>{ui('Pictures change; word positions stay the same.',language)}</p>
+                    <details className="photo-settings"><summary>{ui('Personalize a symbol photo',language)}</summary><div className="photo-tools">
+                      <label htmlFor="photo-concept">{ui('Personalize a symbol photo',language)}</label>
+                      <select id="photo-concept" value={photoConcept} onChange={event => setPhotoConcept(event.target.value)}>
+                        {Object.values(SYMBOL_DATABASE).flat().filter((item,index,all)=>all.findIndex(other=>other.k===item.k)===index).concat(customWords.map(word=>({k:word.id,labels:{[language]:word.label}}))).map(item=><option key={item.k} value={item.k}>{item.labels[language]}</option>)}
+                      </select>
+                      <label>{ui('Choose a real photo',language)}<input id="symbol-photo-upload" type="file" accept="image/jpeg,image/png,image/webp" disabled={!personalSession} onChange={uploadSymbolPhoto} /></label>
+                      {photoOverrides[photoConcept] && <><img className="photo-preview" src={photoOverrides[photoConcept]} alt=""/><button onClick={()=>setPhotoOverrides(prev=>{const copy={...prev};delete copy[photoConcept];return copy;})}>{ui('Remove personal photo',language)}</button></>}
+                      <p>{ui('Photos stay on this device for this account. Symbols without photos use drawings.',language)}</p>
+                      <a href="/static/photos/credits.html" target="_blank" rel="noreferrer">{ui('Photo credits',language)}</a>
+                    </div></details>
+                  </fieldset>
+                  <fieldset className="motion-settings"><legend>{sstr('animations',language)}</legend>
+                    <p>{sstr('motionHint',language)}</p>
+                    <div className="motion-toggle-group" role="group" aria-label={sstr('animations',language)}>
+                      <button type="button" data-motion-choice="on" aria-pressed={motionPrefs.enabled} onClick={()=>window.AACMotion.set({enabled:true})}>{sstr('motionOn',language)}</button>
+                      <button type="button" data-motion-choice="off" aria-pressed={!motionPrefs.enabled} onClick={()=>window.AACMotion.set({enabled:false})}>{sstr('motionOff',language)}</button>
+                    </div>
+                    <label>{sstr('animationSpeed',language)}</label>
+                    <div className="motion-speed-grid" role="group" aria-label={sstr('animationSpeed',language)}>{window.AACMotion.speeds.map(speed=><button type="button" key={speed} data-animation-speed={speed} aria-pressed={motionPrefs.speed===speed} onClick={()=>window.AACMotion.set({speed})}>{speed.toFixed(speed===1.5?2:speed%1?String(speed).split('.')[1].length:0)}×</button>)}</div>
+                    {motionPrefs.reduced && <p role="status">{sstr('motionReduced',language)}</p>}
+                    <div className="motion-preview"><span key={motionPrefs.speed+'-'+motionPrefs.enabled} className="motion-preview-dot" aria-hidden="true"/><span>{sstr('motionPreview',language)}</span></div>
+                  </fieldset>
+                  <ComfortSettings language={language} />
+                  <fieldset><legend>{ui('Playback speed',language)}</legend>
+                    <p>{ui('Applies to all speech in this session. Pitch is preserved.',language)}</p>
+                    <select id="settings-playback-speed" aria-label={ui('Playback speed',language)} value={speechRate} onChange={event=>setSpeechRate(Number(event.target.value))}>{PLAYBACK_SPEEDS.map(rate=><option key={rate} value={rate}>{formatSpeed(rate)}</option>)}</select>
+                  </fieldset>
+                  <fieldset><legend>Audio cache</legend><p>Repeated sentences use saved WAV files. Bundled demo recordings are kept when the generated cache is cleared.</p>
+                    <button className="rounded-lg border p-3" onClick={async()=>{try{const result=await personalJson('/api/audio-cache',{method:'DELETE'});showToast('Cleared '+result.removed+' cached audio files.','info')}catch(error){showToast(error.message,'warning')}}}>Clear saved audio cache</button>
+                  </fieldset>
+                  <fieldset><legend>{ui('Display',language)}</legend>
+                    <select id="settings-display" aria-label={ui('Display',language)} value={(darkMode?'night':'day')+(highContrast?'-contrast':'')} onChange={event=>{setDarkMode(event.target.value.startsWith('night'));setHighContrast(event.target.value.endsWith('-contrast'));}}>
+                      <option value="day">{ui('Day Mode',language)}</option>
+                      <option value="night">{ui('Night Mode',language)}</option>
+                      <option value="day-contrast">{ui('High Contrast',language)} · {ui('Day Mode',language)}</option>
+                      <option value="night-contrast">{ui('High Contrast',language)} · {ui('Night Mode',language)}</option>
+                    </select>
+                  </fieldset>
+                  <fieldset><legend>{ui('Touch Target & Card Size',language)}</legend>
+                    <select id="settings-card-size" aria-label={ui('Touch Target & Card Size',language)} value={cardSize} onChange={event=>setCardSize(event.target.value)}>
+                      <option value="compact">{ui('📱 Compact',language)}</option>
+                      <option value="standard">{ui('🖥️ Standard',language)}</option>
+                      <option value="large">{ui('♿ Large',language)}</option>
+                    </select>
+                  </fieldset>
+
+                  </div>}
+                  {settingsTab==='voice' && <div role="tabpanel" id="settings-panel-voice" aria-labelledby="settings-tab-voice" className="settings-panel flex flex-col gap-3">
+                <div className={`text-[11px] font-bold px-3 py-2 rounded-xl flex items-center gap-2 ${engineReady ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300' : 'bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300'}`}>
+                  <span>{engineReady ? '✅' : '⚠️'}</span>
+                  <span>
+                    {engineReady
+                      ? ui("IndicF5-TTS engine loaded — natural synthesis is active.", language)
+                      : ui("IndicF5 is unavailable. Speech will resume when the engine is ready.", language)}
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  {voiceList.filter(v => v.voice_id === language).map(v => (
+                    <div key={v.voice_id} className="rounded-xl border p-3 font-bold">🎙️ {v.label} · {v.engine === 'f5tts' ? 'F5-TTS' : 'IndicF5'}</div>
+                  ))}
+                  {personalVoice?.active && <p>{ui('Using your uploaded voice for this account.',language)}</p>}
+                  <button type="button" onClick={()=>{setShowSettingsDrawer(false);setShowProfileSettings(true);}}>{ui('Personal voice',language)}</button>
+                  {!personalVoice?.active && <p>{language === 'en' ? 'English speech with an English reference recording.' : language === 'gu' ? 'મૂળ ગુજરાતી સંદર્ભ અવાજ સાથે ગુજરાતી વાણી.' : language === 'mr' ? 'मराठी संदर्भ आवाजासह मराठी वाणी.' : 'मराठी संदर्भ आवाज़ से हिन्दी वाणी।'}</p>}
+                </div>
+                  </div>}
+                  {settingsTab==='access' && <div role="tabpanel" id="settings-panel-access" aria-labelledby="settings-tab-access" className="settings-panel flex flex-col gap-4 access-panel">
+                {/* Text Size +/- */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    <span>{ui("Text Size", language)}</span>
+                    <span className="text-brand-600">{textScale}%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setTextScale(s => Math.max(85, s - 10))}
+                      className="tap-ripple spring-press flex-1 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-black text-base flex items-center justify-center"
+                      title={ui("Decrease text size", language)}
+                    >{ui("A−", language)}</button>
+                    <button
+                      onClick={() => setTextScale(100)}
+                      className="tap-ripple spring-press px-2 h-9 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 font-bold text-[10px]"
+                      title={ui("Reset to default", language)}
+                    >{ui("Reset", language)}</button>
+                    <button
+                      onClick={() => setTextScale(s => Math.min(150, s + 10))}
+                      className="tap-ripple spring-press flex-1 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-black text-base flex items-center justify-center"
+                      title={ui("Increase text size", language)}
+                    >{ui("A+", language)}</button>
+                  </div>
+                </div>
+
+                {/* Day / Night Mode */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    {darkMode ? <Icons.Moon /> : <Icons.Sun />}
+                    <span>{darkMode ? ui("Night Mode", language) : ui("Day Mode", language)}</span>
+                  </div>
+                  <button
+                    aria-pressed={darkMode} onClick={() => setDarkMode(!darkMode)}
+                    className={`tap-ripple w-11 h-6 rounded-full p-0.5 transition-colors ${darkMode ? 'bg-brand-600' : 'bg-slate-300'}`}
+                    title={darkMode ? ui("Switch to Day Mode", language) : ui("Switch to Night Mode", language)}
+                    aria-label={ui("Toggle day and night mode", language)}
+                  >
+                    <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${darkMode ? 'translate-x-5' : ''}`}></div>
+                  </button>
+                </div>
+
+                {/* Grayscale Toggle */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    <Icons.Contrast />
+                    <span>{ui("Grayscale", language)}</span>
+                  </div>
+                  <button
+                    aria-pressed={grayscaleMode} aria-label={ui("Grayscale",language)} onClick={() => setGrayscaleMode(!grayscaleMode)}
+                    className={`tap-ripple w-11 h-6 rounded-full p-0.5 transition-colors ${grayscaleMode ? 'bg-brand-600' : 'bg-slate-300'}`}
+                  >
+                    <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${grayscaleMode ? 'translate-x-5' : ''}`}></div>
+                  </button>
+                </div>
+
+                {/* High Contrast Mode (moved here from Preferences) */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                    <Icons.Contrast />
+                    <span>{ui("High Contrast", language)}</span>
+                  </div>
+                  <button
+                    aria-pressed={highContrast} aria-label={ui("High Contrast",language)} onClick={() => setHighContrast(!highContrast)}
+                    className={`tap-ripple w-11 h-6 rounded-full p-0.5 transition-colors ${highContrast ? 'bg-brand-600' : 'bg-slate-300'}`}
+                  >
+                    <div className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform ${highContrast ? 'translate-x-5' : ''}`}></div>
+                  </button>
+                </div>
+
+                {/* Speech Speed (moved here from Preferences) */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                    <span>{ui("Speech Speed", language)}</span>
+                    <span className="text-brand-600">{formatSpeed(speechRate)}</span>
+                  </div>
+                  <select aria-label={ui('Playback speed',language)} value={speechRate} onChange={event=>setSpeechRate(Number(event.target.value))}>
+                    {PLAYBACK_SPEEDS.map(rate=><option key={rate} value={rate}>{formatSpeed(rate)}</option>)}
+                  </select>
+                </div>
+                  </div>}
+                  {settingsTab==='history' && <section role="tabpanel" id="settings-panel-history" aria-labelledby="settings-tab-history" className="settings-panel history-panel-inner">
+                <header className="history-header"><div><p>{ui('Your communication space',language)}</p><h2 id="history-title">{ui('History',language)}</h2></div><button type="button" onClick={()=>setShowSettingsDrawer(false)}>{ui('Close',language)}</button></header>
+                <div className="history-content">
+                  <div className="history-subheading"><h3>{ui('Recent conversations',language)}</h3><button type="button" onClick={()=>refreshPersonal(language)}>{ui('Refresh',language)}</button></div>
+                  <button type="button" className="history-export" disabled={!recentConversations.length} onClick={exportHistory}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></svg>{sstr('exportCsv',language)}</button>
+                  <p className="history-hint">{ui('Choose a message to speak it again.',language)}</p>
+                  {storageError && <p role="status" className="history-error">{storageError}</p>}
+                  {!recentConversations.length && <div className="history-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 4h16v12H9l-5 4V4Z"/><path d="M8 8h8M8 12h5"/></svg><h3>{ui('No conversations yet',language)}</h3><p>{ui('Your spoken messages will appear here.',language)}</p></div>}
+                  <div className="history-groups">{historyGroups.map(group=><section className="history-day" key={group.date} aria-labelledby={'history-day-'+group.date}>
+                    <h3 className="history-date" id={'history-day-'+group.date}><time dateTime={group.date}>{new Date(group.items[0].created_at*1000).toLocaleDateString(historyLocale,{dateStyle:'long'})}</time></h3>
+                    <ul className="history-list">{group.items.map(item=><li key={item.id}>
+                      <button type="button" className="history-message" onClick={()=>speak(item.text,item.language||language)}><span>{item.text}</span></button>{' '}
+                      <time className="history-time" dateTime={new Date(item.created_at*1000).toISOString()}>{new Date(item.created_at*1000).toLocaleTimeString(historyLocale,{hour:'2-digit',minute:'2-digit'})}</time>
+                      <button type="button" className="history-bookmark" aria-label={ui('Bookmark',language)+': '+item.text} onClick={()=>addBookmark(item.text)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4V3Z"/></svg></button>
+                    </li>)}</ul>
+                  </section>)}</div>
+                </div>
+                  </section>}
+                </div>
+
+                <button
+                  onClick={() => setShowSettingsDrawer(false)}
+                  className="tap-ripple spring-press w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition-all"
+                >{ui("Save & Close", language)}</button>
+
+              </div>
+            </div>
+          )}
+
+
+
+          {/* ─── FOOTER ─────────────────────────────────────────────── */}
+          <footer className="py-3 border-t border-slate-200/80 dark:border-slate-800 text-center text-[11px] text-slate-400"><span translate="no" lang="en">Indic AAC Studio</span></footer>
+
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

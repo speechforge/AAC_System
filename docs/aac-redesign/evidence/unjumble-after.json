@@ -1,0 +1,204 @@
+{
+  "health": {
+    "status": "ok",
+    "message": "Indic Generative AAC Backend Running",
+    "tts_engine": "local-f5",
+    "tts_ready": true,
+    "tts_error": null,
+    "personal_storage": "redis",
+    "personal_storage_ready": true
+  },
+  "scenarios": [
+    {
+      "scenario": "exact-example-with-legacy-payload",
+      "language": null,
+      "input": [
+        "share",
+        "AAC",
+        "clearly",
+        "students",
+        "the",
+        "helps",
+        "system",
+        "thoughts",
+        "their"
+      ],
+      "result": {
+        "status": "suggested",
+        "jumbled": [
+          "share",
+          "AAC",
+          "clearly",
+          "students",
+          "the",
+          "helps",
+          "system",
+          "thoughts",
+          "their"
+        ],
+        "unjumbled": [
+          "the",
+          "AAC",
+          "system",
+          "helps",
+          "students",
+          "share",
+          "their",
+          "thoughts",
+          "clearly"
+        ],
+        "order": [
+          4,
+          1,
+          6,
+          5,
+          3,
+          0,
+          8,
+          7,
+          2
+        ],
+        "score": 0.0,
+        "sentence": "the AAC system helps students share their thoughts clearly"
+      },
+      "ms": 2.4
+    },
+    {
+      "scenario": "qwen-duplicates-multiword",
+      "language": "en",
+      "input": [
+        "to",
+        "the school library",
+        "don't",
+        "I",
+        "to",
+        "want",
+        "go"
+      ],
+      "result": {
+        "status": "no_suggestion",
+        "jumbled": [
+          "to",
+          "the school library",
+          "don't",
+          "I",
+          "to",
+          "want",
+          "go"
+        ],
+        "unjumbled": [
+          "to",
+          "the school library",
+          "don't",
+          "I",
+          "to",
+          "want",
+          "go"
+        ],
+        "order": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "score": 0.0,
+        "sentence": "to the school library don't I to want go"
+      },
+      "ms": 449.9
+    },
+    {
+      "scenario": "qwen-hi",
+      "language": "hi",
+      "input": [
+        "चाहिए",
+        "मुझे",
+        "पानी"
+      ],
+      "result": {
+        "status": "suggested",
+        "jumbled": [
+          "चाहिए",
+          "मुझे",
+          "पानी"
+        ],
+        "unjumbled": [
+          "पानी",
+          "मुझे",
+          "चाहिए"
+        ],
+        "order": [
+          2,
+          1,
+          0
+        ],
+        "score": 0.0,
+        "sentence": "पानी मुझे चाहिए"
+      },
+      "ms": 173.5
+    },
+    {
+      "scenario": "qwen-gu",
+      "language": "gu",
+      "input": [
+        "જોઈએ",
+        "મને",
+        "પાણી"
+      ],
+      "result": {
+        "status": "suggested",
+        "jumbled": [
+          "જોઈએ",
+          "મને",
+          "પાણી"
+        ],
+        "unjumbled": [
+          "પાણી",
+          "જોઈએ",
+          "મને"
+        ],
+        "order": [
+          2,
+          0,
+          1
+        ],
+        "score": 0.0,
+        "sentence": "પાણી જોઈએ મને"
+      },
+      "ms": 173.0
+    },
+    {
+      "scenario": "qwen-mr",
+      "language": "mr",
+      "input": [
+        "पाहिजे",
+        "मला",
+        "पाणी"
+      ],
+      "result": {
+        "status": "suggested",
+        "jumbled": [
+          "पाहिजे",
+          "मला",
+          "पाणी"
+        ],
+        "unjumbled": [
+          "पाणी",
+          "पाहिजे",
+          "मला"
+        ],
+        "order": [
+          2,
+          0,
+          1
+        ],
+        "score": 0.0,
+        "sentence": "पाणी पाहिजे मला"
+      },
+      "ms": 172.8
+    }
+  ],
+  "unsupported_locale_rejected": true
+}

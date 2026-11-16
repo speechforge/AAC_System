@@ -1,0 +1,26 @@
+[
+  {
+    "name": "gujarati-preview",
+    "text": "નમસ્તે. મને પાણી જોઈએ છે. કૃપા કરીને મારી મદદ કરો.",
+    "engine": "indicf5",
+    "sample_rate": 24000,
+    "duration": 3.73,
+    "latency": 9.87
+  },
+  {
+    "name": "gujarati-water",
+    "text": "મને પાણી જોઈએ છે.",
+    "engine": "indicf5",
+    "sample_rate": 24000,
+    "duration": 1.26,
+    "latency": 8.22
+  },
+  {
+    "name": "gujarati-word",
+    "text": "પાણી",
+    "engine": "indicf5",
+    "sample_rate": 24000,
+    "duration": 0.37,
+    "latency": 10.19
+  }
+]

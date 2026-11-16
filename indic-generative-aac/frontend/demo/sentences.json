@@ -1,0 +1,1122 @@
+[
+  {
+    "id": "en-01",
+    "language": "en",
+    "text": "I want water.",
+    "words": [
+      "Want",
+      "Water"
+    ],
+    "concept_ids": [
+      "WANT",
+      "WATER"
+    ],
+    "audio": "audio/en-01.wav"
+  },
+  {
+    "id": "en-02",
+    "language": "en",
+    "text": "I want food.",
+    "words": [
+      "Want",
+      "Food"
+    ],
+    "concept_ids": [
+      "WANT",
+      "FOOD"
+    ],
+    "audio": "audio/en-02.wav"
+  },
+  {
+    "id": "en-03",
+    "language": "en",
+    "text": "I want milk.",
+    "words": [
+      "Want",
+      "Milk"
+    ],
+    "concept_ids": [
+      "WANT",
+      "MILK"
+    ],
+    "audio": "audio/en-03.wav"
+  },
+  {
+    "id": "en-04",
+    "language": "en",
+    "text": "I want rice.",
+    "words": [
+      "Want",
+      "Rice"
+    ],
+    "concept_ids": [
+      "WANT",
+      "RICE"
+    ],
+    "audio": "audio/en-04.wav"
+  },
+  {
+    "id": "en-05",
+    "language": "en",
+    "text": "I want roti.",
+    "words": [
+      "Want",
+      "Bread/Roti"
+    ],
+    "concept_ids": [
+      "WANT",
+      "ROTI"
+    ],
+    "audio": "audio/en-05.wav"
+  },
+  {
+    "id": "en-06",
+    "language": "en",
+    "text": "I want fruit.",
+    "words": [
+      "Want",
+      "Fruit"
+    ],
+    "concept_ids": [
+      "WANT",
+      "FRUIT"
+    ],
+    "audio": "audio/en-06.wav"
+  },
+  {
+    "id": "en-07",
+    "language": "en",
+    "text": "I want tea.",
+    "words": [
+      "Want",
+      "Tea"
+    ],
+    "concept_ids": [
+      "WANT",
+      "TEA"
+    ],
+    "audio": "audio/en-07.wav"
+  },
+  {
+    "id": "en-08",
+    "language": "en",
+    "text": "I want juice.",
+    "words": [
+      "Want",
+      "Juice"
+    ],
+    "concept_ids": [
+      "WANT",
+      "JUICE"
+    ],
+    "audio": "audio/en-08.wav"
+  },
+  {
+    "id": "en-09",
+    "language": "en",
+    "text": "I want biscuits.",
+    "words": [
+      "Want",
+      "Biscuit"
+    ],
+    "concept_ids": [
+      "WANT",
+      "SNACK"
+    ],
+    "audio": "audio/en-09.wav"
+  },
+  {
+    "id": "en-10",
+    "language": "en",
+    "text": "I want pizza.",
+    "words": [
+      "Want",
+      "Pizza"
+    ],
+    "concept_ids": [
+      "WANT",
+      "PIZZA"
+    ],
+    "audio": "audio/en-10.wav"
+  },
+  {
+    "id": "en-11",
+    "language": "en",
+    "text": "I want medicine.",
+    "words": [
+      "Want",
+      "Medicine"
+    ],
+    "concept_ids": [
+      "WANT",
+      "MEDICINE"
+    ],
+    "audio": "audio/en-11.wav"
+  },
+  {
+    "id": "en-12",
+    "language": "en",
+    "text": "I am happy.",
+    "words": [
+      "I / Me",
+      "Happy"
+    ],
+    "concept_ids": [
+      "ME",
+      "HAPPY"
+    ],
+    "audio": "audio/en-12.wav"
+  },
+  {
+    "id": "en-13",
+    "language": "en",
+    "text": "I am sad.",
+    "words": [
+      "I / Me",
+      "Sad"
+    ],
+    "concept_ids": [
+      "ME",
+      "SAD"
+    ],
+    "audio": "audio/en-13.wav"
+  },
+  {
+    "id": "en-14",
+    "language": "en",
+    "text": "I am tired.",
+    "words": [
+      "I / Me",
+      "Tired"
+    ],
+    "concept_ids": [
+      "ME",
+      "TIRED"
+    ],
+    "audio": "audio/en-14.wav"
+  },
+  {
+    "id": "en-15",
+    "language": "en",
+    "text": "I am sick.",
+    "words": [
+      "I / Me",
+      "Sick"
+    ],
+    "concept_ids": [
+      "ME",
+      "SICK"
+    ],
+    "audio": "audio/en-15.wav"
+  },
+  {
+    "id": "en-16",
+    "language": "en",
+    "text": "I am in pain.",
+    "words": [
+      "I / Me",
+      "Pain"
+    ],
+    "concept_ids": [
+      "ME",
+      "PAIN"
+    ],
+    "audio": "audio/en-16.wav"
+  },
+  {
+    "id": "en-17",
+    "language": "en",
+    "text": "Please help me.",
+    "words": [
+      "Please",
+      "Help"
+    ],
+    "concept_ids": [
+      "PLEASE",
+      "HELP"
+    ],
+    "audio": "audio/en-17.wav"
+  },
+  {
+    "id": "en-18",
+    "language": "en",
+    "text": "I want water and tea.",
+    "words": [
+      "Water",
+      "Tea"
+    ],
+    "concept_ids": [
+      "WATER",
+      "TEA"
+    ],
+    "audio": "audio/en-18.wav"
+  },
+  {
+    "id": "en-19",
+    "language": "en",
+    "text": "I want to call my mother.",
+    "words": [
+      "Call",
+      "Mother"
+    ],
+    "concept_ids": [
+      "CALL",
+      "MOTHER"
+    ],
+    "audio": "audio/en-19.wav"
+  },
+  {
+    "id": "en-20",
+    "language": "en",
+    "text": "I am in pain, I want medicine.",
+    "words": [
+      "Pain",
+      "Medicine"
+    ],
+    "concept_ids": [
+      "PAIN",
+      "MEDICINE"
+    ],
+    "audio": "audio/en-20.wav"
+  },
+  {
+    "id": "hi-01",
+    "language": "hi",
+    "text": "मुझे पानी चाहिए।",
+    "words": [
+      "चाहिए",
+      "पानी"
+    ],
+    "concept_ids": [
+      "WANT",
+      "WATER"
+    ],
+    "audio": "audio/hi-01.wav"
+  },
+  {
+    "id": "hi-02",
+    "language": "hi",
+    "text": "मुझे खाना चाहिए।",
+    "words": [
+      "चाहिए",
+      "खाना"
+    ],
+    "concept_ids": [
+      "WANT",
+      "FOOD"
+    ],
+    "audio": "audio/hi-02.wav"
+  },
+  {
+    "id": "hi-03",
+    "language": "hi",
+    "text": "मुझे दूध चाहिए।",
+    "words": [
+      "चाहिए",
+      "दूध"
+    ],
+    "concept_ids": [
+      "WANT",
+      "MILK"
+    ],
+    "audio": "audio/hi-03.wav"
+  },
+  {
+    "id": "hi-04",
+    "language": "hi",
+    "text": "मुझे चावल चाहिए।",
+    "words": [
+      "चाहिए",
+      "चावल"
+    ],
+    "concept_ids": [
+      "WANT",
+      "RICE"
+    ],
+    "audio": "audio/hi-04.wav"
+  },
+  {
+    "id": "hi-05",
+    "language": "hi",
+    "text": "मुझे रोटी चाहिए।",
+    "words": [
+      "चाहिए",
+      "रोटी"
+    ],
+    "concept_ids": [
+      "WANT",
+      "ROTI"
+    ],
+    "audio": "audio/hi-05.wav"
+  },
+  {
+    "id": "hi-06",
+    "language": "hi",
+    "text": "मुझे फल चाहिए।",
+    "words": [
+      "चाहिए",
+      "फल"
+    ],
+    "concept_ids": [
+      "WANT",
+      "FRUIT"
+    ],
+    "audio": "audio/hi-06.wav"
+  },
+  {
+    "id": "hi-07",
+    "language": "hi",
+    "text": "मुझे चाय चाहिए।",
+    "words": [
+      "चाहिए",
+      "चाय"
+    ],
+    "concept_ids": [
+      "WANT",
+      "TEA"
+    ],
+    "audio": "audio/hi-07.wav"
+  },
+  {
+    "id": "hi-08",
+    "language": "hi",
+    "text": "मुझे जूस चाहिए।",
+    "words": [
+      "चाहिए",
+      "जूस"
+    ],
+    "concept_ids": [
+      "WANT",
+      "JUICE"
+    ],
+    "audio": "audio/hi-08.wav"
+  },
+  {
+    "id": "hi-09",
+    "language": "hi",
+    "text": "मुझे बिस्कुट चाहिए।",
+    "words": [
+      "चाहिए",
+      "बिस्कुट"
+    ],
+    "concept_ids": [
+      "WANT",
+      "SNACK"
+    ],
+    "audio": "audio/hi-09.wav"
+  },
+  {
+    "id": "hi-10",
+    "language": "hi",
+    "text": "मुझे पिज़्ज़ा चाहिए।",
+    "words": [
+      "चाहिए",
+      "पिज़्ज़ा"
+    ],
+    "concept_ids": [
+      "WANT",
+      "PIZZA"
+    ],
+    "audio": "audio/hi-10.wav"
+  },
+  {
+    "id": "hi-11",
+    "language": "hi",
+    "text": "मुझे दवा चाहिए।",
+    "words": [
+      "चाहिए",
+      "दवा"
+    ],
+    "concept_ids": [
+      "WANT",
+      "MEDICINE"
+    ],
+    "audio": "audio/hi-11.wav"
+  },
+  {
+    "id": "hi-12",
+    "language": "hi",
+    "text": "मैं खुश हूँ।",
+    "words": [
+      "मैं",
+      "खुश"
+    ],
+    "concept_ids": [
+      "ME",
+      "HAPPY"
+    ],
+    "audio": "audio/hi-12.wav"
+  },
+  {
+    "id": "hi-13",
+    "language": "hi",
+    "text": "मैं उदास हूँ।",
+    "words": [
+      "मैं",
+      "उदास"
+    ],
+    "concept_ids": [
+      "ME",
+      "SAD"
+    ],
+    "audio": "audio/hi-13.wav"
+  },
+  {
+    "id": "hi-14",
+    "language": "hi",
+    "text": "मुझे थकान हो रही है।",
+    "words": [
+      "मैं",
+      "थका हुआ"
+    ],
+    "concept_ids": [
+      "ME",
+      "TIRED"
+    ],
+    "audio": "audio/hi-14.wav"
+  },
+  {
+    "id": "hi-15",
+    "language": "hi",
+    "text": "मैं बीमार हूँ।",
+    "words": [
+      "मैं",
+      "बीमार"
+    ],
+    "concept_ids": [
+      "ME",
+      "SICK"
+    ],
+    "audio": "audio/hi-15.wav"
+  },
+  {
+    "id": "hi-16",
+    "language": "hi",
+    "text": "मुझे दर्द हो रहा है।",
+    "words": [
+      "मैं",
+      "दर्द"
+    ],
+    "concept_ids": [
+      "ME",
+      "PAIN"
+    ],
+    "audio": "audio/hi-16.wav"
+  },
+  {
+    "id": "hi-17",
+    "language": "hi",
+    "text": "कृपया मेरी मदद कीजिए।",
+    "words": [
+      "कृपया",
+      "मदद"
+    ],
+    "concept_ids": [
+      "PLEASE",
+      "HELP"
+    ],
+    "audio": "audio/hi-17.wav"
+  },
+  {
+    "id": "hi-18",
+    "language": "hi",
+    "text": "मुझे पानी और चाय चाहिए।",
+    "words": [
+      "पानी",
+      "चाय"
+    ],
+    "concept_ids": [
+      "WATER",
+      "TEA"
+    ],
+    "audio": "audio/hi-18.wav"
+  },
+  {
+    "id": "hi-19",
+    "language": "hi",
+    "text": "मुझे माँ को फ़ोन करना है।",
+    "words": [
+      "फ़ोन करना",
+      "माँ"
+    ],
+    "concept_ids": [
+      "CALL",
+      "MOTHER"
+    ],
+    "audio": "audio/hi-19.wav"
+  },
+  {
+    "id": "hi-20",
+    "language": "hi",
+    "text": "मुझे दर्द हो रहा है, मुझे दवा चाहिए।",
+    "words": [
+      "दर्द",
+      "दवा"
+    ],
+    "concept_ids": [
+      "PAIN",
+      "MEDICINE"
+    ],
+    "audio": "audio/hi-20.wav"
+  },
+  {
+    "id": "gu-01",
+    "language": "gu",
+    "text": "મને પાણી જોઈએ છે.",
+    "words": [
+      "જોઈએ",
+      "પાણી"
+    ],
+    "concept_ids": [
+      "WANT",
+      "WATER"
+    ],
+    "audio": "audio/gu-01.wav"
+  },
+  {
+    "id": "gu-02",
+    "language": "gu",
+    "text": "મને ખોરાક જોઈએ છે.",
+    "words": [
+      "જોઈએ",
+      "ખોરાક"
+    ],
+    "concept_ids": [
+      "WANT",
+      "FOOD"
+    ],
+    "audio": "audio/gu-02.wav"
+  },
+  {
+    "id": "gu-03",
+    "language": "gu",
+    "text": "મને દૂધ જોઈએ છે.",
+    "words": [
+      "જોઈએ",
+      "દૂધ"
+    ],
+    "concept_ids": [
+      "WANT",
+      "MILK"
+    ],
+    "audio": "audio/gu-03.wav"
+  },
+  {
+    "id": "gu-04",
+    "language": "gu",
+    "text": "મને ભાત જોઈએ છે.",
+    "words": [
+      "જોઈએ",
+      "ભાત"
+    ],
+    "concept_ids": [
+      "WANT",
+      "RICE"
+    ],
+    "audio": "audio/gu-04.wav"
+  },
+  {
+    "id": "gu-05",
+    "language": "gu",
+    "text": "મને રોટલી જોઈએ છે.",
+    "words": [
+      "જોઈએ",
+      "રોટલી"
+    ],
+    "concept_ids": [
+      "WANT",
+      "ROTI"
+    ],
+    "audio": "audio/gu-05.wav"
+  },
+  {
+    "id": "gu-06",
+    "language": "gu",
+    "text": "મને ફળ જોઈએ છે.",
+    "words": [
+      "જોઈએ",
+      "ફળ"
+    ],
+    "concept_ids": [
+      "WANT",
+      "FRUIT"
+    ],
+    "audio": "audio/gu-06.wav"
+  },
+  {
+    "id": "gu-07",
+    "language": "gu",
+    "text": "મને ચા જોઈએ છે.",
+    "words": [
+      "જોઈએ",
+      "ચા"
+    ],
+    "concept_ids": [
+      "WANT",
+      "TEA"
+    ],
+    "audio": "audio/gu-07.wav"
+  },
+  {
+    "id": "gu-08",
+    "language": "gu",
+    "text": "મને જ્યુસ જોઈએ છે.",
+    "words": [
+      "જોઈએ",
+      "જ્યુસ"
+    ],
+    "concept_ids": [
+      "WANT",
+      "JUICE"
+    ],
+    "audio": "audio/gu-08.wav"
+  },
+  {
+    "id": "gu-09",
+    "language": "gu",
+    "text": "મને બિસ્કિટ જોઈએ છે.",
+    "words": [
+      "જોઈએ",
+      "બિસ્કિટ"
+    ],
+    "concept_ids": [
+      "WANT",
+      "SNACK"
+    ],
+    "audio": "audio/gu-09.wav"
+  },
+  {
+    "id": "gu-10",
+    "language": "gu",
+    "text": "મને પિઝા જોઈએ છે.",
+    "words": [
+      "જોઈએ",
+      "પિઝા"
+    ],
+    "concept_ids": [
+      "WANT",
+      "PIZZA"
+    ],
+    "audio": "audio/gu-10.wav"
+  },
+  {
+    "id": "gu-11",
+    "language": "gu",
+    "text": "મને દવા જોઈએ છે.",
+    "words": [
+      "જોઈએ",
+      "દવા"
+    ],
+    "concept_ids": [
+      "WANT",
+      "MEDICINE"
+    ],
+    "audio": "audio/gu-11.wav"
+  },
+  {
+    "id": "gu-12",
+    "language": "gu",
+    "text": "હું ખુશ છું.",
+    "words": [
+      "હું",
+      "ખુશ"
+    ],
+    "concept_ids": [
+      "ME",
+      "HAPPY"
+    ],
+    "audio": "audio/gu-12.wav"
+  },
+  {
+    "id": "gu-13",
+    "language": "gu",
+    "text": "હું ઉદાસ છું.",
+    "words": [
+      "હું",
+      "ઉદાસ"
+    ],
+    "concept_ids": [
+      "ME",
+      "SAD"
+    ],
+    "audio": "audio/gu-13.wav"
+  },
+  {
+    "id": "gu-14",
+    "language": "gu",
+    "text": "મને થાક લાગ્યો છે.",
+    "words": [
+      "હું",
+      "થાકેલું"
+    ],
+    "concept_ids": [
+      "ME",
+      "TIRED"
+    ],
+    "audio": "audio/gu-14.wav"
+  },
+  {
+    "id": "gu-15",
+    "language": "gu",
+    "text": "હું બીમાર છું.",
+    "words": [
+      "હું",
+      "બીમાર"
+    ],
+    "concept_ids": [
+      "ME",
+      "SICK"
+    ],
+    "audio": "audio/gu-15.wav"
+  },
+  {
+    "id": "gu-16",
+    "language": "gu",
+    "text": "મને દુખાવો થાય છે.",
+    "words": [
+      "હું",
+      "દુખાવો"
+    ],
+    "concept_ids": [
+      "ME",
+      "PAIN"
+    ],
+    "audio": "audio/gu-16.wav"
+  },
+  {
+    "id": "gu-17",
+    "language": "gu",
+    "text": "કૃપા કરીને મને મદદ કરો.",
+    "words": [
+      "મહેરબાની કરીને",
+      "મદદ"
+    ],
+    "concept_ids": [
+      "PLEASE",
+      "HELP"
+    ],
+    "audio": "audio/gu-17.wav"
+  },
+  {
+    "id": "gu-18",
+    "language": "gu",
+    "text": "મને પાણી અને ચા જોઈએ છે.",
+    "words": [
+      "પાણી",
+      "ચા"
+    ],
+    "concept_ids": [
+      "WATER",
+      "TEA"
+    ],
+    "audio": "audio/gu-18.wav"
+  },
+  {
+    "id": "gu-19",
+    "language": "gu",
+    "text": "મને માતાને ફોન કરવાનું મન છે.",
+    "words": [
+      "ફોન કરવો",
+      "માતા"
+    ],
+    "concept_ids": [
+      "CALL",
+      "MOTHER"
+    ],
+    "audio": "audio/gu-19.wav"
+  },
+  {
+    "id": "gu-20",
+    "language": "gu",
+    "text": "મને દુખાવો થાય છે, મને દવા જોઈએ છે.",
+    "words": [
+      "દુખાવો",
+      "દવા"
+    ],
+    "concept_ids": [
+      "PAIN",
+      "MEDICINE"
+    ],
+    "audio": "audio/gu-20.wav"
+  },
+  {
+    "id": "mr-01",
+    "language": "mr",
+    "text": "मला पाणी हवे आहे.",
+    "words": [
+      "पाहिजे",
+      "पाणी"
+    ],
+    "concept_ids": [
+      "WANT",
+      "WATER"
+    ],
+    "audio": "audio/mr-01.wav"
+  },
+  {
+    "id": "mr-02",
+    "language": "mr",
+    "text": "मला जेवण हवे आहे.",
+    "words": [
+      "पाहिजे",
+      "जेवण"
+    ],
+    "concept_ids": [
+      "WANT",
+      "FOOD"
+    ],
+    "audio": "audio/mr-02.wav"
+  },
+  {
+    "id": "mr-03",
+    "language": "mr",
+    "text": "मला दूध हवे आहे.",
+    "words": [
+      "पाहिजे",
+      "दूध"
+    ],
+    "concept_ids": [
+      "WANT",
+      "MILK"
+    ],
+    "audio": "audio/mr-03.wav"
+  },
+  {
+    "id": "mr-04",
+    "language": "mr",
+    "text": "मला भात हवा आहे.",
+    "words": [
+      "पाहिजे",
+      "भात"
+    ],
+    "concept_ids": [
+      "WANT",
+      "RICE"
+    ],
+    "audio": "audio/mr-04.wav"
+  },
+  {
+    "id": "mr-05",
+    "language": "mr",
+    "text": "मला पोळी हवी आहे.",
+    "words": [
+      "पाहिजे",
+      "पोळी"
+    ],
+    "concept_ids": [
+      "WANT",
+      "ROTI"
+    ],
+    "audio": "audio/mr-05.wav"
+  },
+  {
+    "id": "mr-06",
+    "language": "mr",
+    "text": "मला फळ हवे आहे.",
+    "words": [
+      "पाहिजे",
+      "फळ"
+    ],
+    "concept_ids": [
+      "WANT",
+      "FRUIT"
+    ],
+    "audio": "audio/mr-06.wav"
+  },
+  {
+    "id": "mr-07",
+    "language": "mr",
+    "text": "मला चहा हवा आहे.",
+    "words": [
+      "पाहिजे",
+      "चहा"
+    ],
+    "concept_ids": [
+      "WANT",
+      "TEA"
+    ],
+    "audio": "audio/mr-07.wav"
+  },
+  {
+    "id": "mr-08",
+    "language": "mr",
+    "text": "मला रस हवा आहे.",
+    "words": [
+      "पाहिजे",
+      "रस"
+    ],
+    "concept_ids": [
+      "WANT",
+      "JUICE"
+    ],
+    "audio": "audio/mr-08.wav"
+  },
+  {
+    "id": "mr-09",
+    "language": "mr",
+    "text": "मला बिस्किट हवे आहे.",
+    "words": [
+      "पाहिजे",
+      "बिस्किट"
+    ],
+    "concept_ids": [
+      "WANT",
+      "SNACK"
+    ],
+    "audio": "audio/mr-09.wav"
+  },
+  {
+    "id": "mr-10",
+    "language": "mr",
+    "text": "मला पिझ्झा हवा आहे.",
+    "words": [
+      "पाहिजे",
+      "पिझ्झा"
+    ],
+    "concept_ids": [
+      "WANT",
+      "PIZZA"
+    ],
+    "audio": "audio/mr-10.wav"
+  },
+  {
+    "id": "mr-11",
+    "language": "mr",
+    "text": "मला औषध हवे आहे.",
+    "words": [
+      "पाहिजे",
+      "औषध"
+    ],
+    "concept_ids": [
+      "WANT",
+      "MEDICINE"
+    ],
+    "audio": "audio/mr-11.wav"
+  },
+  {
+    "id": "mr-12",
+    "language": "mr",
+    "text": "मी आनंदी आहे.",
+    "words": [
+      "मी",
+      "आनंदी"
+    ],
+    "concept_ids": [
+      "ME",
+      "HAPPY"
+    ],
+    "audio": "audio/mr-12.wav"
+  },
+  {
+    "id": "mr-13",
+    "language": "mr",
+    "text": "मी दुःखी आहे.",
+    "words": [
+      "मी",
+      "दुःखी"
+    ],
+    "concept_ids": [
+      "ME",
+      "SAD"
+    ],
+    "audio": "audio/mr-13.wav"
+  },
+  {
+    "id": "mr-14",
+    "language": "mr",
+    "text": "मला थकवा आला आहे.",
+    "words": [
+      "मी",
+      "दमलेला"
+    ],
+    "concept_ids": [
+      "ME",
+      "TIRED"
+    ],
+    "audio": "audio/mr-14.wav"
+  },
+  {
+    "id": "mr-15",
+    "language": "mr",
+    "text": "मी आजारी आहे.",
+    "words": [
+      "मी",
+      "आजारी"
+    ],
+    "concept_ids": [
+      "ME",
+      "SICK"
+    ],
+    "audio": "audio/mr-15.wav"
+  },
+  {
+    "id": "mr-16",
+    "language": "mr",
+    "text": "मला वेदना होत आहेत.",
+    "words": [
+      "मी",
+      "वेदना"
+    ],
+    "concept_ids": [
+      "ME",
+      "PAIN"
+    ],
+    "audio": "audio/mr-16.wav"
+  },
+  {
+    "id": "mr-17",
+    "language": "mr",
+    "text": "कृपया मला मदत करा.",
+    "words": [
+      "कृपया",
+      "मदत"
+    ],
+    "concept_ids": [
+      "PLEASE",
+      "HELP"
+    ],
+    "audio": "audio/mr-17.wav"
+  },
+  {
+    "id": "mr-18",
+    "language": "mr",
+    "text": "मला पाणी आणि चहा हवे आहेत.",
+    "words": [
+      "पाणी",
+      "चहा"
+    ],
+    "concept_ids": [
+      "WATER",
+      "TEA"
+    ],
+    "audio": "audio/mr-18.wav"
+  },
+  {
+    "id": "mr-19",
+    "language": "mr",
+    "text": "मला आईला फोन करण्याची इच्छा आहे.",
+    "words": [
+      "फोन करणे",
+      "आई"
+    ],
+    "concept_ids": [
+      "CALL",
+      "MOTHER"
+    ],
+    "audio": "audio/mr-19.wav"
+  },
+  {
+    "id": "mr-20",
+    "language": "mr",
+    "text": "मला वेदना होत आहेत, मला औषध हवे आहे.",
+    "words": [
+      "वेदना",
+      "औषध"
+    ],
+    "concept_ids": [
+      "PAIN",
+      "MEDICINE"
+    ],
+    "audio": "audio/mr-20.wav"
+  }
+]
