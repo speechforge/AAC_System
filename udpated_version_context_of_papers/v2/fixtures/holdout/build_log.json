@@ -1,0 +1,464 @@
+[
+ {
+  "family": "H1_request_more",
+  "slots": 2,
+  "candidates": [
+   [
+    "MORE",
+    "JUICE"
+   ],
+   [
+    "MORE",
+    "RICE"
+   ],
+   [
+    "MORE",
+    "ROTI"
+   ],
+   [
+    "MORE",
+    "SNACK"
+   ],
+   [
+    "MORE",
+    "WATER"
+   ]
+  ],
+  "rejected_for_few_shot_overlap": [],
+  "drawn": [
+   [
+    "MORE",
+    "JUICE"
+   ],
+   [
+    "MORE",
+    "RICE"
+   ]
+  ]
+ },
+ {
+  "family": "H2_request_two_objects",
+  "slots": 2,
+  "candidates": [
+   [
+    "FRUIT",
+    "JUICE"
+   ],
+   [
+    "RICE",
+    "ROTI"
+   ],
+   [
+    "ROTI",
+    "TEA"
+   ],
+   [
+    "WATER",
+    "FRUIT"
+   ],
+   [
+    "WATER",
+    "MILK"
+   ]
+  ],
+  "rejected_for_few_shot_overlap": [],
+  "drawn": [
+   [
+    "RICE",
+    "ROTI"
+   ],
+   [
+    "ROTI",
+    "TEA"
+   ]
+  ]
+ },
+ {
+  "family": "H3_refusal",
+  "slots": 3,
+  "candidates": [
+   [
+    "FRUIT",
+    "NO"
+   ],
+   [
+    "JUICE",
+    "NO"
+   ],
+   [
+    "NO",
+    "MILK",
+    "TEA"
+   ],
+   [
+    "NO",
+    "MORE",
+    "RICE"
+   ],
+   [
+    "NO",
+    "MORE",
+    "WATER"
+   ],
+   [
+    "NO",
+    "SNACK",
+    "JUICE"
+   ],
+   [
+    "PIZZA",
+    "NO"
+   ]
+  ],
+  "rejected_for_few_shot_overlap": [],
+  "drawn": [
+   [
+    "FRUIT",
+    "NO"
+   ],
+   [
+    "NO",
+    "MORE",
+    "RICE"
+   ],
+   [
+    "NO",
+    "SNACK",
+    "JUICE"
+   ]
+  ]
+ },
+ {
+  "family": "H4_feeling",
+  "slots": 2,
+  "candidates": [
+   [
+    "EXCITED",
+    "ME"
+   ],
+   [
+    "ME",
+    "SICK"
+   ],
+   [
+    "ME",
+    "TIRED"
+   ],
+   [
+    "SCARED",
+    "ME"
+   ]
+  ],
+  "rejected_for_few_shot_overlap": [
+   [
+    "ME",
+    "HAPPY"
+   ]
+  ],
+  "drawn": [
+   [
+    "EXCITED",
+    "ME"
+   ],
+   [
+    "ME",
+    "TIRED"
+   ]
+  ]
+ },
+ {
+  "family": "H5_negated_feeling",
+  "slots": 3,
+  "candidates": [
+   [
+    "ANGRY",
+    "NO"
+   ],
+   [
+    "ME",
+    "NO",
+    "LOVE"
+   ],
+   [
+    "ME",
+    "NO",
+    "SICK"
+   ],
+   [
+    "NO",
+    "SCARED",
+    "ME"
+   ],
+   [
+    "SAD",
+    "NO"
+   ]
+  ],
+  "rejected_for_few_shot_overlap": [],
+  "drawn": [
+   [
+    "ANGRY",
+    "NO"
+   ],
+   [
+    "ME",
+    "NO",
+    "LOVE"
+   ],
+   [
+    "NO",
+    "SCARED",
+    "ME"
+   ]
+  ]
+ },
+ {
+  "family": "H6_action_object",
+  "slots": 3,
+  "candidates": [
+   [
+    "DRINK",
+    "JUICE"
+   ],
+   [
+    "EAT",
+    "PIZZA"
+   ],
+   [
+    "EAT",
+    "SNACK"
+   ]
+  ],
+  "rejected_for_few_shot_overlap": [],
+  "drawn": [
+   [
+    "DRINK",
+    "JUICE"
+   ],
+   [
+    "EAT",
+    "PIZZA"
+   ],
+   [
+    "EAT",
+    "SNACK"
+   ]
+  ]
+ },
+ {
+  "family": "H7_negated_action",
+  "slots": 3,
+  "candidates": [
+   [
+    "NO",
+    "BATH"
+   ],
+   [
+    "NO",
+    "DRINK",
+    "MILK"
+   ],
+   [
+    "NO",
+    "EAT",
+    "PIZZA"
+   ],
+   [
+    "NO",
+    "GO"
+   ],
+   [
+    "NO",
+    "STUDY"
+   ]
+  ],
+  "rejected_for_few_shot_overlap": [],
+  "drawn": [
+   [
+    "NO",
+    "BATH"
+   ],
+   [
+    "NO",
+    "EAT",
+    "PIZZA"
+   ],
+   [
+    "NO",
+    "GO"
+   ]
+  ]
+ },
+ {
+  "family": "H8_help_call",
+  "slots": 3,
+  "candidates": [
+   [
+    "CALL",
+    "BROTHER"
+   ],
+   [
+    "CALL",
+    "FATHER"
+   ],
+   [
+    "CALL",
+    "FRIEND"
+   ],
+   [
+    "HELP",
+    "FRIEND"
+   ],
+   [
+    "HELP",
+    "TEACHER"
+   ]
+  ],
+  "rejected_for_few_shot_overlap": [],
+  "drawn": [
+   [
+    "CALL",
+    "BROTHER"
+   ],
+   [
+    "CALL",
+    "FRIEND"
+   ],
+   [
+    "HELP",
+    "TEACHER"
+   ]
+  ]
+ },
+ {
+  "family": "H9_feeling_request",
+  "slots": 2,
+  "candidates": [
+   [
+    "HAPPY",
+    "PLAY"
+   ],
+   [
+    "TIRED",
+    "SLEEP"
+   ]
+  ],
+  "rejected_for_few_shot_overlap": [
+   [
+    "SICK",
+    "MEDICINE"
+   ]
+  ],
+  "drawn": [
+   [
+    "HAPPY",
+    "PLAY"
+   ],
+   [
+    "TIRED",
+    "SLEEP"
+   ]
+  ]
+ },
+ {
+  "family": "H10_personal",
+  "slots": 2,
+  "candidates": [
+   [
+    "CALL",
+    "~NAME1"
+   ],
+   [
+    "CALL",
+    "~NAME2"
+   ],
+   [
+    "EAT",
+    "~DISH1"
+   ],
+   [
+    "EAT",
+    "~DISH2"
+   ]
+  ],
+  "rejected_for_few_shot_overlap": [],
+  "drawn": [
+   [
+    "CALL",
+    "~NAME2"
+   ],
+   [
+    "EAT",
+    "~DISH1"
+   ]
+  ]
+ },
+ {
+  "family": "H11_ambiguous",
+  "slots": 2,
+  "candidates": [
+   [
+    "BAD"
+   ],
+   [
+    "EYE"
+   ],
+   [
+    "HEART"
+   ],
+   [
+    "NOSE"
+   ]
+  ],
+  "rejected_for_few_shot_overlap": [],
+  "drawn": [
+   [
+    "BAD"
+   ],
+   [
+    "HEART"
+   ]
+  ]
+ },
+ {
+  "family": "H12_template_uncovered",
+  "slots": 3,
+  "candidates": [
+   [
+    "GO",
+    "HOME"
+   ],
+   [
+    "GO",
+    "HOSPITAL"
+   ],
+   [
+    "GO",
+    "SCHOOL"
+   ],
+   [
+    "NAMASTE",
+    "FRIEND"
+   ],
+   [
+    "NAMASTE",
+    "TEACHER"
+   ]
+  ],
+  "rejected_for_few_shot_overlap": [],
+  "drawn": [
+   [
+    "GO",
+    "HOSPITAL"
+   ],
+   [
+    "GO",
+    "SCHOOL"
+   ],
+   [
+    "NAMASTE",
+    "FRIEND"
+   ]
+  ]
+ }
+]

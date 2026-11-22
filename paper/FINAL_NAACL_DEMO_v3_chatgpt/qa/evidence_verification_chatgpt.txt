@@ -1,0 +1,24 @@
+PASS Scenario counts llm3_pre|ui [[3, 46], [24, 45], [20, 42], [18, 42], [65, 175]]
+PASS Scenario counts deployed|ui [[22, 46], [31, 45], [21, 42], [23, 42], [97, 175]]
+PASS Scenario counts template_only|ui [[33, 46], [31, 45], [27, 42], [27, 42], [118, 175]]
+PASS Scenario counts naive_qwen|ui [[2, 46], [1, 45], [4, 42], [1, 42], [8, 175]]
+PASS Scenario counts llm3_pre|st [[5, 46], [26, 45], [16, 42], [24, 42], [71, 175]]
+PASS Scenario counts deployed|st [[33, 46], [41, 45], [26, 42], [32, 42], [132, 175]]
+PASS Scenario counts template_only|st [[46, 46], [45, 45], [34, 42], [42, 42], [167, 175]]
+PASS Scenario counts revised_cascade_first|rev [[6, 46], [29, 45], [27, 42], [26, 42], [88, 175]]
+PASS Scenario counts revised_hybrid|rev [[46, 46], [45, 45], [42, 42], [42, 42], [175, 175]]
+PASS Scenario counts template_revised|rev [[46, 46], [45, 45], [42, 42], [42, 42], [175, 175]]
+PASS Regression summary agrees revised_cascade_first Independent summary CSV, not raw-CSV Boolean string coercion
+PASS Regression summary agrees revised_hybrid Independent summary CSV, not raw-CSV Boolean string coercion
+PASS Regression summary agrees template_revised Independent summary CSV, not raw-CSV Boolean string coercion
+PASS Prediction raw-count gain en 25/2220 = 1.126126 pp
+PASS Prediction raw-count gain hi 29/2437 = 1.189988 pp
+PASS Four-language Figure 4 Two underlying selections, four phases, four languages
+PASS Six-family appendix coverage One message per family in all four languages; exact stored outputs
+PASS Poppler native Unicode fidelity 47/47 exact native strings
+PASS No NUL characters Text remains searchable; no broken global XeTeX ActualText primitive
+PASS Revised rows rendered correctly PDF checked after final table regeneration
+PASS Main/appendix layout Main content through page 6; ethics/acknowledgments/references page 7; appendix pages 8--9
+PASS Compile diagnostics 0 overfull boxes, 0 missing-glyph warnings, 0 undefined citations/references
+PASS Font embedding 13 fonts embedded with Unicode maps
+Verification: 23 / 23

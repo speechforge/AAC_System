@@ -1,0 +1,77 @@
+% Unicode build: XeLaTeX/Tectonic; LuaLaTeX is also supported.
+% Official ACL style files are unchanged. Main content: sections 1--6.
+\documentclass[11pt]{article}
+\usepackage[preprint]{acl}
+\usepackage{microtype}
+\usepackage[english,bidi=default]{babel}
+\babelfont{rm}{TeXGyreTermesX}
+\usepackage{fontspec}
+\usepackage{iftex}
+\ifLuaTeX
+  \newfontfamily\hifont[Path=fonts/,Extension=.ttf,UprightFont=NotoSansDevanagari-Regular,BoldFont=NotoSansDevanagari-Bold,Script=Devanagari,Renderer=HarfBuzz]{NotoSansDevanagari}
+  \newfontfamily\gufont[Path=fonts/,Extension=.ttf,UprightFont=NotoSansGujarati-Regular,BoldFont=NotoSansGujarati-Bold,Script=Gujarati,Renderer=HarfBuzz]{NotoSansGujarati}
+\else
+  \newfontfamily\hifont[Path=fonts/,Extension=.ttf,UprightFont=NotoSansDevanagari-Regular,BoldFont=NotoSansDevanagari-Bold,Script=Devanagari]{NotoSansDevanagari}
+  \newfontfamily\gufont[Path=fonts/,Extension=.ttf,UprightFont=NotoSansGujarati-Regular,BoldFont=NotoSansGujarati-Bold,Script=Gujarati]{NotoSansGujarati}
+\fi
+\input{generated/unicode_actualtext}
+% Native glyph shaping and exact Unicode extraction are both preserved.
+\ifXeTeX
+  \newcommand{\aacactualstart}[1]{\special{pdf:code /Span << /ActualText <FEFF\csname aacunicode@#1\endcsname> >> BDC}}
+  \newcommand{\aacactualend}{\special{pdf:code EMC}}
+\else
+  \newcommand{\aacactualstart}[1]{}
+  \newcommand{\aacactualend}{}
+\fi
+\DeclareRobustCommand{\hi}[1]{{\hifont\upshape\aacactualstart{#1}#1\aacactualend}}
+\DeclareRobustCommand{\gu}[1]{{\gufont\upshape\aacactualstart{#1}#1\aacactualend}}
+\usepackage{booktabs,graphicx,amsmath,array,xcolor,enumitem,float,tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\setlist{nosep,leftmargin=*}
+\definecolor{exampleblue}{HTML}{075985}
+\definecolor{examplegreen}{HTML}{166534}
+\definecolor{errorred}{HTML}{B91C1C}
+\definecolor{panelgray}{HTML}{F2F5F7}
+\newcommand{\good}[1]{\textcolor{exampleblue}{#1}}
+\newcommand{\kept}[1]{\textcolor{examplegreen}{#1}}
+\newcommand{\bad}[1]{\textcolor{errorred}{#1}}
+\newcommand{\lang}[1]{\textbf{\textit{#1}}}
+\newcommand{\sys}{Indic AAC Studio}
+\newcommand{\model}{Qwen2.5-0.5B-Instruct}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setcounter{topnumber}{3}\setcounter{totalnumber}{5}\setcounter{dbltopnumber}{3}
+\renewcommand{\topfraction}{0.9}\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.75}\renewcommand{\dblfloatpagefraction}{0.75}
+\title{Indic AAC Studio: Concept-Gated Symbol-to-Sentence Generation\\
+for English, Hindi, Gujarati, and Marathi}
+\setlength\titlebox{13\baselineskip}
+\author{Ravindrakumar M. Purohit \\
+  Speech Research Lab \\
+  Dhirubhai Ambani University (DA-IICT) \\
+  Gandhinagar, India
+  \And
+  Jaydeep Parmar \\
+  Pandit Deendayal Energy \\
+  University (PDEU) \\
+  Gandhinagar, India
+  \AND
+  Hemant A. Patil \\
+  Speech Research Lab, Dhirubhai Ambani University (DA-IICT), Gandhinagar, India}
+\begin{document}
+\maketitle
+\input{sections/00_abstract}
+\input{sections/01_intro}
+\input{sections/02_related}
+\input{sections/03_system}
+\input{sections/04_eval}
+\input{sections/05_limits}
+\section*{Acknowledgments}
+\input{sections/06_ack}
+\section*{Ethics Statement}
+\input{sections/06_ethics}
+\bibliography{references}
+\input{figures/appendix_trace_float}
+\newpage
+\appendix
+\input{sections/07_appendix}
+\end{document}

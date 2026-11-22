@@ -1,0 +1,9 @@
+\begin{abstract}
+Expanding symbols into sentences can help augmentative and alternative communication (AAC), but fluent text may misstate a user's request, refusal, or feeling.
+We present \sys{}, a concept-gated realization workflow for English, Hindi, Gujarati, and Marathi that checks model candidates and falls back to language-specific templates.
+On 175 archived scenarios, the gate, retry, and fallback policy raises lexical success from \WebCascade{} to \WebPolicy{} with actual browser inputs, while a template baseline reaches \WebTemplate{}.
+The policy retains all 215 required concept instances and has no scored polarity errors, but wrong-act and added-content errors remain.
+Explicit gold act and polarity fields raise success to \GoldPolicy{}; an audit identifies interface mistakes and Gujarati scorer gaps rather than treating every failed score as a generation error.
+Repairs separate act from polarity, check templates, and distinguish clarification from literal previews; their regression results do not establish generalization, naturalness, or AAC usability.
+English and Hindi next-word predictors are evaluated separately, while real speech production and public demo availability remain unverified.
+\end{abstract}

@@ -1,0 +1,23 @@
+\section{Availability, License, and Limitations}
+\label{sec:limits}
+
+\paragraph{Availability and license.}
+The reviewer package (source, frozen scenarios, scorer, raw outputs, and an installation guide) and a two-minute captioned screencast are at \demourl{}.
+Code is released under the \codelicense{}, and the synthetic AAC dialogues ship in the package; Qwen2.5-0.5B-Instruct (Apache-2.0), Vocos (MIT), IndicF5 (MIT; gated download), and the bundled Noto fonts (SIL OFL) keep their own terms.
+The server needs Python 3.13 and PyTorch and downloads Qwen2.5-0.5B-Instruct on first start; without the IndicF5 weights it returns a placeholder tone.
+The package reproduces the evaluation end to end; a new locale needs symbol labels, Quick Express phrases, prompts, gate word lists, a voice prompt, and dialogue text, each with native-speaker review.
+
+\paragraph{Limitations.}
+The scorer is lexical and its Indic lexicon is not native-reviewed; scenarios cover one- and two-concept selections from a \NSymbols{}-symbol board; the Hindi dialogues are machine translations of English ones; English and code-mixed results are single samples; and no user study has been run, so the results bound lexical faithfulness and say nothing about communication effectiveness.
+Speech was synthesized in placeholder mode, so latency excludes synthesis and speech quality was not assessed; the evaluated build ran without the HMM-1 and HMM-2 checkpoints, so HMM-1 prediction and Un-Jumble are not evaluated.
+Gujarati has no predictor (the shelf returns English words), Marathi reuses the Hindi trie, and two model copies do not fit on the 4\,GB GPU.
+The fallback template is returned without re-validation, the card does not show when it was used, and the gate's intent test covers English cues only.
+Accessibility testing covered keyboard activation, emulated touch, and automated checks of names and live regions, not screen readers or switch scanning; the page has no live region for new text and renders nothing when the content delivery networks that serve its React, Babel, and Tailwind libraries are blocked.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+A small prompted language model can sit in front of an AAC voice when a deterministic gate decides what is spoken.
+Across \NPrimAll{} frozen scenarios in four languages, the gate kept every selected concept and removed all polarity errors, and the template floor speaks only the user's own labels.
+The evaluation locates the next engineering targets: user-controlled intent, an intent test for Indic languages, and template branches for negated feelings.
+Native-speaker ratings and a study with AAC users are the next step toward measuring what model phrasing adds beyond the template floor.

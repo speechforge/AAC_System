@@ -1,0 +1,41 @@
+\section{Introduction}
+\label{sec:intro}
+A person using a symbol-based augmentative and alternative communication (AAC) board selects pictograms to express a request, refusal, feeling, or action.
+The selected labels are often telegraphic: \emph{Water}, \emph{No + Pizza}, or \emph{Tired}.
+Expanding these labels requires grammatical material, but an added meal, changed speaker, or missing negation can misrepresent the person whose message is being voiced.
+The central problem is to permit sentence realization while making the acceptance decision inspectable.
+
+\begin{figure}[t]
+\centering
+\input{figures/teaser.tex}
+\caption{Concept-gated realization (authored illustration). A water request is expanded, checked, and either accepted or replaced by a checked template. The red, labelled addition is unselected content; blue marks the retained message. A literal preview is shown when neither path passes. These are decision rules, not a semantic guarantee.}
+\label{fig:teaser}
+\end{figure}
+
+For a water request, a single symbol can be realized as a complete sentence in each language.
+The following are authored illustrations, with \lang{English} as a reference language and the three Indic languages as the proposed extensions:
+\begin{quote}\small
+\lang{English}\enspace\good{I want water.}\\
+\lang{Hindi}\enspace\good{\hi{मुझे पानी चाहिए।}}\\
+\lang{Gujarati}\enspace\good{\gu{મને પાણી જોઈએ છે.}}\\
+\lang{Marathi}\enspace\good{\hi{मला पाणी हवे आहे.}}
+\end{quote}
+\noindent English gloss: \emph{“I want water.”}
+The language-specific predicates and negation patterns motivate checks beyond an English-only word list.
+A single symbol does not determine its act in every context; the water example assumes a request, rather than inferring that intention universally.
+
+\sys{} combines a symbol board, a prompted \emph{\model{}} model \citep{qwen2024model}, a \emph{concept ledger}, deterministic acceptance checks, and language-specific fallback templates (Figure~\ref{fig:teaser}).
+The ledger records selected concepts, the intended act, and polarity; the checker tests whether a candidate conforms to those constraints.
+The revised interface separates act from negation and asks for clarification when the selection has no determinate act.
+The intended audience is symbol-board users and the caregivers, clinicians, and researchers who configure their vocabulary.
+
+Our novelty is the design and audit of explicit acceptance checks in this multilingual workflow, including what the fallback policy does when generation fails.
+Grammatical expansion and Indian-language AAC already exist (Section~\ref{sec:related}); we do not claim either as a first.
+The archived web-client comparison improves lexical success by 18.3 percentage points over its ungated cascade, but remains 12.0 points below the template baseline.
+This trade-off motivates measuring model coverage and failures alongside success, rather than treating every accepted sentence as faithful.
+We make three scoped contributions:
+\begin{itemize}
+\item \textbf{An inspectable realization policy} connecting the concept ledger, candidate checks, retry, template fallback, clarification, and literal preview.
+\item \textbf{A paired four-language audit} that separates browser interpretation, model output, checker decisions, templates, and scorer defects.
+\item \textbf{Evidence-linked revisions and examples} that document the repairs, an explicitly labelled regression comparison, and representative input--output cases in all four languages.
+\end{itemize}

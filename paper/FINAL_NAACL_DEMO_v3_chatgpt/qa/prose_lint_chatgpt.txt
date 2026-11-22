@@ -1,0 +1,22 @@
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/generated/unicode_actualtext.tex:2 [low] long-paragraph: paragraph of 323 words; one message per paragraph  <<aacunicode@थका हुआ  09250915093E0020>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/generated/unicode_actualtext.tex:2 [low] long-sentence: sentence of 323 words; split it  <<aacunicode@थका हुआ  09250915093E0020093909410906 
+    aa>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/00_abstract.tex:6 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/01_intro.tex:11 [low] long-sentence: sentence of 67 words; split it  <<The following are authored illustrations, with   English  as>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/01_intro.tex:25 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/01_intro.tex:35 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/03_system.tex:21 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/03_system.tex:28 [medium] implementation-vocabulary: implementation vocabulary in the scientific narrative; describe the method, not the software  <<script>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/03_system.tex:41 [low] filler: filler word; delete or replace with a measured fact  <<actually>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/03_system.tex:75 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/04_eval.tex:13 [medium] implementation-vocabulary: implementation vocabulary in the scientific narrative; describe the method, not the software  <<script>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/04_eval.tex:14 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/04_eval.tex:21 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/04_eval.tex:47 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/04_eval.tex:63 [low] vague-pronoun: 'This <verb>' without a noun; write 'This result/effect/gap ...'  <<This is>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/04_eval.tex:66 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/07_appendix.tex:12 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/07_appendix.tex:30 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/sections/07_appendix.tex:39 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+
+18 file(s): 0 high, 2 medium, 17 low

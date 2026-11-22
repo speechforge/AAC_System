@@ -1,0 +1,9 @@
+system,mode,n_determinate,n_sentence_ungated,model_accepted,accepted_error,fallback,fallback_success,first_attempt_accepted,n_ambiguous,ambiguous_clarified,ambiguous_literal,ambiguous_confident_sentence
+revised_cascade_first,gold,80,80,0,0,0,0,0,0,0,0,0
+revised_cascade_last,gold,80,80,0,0,0,0,0,0,0,0,0
+revised_hybrid,gold,80,,24,0,56,56,24,4,4,0,0
+template_archived,gold,80,,0,0,0,0,0,4,0,0,4
+template_archived,orig,80,,0,0,0,0,0,4,0,0,4
+template_archived,rev,80,,0,0,0,0,0,4,0,0,4
+template_revised,gold,80,,0,0,0,0,0,4,4,0,0
+template_revised,rev,80,,0,0,0,0,0,4,4,0,0

@@ -1,0 +1,291 @@
+{
+  "schema": "paper-skill/citation-lock-v1",
+  "entries": {
+    "mccoy1998compansion": {
+      "key": "mccoy1998compansion",
+      "identifiers": {
+        "doi": "10.1017/S1351324998001843"
+      },
+      "checked_at": "2026-11-12T14:32:33+00:00",
+      "supports": [
+        {
+          "sentence": "Compansion expanded telegraphic AAC input into well-formed sentences with syntactic and semantic rules.",
+          "relation": "direct"
+        }
+      ],
+      "secondary": [
+        {
+          "source": "openalex",
+          "url": "https://openalex.org/W2138990244",
+          "agrees": true,
+          "reasons": []
+        },
+        {
+          "source": "semantic-scholar",
+          "url": "https://www.semanticscholar.org/paper/afc75b39aee479b6eea3c054892960e4cc33cf79",
+          "agrees": true,
+          "reasons": []
+        }
+      ],
+      "primary": {
+        "source": "crossref",
+        "url": "https://doi.org/10.1017/S1351324998001843",
+        "title": "Compansion: From research prototype to practical integration",
+        "authors": [
+          "MCCOY, KATHLEEN F.",
+          "PENNINGTON, CHRISTOPHER A.",
+          "LUBEROFF BADMAN, ARLENE"
+        ],
+        "year": 1998,
+        "venue": "Natural Language Engineering",
+        "doi": "10.1017/S1351324998001843",
+        "arxiv": ""
+      },
+      "abstract": "Augmentative and Alternative Communication (AAC) is the field of study concerned with providing devices and techniques to augment the communicative ability of a person whose disability makes it difficult to speak or otherwise communicate in an understandable fashion. For several years, we have been applying natural language processing techniques to the field of AAC to develop intelligent communication aids that attempt to provide linguistically correct output while increasing communication rate. Previous effort has resulted in a research prototype called Compansion that expands telegraphic input. In this paper we describe that research prototype and introduce the Intelligent Parser Generator (IPG). IPG is intended to be a practical embodiment of the research prototype aimed at a group of users who have cognitive impairments that affect their linguistic ability. We describe both the theoretical underpinnings of Compansion and the practical considerations in developing a usable system for this population of users.",
+      "status": "verified",
+      "claim_status": "ok",
+      "bib_sha256": "9e0e3d5de320dfb16b63553665f8d25bcc51c894f8935d2e65557e3266089430"
+    },
+    "karmakar-sinha-2024-aiding": {
+      "key": "karmakar-sinha-2024-aiding",
+      "identifiers": {
+        "acl": "2024.icon-1.37"
+      },
+      "checked_at": "2026-11-12T14:32:36+00:00",
+      "supports": [
+        {
+          "sentence": "Karmakar and Sinha study bidirectional text-symbol communication and include Bengali translation.",
+          "relation": "direct"
+        }
+      ],
+      "secondary": [],
+      "primary": {
+        "source": "acl-anthology",
+        "url": "https://aclanthology.org/2024.icon-1.37/",
+        "title": "Aiding Non-Verbal Communication: A Bidirectional Language Agnostic Framework for Automating Text to AAC Generation",
+        "authors": [
+          "Karmakar, Piyali",
+          "Sinha, Manjira"
+        ],
+        "year": 2024,
+        "venue": "Proceedings of the 21st International Conference on Natural Language Processing (ICON)",
+        "doi": "",
+        "arxiv": ""
+      },
+      "abstract": "",
+      "status": "single-source",
+      "note": "Only one index resolved this work; retry later or add another identifier.",
+      "bib_sha256": "712dba8a3bff68cff0ff24f0052df4a56b596c0a2822e138994b38cf0ba12bf6",
+      "claim_status": "ok",
+      "verification_note": "ACL Anthology metadata, bibliography and abstract read on 2026-11-13. OpenAlex title lookup did not locate this paper; Semantic Scholar URL lookup returned 404; DBLP blocked the request. These access/index failures do not imply the work is absent."
+    },
+    "cai2024speakfaster": {
+      "key": "cai2024speakfaster",
+      "identifiers": {
+        "doi": "10.1038/s41467-024-53873-3"
+      },
+      "checked_at": "2026-11-12T14:31:53+00:00",
+      "supports": [
+        {
+          "sentence": "SpeakFaster expands abbreviated text for eye-gaze typists with ALS.",
+          "relation": "direct"
+        }
+      ],
+      "secondary": [
+        {
+          "source": "openalex",
+          "url": "https://openalex.org/W4403980719",
+          "agrees": true,
+          "reasons": []
+        },
+        {
+          "source": "semantic-scholar",
+          "url": "https://www.semanticscholar.org/paper/57d26bd31ae2ff96488650be23e5beb36a4f8398",
+          "agrees": true,
+          "reasons": []
+        }
+      ],
+      "primary": {
+        "source": "crossref",
+        "url": "https://doi.org/10.1038/s41467-024-53873-3",
+        "title": "Using large language models to accelerate communication for eye gaze typing users with ALS",
+        "authors": [
+          "Cai, Shanqing",
+          "Venugopalan, Subhashini",
+          "Seaver, Katie",
+          "Xiao, Xiang",
+          "Tomanek, Katrin",
+          "Jalasutram, Sri",
+          "Morris, Meredith Ringel",
+          "Kane, Shaun",
+          "Narayanan, Ajit",
+          "MacDonald, Robert L.",
+          "Kornman, Emily",
+          "Vance, Daniel",
+          "Casey, Blair",
+          "Gleason, Steve M.",
+          "Nelson, Philip Q.",
+          "Brenner, Michael P."
+        ],
+        "year": 2024,
+        "venue": "Nature Communications",
+        "doi": "10.1038/s41467-024-53873-3",
+        "arxiv": ""
+      },
+      "abstract": "Abstract Accelerating text input in augmentative and alternative communication (AAC) is a long-standing area of research with bearings on the quality of life in individuals with profound motor impairments. Recent advances in large language models (LLMs) pose opportunities for re-thinking strategies for enhanced text entry in AAC. In this paper, we present SpeakFaster, consisting of an LLM-powered user interface for text entry in a highly-abbreviated form, saving 57% more motor actions than traditional predictive keyboards in offline simulation. A pilot study on a mobile device with 19 non-AAC participants demonstrated motor savings in line with simulation and relatively small changes in typing speed. Lab and field testing on two eye-gaze AAC users with amyotrophic lateral sclerosis demonstrated text-entry rates 29–60% above baselines, due to significant saving of expensive keystrokes based on LLM predictions. These findings form a foundation for further exploration of LLM-assisted text entry in AAC and other user interfaces.",
+      "status": "verified",
+      "claim_status": "ok",
+      "bib_sha256": "4904f6e621e46c7f9a45c17d5879bb251f4b0021cd9ae121233617e5d89d8c53"
+    },
+    "liu2024infinigram": {
+      "key": "liu2024infinigram",
+      "identifiers": {
+        "arxiv": "2401.17377"
+      },
+      "checked_at": "2026-11-12T14:32:16+00:00",
+      "supports": [
+        {
+          "sentence": "Next-word suggestions come from an unbounded-order suffix trie in the spirit of infini-gram.",
+          "relation": "background"
+        }
+      ],
+      "secondary": [
+        {
+          "source": "openalex",
+          "url": "https://openalex.org/W4391462055",
+          "agrees": true,
+          "reasons": []
+        },
+        {
+          "source": "semantic-scholar",
+          "url": "https://www.semanticscholar.org/paper/1c143a753d4eb82da5526132149f6e4ed5271b63",
+          "agrees": true,
+          "reasons": []
+        }
+      ],
+      "primary": {
+        "source": "arxiv",
+        "url": "https://arxiv.org/abs/2401.17377",
+        "title": "Infini-gram: Scaling Unbounded n-gram Language Models to a Trillion Tokens",
+        "authors": [
+          "Liu, Jiacheng",
+          "Min, Sewon",
+          "Zettlemoyer, Luke",
+          "Choi, Yejin",
+          "Hajishirzi, Hannaneh"
+        ],
+        "year": 2024,
+        "venue": "arXiv",
+        "doi": "",
+        "arxiv": "2401.17377"
+      },
+      "abstract": "Are $n$-gram language models still relevant in this era of neural large language models (LLMs)? Our answer is yes, and we showcase their values in both text analysis and improving neural LLMs. This was done by modernizing $n$-gram LMs in two aspects. First, we train them at the same data scale as neural LLMs -- 5 trillion tokens. This is the largest $n$-gram LM ever built. Second, existing $n$-gram LMs use small $n$ which hinders their performance; we instead allow $n$ to be arbitrarily large, by introducing a new $\\infty$-gram LM with backoff. Instead of pre-computing $n$-gram count tables (which would be very expensive), we develop an engine named infini-gram -- powered by suffix arrays -- that can compute $\\infty$-gram (as well as $n$-gram with arbitrary $n$) probabilities with millisecond-level latency. The $\\infty$-gram framework and infini-gram engine enable us to conduct many novel and interesting analyses of human-written and machine-generated text: we find that the $\\infty$-gram LM has fairly high accuracy for next-token prediction (47%), and can complement neural LLMs to greatly reduce their perplexity. When analyzing machine-generated text, we also observe irregularities in the machine--$\\infty$-gram agreement level with respect to the suffix length, which indicates deficiencies in neural LLM pretraining and the positional embeddings of Transformers.",
+      "status": "verified",
+      "claim_status": "ok",
+      "bib_sha256": "04d8369540edf194a8fb26853ae554d90733311897c19f0c08fe086192ed3654"
+    },
+    "siuzdak2023vocos": {
+      "key": "siuzdak2023vocos",
+      "identifiers": {
+        "arxiv": "2306.00814"
+      },
+      "checked_at": "2026-11-12T14:32:06+00:00",
+      "supports": [
+        {
+          "sentence": "The returned sentence is synthesized with a 24 kHz Vocos vocoder.",
+          "relation": "software"
+        }
+      ],
+      "secondary": [
+        {
+          "source": "openalex",
+          "url": "https://openalex.org/W4379259581",
+          "agrees": true,
+          "reasons": []
+        }
+      ],
+      "primary": {
+        "source": "arxiv",
+        "url": "https://arxiv.org/abs/2306.00814",
+        "title": "Vocos: Closing the gap between time-domain and Fourier-based neural vocoders for high-quality audio synthesis",
+        "authors": [
+          "Siuzdak, Hubert"
+        ],
+        "year": 2023,
+        "venue": "arXiv",
+        "doi": "",
+        "arxiv": "2306.00814"
+      },
+      "abstract": "Recent advancements in neural vocoding are predominantly driven by Generative Adversarial Networks (GANs) operating in the time-domain. While effective, this approach neglects the inductive bias offered by time-frequency representations, resulting in reduntant and computionally-intensive upsampling operations. Fourier-based time-frequency representation is an appealing alternative, aligning more accurately with human auditory perception, and benefitting from well-established fast algorithms for its computation. Nevertheless, direct reconstruction of complex-valued spectrograms has been historically problematic, primarily due to phase recovery issues. This study seeks to close this gap by presenting Vocos, a new model that directly generates Fourier spectral coefficients. Vocos not only matches the state-of-the-art in audio quality, as demonstrated in our evaluations, but it also substantially improves computational efficiency, achieving an order of magnitude increase in speed compared to prevailing time-domain neural vocoding approaches. The source code and model weights have been open-sourced at https://github.com/gemelo-ai/vocos.",
+      "status": "verified",
+      "claim_status": "ok",
+      "bib_sha256": "5c2b878adf5924d8142598cba430db6d478772781f9348d75049648c5e2eeec7"
+    },
+    "francis2024connectone": {
+      "status": "single-source",
+      "claim_status": "ok",
+      "primary": {
+        "source": "ISCA Archive",
+        "url": "https://www.isca-archive.org/interspeech_2024/francis24_interspeech.html"
+      },
+      "secondary": [],
+      "supports": [
+        {
+          "sentence": "ConnecTone uses conversational context for text suggestions and style-adaptive speech.",
+          "relation": "direct"
+        }
+      ],
+      "checked_at": "2026-11-13",
+      "verification_note": "Primary page and paper found. KTH search result corroborates title/abstract, but direct catalogue access was denied. OpenAlex title search did not resolve this work. Independent full-metadata check pending."
+    },
+    "jellow": {
+      "status": "verified",
+      "claim_status": "ok",
+      "primary": {
+        "source": "official software or vendor documentation",
+        "url": "https://www.jellow.org/jellow-basic.php"
+      },
+      "verification_basis": "Official documentation exception for software and vendor capability statements (skill reference 12, source routing); not a research-priority claim.",
+      "checked_at": "2026-11-13",
+      "supports": [
+        {
+          "sentence": "Jellow Basic documents expressive-button sentence construction, pre-made sentences and Gujarati, Hindi and Marathi support.",
+          "relation": "software"
+        }
+      ]
+    },
+    "ai4bharat2025indicf5": {
+      "status": "verified",
+      "claim_status": "ok",
+      "primary": {
+        "source": "official software or vendor documentation",
+        "url": "https://huggingface.co/ai4bharat/IndicF5"
+      },
+      "verification_basis": "Official documentation exception for software and vendor capability statements (skill reference 12, source routing); not a research-priority claim.",
+      "checked_at": "2026-11-13",
+      "supports": [
+        {
+          "sentence": "IndicF5 model documentation lists Hindi, Gujarati and Marathi but not English among its 11 supported languages, and describes reference voice conditioning.",
+          "relation": "software"
+        }
+      ]
+    },
+    "qwen05card": {
+      "status": "verified",
+      "claim_status": "ok",
+      "primary": {
+        "source": "official software or vendor documentation",
+        "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct"
+      },
+      "verification_basis": "Official documentation exception for software and vendor capability statements (skill reference 12, source routing); not a research-priority claim.",
+      "checked_at": "2026-11-13",
+      "supports": [
+        {
+          "sentence": "The system uses the released Qwen2.5-0.5B-Instruct checkpoint.",
+          "relation": "software"
+        }
+      ]
+    }
+  },
+  "note": "Two research entries remain primary-only and explicitly block the strict citation gate; no invented independent index matches."
+}

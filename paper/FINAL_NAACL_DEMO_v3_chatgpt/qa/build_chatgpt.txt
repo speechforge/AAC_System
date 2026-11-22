@@ -1,0 +1,106 @@
+note: "version 2" Tectonic command-line interface activated
+note: Running TeX ...
+warning: sections/02_related:9: Underfull \hbox (badness 10000) in paragraph at lines 9--9
+warning: sections/02_related:27: Underfull \hbox (badness 1496) in paragraph at lines 27--27
+warning: sections/03_system:55: Underfull \hbox (badness 2368) in paragraph at lines 51--55
+warning: sections/03_system:55: Underfull \hbox (badness 2302) in paragraph at lines 51--55
+warning: sections/04_eval:23: Underfull \hbox (badness 2142) in paragraph at lines 19--23
+warning: sections/04_eval:23: Underfull \hbox (badness 1668) in paragraph at lines 19--23
+warning: sections/04_eval:23: Underfull \hbox (badness 1939) in paragraph at lines 19--23
+warning: sections/04_eval:23: Underfull \hbox (badness 1057) in paragraph at lines 19--23
+warning: sections/04_eval:31: Underfull \hbox (badness 4967) in paragraph at lines 27--31
+warning: sections/04_eval:87: Underfull \hbox (badness 1270) in paragraph at lines 83--87
+warning: sections/04_eval:87: Underfull \hbox (badness 1472) in paragraph at lines 83--87
+warning: sections/05_limits:14: Underfull \hbox (badness 4013) in paragraph at lines 10--14
+warning: main.tex:68: Underfull \hbox (badness 2213) in paragraph at lines 16--68
+warning: sections/07_appendix:31: Underfull \hbox (badness 10000) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 10000) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 10000) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 1596) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 1043) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 2158) in paragraph at lines 26--31
+note: Running BibTeX on main.aux ...
+note: Rerunning TeX because bibtex was run ...
+warning: sections/01_intro:31: Underfull \hbox (badness 1342) in paragraph at lines 27--31
+warning: sections/02_related:9: Underfull \hbox (badness 10000) in paragraph at lines 9--9
+warning: sections/02_related:27: Underfull \hbox (badness 1496) in paragraph at lines 27--27
+warning: sections/03_system:55: Underfull \hbox (badness 2368) in paragraph at lines 51--55
+warning: sections/03_system:55: Underfull \hbox (badness 2302) in paragraph at lines 51--55
+warning: sections/04_eval:23: Underfull \hbox (badness 2142) in paragraph at lines 19--23
+warning: sections/04_eval:23: Underfull \hbox (badness 1668) in paragraph at lines 19--23
+warning: sections/04_eval:23: Underfull \hbox (badness 1939) in paragraph at lines 19--23
+warning: sections/04_eval:23: Underfull \hbox (badness 1057) in paragraph at lines 19--23
+warning: sections/04_eval:31: Underfull \hbox (badness 4967) in paragraph at lines 27--31
+warning: sections/04_eval:87: Underfull \hbox (badness 1270) in paragraph at lines 83--87
+warning: sections/04_eval:87: Underfull \hbox (badness 1472) in paragraph at lines 83--87
+warning: sections/05_limits:14: Underfull \hbox (badness 4013) in paragraph at lines 10--14
+warning: main.tex:68: Underfull \hbox (badness 2213) in paragraph at lines 16--68
+warning: main.bbl:15: Underfull \hbox (badness 1107) in paragraph at lines 7--15
+warning: main.bbl:15: Underfull \hbox (badness 2158) in paragraph at lines 7--15
+warning: main.bbl:55: Underfull \hbox (badness 1803) in paragraph at lines 51--55
+warning: sections/07_appendix:31: Underfull \hbox (badness 10000) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 10000) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 10000) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 1596) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 1043) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 2158) in paragraph at lines 26--31
+note: Rerunning TeX because "main.aux" changed ...
+warning: sections/02_related:6: Underfull \hbox (badness 1881) in paragraph at lines 3--6
+warning: sections/02_related:9: Underfull \hbox (badness 10000) in paragraph at lines 9--9
+warning: sections/02_related:27: Underfull \hbox (badness 1496) in paragraph at lines 27--27
+warning: sections/03_system:55: Underfull \hbox (badness 2368) in paragraph at lines 51--55
+warning: sections/03_system:55: Underfull \hbox (badness 2302) in paragraph at lines 51--55
+warning: sections/03_system:69: Underfull \hbox (badness 1231) in paragraph at lines 64--69
+warning: sections/03_system:69: Underfull \hbox (badness 1365) in paragraph at lines 64--69
+warning: sections/04_eval:23: Underfull \hbox (badness 2142) in paragraph at lines 19--23
+warning: sections/04_eval:23: Underfull \hbox (badness 1668) in paragraph at lines 19--23
+warning: sections/04_eval:23: Underfull \hbox (badness 1939) in paragraph at lines 19--23
+warning: sections/04_eval:23: Underfull \hbox (badness 1057) in paragraph at lines 19--23
+warning: sections/04_eval:31: Underfull \hbox (badness 4967) in paragraph at lines 27--31
+warning: sections/04_eval:61: Underfull \vbox (badness 10000) has occurred while \output is active
+warning: sections/04_eval:87: Underfull \hbox (badness 1270) in paragraph at lines 83--87
+warning: sections/04_eval:87: Underfull \hbox (badness 1472) in paragraph at lines 83--87
+warning: sections/05_limits:14: Underfull \hbox (badness 4013) in paragraph at lines 10--14
+warning: main.tex:68: Underfull \hbox (badness 2213) in paragraph at lines 16--68
+warning: main.bbl:15: Underfull \hbox (badness 1107) in paragraph at lines 7--15
+warning: main.bbl:15: Underfull \hbox (badness 2158) in paragraph at lines 7--15
+warning: main.bbl:55: Underfull \hbox (badness 1803) in paragraph at lines 51--55
+warning: sections/07_appendix:31: Underfull \hbox (badness 10000) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 10000) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 10000) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 1596) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 1043) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 2158) in paragraph at lines 26--31
+note: Rerunning TeX because "main.aux" changed ...
+warning: sections/02_related:6: Underfull \hbox (badness 1881) in paragraph at lines 3--6
+warning: sections/02_related:9: Underfull \hbox (badness 10000) in paragraph at lines 9--9
+warning: sections/02_related:27: Underfull \hbox (badness 1496) in paragraph at lines 27--27
+warning: sections/03_system:55: Underfull \hbox (badness 2368) in paragraph at lines 51--55
+warning: sections/03_system:55: Underfull \hbox (badness 2302) in paragraph at lines 51--55
+warning: sections/03_system:69: Underfull \hbox (badness 1231) in paragraph at lines 64--69
+warning: sections/03_system:69: Underfull \hbox (badness 1365) in paragraph at lines 64--69
+warning: sections/04_eval:23: Underfull \hbox (badness 2142) in paragraph at lines 19--23
+warning: sections/04_eval:23: Underfull \hbox (badness 1668) in paragraph at lines 19--23
+warning: sections/04_eval:23: Underfull \hbox (badness 1939) in paragraph at lines 19--23
+warning: sections/04_eval:23: Underfull \hbox (badness 1057) in paragraph at lines 19--23
+warning: sections/04_eval:31: Underfull \hbox (badness 4967) in paragraph at lines 27--31
+warning: sections/04_eval:61: Underfull \vbox (badness 10000) has occurred while \output is active
+warning: sections/04_eval:87: Underfull \hbox (badness 1270) in paragraph at lines 83--87
+warning: sections/04_eval:87: Underfull \hbox (badness 1472) in paragraph at lines 83--87
+warning: sections/05_limits:14: Underfull \hbox (badness 4013) in paragraph at lines 10--14
+warning: main.tex:68: Underfull \hbox (badness 2213) in paragraph at lines 16--68
+warning: main.bbl:15: Underfull \hbox (badness 1107) in paragraph at lines 7--15
+warning: main.bbl:15: Underfull \hbox (badness 2158) in paragraph at lines 7--15
+warning: main.bbl:55: Underfull \hbox (badness 1803) in paragraph at lines 51--55
+warning: sections/07_appendix:31: Underfull \hbox (badness 10000) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 10000) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 10000) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 1596) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 1043) in paragraph at lines 26--31
+warning: sections/07_appendix:31: Underfull \hbox (badness 2158) in paragraph at lines 26--31
+warning: warnings were issued by the TeX engine; use --print and/or --keep-logs for details.
+note: Running xdvipdfmx ...
+note: Writing `paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/main.log` (57.025390625 KiB)
+note: Writing `paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/main.pdf` (376.8642578125 KiB)
+note: Writing `paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3_chatgpt/main.blg` (196 B)
+note: Skipped writing 3 intermediate files (use --keep-intermediates to keep them)

@@ -1,0 +1,20 @@
+\begin{table*}[t]\centering\footnotesize\setlength{\tabcolsep}{2.6pt}
+\begin{tabular}{@{}p{3.5cm}ccccc@{\hspace{8pt}}ccccc@{}}
+\toprule
+ & \multicolumn{5}{c}{Scenario success (n/N)} & \multicolumn{5}{c}{Pooled error decomposition (lower is better)} \\
+\cmidrule(lr){2-6}\cmidrule(lr){7-11}
+System & EN & HI & GU & MR & All & Kept & Polarity & Act & Added & Off-task \\
+\midrule
+Literal join & 0/46 & 0/45 & 0/42 & 0/42 & 0/175 & 215/215 & 0/175 & 0/175 & 0/175 & 0/175 \\
+Template only (client) & 33/46 & 31/45 & 27/42 & 27/42 & 118/175 & 215/215 & 0/175 & 57/175 & 0/175 & 0/175 \\
+Prompted Qwen, no gate & 2/46 & 1/45 & 4/42 & 1/42 & 8/175 & 199/215 & 2/175 & 3/175 & 7/175 & 16/175 \\
+Cascade before gate (client) & 3/46 & 24/45 & 20/42 & 18/42 & 65/175 & 175/215 & 2/175 & 54/175 & 25/175 & 19/175 \\
+\textbf{Deployed (client)} & 22/46 & 31/45 & 21/42 & 23/42 & 97/175 & 215/215 & 0/175 & 54/175 & 4/175 & 10/175 \\
+\midrule
+Template only (struct.) & 46/46 & 45/45 & 34/42 & 42/42 & 167/175 & 215/215 & 0/175 & 0/175 & 0/175 & 0/175 \\
+\textbf{Deployed (struct.)} & 33/46 & 41/45 & 26/42 & 32/42 & 132/175 & 215/215 & 0/175 & 17/175 & 3/175 & 9/175 \\
+\bottomrule
+\end{tabular}
+\caption{Primary set (175 scenarios; EN 46, HI 45, GU 42, MR 42). Left: scenarios whose output keeps every selected concept, has the gold polarity and act, adds no unselected concept and is an on-task first-person sentence (independent lexical scorer). Right (pooled): required concept instances kept (of 215) and scenarios with a wrong polarity, wrong act, added concept or off-task output. Client = payload built by the web client; struct. = explicit intent and negation fields.}
+\label{tab:results}
+\end{table*}

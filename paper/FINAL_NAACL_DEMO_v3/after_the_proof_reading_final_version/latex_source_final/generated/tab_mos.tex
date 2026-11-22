@@ -1,0 +1,17 @@
+\begin{table*}[!t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.4pt}\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}l c ccc cccc c@{}}
+\toprule
+\rowcolor{headtint}
+ & Evaluated build & \multicolumn{3}{c}{Human voice prompts} & \multicolumn{4}{c}{Stand-in voice, deployed sentences} & Deployed voice \\
+\rowcolor{headtint}
+ & \lang{Tone} (1) & \lang{English} (1) & \lang{Marathi} (3) & \lang{Punjabi} (1) & \lang{English} (46) & \lang{Hindi} (45) & \lang{Gujarati} (42) & \lang{Marathi} (42) & \indicf{} (0) \\
+\midrule
+\utmos{} & \bad{1.54} & 4.27 & 3.20 & 3.83 & 4.01 (0.31) & 3.66 (0.38) & 3.88 (0.24) & 3.31 (0.41) & not run \\
+\rowcolor{rowtint}\nisqa{} & \bad{1.12} & 4.50 & 4.81 & 4.74 & 4.39 (0.61) & 3.52 (0.59) & 4.91 (0.10) & 3.95 (0.64) & not run \\
+\bottomrule
+\end{tabular}
+\caption{Predicted speech quality (1--5, higher is better; mean, and standard deviation for the synthesized voices; clips in the header). \emph{Tone}: the evaluated build's placeholder. Human prompts: clips that \indicf{} would imitate (Punjabi: the default for all languages). Stand-in voices: open \mmstts{} models reading the deployed sentences, not \indicf{}, whose weights are gated. Both predictors are trained on English ratings (indicative only).}
+\label{tab:mos}
+\end{table*}

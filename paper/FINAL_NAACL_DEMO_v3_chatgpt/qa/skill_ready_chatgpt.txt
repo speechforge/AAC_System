@@ -1,0 +1,13 @@
+PASS  No unresolved markers                             0 marker(s)
+FAIL  Citations verified (two sources + claim support)  cited keys: 8 | bib entries: 8 | verified in lock: 7
+FAIL  Prose: no coding terms or hollow openers          22 file(s): 46 high, 6 medium, 23 low
+PASS  Figures, labels, and inputs resolve               0 problem(s)
+PASS  Novelty thread runs through every section         all sections carry the novelty
+PASS  Every claim has evidence                          11 supported, 3 bounded
+PASS  No experiment left pending                        none pending
+FAIL  Credit and license statements present             credit MISSING, license ok
+PASS  Project identity free of venue names              Indic AAC Studio
+FAIL  Venue requirements and checklist                  venue=generic ok=3 fail=7 blocking_fail=3 confirm=5 na=1  (see submission_checklist.md)
+WARN  LaTeX build                                       tex-unavailable - No LaTeX installation found. Compile on Overleaf or install TeX Live; static checks still run.
+
+NOT READY: 4 blocking gate(s), 1 warning(s)

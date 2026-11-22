@@ -1,0 +1,8 @@
+{
+ "split": "holdout",
+ "n_live": 180,
+ "identical_text_and_outcome": 180,
+ "different": 0,
+ "missing_or_error": 0,
+ "examples": []
+}

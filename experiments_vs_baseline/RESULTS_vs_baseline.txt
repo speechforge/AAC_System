@@ -1,0 +1,294 @@
+==============================================================================================================
+ EFFECTIVENESS OF THE PROPOSED INDIC AAC SYSTEM  -  BASELINE-STYLE EXPERIMENTS
+ (English comparison against the baseline AAC paper; Hindi / Marathi / Gujarati reported separately, NOT compared)
+==============================================================================================================
+ Generated : 2026-11-19      Code & raw numbers : experiments_vs_baseline/   (results/*.json, *.log)
+ Baseline  : Gaines & Vertanen, "Adapting Large Language Models for Character-based Augmentative and
+             Alternative Communication", Findings of EMNLP 2025   (paper/baseline_system_paper_of_AAC_system/paper1.tex)
+
+
+
+==============================================================================================================
+ A. ENGLISH VERDICT - OUR SYSTEM vs THE BASELINE'S METHODS  (read this first)
+==============================================================================================================
+ HOW TO READ THE ARROWS
+   KSR (keystroke savings, %)      ↑  HIGHER is BETTER   (more keystrokes saved for the user)
+   top-5 hit rate (%)              ↑  HIGHER is BETTER   (target word is on the 5-word shelf with nothing typed)
+   perplexity (per character)      ↓  LOWER  is BETTER   (model is less 'surprised' by the real text)
+   speed (ms per prediction)       ↓  LOWER  is BETTER   (faster / usable without a GPU)
+   '#1' = best in that column, '#5' = worst.   Same data, same test sentences, same protocol for every row.
+
+  System                                               | KSR % ↑     | top-5 hit % ↑ | perplexity ↓ | speed ↓            
+  -----------------------------------------------------+-------------+---------------+--------------+--------------------
+  AAC char 12-gram (baseline-type n-gram)              | 55.1 ↑ (#5) | 29.8 ↑ (#5)   | 4.93 ↓ (#5)  | 0.03 ms CPU ↓ (#1) 
+  OPT-125m pretrained (baseline LLM method)            | 58.0 ↑ (#3) | 36.4 ↑ (#3)   | 2.65 ↓ (#3)  | 25 ms GPU ↓ (#3)   
+  OPT-350m pretrained (baseline LLM method)            | 58.9 ↑ (#2) | 36.9 ↑ (#2)   | 2.52 ↓ (#2)  | 140 ms GPU ↓ (#5)  
+  OPT-125m adapted on our data (baseline's adaptation) | 62.6 ↑ (#1) | 44.9 ↑ (#1)   | 2.07 ↓ (#1)  | 25 ms GPU ↓ (#4)   
+  OURS: infinity-gram                                  | 55.9 ↑ (#4) | 30.5 ↑ (#4)   | 3.57 ↓ (#4)  | 0.045 ms CPU ↓ (#2)
+
+ BEST ON ACCURACY (KSR, top-5, perplexity)  : OPT-125m adapted on our data (baseline's adaptation)  (KSR 62.6% vs ours 55.9%)
+ BEST ON SPEED / NO-GPU                           : OURS (infinity-gram), ~0.045 ms on CPU - fastest of all five
+ OURS vs THE BASELINE'S n-gram (same kind of model): OURS is slightly BETTER (KSR 55.9 vs 55.1; full test set 56.6 vs 56.2) - a small gain, within noise
+ OURS vs THE BASELINE'S LLM approach              : OURS is WORSE on accuracy (KSR 55.9 vs 58.0 / 58.9 / 62.6),
+                                                    but ~500-3000x FASTER and needs no GPU.
+ So: our ∞-gram is NOT the best English next-word predictor. The best is the baseline-style LLM adapted on in-domain data.
+ Our approach is best on speed/footprint and, beyond prediction, on sentence generation + safety (Section 4), which the
+ baseline does not have at all.
+ (KSR chance floor, frequency-only, is ~50%, so the useful range is roughly 50-65%.)
+
+--------------------------------------------------------------------------------------------------------------
+ 0. READ THIS FIRST - WHAT IS AND IS NOT COMPARABLE
+--------------------------------------------------------------------------------------------------------------
+ * The baseline paper studies CHARACTER prediction for letter-by-letter AAC (Dasher, RSVP, Nomon ...), using
+   pretrained OPT / GPT-2 / Llama LLMs, evaluated on private crowd-sourced English test sets with perplexity,
+   keystroke savings (KSR, 5 word predictions) and latency.
+ * Our system is SYMBOL / WORD based: the user taps words/symbols, a word-level infinity-gram (∞-gram) engine
+   suggests next words, a constrained realiser (+ optional Qwen cascade) turns the selection into one sentence,
+   a deterministic semantic gate checks it, and TTS speaks it. The two systems therefore overlap on exactly
+   one task - predicting what the user wants to say next - and the baseline has no sentence generation, no
+   validation, no TTS and no Indic language support at all.
+ * I could NOT run the baseline's own models or data: its private test sets, its adapted OPT-350m, its 21B-char
+   AAC n-gram and its Common-Crawl/subtitle adaptation corpora are not in this repo. Instead, I re-implemented
+   the baseline's character-search algorithm (paper Sec. 3, verified: "yeste" -> r = 0.994, paper reports
+   0.9999) and ran the SAME protocol on the SAME data for every system. Numbers are therefore NOT comparable
+   with the absolute values printed in the paper (e.g. its perplexity 2.1-2.5); only the relative ordering of
+   systems inside this report is meaningful.
+ * Our corpus is small and synthetic (GPT-generated caregiver<->AAC-user dialogues, 277 English conversations,
+   375 Hindi); Marathi and Gujarati have NO native corpus, so their test text is machine-translated (NLLB-200)
+   from the English splits. Nothing here comes from real AAC users.
+
+--------------------------------------------------------------------------------------------------------------
+ 1. WHAT THE BASELINE PAPER DOES  ->  WHAT CAN BE DONE ON OUR SYSTEM   (the "possibilities")
+--------------------------------------------------------------------------------------------------------------
+  Baseline experiment (paper section)            | Equivalent for our system                      | Status
+  -----------------------------------------------+------------------------------------------------+---------
+  Pretrained-model perplexity table (Tab.1)      | per-character perplexity of ∞-gram vs OPT-125m/ | DONE (Exp 1)
+                                                 | OPT-350m vs 12-gram char LM                     |
+  Domain adaptation on in-domain text (Tab.2)    | OPT-125m fine-tuned on our AAC train split      | DONE (Exp 1)
+  Final eval on several test sets (Tab.3)        | two test sets: AAC-user turns, caregiver turns  | DONE (Exp 1,2)
+  Keystroke savings, 5 predictions (Tab.4)       | identical simulator, same candidate pool        | DONE (Exp 2)
+  Inference time per prediction (Tab.1/3)        | ms per prediction, CPU (∞-gram, n-gram), GPU    | DONE (Exp 3)
+                                                 | (OPT search)                                    |
+  n-gram vs LLM vs byte LLM vs classifier (Sec.6)| ∞-gram vs fixed-order caps (1/2/3 words) vs     | DONE (Exp 5)
+                                                 | frequency-only vs char n-gram; backoff alpha    |
+  Per-user / ICL adaptation (Limitations)        | user-specific "My Words" + personal n-gram      | POSSIBLE
+  Real AAC-user test set                         | none available offline                          | NOT POSSIBLE here
+  --- things the baseline cannot do at all (our contribution) ---------------------------------------------------
+  Telegraphic symbols -> faithful sentence       | template realiser + deterministic gate, 4 langs | DONE (Exp 4)
+  Multilingual (hi / mr / gu) prediction         | ∞-gram + concept-level predictor                | DONE (Exp 6)
+  LLM cascade validity / hallucination rate      | Qwen2.5-0.5B 3-stage cascade + gate             | POSSIBLE (needs live
+                                                 | (repo has only a 10-case older report)          |  backend; not run)
+  TTS intelligibility / MOS, speaker similarity  | IndicF5 + subjective_Mos_portal                 | POSSIBLE (needs
+                                                 |                                                 |  listeners / weights)
+  Noise robustness (noisy_* typing variants      | un-jumble / ∞-gram under typo noise             | POSSIBLE (data
+  already present in the *_augmented.jsonl)      |                                                 |  exists)
+  User study (selection rate, WPM)               | needs participants                              | POSSIBLE
+
+
+--------------------------------------------------------------------------------------------------------------
+ 2. EXPERIMENTAL SETUP (identical for every system)
+--------------------------------------------------------------------------------------------------------------
+ Data     : english_AAC_Dataset (277 conv.) and hindi_AAC_Dataset (375 conv.). Split BY CONVERSATION (hash of the
+            first turn, so original/augmented/transformed copies never straddle splits): 70% train / 10% dev /
+            20% test; any train sentence that also occurs verbatim in dev/test is removed. Test set "AAC-user"
+            = the AAC user's intended utterances (the paper's 'written/AAC user' analogue); "Caregiver" = the
+            conversation partner's turns (the paper's 'spoken' analogue).
+            Marathi / Gujarati = NLLB-200 machine translation of the English splits (no native corpus exists);
+            degenerate translations (a token repeated >=4 times, or >30 words) were removed.
+ Text     : lower-cased, English reduced to a-z ' space (as in the paper); Indic reduced to script letters.
+ Training : every system learns ONLY from the train split (tiny: ~2.5-3.9 k sentences vs. the paper's billions of
+            characters), so absolute numbers are far from the paper's.
+ Models   : ∞-gram            = our shipped AACInfinityGramEngine (suffix trie, backoff alpha=0.4), built on train only
+            char 12-gram      = interpolated Witten-Bell character LM, order 12 (the baseline's 'AAC n-gram' analogue,
+                                same order as the paper's, but trained on our small data instead of 21 B chars)
+            OPT-125m/350m     = pretrained, queried with the paper's subword->character search algorithm (beam 8)
+            OPT-125m adapted  = full fine-tune on our train split (the paper's 'in-domain adaptation'; best dev epoch)
+            frequency-only    = floor baseline (most frequent matching words)
+ Metrics  : per-character perplexity incl. spaces (lower better); keystroke savings (KSR) with 5 word predictions,
+            the paper's exact protocol (predict before each word and after each typed prefix; one press selects a
+            word + space); next-word hit rate at an empty prefix (what the on-screen "Top Words" shelf shows);
+            latency per prediction.
+            Candidate pool for KSR is the same for all systems: the 300 most frequent train-vocabulary words that
+            match the typed prefix. OOV words must be typed in full.
+ ∞-gram perplexity : the shipped engine returns ranked words, not a distribution, so perplexity uses a proper
+            open-vocabulary version (backoff mass + unigram floor mu, plus a char-LM OOV term eps; mu/eps tuned on dev).
+            Because a word model does not pay for emitting word boundaries, its perplexity is NOT strictly
+            comparable with a character model's - treat that row as indicative only. KSR and hit rates ARE comparable.
+
+--------------------------------------------------------------------------------------------------------------
+ 3. ENGLISH: OUR SYSTEM vs BASELINE-STYLE SYSTEMS   (analogue of paper Tables 1-4)
+--------------------------------------------------------------------------------------------------------------
+ 3a. Same 80+80 test-sentence subsample for ALL systems (needed because the OPT search is slow).
+     KSR was computed on 40+40 of those sentences (250 + 354 words). Small samples: differences < ~2 points are noise.
+
+  System                                  | Params M | ppl AAC ↓ | ppl Care ↓ | ppl avg ↓ | KSR AAC ↑ | KSR Care ↑ | KSR avg ↑ | top-5 hit% ↑ | speed              
+  ----------------------------------------+----------+-----------+------------+-----------+-----------+------------+-----------+--------------+--------------------
+  AAC char 12-gram (baseline-type n-gram) | n/a      | 5.86      | 4.15       | 4.93      | 53.1      | 57.1       | 55.1      | 29.8         | CPU 0.03 ms/char   
+  OPT-125m pretrained (search alg.)       | 125      | 2.74      | 2.56       | 2.65      | 56.0      | 60.0       | 58.0      | 36.4         | GPU ~25-80 ms/char*
+  OPT-350m pretrained (search alg.)       | 331      | 2.60      | 2.45       | 2.52      | 57.1      | 60.7       | 58.9      | 36.9         | GPU ~140 ms/char*  
+  OPT-125m ADAPTED on our data            | 125      | 2.23      | 1.93       | 2.07      | 60.4      | 64.9       | 62.6      | 44.9         | GPU ~25-80 ms/char*
+  OURS: ∞-gram (shipped predictor)        | n/a      | 4.21      | 3.02       | 3.57      | 53.9      | 57.9       | 55.9      | 30.5         | CPU 0.045 ms/pred  
+
+ * GPU timings were taken on a TITAN Xp that was shared with three other running jobs (the app server, a vLLM server and
+   a translation job), so they are noisy (the paper: 55-120 ms on an A100). The n-gram/∞-gram timings are CPU, single thread.
+ Perplexity: lower is better.  KSR (%): higher is better.   KSR chance floor (frequency-only) on this data is ~50%.
+
+ 3b. FULL English test sets (403 AAC-user + 402 caregiver sentences) for the non-LLM systems
+
+  System                | KSR AAC ↑ | KSR Care ↑ | KSR all ↑ | top-1% ↑ | top-5% ↑ | top-10% ↑
+  ----------------------+-----------+------------+-----------+----------+----------+----------
+  frequency-only        | 47.6      | 51.1       | 49.6      | 3.4      | 13.4     | 19.5     
+  char 12-gram          | 53.2      | 58.4       | 56.2      | 17.1     | 33.4     | 41.5     
+  OURS ∞-gram (shipped) | 53.7      | 58.9       | 56.6      | 17.2     | 34.0     | 42.8     
+
+ Perplexity (full sets): char 12-gram 5.57 / 4.14 (AAC / Care);  ∞-gram open-vocab 3.84 / 3.02
+
+ Out-of-vocabulary rate of the test sets w.r.t. train vocabulary: AAC 7.1%, Caregiver 4.1%.
+
+ 3c. Domain adaptation (paper Table 2 analogue): OPT-125m dev token loss 5.15 (pretrained) -> 3.60 after 1 epoch on
+     our train split (best epoch; later epochs over-fit: 3.90 at epoch 5). Per-char perplexity 2.65 -> 2.07 and KSR
+     58.0 -> 62.6. In-domain adaptation helps a lot, as in the paper (2.30 -> 2.07).
+
+ 3d. READING OF SECTION 3 (honest)
+   * Accuracy: the in-domain-adapted OPT-125m is clearly the best predictor here (KSR ~62.6% vs ~55.9% for ours).
+     Even pretrained OPT beats our ∞-gram by ~2-3 KSR points. The baseline paper's central finding (LLMs > n-gram) is REPRODUCED
+     on our data, and our ∞-gram does NOT beat LLMs on prediction accuracy.
+   * ∞-gram vs the n-gram it replaces: on the full test sets the ∞-gram is level with a char 12-gram (KSR 56.6 vs 56.2) and
+     better on top-10 hit rate (42.8 vs 41.5). It is a small, consistent but not large gain.
+   * Where the ∞-gram does win: cost. 0.045 ms on one CPU thread with no GPU (OPT: tens of ms on a GPU, i.e. roughly 500-3000x slower, noisy),
+     builds in <0.5 s from the JSONL data, fully inspectable (it shows the matched depth) and can only suggest words seen in its corpus.
+     The baseline paper itself lists GPU-only inference as its main limitation; that is the niche our engine fills.
+   * Our system's contribution is NOT better next-word prediction than an LLM. See Experiment 4 below for what it adds.
+
+--------------------------------------------------------------------------------------------------------------
+ 4. EXPERIMENT 4 - SENTENCE GENERATION & FIDELITY (something the baseline cannot do) - EN / HI / GU / MR
+--------------------------------------------------------------------------------------------------------------
+ Suite: 144 symbol selections built from the 69-concept board (requests, refusals, feelings, feeling+request, help, actions,
+ plus 13 deliberately AMBIGUOUS selections: a person alone, double negation, two feelings). Same concept IDs in all four
+ languages. Our realiser+gate is compared with the "literal" output = symbols spoken as a bare word list (what a plain symbol
+ board does). The 131 determinate cases are scored; for the 13 ambiguous ones the correct behaviour is to ASK, not invent.
+ NOTE: the gate is also the grader for 'gate accept', so that column is partly circular; the 'independent' columns use a
+ separate regex check (negator word present iff negation is required; every selected label stem present).
+
+  Language | System              | gate accepts  | act correct   | entity kept    | negation kept  | indep. negation | indep. entity* | no additions   | native script  | ambig. handled
+  ---------+---------------------+---------------+---------------+----------------+----------------+-----------------+----------------+----------------+----------------+---------------
+  English  | ours: realiser+gate | 130/131 (99%) | 130/131 (99%) | 130/131 (99%)  | 130/131 (99%)  | 130/131 (99%)   | 124/131 (95%)  | 130/131 (99%)  | 130/131 (99%)  | 13/13 asked   
+           | literal word list   | 45/131 (34%)  | 45/131 (34%)  | 131/131 (100%) | 131/131 (100%) | 131/131 (100%)  | 131/131 (100%) | 131/131 (100%) | 131/131 (100%) | 0/13 asked    
+  Hindi    | ours: realiser+gate | 130/131 (99%) | 130/131 (99%) | 130/131 (99%)  | 130/131 (99%)  | 130/131 (99%)   | 124/131 (95%)  | 130/131 (99%)  | 130/131 (99%)  | 13/13 asked   
+           | literal word list   | 54/131 (41%)  | 54/131 (41%)  | 131/131 (100%) | 131/131 (100%) | 131/131 (100%)  | 131/131 (100%) | 131/131 (100%) | 131/131 (100%) | 0/13 asked    
+  Marathi  | ours: realiser+gate | 130/131 (99%) | 130/131 (99%) | 130/131 (99%)  | 130/131 (99%)  | 130/131 (99%)   | 118/131 (90%)  | 130/131 (99%)  | 130/131 (99%)  | 13/13 asked   
+           | literal word list   | 21/131 (16%)  | 54/131 (41%)  | 131/131 (100%) | 131/131 (100%) | 131/131 (100%)  | 131/131 (100%) | 98/131 (75%)   | 131/131 (100%) | 0/13 asked    
+  Gujarati | ours: realiser+gate | 127/131 (97%) | 130/131 (99%) | 127/131 (97%)  | 130/131 (99%)  | 129/131 (98%)   | 123/131 (94%)  | 130/131 (99%)  | 130/131 (99%)  | 13/13 asked   
+           | literal word list   | 42/131 (32%)  | 42/131 (32%)  | 131/131 (100%) | 131/131 (100%) | 110/131 (84%)   | 131/131 (100%) | 131/131 (100%) | 131/131 (100%) | 0/13 asked    
+
+ * 'indep. entity' is a crude 3-character-stem substring test; its misses (7-13 per language) are inflected forms, not dropped
+   concepts (the gate, which handles inflection, reports 127-130/131). One case per language is 'unsupported' (the
+   selection "I + go + school" has no template) and is counted as a failure above.
+ Examples (selection -> output):  English  'No Want Medicine' -> 'I do not want medicine.'   'Pain Medicine' -> 'I am in pain, I want medicine.'
+                                  Gujarati 'ના જોઈએ દવા' -> 'મને દવા નથી જોઈતી.'              Gujarati 'દુખાવો દવા' -> 'મને દુખાવો થાય છે, મને દવા જોઈએ છે.'
+ Reading: the deterministic route turns telegraphic symbol strings into correct, polarity-preserving, native-script first-person
+ sentences in 97-99% of determinate cases in every language, versus 16-41% for speaking the symbols as-is, and it refuses to
+ guess on all 13 ambiguous selections (the literal route "invents" an interpretation for all of them). Caveats: these are
+ template/lexicon cases authored by the system's developers (a closed 69-concept board), not free user input; the Qwen
+ cascade path was NOT run here (needs the live backend), and the repo's own older 10-case run reports 90% validity with
+ 4/10 falling back to templates.
+
+--------------------------------------------------------------------------------------------------------------
+ 5. EXPERIMENT 5 - ABLATIONS OF THE ∞-GRAM  (English; KSR %, AAC-user / caregiver test)
+--------------------------------------------------------------------------------------------------------------
+
+  Variant                                     | KSR AAC ↑ | KSR Care ↑
+  --------------------------------------------+-----------+-----------
+  shipped (exclude selected words, alpha=0.4) | 53.70     | 58.88     
+  no exclusion, alpha=0.1                     | 54.10     | 59.17     
+  no exclusion, alpha=0.2                     | 54.10     | 59.17     
+  no exclusion, alpha=0.4                     | 54.10     | 59.16     
+  no exclusion, alpha=0.7                     | 54.10     | 59.14     
+
+ Context-depth cap (full test, KSR avg): 1 word 56.4 | 2 words 56.9 | 3 words 56.8 | unlimited (shipped) 56.6
+ Findings: (1) ARBITRARY CONTEXT DEPTH DOES NOT HELP on this corpus - a 2-word cap is as good or slightly better in all four languages; the
+ sentences are short (7 words on average), so there is little long context to exploit. The "∞" advantage is not demonstrated here.
+ (2) The shipped rule "never re-suggest an already selected word" COSTS a little accuracy: removing it gains (AAC / Care KSR points)
+ +0.4 / +0.3 (EN), +0.9 / +1.1 (HI), +0.3 / +0.6 (MR), +0.6 / +0.8 (GU). Backoff alpha (0.1-0.7) makes no difference.
+ Small but consistent in all four languages - a cheap, safe improvement (single run, so not significance-tested).
+
+--------------------------------------------------------------------------------------------------------------
+ 6. HINDI, MARATHI, GUJARATI - EFFECTIVENESS OF OUR SYSTEM  (NOT compared with the baseline)
+--------------------------------------------------------------------------------------------------------------
+ The baseline is English-only, so there is nothing to compare against. For context, each row also shows the character 12-gram
+ trained on the same data and the frequency-only floor (internal references, not the baseline paper).
+ Hindi = the repo's Hindi dataset (per the repo notes it mirrors the English batches, produced with opus-mt translation).
+ Marathi, Gujarati = NLLB machine translation of the English splits; they inherit translation errors and English-derived
+ phrasing, and the Marathi OOV rate is higher, so treat them as weaker evidence than English/Hindi.
+ 6a. Next-word prediction, full test sets.  KSR with 5 predictions (%), top-k = next-word hit rate with nothing typed yet.
+
+  Lang     | train/test sents | System         | KSR AAC ↑ | KSR Care ↑ | KSR all ↑ | top-1% ↑ | top-5% ↑ | top-10% ↑ | ppl/char ↓
+  ---------+------------------+----------------+-----------+------------+-----------+----------+----------+-----------+-----------
+  English  | 2659/805         | frequency-only | 47.6      | 51.1       | 49.6      | 3.4      | 13.4     | 19.5      |           
+           |                  | char 12-gram   | 53.2      | 58.4       | 56.2      | 17.1     | 33.4     | 41.5      | 4.70      
+           |                  | OURS ∞-gram    | 53.7      | 58.9       | 56.6      | 17.2     | 34.0     | 42.8      | 3.35      
+  Hindi    | 3897/1027        | frequency-only | 46.7      | 46.9       | 46.8      | 6.6      | 16.0     | 24.6      |           
+           |                  | char 12-gram   | 56.2      | 58.4       | 57.4      | 27.6     | 47.3     | 55.2      | 4.38      
+           |                  | OURS ∞-gram    | 55.7      | 57.8       | 56.8      | 27.7     | 45.9     | 52.8      | 3.16      
+  Marathi  | 2541/745         | frequency-only | 42.3      | 46.1       | 44.3      | 6.3      | 15.3     | 20.3      |           
+           |                  | char 12-gram   | 46.1      | 51.6       | 49.1      | 15.9     | 29.6     | 36.6      | 5.47      
+           |                  | OURS ∞-gram    | 46.2      | 51.3       | 48.9      | 16.4     | 29.2     | 34.7      | 4.30      
+  Gujarati | 2497/733         | frequency-only | 44.3      | 48.2       | 46.5      | 7.7      | 17.9     | 26.5      |           
+           |                  | char 12-gram   | 52.0      | 56.0       | 54.2      | 25.1     | 41.9     | 48.8      | 4.99      
+           |                  | OURS ∞-gram    | 50.9      | 55.2       | 53.3      | 24.0     | 39.5     | 45.9      | 3.86      
+
+ ppl/char: Devanagari/Gujarati characters are Unicode code points (a consonant+matra = 2 keystrokes), so KSR/ppl are not directly comparable across scripts.
+
+ 6b. Same ∞-gram with the 'exclude selected words' rule removed (suggested fix), KSR avg of AAC/Care test:
+
+  Lang     | shipped KSR ↑ | without exclusion KSR ↑ | char 12-gram KSR ↑
+  ---------+---------------+-------------------------+-------------------
+  English  | 56.3          | 56.6                    | 56.2              
+  Hindi    | 56.7          | 57.7                    | 57.4              
+  Marathi  | 48.7          | 49.2                    | 49.1              
+  Gujarati | 53.0          | 53.7                    | 54.2              
+
+ 6c. Concept-level predictor (the one the UI uses for Gujarati/Marathi). Hit rate of the next board concept in held-out sentences:
+
+  Lang     | words mapped to board % | events | top-1% ↑ | top-5% ↑ | top-10% ↑
+  ---------+-------------------------+--------+----------+----------+----------
+  English  | 13.8                    | 272    | 11.8     | 20.2     | 44.9     
+  Hindi    | 11.5                    | 243    | 9.1      | 30.0     | 38.7     
+  Marathi  | 6.0                     | 44     | 4.5      | 20.5     | 38.6     
+  Gujarati | 8.7                     | 104    | 5.8      | 16.3     | 28.8     
+
+ Only ~6-14% of dataset words are one of the 69 board concepts, so this predictor is evaluated on very few events (44-272);
+ hit@10 of 29-45% is a rough indication, not a robust measure. It is language-independent by construction, which is why
+ Gujarati and Marathi (for which, per the concept_predict.py docstring, the app relies on it) still get context-aware suggestions.
+ IMPORTANT (a finding, not an experiment): the shipped ∞-gram routes Devanagari to its Hindi trie and everything else to
+ the English trie. Marathi therefore shares the Hindi trie, and Gujarati has no model of its own in the app - the
+ per-language ∞-gram numbers above were obtained by building a separate engine per language, which the app does not do today.
+ 6d. Latency (CPU, ms per top-10 prediction): English 0.045, Hindi 0.054, Marathi 0.087, Gujarati 0.069
+ Build time of the full ∞-gram from the shipped corpora: ~0.45 s.
+
+--------------------------------------------------------------------------------------------------------------
+ 7. SUMMARY - WHAT THESE RESULTS SHOW ABOUT THE PROPOSED APPROACH
+--------------------------------------------------------------------------------------------------------------
+ SUPPORTED by the experiments
+  1. Sentence generation with a deterministic gate (Exp 4): in all four languages the system produces a correct, polarity- and
+     entity-preserving, native-script sentence for 97-99% of determinate selections (literal symbol output: 16-41%) and abstains
+     on 13/13 ambiguous selections. The baseline paper offers nothing at this layer.
+  2. Efficiency: the ∞-gram predicts in ~0.05 ms on a CPU with no GPU, roughly 500-3000x faster than OPT character search,
+     with keystroke savings within ~1 point of a 12-gram char LM in all four languages (slightly ahead in English, slightly
+     behind as shipped in Hindi/Marathi/Gujarati; level or ahead once the selected-word exclusion is removed, except Gujarati).
+  3. Multilingual coverage: the same pipeline works in Hindi, Marathi and Gujarati with prediction accuracy (KSR 49-57%)
+     in the same range as English (56%), measured on translated text for mr/gu.
+ NOT supported / negative findings
+  4. Prediction accuracy vs LLMs: an in-domain-adapted OPT-125m beats our ∞-gram by ~7 KSR points and ~1.5 perplexity;
+     even pretrained OPT-125m/350m win by ~2-3 points. The paper's "LLMs > n-gram" conclusion holds on our data.
+  5. The "infinite" context depth gives no measurable benefit on this short-sentence corpus (2-word cap is as good).
+  6. The 'exclude already-selected words' rule costs 0.3-1.1 KSR points; removing it is a free improvement.
+ LIMITATIONS
+  * Small synthetic corpus (no real AAC users); small test sets (few hundred sentences); LLM comparison on an 80+80 sentence
+    subsample (KSR on 40+40); single run, single split, no confidence intervals - differences < ~2 points should be read as ties.
+  * The baseline's own models, private data and adaptation corpora were unavailable; absolute values are not comparable with the paper.
+  * mr/gu text is machine translated (after removing 4-11% degenerate outputs); the Hindi data are, per the repo notes, themselves a translation of the English batches.
+  * Not run: Qwen cascade end-to-end validity/latency, TTS intelligibility/naturalness (MOS portal is separate), user study.
+ SUGGESTED NEXT STEPS (cheap -> costly):  drop the selected-word exclusion; add a small adapted LM (e.g. OPT-125m-class, 25 ms on a
+ GPU) as an optional re-ranker on top of the ∞-gram candidates; build per-language ∞-gram engines for mr/gu; collect a small native
+ Marathi/Gujarati test set; run the live-backend LLM-cascade evaluation and the MOS study.

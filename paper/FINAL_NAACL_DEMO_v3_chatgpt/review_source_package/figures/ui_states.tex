@@ -1,0 +1,9 @@
+\begin{tikzpicture}[font=\small,
+box/.style={draw=exampleblue!50,rounded corners=2pt,text width=6.65cm,align=left,inner sep=6pt},node distance=4mm]
+\node[box,fill=examplegreen!5] (fallback) {\textbf{No + Pizza}\quad\kept{Checked template sentence}\\
+\good{``I do not want pizza.''}\\
+\emph{Placeholder tone (no voice model)}};
+\node[box,below=of fallback,fill=panelgray] (clarify) {\textbf{Nose}\quad Message type: Auto\\
+\textbf{What do you want to say?}\\
+I want something \quad / \quad I feel something};
+\end{tikzpicture}

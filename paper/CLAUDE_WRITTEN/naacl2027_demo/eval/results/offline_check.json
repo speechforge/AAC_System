@@ -1,0 +1,42 @@
+{
+ "health": {
+  "status": "ok",
+  "message": "Indic Generative AAC Backend Running"
+ },
+ "predict_next_en": {
+  "top3": [
+   "to",
+   "it",
+   "me"
+  ],
+  "s": 0.0
+ },
+ "translit_mapped_word": {
+  "r": {
+   "original": "paani",
+   "transliterated": "पानी",
+   "source": "offline"
+  },
+  "s": 0.0
+ },
+ "translit_unmapped_word": {
+  "r": {
+   "original": "kursi",
+   "transliterated": "kursi",
+   "source": "passthrough"
+  },
+  "s": 0.01
+ },
+ "generate_en": {
+  "text": "I want Water.",
+  "fallback_used": true,
+  "audio_b64_len": 76860,
+  "wall_s": 13.94
+ },
+ "generate_hi": {
+  "text": "मुझे पानी चाहिए।",
+  "fallback_used": false,
+  "audio_b64_len": 76860,
+  "wall_s": 10.1
+ }
+}

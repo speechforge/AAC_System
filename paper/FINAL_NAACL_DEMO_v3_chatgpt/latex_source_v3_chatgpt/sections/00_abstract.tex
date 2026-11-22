@@ -1,0 +1,9 @@
+\begin{abstract}
+Expanding a symbol selection into a sentence for augmentative and alternative communication (AAC) must preserve the user's message.
+A language model may instead replace a concept, reverse negation, or introduce an unselected need.
+We present \sys{}, a four-language prototype that checks candidate concepts, polarity, and communicative act, then retries or uses a template when a candidate fails.
+On 175 archived scenarios, the complete gate, retry, and fallback policy raises lexical success from 65/175 to 97/175 with actual web-client inputs, retains 215/215 required concept instances, and produces no detected polarity error.
+The matched template scores 118/175, so this evidence supports a safeguard against cascade errors rather than a phrasing advantage over templates.
+An audit motivates explicit act selection, multilingual checks, and checked fallbacks; both the revised hybrid and template reach 175/175 on the same regression set, which informed these repairs.
+English and Hindi next-word prediction gains are supported separately; native-speaker validation, audible speech, and public demo availability remain unverified.
+\end{abstract}

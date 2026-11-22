@@ -1,0 +1,12 @@
+\section{Failure Audit and Repairs}
+\label{sec:repair}
+
+The audit traced the errors above to defects in four components, each repaired, with the build frozen by recorded file hashes before any new scenario was drawn.
+\textbf{Interface:} concept identifiers on board symbols, separate act and polarity fields, whole-token matching of typed words, and a message-type control with a two-button clarification card; tested on the real page, the evaluated client sent a wrong act for 59 of 184 scenarios and the repaired client for none.
+\textbf{Gate and templates:} the gate tests the writing system, speaker perspective, concept presence with inflected forms, added content, clause-scoped negation, and the act marker, with a stated reason per rejection; compositional templates cover requests, refusals, feelings, negated feelings, actions, and calls for help, and an uncovered selection yields a labeled literal preview.
+\textbf{Scorer:} version 2 adds valid constructions that version 1 missed and scopes negation to its clause; the deployed count moves from 97 to 95 (client input; 5 scenarios gained, 7 lost) and from 132 to 138 (explicit fields), the ungated cascade from 65 to 63 and from 71 to 72, and the template baseline from 167 to 175, which widens the gaps to the template to 13.1 and 21.1 pp.
+
+\paragraph{Regression result.}
+On the original \NPrimAll{} scenarios under version 2, the repaired pipeline and the repaired template baseline both score 175/175 (the repaired client sends the gold fields, so client input and explicit fields coincide), against 95 and 138 for the evaluated build and 8/175 for a new one-pass prompt with the repaired fields; the repaired pipeline exceeds the same cascade without gate and fallback (88/175) by 49.7 pp (95\% CI 42.3 to 57.1).
+These scenarios informed the repairs, so 175/175 is a regression target and not a test result, and a lexical scorer cannot separate pipeline from template.
+A fresh set of 120 scenarios (30 per language) generated after the freeze awaits native-speaker confirmation of its gold annotation, so no score on it is reported.

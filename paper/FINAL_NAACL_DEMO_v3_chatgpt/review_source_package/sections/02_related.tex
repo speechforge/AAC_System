@@ -1,0 +1,33 @@
+\section{Related Work}
+\label{sec:related}
+Grammatical expansion of telegraphic AAC input predates language models.
+Compansion uses syntactic and semantic processing to expand abbreviated messages \citep{mccoy1998compansion}.
+\citet{karmakar-sinha-2024-aiding} study bidirectional text--symbol communication and include Bengali translation.
+These precedents motivate a narrower contribution: checking candidate realizations and measuring the consequences of acceptance and fallback in \lang{Hindi}, \lang{Gujarati}, and \lang{Marathi}.
+
+Existing systems also differ in the information available before generation.
+SpeakFaster expands abbreviated typed input for eye-gaze AAC users \citep{cai2024speakfaster}, while ConnecTone uses conversational context for text suggestions and style-adaptive speech \citep{francis2024connectone}.
+In contrast, symbol selections provide an explicit set of concepts that our policy can check, although they may still leave the act ambiguous.
+
+Jellow Basic already documents expressive-button sentence construction, pre-made sentences, and support for Gujarati, Hindi, and Marathi \citep{jellow}.
+Table~\ref{tab:related} therefore distinguishes realization from a documented candidate check; an unstated capability is not evidence of absence.
+We compare performance against matched baselines rather than infer superiority from product descriptions.
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}L{1.7cm}L{3.0cm}L{2.35cm}@{}}
+\toprule
+System & Input and realization & Candidate check \\
+\midrule
+Compansion & telegraphic input; rule expansion & not a model gate \\
+Karmakar--Sinha & text--symbol mapping; Bengali & \nstated \\
+Jellow Basic & symbols; expressive frames & \nstated \\
+SpeakFaster & abbreviated typing; LLM expansion & \nstated \\
+ConnecTone & context; text suggestions & \nstated \\
+Indic AAC Studio & symbols; prompted realization & concept, polarity, act cues \\
+\bottomrule
+\end{tabular}
+\caption{Closest documented capabilities. ``Not stated'' refers to the cited source, not the full product. Jellow's primary page was checked on November 13, 2026.}
+\label{tab:related}
+\end{table}

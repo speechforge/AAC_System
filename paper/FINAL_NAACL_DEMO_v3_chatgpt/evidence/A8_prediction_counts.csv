@@ -1,0 +1,9 @@
+language,system,n_items,hit1_count,hit1_pct_unrounded,hit1_pct_one_decimal,hit5_count,filtered_n,filtered_hit1_count
+en,unigram_frequency,2220,81,3.649,3.6,258,2170,78
+en,bigram_backoff,2220,302,13.604,13.6,655,2170,285
+en,trigram_backoff,2220,356,16.036,16.0,728,2170,330
+en,infinity_gram_deployed,2220,381,17.162,17.2,741,2170,351
+hi,unigram_frequency,2437,156,6.401,6.4,354,2352,147
+hi,bigram_backoff,2437,586,24.046,24.0,1050,2352,551
+hi,trigram_backoff,2437,630,25.851,25.9,1072,2352,579
+hi,infinity_gram_deployed,2437,659,27.041,27.0,1074,2352,603

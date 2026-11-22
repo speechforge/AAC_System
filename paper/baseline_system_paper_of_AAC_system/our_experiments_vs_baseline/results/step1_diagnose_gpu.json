@@ -1,0 +1,2306 @@
+{
+ "mr": {
+  "n": 120,
+  "roundtrip_chrF_mean": 26.9197461358698,
+  "roundtrip_chrF_median": 20.637142587423792,
+  "kept_share": 0.9,
+  "kept_chrF_mean": 27.99484053642421,
+  "kept_chrF_median": 21.800609383228924,
+  "share_chrF_below_25": 0.5666666666666667,
+  "median_word_ratio_vs_english": 1.0,
+  "share_runaway_ratio_gt_3": 0.1,
+  "per_sentence": [
+   {
+    "en": "Good idea. Maybe she can share some of her snacks too.",
+    "mr": "चांगली कल्पना आहे. कदाचित ती आमच्यासोबत काही स्नॅक्सही शेअर करू शकेल.",
+    "back": "I think it's a good idea. Maybe she can share some of the cake in the cake with us.",
+    "chrF": 63.9
+   },
+   {
+    "en": "Something tasty, please.",
+    "mr": "मला काहीतरी चवदार द्या, प्लीज.",
+    "back": "\"MaMaMain\" (Main).",
+    "chrF": 4.8
+   },
+   {
+    "en": "Yes, she helps John’s family.",
+    "mr": "होय, ती जॉनच्या कुटुंबाला मदत करते.",
+    "back": "That's not a good idea. How does it work?",
+    "chrF": 6.9
+   },
+   {
+    "en": "Different cultures here",
+    "mr": "'आम्ही' 'आम्ही' 'आम्ही' 'आम्ही' 'आम्ही' 'आम्ही' 'आम्ही' 'आम्ही' 'आम्ही' 'आम्ही' 'आम्ही' 'आम्ही' 'आम्ही' 'आम्ही'",
+    "back": "So, they're saying, \"We're going to have a lot of fun\".",
+    "chrF": 15.0
+   },
+   {
+    "en": "I prefer it medium rare.",
+    "mr": "मला ते मध्ययुगीन तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु तु",
+    "back": "To me it's the Middle Ages, you're the middle ages, you are the middle age.",
+    "chrF": 13.2
+   },
+   {
+    "en": "Food brings people together.",
+    "mr": "पण अन्न लोकांना एकत्र आणतं.",
+    "back": "But that doesn't necessarily has to be a part of the diet.",
+    "chrF": 14.9
+   },
+   {
+    "en": "Not yet. But I think she should know. It’s unfair to Robert!",
+    "mr": "अजून नाही, पण मला वाटतं तिला हे कळलं पाहिजे.",
+    "back": "She hasn't been in the U.S. in a full-length movie yet, but I think she needs to know that.",
+    "chrF": 29.0
+   },
+   {
+    "en": "Yes, please. Soon.",
+    "mr": "हो, प्लीज, लवकरच.",
+    "back": "\"Hin-shōshō, sh shōshā\".",
+    "chrF": 4.8
+   },
+   {
+    "en": "Music scene too!",
+    "mr": ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+    "back": "It is the first time that I have ever been in a relationship with a woman.",
+    "chrF": 8.0
+   },
+   {
+    "en": "Next time, I’ll bring snacks.",
+    "mr": "पुढच्या वेळी मी तुम्हाला स्नॅक्स आणीन.",
+    "back": "That's the only time I'll be able to get you a snack.",
+    "chrF": 23.1
+   },
+   {
+    "en": "Watch a movie",
+    "mr": "\"आम्हाला एक चित्रपट बघून जा\"",
+    "back": "That's why you're going to see a movie.",
+    "chrF": 32.0
+   },
+   {
+    "en": "Love you always",
+    "mr": "♪ ♪ नेहमी तुझ्यावर प्रेम ♪",
+    "back": " a  (rōma) ",
+    "chrF": 2.8
+   },
+   {
+    "en": "I enjoy trying new foods from different countries.",
+    "mr": "मला वेगवेगळ्या देशांतील नवीन खाद्यपदार्थांची चाचणी करणे खूप आवडते.",
+    "back": "I'm also very interested in the taste and taste of many different types of food that are still being eaten on our tooth and potatoes.",
+    "chrF": 27.3
+   },
+   {
+    "en": "Emily thinks Susan is telling the truth.",
+    "mr": "एमिलीला वाटतं की सुसान तिला सत्य सांगत आहे.",
+    "back": "How do you know that it's true? How does it matter? How do I know that this is true?",
+    "chrF": 15.8
+   },
+   {
+    "en": "Not really. He’s frustrated. I feel bad for him.",
+    "mr": "खरं तर नाही. तो निराश आहे. मला त्याच्याबद्दल वाईट वाटतं.",
+    "back": "I don't know. It doesn't really matter. He's disappointed. I feel bad for him.",
+    "chrF": 54.0
+   },
+   {
+    "en": "But worth it",
+    "mr": "पण आपण",
+    "back": "We've been known by the name",
+    "chrF": 6.7
+   },
+   {
+    "en": "Maybe a walk? Fresh air.",
+    "mr": "कदाचित एक चाला?",
+    "back": "Do you want to go for a walk?",
+    "chrF": 21.3
+   },
+   {
+    "en": "Mom shops online",
+    "mr": "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #",
+    "back": "#### ## # # ##, ## and ##",
+    "chrF": 1.1
+   },
+   {
+    "en": "Thanks! I appreciate it.",
+    "mr": "धन्यवाद, तुमचे कौतुक आहे.",
+    "back": "\" \" \"  \" \" ( \" \" , \" \" - \" \" . . \" \"",
+    "chrF": 0.8
+   },
+   {
+    "en": "Yes, right on schedule today.",
+    "mr": "हो, आजच्या वेळेनुसार.",
+    "back": "That's how long it's going to be.",
+    "chrF": 11.2
+   },
+   {
+    "en": "Yes, she left the restaurant.",
+    "mr": "होय, तिने रेस्टॉरंट सोडलं.",
+    "back": "I'm in the same way as you.",
+    "chrF": 11.2
+   },
+   {
+    "en": "Absolutely! Different breads can reflect our diverse community and cultures, which is fascinating.",
+    "mr": "अर्थातच, वेगवेगळ्या भाकरी आपल्या विविध समुदायाचे आणि संस्कृतींचे प्रतिबिंबित करू शकतात, जे आश्चर्यकारक आहे.",
+    "back": "Of course, a rat's beak in a mouse mouse mouse can reflect the different races and cultures of rats, which is amazing.",
+    "chrF": 43.4
+   },
+   {
+    "en": "Yes! I really enjoy Honeycrisp apples. They are sweet and crunchy, perfect for breakfast.",
+    "mr": "मी हनीक्राइक सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ सॉ",
+    "back": "I'm a honeycombed so-so-so. So-so, so-sa-so... So-sa... so-sou-sa--so-sa. So, so, so--so--so... so... so so-su-su... and so on and so forth, so that's what's going on.",
+    "chrF": 10.3
+   },
+   {
+    "en": "Moving to Nashville?",
+    "mr": "तुम्ही नॅशविलेला जात आहात?",
+    "back": "   ",
+    "chrF": 0.0
+   },
+   {
+    "en": "I think it's wonderful to see diversity in career choices. Everyone brings their own unique experiences.",
+    "mr": "मला असे वाटते की विविधतापूर्ण करिअरच्या निवडीमध्ये आम्हा दोघांना एकत्र आणणे ही एक अद्भुत गोष्ट आहे. प्रत्येकजण आपल्या स्वतः च्या अद्वितीय अनुभवांना घेऊन येतो.",
+    "back": "I think it's a wonderful thing to bring us together in a diverse and diverse career and career path, and each of us brings with us our own unique experiences.",
+    "chrF": 54.5
+   },
+   {
+    "en": "Yes, I heard that Michael has beaten cancer. It is such a relief and a wonderful outcome.",
+    "mr": "मी ऐकले आहे की मायकलने कर्करोगावर मात केली आहे.",
+    "back": "I've heard that Michael can't wait to hear the sound of his voice while he's on the other side of the moon.",
+    "chrF": 30.8
+   },
+   {
+    "en": "I help mom",
+    "mr": "मी माझ्या आईला मदत करतो.",
+    "back": "Sh shshshsh, shsh shsh.",
+    "chrF": 1.6
+   },
+   {
+    "en": "Tasty tacos today",
+    "mr": "आजचा नाश्ता",
+    "back": "  ",
+    "chrF": 0.0
+   },
+   {
+    "en": "Exactly! Who needs food from different countries when we can just beat the meat here?",
+    "mr": "नक्की! वेगवेगळ्या देशांतील अन्न कोणाला हवे आहे जेव्हा आपण इथे फक्त मांस पिऊन जाऊ शकतो?",
+    "back": "Sure! Who wants to go to a restaurant and eat food in a different country's food festival?",
+    "chrF": 33.6
+   },
+   {
+    "en": "It was nice to catch up.",
+    "mr": "आम्हाला भेटून आम्हाला खूप आनंद झाला.",
+    "back": "It's nice to meet you very well.",
+    "chrF": 30.2
+   },
+   {
+    "en": "Calls it like it is",
+    "mr": "\"१९९१-१९१-१९१-१९१-१९१-१९१-",
+    "back": "It was written in the sixth century B.C.E. and in the ninth century A.D.",
+    "chrF": 9.2
+   },
+   {
+    "en": "Best party ever, right?",
+    "mr": "आम्ही आमच्या सर्वात चांगल्या पार्टीत आहोत, बरोबर?",
+    "back": "And we're still on our best night of the week, aren't we?",
+    "chrF": 17.6
+   },
+   {
+    "en": "Bright green",
+    "mr": "उज्ज्वल हिरवा",
+    "back": "It's a yellow yellow yellow.",
+    "chrF": 3.7
+   },
+   {
+    "en": "Watch TV? Or read something?",
+    "mr": "आम्हाला टीव्ही बघायचं?",
+    "back": "How do you want to be on a TV show?",
+    "chrF": 9.6
+   },
+   {
+    "en": "Right? He always says that.",
+    "mr": "असं तो नेहमी म्हणतो.",
+    "back": "That's what he always says in the stories of the hymns.",
+    "chrF": 41.9
+   },
+   {
+    "en": "And we can have a contest for the best meat-beater in the community.",
+    "mr": "आणि आम्ही समुदायाच्या सर्वोत्तम मांस-बेटरसाठी एक स्पर्धा करू शकतो.",
+    "back": "And we can feed the grain of wheat to the wheat grain for grain, grain and grain.",
+    "chrF": 23.2
+   },
+   {
+    "en": "Lunch was good",
+    "mr": "डिनर चांगला होता",
+    "back": "I'd like to have had a good time in a few months.",
+    "chrF": 15.2
+   },
+   {
+    "en": "Yeah, right! I'm basically a prodigy.",
+    "mr": "मी मुळात एक चमत्कार आहे.",
+    "back": "I'm basically a sh sh shrimp.",
+    "chrF": 41.3
+   },
+   {
+    "en": "I feel hungry now.",
+    "mr": "पण आता मला भूक लागली आहे.",
+    "back": "   :  \" \" \". .",
+    "chrF": 1.3
+   },
+   {
+    "en": "Mix of both",
+    "mr": "",
+    "back": "? ?",
+    "chrF": 0.0
+   },
+   {
+    "en": "Yes, I love our multicultural neighborhood.",
+    "mr": "मला आमची बहुसांस्कृतिक शेजारची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची मुलुची",
+    "back": "I like our multicultural neighbors, our neighborhoods, our neighbourhoods.",
+    "chrF": 67.9
+   },
+   {
+    "en": "Pizza sounds great!",
+    "mr": "पिझ्झाचा आवाज उत्तम आहे - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+    "back": "I'm sure you'll like it very much.",
+    "chrF": 7.9
+   },
+   {
+    "en": "I feel tired",
+    "mr": "मला खूप थकवा वाटतो.",
+    "back": "I'm just too tired to be in the shadow of a bitch.",
+    "chrF": 21.7
+   },
+   {
+    "en": "Morning! I feel good.",
+    "mr": "सकाळ, मला खूप बरे वाटत आहे.",
+    "back": "In the early morning, I feel very well in the early evening.",
+    "chrF": 28.0
+   },
+   {
+    "en": "She eats all of Robert's food.",
+    "mr": "ती रॉबर्टचे सर्व जेवण खात आहे.",
+    "back": "She's eating all the food in the mouth of the Machuchuchu.",
+    "chrF": 21.9
+   },
+   {
+    "en": "I hope she embraces her journey and learns from every experience along the way.",
+    "mr": "मला आशा आहे की ती आपल्या प्रवासाचा स्वीकार करेल आणि त्या मार्गावरील प्रत्येक अनुभवातून शिकेल.",
+    "back": "I hope that she will take her journey to the other side of the ocean and learn from each and every experience along the way.",
+    "chrF": 63.2
+   },
+   {
+    "en": "Joshua, can you help?",
+    "mr": "जोशुआ, तू मला मदत करू शकतोस का?",
+    "back": "Tadzhava, can you help me with that?",
+    "chrF": 54.3
+   },
+   {
+    "en": "I hope it’s sweet",
+    "mr": "मला आशा आहे की ते तुझ्यासाठी गोड आहे",
+    "back": "I hope it's not too sweet.",
+    "chrF": 52.7
+   },
+   {
+    "en": "Yeah, I try. Love her smile.",
+    "mr": "मी प्रयत्न करतो. मला तिचं हसणं खूप आवडतं.",
+    "back": "I can't. I love the way she laughs.",
+    "chrF": 13.3
+   },
+   {
+    "en": "I feel more hopeful now.",
+    "mr": "मला आता तुझ्याबद्दल अधिक आशा वाटते.",
+    "back": "Ga Ga Ga ̋n ̋a ̋en.",
+    "chrF": 2.7
+   },
+   {
+    "en": "Need phone numbers",
+    "mr": "मला फोन नंबरची आवश्यकता आहे",
+    "back": "I don't know how to use it.",
+    "chrF": 9.9
+   },
+   {
+    "en": "I will try",
+    "mr": "मी प्रयत्न करू",
+    "back": "I'm gonna try it.",
+    "chrF": 15.4
+   },
+   {
+    "en": "Met diverse people",
+    "mr": "मी विविध लोकांना भेटलो",
+    "back": "I've had a lot of good times in my life.",
+    "chrF": 9.7
+   },
+   {
+    "en": "She took it without fussing.",
+    "mr": "तिने तो त्रास न देता घेतला.",
+    "back": "That's why I'm here.",
+    "chrF": 5.9
+   },
+   {
+    "en": "Very funny, real comedy show.",
+    "mr": "खूप मजेशीर, रिअल कॉमेडी शो.",
+    "back": "It's a very funny, real-life comedy show.",
+    "chrF": 77.0
+   },
+   {
+    "en": "Exactly! When I eat my bread, I feel connected to all those different experiences.",
+    "mr": "जेव्हा मी माझे भाकरी खातो तेव्हा मला त्या वेगवेगळ्या अनुभवांशी जोडलेले वाटते.",
+    "back": "In the meantime, when I eat my bread, I also feel connected to these different experiences.",
+    "chrF": 70.5
+   },
+   {
+    "en": "I am feeling relatively good this evening, thank you for asking.",
+    "mr": "मी आज संध्याकाळी तुलनेने चांगले आहे, पण, मला विचारल्याबद्दल धन्यवाद.",
+    "back": "I'm feeling pretty good this evening, but thank you for asking me.",
+    "chrF": 68.6
+   },
+   {
+    "en": "Thinking about moving in.",
+    "mr": "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - .",
+    "back": "I'm not going to tell you what happened.",
+    "chrF": 12.5
+   },
+   {
+    "en": "Yes, I heard. Emily wants to follow in Elizabeth's footsteps.",
+    "mr": "एमिलीला एलिझाबेथच्या पावलावर पाऊल ठेवण्याची इच्छा आहे.",
+    "back": "Two-thirds want to follow in Elizabeth's footsteps.",
+    "chrF": 64.5
+   },
+   {
+    "en": "I would like mashed potatoes and green beans.",
+    "mr": "मला बटाटा पिशाच आणि हरी द्राक्षाची मिरची हवी आहे.",
+    "back": "  () ) - : ! . - , ?",
+    "chrF": 0.5
+   },
+   {
+    "en": "Exactly! We need more people like her.",
+    "mr": "आम्हाला तिच्यासारख्या अधिक लोकांची गरज आहे.",
+    "back": "If you're reading this, you'll be able to read the Bible.",
+    "chrF": 13.4
+   },
+   {
+    "en": "That was hers",
+    "mr": "ती तुझी होती",
+    "back": "Ah-e, I'm not you.",
+    "chrF": 4.2
+   },
+   {
+    "en": "You’re right about that. It’s amazing how resilient some people can be.",
+    "mr": "तुम्ही बरोबर आहात. हे आश्चर्यकारक आहे की काही लोक किती लवचिक असू शकतात.",
+    "back": "You're right. It's amazing how resilient some people can be in the long run.",
+    "chrF": 69.4
+   },
+   {
+    "en": "And you know, we’ll probably have to deal with all her 'helpful' suggestions for decorating.",
+    "mr": "आणि तुम्हाला माहीत आहे, आम्हाला तिच्या सजावटीच्या सर्व 'उपयोगी' सूचनांचा विचार करावा लागेल.",
+    "back": "And you know, we'll have to consider all the \"useful\" tips for wearing jewelry in jewellery.",
+    "chrF": 34.5
+   },
+   {
+    "en": "I can just picture it now. You might need a banana bedspread to match!",
+    "mr": "आता मी कल्पना करू शकतो. तुम्हाला बॅनन बेडकव्हरची गरज पडेल.",
+    "back": "Now I can imagine that you'll need an Exoon-on-a-Zon e-Zoon-on with an e-zon-on.",
+    "chrF": 16.5
+   },
+   {
+    "en": "Exactly! It's such a reminder of how rich our community is. And it’s great to see everyone appreciating each other's cultures like that.",
+    "mr": "अगदी! हे आपल्या समुदायाची किती श्रीमंत आहे याची आठवण करून देणारे आहे. आणि प्रत्येकाला एकमेकांच्या संस्कृतीची अशी प्रशंसा करताना पाहून खूप छान वाटतं.",
+    "back": "It's a reminder of the richness of our communities and the diversity of our nation's heritage, and it's great to see everyone appreciating each other's culture.",
+    "chrF": 62.5
+   },
+   {
+    "en": "Sounds fun! Let’s finish your water first",
+    "mr": "मस्त वाटतं. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+    "back": "It sounds cool. . . .",
+    "chrF": 10.0
+   },
+   {
+    "en": "You won’t be disappointed",
+    "mr": "तुझ्यातून निराश होणार नाही",
+    "back": "She is not going to let her sister in a bad mood, but she is going to be happy and happy.",
+    "chrF": 15.1
+   },
+   {
+    "en": "Right! They really need it.",
+    "mr": "ठीक आहे, त्यांना तुमची गरज आहे.",
+    "back": "They're gonna need you.",
+    "chrF": 20.9
+   },
+   {
+    "en": "She really is. So patient",
+    "mr": "ती खरोखर आहे.",
+    "back": ".. .. ... .. .. .. . .. ..",
+    "chrF": 0.8
+   },
+   {
+    "en": "Was it serious?",
+    "mr": "ती गंभीर होती का? - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+    "back": "It's been a while since I've seen you.",
+    "chrF": 13.2
+   },
+   {
+    "en": "Oh really? That's a surprise.",
+    "mr": "खरं तर, हे एक आश्चर्य आहे.",
+    "back": "In fact, it's a bit of a whirlwind.",
+    "chrF": 11.3
+   },
+   {
+    "en": "Hey Emily, how's your day going?",
+    "mr": "एमिली, तुझा दिवस कसा गेला?",
+    "back": "    ??  ♪ ♪ ♪ ♪  \" \"  /  ()  ̄  ♫ ",
+    "chrF": 0.7
+   },
+   {
+    "en": "Definitely! We can have a taco night soon.",
+    "mr": "नक्कीच, आम्ही लवकरच एक टाका-उ-का-उ-उ-का-उ-का-उ करू शकतो.",
+    "back": "Certainly, we will soon be able to give our very best to the masters.",
+    "chrF": 15.9
+   },
+   {
+    "en": "Sounds delicious! But I noticed something. Your breath is a bit strong today.",
+    "mr": "पण मला काहीतरी लक्षात आलं. आज तुझा श्वास थोडा मजबूत आहे.",
+    "back": "But there's something I noticed. You're still breathing a little too hard in your sleep at night.",
+    "chrF": 37.0
+   },
+   {
+    "en": "Absolutely! So many backgrounds. Got any favorites?",
+    "mr": "नक्कीच, इतक्या अनेक पार्श्वभूमी आहेत.",
+    "back": "And, of course, for the same reason, there are so many different kinds of weeds.",
+    "chrF": 17.5
+   },
+   {
+    "en": "Oh, just a little something special",
+    "mr": "तुझ्यासाठी काहीतरी खास आहे.",
+    "back": "I'm not too young.",
+    "chrF": 5.6
+   },
+   {
+    "en": "People can be so complicated sometimes.",
+    "mr": "कधीकधी लोक खूप क्लिष्ट असतात.",
+    "back": "That's why it's so complicated.",
+    "chrF": 37.7
+   },
+   {
+    "en": "That’s a beautiful thought, Michael. Do you have any other favorite foods that connect you to your culture?",
+    "mr": "ते एक सुंदर विचार आहे, मायकल. तुम्हाला तुमच्या संस्कृतीशी जोडणारे इतर काही आवडते पदार्थ आहेत का?",
+    "back": "That's a beautiful idea, Michael and the Cult, and the Counter-Strike and the Colony. Do you have any other favorite foods that connect you to your culture?",
+    "chrF": 77.3
+   },
+   {
+    "en": "You're welcome. I love spending time with you like this",
+    "mr": "मला तुझ्यासोबत वेळ घालवायला आवडतं.",
+    "back": "That's why I love spending time with you.",
+    "chrF": 54.5
+   },
+   {
+    "en": "You’re welcome! Do you want anything to drink?",
+    "mr": "तुम्हाला काही पिण्याची इच्छा आहे का?",
+    "back": "I'd like to give you a little bit.",
+    "chrF": 9.6
+   },
+   {
+    "en": "A night owl, huh? Fancy that!",
+    "mr": "मला ते आवडतं!",
+    "back": "Ha Ha Ha-Hin's also.",
+    "chrF": 4.4
+   },
+   {
+    "en": "Wow, that’s big! Exciting!",
+    "mr": "अरे वा, हे खूप मोठं आहे!",
+    "back": "Wow, that's a pretty pretty big diva.",
+    "chrF": 30.7
+   },
+   {
+    "en": "Right! It’s important for everyone to feel included and appreciated. Amanda’s actions are a perfect example of how one person can influence the community.",
+    "mr": "बरोबर! प्रत्येकाला समाविष्ट आणि कौतुक वाटणे महत्वाचे आहे. अमांडाच्या कृती एक व्यक्ती समुदायावर कसा प्रभाव टाकू शकते याचे उत्तम उदाहरण आहेत.",
+    "back": "It's important to be inclusive and respectful in the community, and to have compassion and compassion for all. Amanda's actions are a great example of how an individual can make an impact on a community.",
+    "chrF": 43.7
+   },
+   {
+    "en": "I know but maybe ask him next time? You could share!",
+    "mr": "मला माहीत आहे, पण पुढच्या वेळी त्याला विचारा.",
+    "back": "I know, but the next time I'm going to ask him if he doesn't want to.",
+    "chrF": 32.7
+   },
+   {
+    "en": "Yeah, she sure does! You think she enjoys the food?",
+    "mr": "तिला खायला आवडतं असं वाटतं का?",
+    "back": "Do you think that she doesn't like to eat in a bar?",
+    "chrF": 25.2
+   },
+   {
+    "en": "Hey, do you know why Andrew is calling all of John's friends?",
+    "mr": "अरे, तुला माहित आहे का की अँड्र्यू हा जॉनीच्या सर्व मित्रांना फोन करत आहे?",
+    "back": "Hey Hey Hey, Hey, hey, Hey Hey. Hey, Dude, Hey! Hey Hey!",
+    "chrF": 5.9
+   },
+   {
+    "en": "That's great to hear! Ready for breakfast?",
+    "mr": "आपण नाश्त्यासाठी तयार आहोत?",
+    "back": "It's going to be a little bit longer than it's supposed to be.",
+    "chrF": 13.0
+   },
+   {
+    "en": "Do you have a favorite dish?",
+    "mr": "आपल्या आवडत्या डिशचा एक भाग आहे का?",
+    "back": "Do you have a shake in your favourite dish?",
+    "chrF": 67.2
+   },
+   {
+    "en": "Just don’t forget me when you’re a millionaire!",
+    "mr": "तुम्ही करोडपती झाल्यावर मला विसरू नका!",
+    "back": "Don't forget me when you're a millionaire.",
+    "chrF": 69.1
+   },
+   {
+    "en": "Absolutely! So much to celebrate!",
+    "mr": "आम्हाला आनंदी करण्यासाठी खूप काही आहे!",
+    "back": "You can't be happy if you don't have enough money to pay your debts.",
+    "chrF": 11.7
+   },
+   {
+    "en": "Absolutely! It's wonderful to see everyone come together and share their traditions. Did you get a chance to watch any of the performances?",
+    "mr": "नक्कीच! सर्वांना एकत्र येताना आणि आपली परंपरा सामायिक करताना पाहणे छान आहे. तुम्हाला काही कामगिरी पाहण्याची संधी मिळाली का?",
+    "back": "Of course! It's great to see everyone coming together and sharing our songs and our traditions. Have you had a chance to see some of our achievements?",
+    "chrF": 46.9
+   },
+   {
+    "en": "Absolutely! Just us two and insomnia!",
+    "mr": "मला झोप येत नाही, मला झोप येत नाही.",
+    "back": "I can't sleep at night. I'm not sleeping at night\".",
+    "chrF": 10.4
+   },
+   {
+    "en": "True! Unity in diversity",
+    "mr": "आपल्यामध्ये विविधता आहे, आपल्यात एकता आहे, आपल्यात विविधता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता आहे, आपल्यात एकता",
+    "back": "We have diversity, we have unity, there is diversity in us, there's unity in you, there are unities in you.",
+    "chrF": 32.4
+   },
+   {
+    "en": "Thank you, Sarah. I appreciate it.",
+    "mr": "धन्यवाद, सारा. मी कौतुक करतो.",
+    "back": "I'd like to see you in a little bit.",
+    "chrF": 11.7
+   },
+   {
+    "en": "A video call would be nice. They love seeing you.",
+    "mr": "आम्हाला भेटायला आवडेल.",
+    "back": "I'd like to have a chance to get to the moon.",
+    "chrF": 10.3
+   },
+   {
+    "en": "Oh really? What happened?",
+    "mr": "मला काय झालं?",
+    "back": "Hey, what happened to me?",
+    "chrF": 45.9
+   },
+   {
+    "en": "Wow, that must've been fun!",
+    "mr": "अरे वा, मजा आली असेल!",
+    "back": "\"Hello, it must have been fun!\"",
+    "chrF": 51.5
+   },
+   {
+    "en": "Hey Michael, how was your day?",
+    "mr": "मायकल, तुझा दिवस कसा गेला?",
+    "back": "Michael, how'd your day go?",
+    "chrF": 58.6
+   },
+   {
+    "en": "Okay, let’s get you some. How about a glass of cold water?",
+    "mr": "एक ग्लास थंड पाणी घ्या.",
+    "back": "Do not drink a glass of cold water.",
+    "chrF": 37.8
+   },
+   {
+    "en": "Yep, just a check-up. Nothing to worry about.",
+    "mr": "मी फक्त तपासणी करतो, काळजी करण्याची काहीच गरज नाही.",
+    "back": "I'm just checking it out, and there's nothing to worry about.",
+    "chrF": 55.4
+   },
+   {
+    "en": "Sure! Do you want sauce?",
+    "mr": "नक्कीच. तुम्हाला सॉस-आउ-आउ-आउ-आउ चा आवडेल का?",
+    "back": "Of course. Would you like a sauce-a-o-o?",
+    "chrF": 21.4
+   },
+   {
+    "en": "Hey there! How's your afternoon going?",
+    "mr": "सकाळचा दिवस कसा गेला?",
+    "back": "\"How was your morning?\"",
+    "chrF": 20.4
+   },
+   {
+    "en": "Perfect! I will get that ready for you. Any sides you want?",
+    "mr": "मी ते तुमच्यासाठी तयार करीन.",
+    "back": "I'll make it for you in a little bit.",
+    "chrF": 14.7
+   },
+   {
+    "en": "That sounds delicious! Let’s plan for it.",
+    "mr": "छान वाटतंय. चला त्याचं नियोजन करूया.",
+    "back": "That sounds good. Let's plan it.",
+    "chrF": 39.5
+   },
+   {
+    "en": "Hey, how’s it going today?",
+    "mr": "अरे, आजचा दिवस कसा गेला?",
+    "back": "\"Hey, how's your day going?\"",
+    "chrF": 40.8
+   },
+   {
+    "en": "Nice choice! Do you want toppings?",
+    "mr": "छानच निवड केली आहेस.",
+    "back": "That's a very good choice.",
+    "chrF": 18.4
+   },
+   {
+    "en": "Hey, how's it going? Ready for dinner soon?",
+    "mr": "आम्ही लवकरच जेवायला तयार आहोत?",
+    "back": "Are we ready for the next meal?",
+    "chrF": 19.1
+   },
+   {
+    "en": "What else today? Any plans?",
+    "mr": "आज आणखी काय करायचं?",
+    "back": "Ināya, what else do you want to do today?",
+    "chrF": 38.0
+   },
+   {
+    "en": "Hey there! How's it going?",
+    "mr": "नमस्कार, काय चाललंय?",
+    "back": " , what's going on?",
+    "chrF": 19.5
+   },
+   {
+    "en": "Right? Perfect blend",
+    "mr": "बरोबर आहे का?",
+    "back": "Do you have any idea of how it's supposed to work?",
+    "chrF": 8.9
+   },
+   {
+    "en": "It sure was! We should plan another trip like that soon.",
+    "mr": "आपण लवकरच अशाच प्रकारचा दुसरा प्रवास नियोजित केला पाहिजे.",
+    "back": "We should plan another trip of this kind in the near future.",
+    "chrF": 53.2
+   },
+   {
+    "en": "Okay, but I have to ask. Did you eat Robert's lunch again?",
+    "mr": "ठीक आहे, पण मला विचारायचं आहे, तुम्ही पुन्हा रॉबर्टचं जेवण खाल्ले का?",
+    "back": "Okay, but I'm gonna ask you guys, do you ever eat Robert's food again?",
+    "chrF": 47.4
+   },
+   {
+    "en": "That sounds fun! Does Susan want to talk?",
+    "mr": "सुसानला त्याच्याशी बोलायचंय का?",
+    "back": "Do you want to talk to Dalia?",
+    "chrF": 30.6
+   },
+   {
+    "en": "They will be amazing!",
+    "mr": "- ते आश्चर्यकारक होतील! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+    "back": "- It's going to be amazing!",
+    "chrF": 46.3
+   },
+   {
+    "en": "Did you drink enough water today?",
+    "mr": "आपण आज पुरेसे पाणी प्यायलो का?",
+    "back": "Do you have enough water in your mouth today?",
+    "chrF": 50.8
+   },
+   {
+    "en": "Great idea! Do you want me to set that up?",
+    "mr": "छान कल्पना आहे. मी ते सेट करू का?",
+    "back": "That's a great idea. Can I set it up in a notch?",
+    "chrF": 29.4
+   },
+   {
+    "en": "That’s nice to hear! Did you catch any sleep earlier?",
+    "mr": "मला ऐकून आनंद झाला. तू आधी झोपला होतास का?",
+    "back": "I'm glad to hear that. Have you ever slept since?",
+    "chrF": 22.9
+   },
+   {
+    "en": "Yeah, that's tough. Have you talked to Amanda about it?",
+    "mr": "हो, हे कठीण आहे. तू अमांडाशी याबद्दल बोललास का?",
+    "back": "Yeah, it's hard. Did you talk to Amanda about it?",
+    "chrF": 52.2
+   },
+   {
+    "en": "It's been a long day, hasn't it? Want to sit outside for a bit?",
+    "mr": "तो एक लांब दिवस आहे, नाही का? आपण बाहेर थोडा वेळ बसून करू इच्छिता?",
+    "back": "It's going to be a long day, isn't it? Do you want to sit outside for a while?",
+    "chrF": 61.2
+   }
+  ],
+  "share_chrF_below_40": 0.725,
+  "share_with_latin_letters": 0.0,
+  "mean_word_ratio_vs_english": 2.2984857161167906,
+  "examples_worst": [
+   {
+    "en": "Moving to Nashville?",
+    "mr": "तुम्ही नॅशविलेला जात आहात?",
+    "back": "   ",
+    "chrF": 0.0
+   },
+   {
+    "en": "Tasty tacos today",
+    "mr": "आजचा नाश्ता",
+    "back": "  ",
+    "chrF": 0.0
+   },
+   {
+    "en": "Mix of both",
+    "mr": "",
+    "back": "? ?",
+    "chrF": 0.0
+   },
+   {
+    "en": "I would like mashed potatoes and green beans.",
+    "mr": "मला बटाटा पिशाच आणि हरी द्राक्षाची मिरची हवी आहे.",
+    "back": "  () ) - : ! . - , ?",
+    "chrF": 0.5
+   },
+   {
+    "en": "Hey Emily, how's your day going?",
+    "mr": "एमिली, तुझा दिवस कसा गेला?",
+    "back": "    ??  ♪ ♪ ♪ ♪  \" \"  /  ()  ̄  ♫ ",
+    "chrF": 0.7
+   }
+  ]
+ },
+ "gu": {
+  "n": 120,
+  "roundtrip_chrF_mean": 29.75150520623454,
+  "roundtrip_chrF_median": 27.426949486919728,
+  "kept_share": 0.9,
+  "kept_chrF_mean": 32.02869308159582,
+  "kept_chrF_median": 30.018240569892214,
+  "share_chrF_below_25": 0.4666666666666667,
+  "median_word_ratio_vs_english": 1.1483516483516483,
+  "share_runaway_ratio_gt_3": 0.09166666666666666,
+  "per_sentence": [
+   {
+    "en": "Good idea. Maybe she can share some of her snacks too.",
+    "gu": "સારો વિચાર. કદાચ તે અમને તેના કેટલાક નાસ્તા અમને પણ આપી શકે છે.",
+    "back": "Maybe he'll be able to give us some of his snacks while we're at it.",
+    "chrF": 30.6
+   },
+   {
+    "en": "Something tasty, please.",
+    "gu": "અથવા કંઈક સ્વાદિષ્ટ, કૃપા કરીને.",
+    "back": "Yogya yog yog yogurt or yogurt yogurt.",
+    "chrF": 6.3
+   },
+   {
+    "en": "Yes, she helps John’s family.",
+    "gu": "હા, તે જ્હોનના પરિવારને મદદ કરે છે.",
+    "back": "It's a good thing to do, but it's not a bad thing.",
+    "chrF": 6.0
+   },
+   {
+    "en": "Different cultures here",
+    "gu": "વિવિધ સંસ્કૃતિઓ",
+    "back": "    ἀ  ̓  ἐ  ὁ  ἰ  ̇  ",
+    "chrF": 0.0
+   },
+   {
+    "en": "I prefer it medium rare.",
+    "gu": "હું તમને મધ્યમ-અછત - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+    "back": "I'm going to give you a medium-deficiency -------- ----------",
+    "chrF": 19.8
+   },
+   {
+    "en": "Food brings people together.",
+    "gu": "એ છે કે ખોરાક લોકોને એકસાથે લાવે છે.",
+    "back": "One of the things that is important is that food brings people together.",
+    "chrF": 72.8
+   },
+   {
+    "en": "Not yet. But I think she should know. It’s unfair to Robert!",
+    "gu": "હજુ સુધી નહીં, પણ મને લાગે છે કે તેને ખબર હોવી જોઇએ. તે રોબર્ટ માટે અન્યાયી છે!",
+    "back": "Not yet, but I'm sure you'll be able to find out. It's unfair to Harry!",
+    "chrF": 31.2
+   },
+   {
+    "en": "Yes, please. Soon.",
+    "gu": "હા, કૃપા કરીને. ટૂંક સમયમાં.",
+    "back": "Please please please please, please please help.",
+    "chrF": 25.8
+   },
+   {
+    "en": "Music scene too!",
+    "gu": "- મ્યૂઝિક સીન પણ - - - - - - - - -",
+    "back": " ֹ ֹa ַ ֹııı ֹe ֹo וֹa ְa ֹα ֹi ֹs ֹ- ֵa ֶa ִa ָ ְe ַa ֲ ַ",
+    "chrF": 4.4
+   },
+   {
+    "en": "Next time, I’ll bring snacks.",
+    "gu": "આગલી વખતે, હું તમને નાસ્તા લાવીશ.",
+    "back": "Next time next time, I'll bring you a snack.",
+    "chrF": 58.2
+   },
+   {
+    "en": "Watch a movie",
+    "gu": "તમે મને એક ફિલ્મ જોઈ રહ્યા છો?",
+    "back": "Would you like to see me in a while while you're at school?",
+    "chrF": 11.1
+   },
+   {
+    "en": "Love you always",
+    "gu": "",
+    "back": "S.",
+    "chrF": 0.0
+   },
+   {
+    "en": "I enjoy trying new foods from different countries.",
+    "gu": "મને વિવિધ દેશોના નવા ખોરાકનો પ્રયાસ કરવો ગમે છે.",
+    "back": "I also like to try new dishes from different parts of the world.",
+    "chrF": 37.6
+   },
+   {
+    "en": "Emily thinks Susan is telling the truth.",
+    "gu": "એમિલી વિચારે છે કે સુસાન સત્ય કહે છે.",
+    "back": "Emily is surprised that she thinks that Susan is telling the truth.",
+    "chrF": 73.3
+   },
+   {
+    "en": "Not really. He’s frustrated. I feel bad for him.",
+    "gu": "ખરેખર નહીં. તે નિરાશ છે. હું તેના માટે દિલગીર છું.",
+    "back": "Sasha Sasha is very disappointed. I'm sorry for her.",
+    "chrF": 17.1
+   },
+   {
+    "en": "But worth it",
+    "gu": "પરંતુ તમે",
+    "back": "It's the",
+    "chrF": 7.3
+   },
+   {
+    "en": "Maybe a walk? Fresh air.",
+    "gu": "કદાચ ચાલવા માટે? તાજી હવા માટે.",
+    "back": "Maybe for a walk? For a breath of fresh air.",
+    "chrF": 60.1
+   },
+   {
+    "en": "Mom shops online",
+    "gu": "યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ",
+    "back": "The United States of America is the world's largest exporter of food and beverage products to the United States.",
+    "chrF": 7.8
+   },
+   {
+    "en": "Thanks! I appreciate it.",
+    "gu": "હું તમને પ્રશંસા કરું છું.",
+    "back": "By the way, I also like to praise you.",
+    "chrF": 13.2
+   },
+   {
+    "en": "Yes, right on schedule today.",
+    "gu": "હા, આજે સમયસર.",
+    "back": "Come on, come on. Come on.",
+    "chrF": 6.9
+   },
+   {
+    "en": "Yes, she left the restaurant.",
+    "gu": "હા, તેણીએ રેસ્ટોરન્ટ છોડી દીધી હતી.",
+    "back": "Oh Oh, oh oh, oh, ooh, oh wow, oh how she left the restaurant.",
+    "chrF": 68.2
+   },
+   {
+    "en": "Absolutely! Different breads can reflect our diverse community and cultures, which is fascinating.",
+    "gu": "ચોક્કસ! અલગ-અલગ ચાવીઓ આપણા વિવિધ સમુદાયો અને સંસ્કૃતિઓને પ્રતિબિંબિત કરી શકે છે, જે આકર્ષક છે.",
+    "back": "Certainly! Different varieties of sparkling eggs can be used for different purposes in different cultures, which is fascinating.",
+    "chrF": 49.2
+   },
+   {
+    "en": "Yes! I really enjoy Honeycrisp apples. They are sweet and crunchy, perfect for breakfast.",
+    "gu": "હા, મને હનીક્રીસ્પીના સફરજનનો ખૂબ જ આનંદ છે. તેઓ મીઠી અને ક્રુન્જિ છે, નાસ્તો માટે સંપૂર્ણ છે.",
+    "back": "Yes, I really like honeycomb apples. They're sweet and crunchy, perfect for breakfast.",
+    "chrF": 71.6
+   },
+   {
+    "en": "Moving to Nashville?",
+    "gu": "તમે નેશવિલે જઈ રહ્યા છો?",
+    "back": "You're going to be a good-for-nothing for a long time.",
+    "chrF": 15.6
+   },
+   {
+    "en": "I think it's wonderful to see diversity in career choices. Everyone brings their own unique experiences.",
+    "gu": "મને લાગે છે કે કારકિર્દીની પસંદગીઓમાં વિવિધતા જોવા મળે છે. દરેક વ્યક્તિ પોતાના અનન્ય અનુભવો લાવે છે.",
+    "back": "I also think that there is a huge diversity in career choices among the elderly as well as those with disabilities. Everyone brings their own unique experiences.",
+    "chrF": 72.3
+   },
+   {
+    "en": "Yes, I heard that Michael has beaten cancer. It is such a relief and a wonderful outcome.",
+    "gu": "હા, મેં સાંભળ્યું છે કે માઇકલને કેન્સર થયું છે. તે ખૂબ જ રાહત અને એક અદ્ભુત પરિણામ છે.",
+    "back": "Juhu, Juhu Johu, has been diagnosed with Juhu's cancer. Johu is very relieved and has a remarkable outcome.",
+    "chrF": 30.6
+   },
+   {
+    "en": "I help mom",
+    "gu": "હું મારી મમ્મીની મદદ કરું છું",
+    "back": "I'm in the middle of my younger year at the age of 10 years old.",
+    "chrF": 8.2
+   },
+   {
+    "en": "Tasty tacos today",
+    "gu": "આજે તમે તમારા માટે સ્વાદિષ્ટ ટેકો",
+    "back": "I'll be glad that you will be able to make your life worthwhile.",
+    "chrF": 9.7
+   },
+   {
+    "en": "Exactly! Who needs food from different countries when we can just beat the meat here?",
+    "gu": "કોને જુદા જુદા દેશોના ખોરાકની જરૂર છે જ્યારે આપણે અહીં માંસને હરાવી શકીએ?",
+    "back": "Yogya Yahi Yeh Yeh Yeh Jah Jah Jah Jahi Yeh Jagya Yeh Yeh Yahi Yahi Jah Jah Yahi Ye Yeh Yeh Jahi Kah Kah Kahya Yeh Yah Yah Yah Yahi Kahya Jah Jah jahi Yeh Jah Jaha Jah Jah Yeh Yeh Kya Kya Kya Hai Jah Jah Kahya Kahya Keh Yahi Yah Yah Jah Jah Yah Yah Jahi Jah Jaah Jah Jah Jahan Jaah Jaah Kahya Jaah Yahi Jaah",
+    "chrF": 4.3
+   },
+   {
+    "en": "It was nice to catch up.",
+    "gu": "તમને મળવાથી અમને આનંદ થયો.",
+    "back": "Dear, dear dear dear, I am very happy to meet you.",
+    "chrF": 9.4
+   },
+   {
+    "en": "Calls it like it is",
+    "gu": "તે કહે છે કે તે",
+    "back": "It's not the same thing that it's going to say.",
+    "chrF": 9.4
+   },
+   {
+    "en": "Best party ever, right?",
+    "gu": "અમે અમારી શ્રેષ્ઠ પાર્ટી છે, ખરું?",
+    "back": "You're going to be the best you're ever gonna be, right?",
+    "chrF": 33.7
+   },
+   {
+    "en": "Bright green",
+    "gu": "યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ",
+    "back": "YU U U U YU YUU U yU u yU yU U u u u yu u yua u yuo u yuu u you u yue u yū u yuuu u yuaa u yúa u yuiu u yuau u yueu u yuae u yuei u ytau u yiau u yiea u yieu u yiu u y",
+    "chrF": 2.1
+   },
+   {
+    "en": "Watch TV? Or read something?",
+    "gu": "શું આપણે ટેલિવિઝન જોવી?",
+    "back": "Do you want to go to the bathroom for a while?",
+    "chrF": 12.7
+   },
+   {
+    "en": "Right? He always says that.",
+    "gu": "તે હંમેશા એવું કહે છે.",
+    "back": "At the end of the day, it's always the same.",
+    "chrF": 29.8
+   },
+   {
+    "en": "And we can have a contest for the best meat-beater in the community.",
+    "gu": "અને અમે સમુદાયના શ્રેષ્ઠ માંસ-બિટર માટે સ્પર્ધા કરી શકીએ છીએ.",
+    "back": "And we'll be able to compete for the best meat-eaters in our neighbourhoods.",
+    "chrF": 39.7
+   },
+   {
+    "en": "Lunch was good",
+    "gu": "બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોરનું બપોર",
+    "back": "Afternoon afternoons afternoon afternoon, afternoon before noon, before noon and afternoon.",
+    "chrF": 4.5
+   },
+   {
+    "en": "Yeah, right! I'm basically a prodigy.",
+    "gu": "હા, સાચું છે, હું મૂળભૂત રીતે એક ચમત્કાર છું.",
+    "back": "Well, that's right, I'm basically a miracle.",
+    "chrF": 45.4
+   },
+   {
+    "en": "I feel hungry now.",
+    "gu": "હું હમણાં જ ભૂખ્યો છું.",
+    "back": "I'm so happy that I've had enough to eat.",
+    "chrF": 9.9
+   },
+   {
+    "en": "Mix of both",
+    "gu": "બંન્નેની મિશ્રણ",
+    "back": "The first is that there is a difference between the two. The second is that the second is, the second, the third, the fourth, the fifth, and the seventh, the sixth.",
+    "chrF": 4.9
+   },
+   {
+    "en": "Yes, I love our multicultural neighborhood.",
+    "gu": "હા, હું અમારા બહુસાંસ્કૃતિક ઉનાળામાં.",
+    "back": "Oh, wow, wow. Wow, wow!",
+    "chrF": 3.4
+   },
+   {
+    "en": "Pizza sounds great!",
+    "gu": "પિઝા સરસ લાગે છે - - - - - - - - - - - - - - - - - - - - - -",
+    "back": " ( (ııı).",
+    "chrF": 0.0
+   },
+   {
+    "en": "I feel tired",
+    "gu": "મને થાક લાગે છે",
+    "back": "I'm so tired of being a bitch.",
+    "chrF": 26.1
+   },
+   {
+    "en": "Morning! I feel good.",
+    "gu": "મને સારું લાગે છે.",
+    "back": "It's a good thing to be nice.",
+    "chrF": 20.9
+   },
+   {
+    "en": "She eats all of Robert's food.",
+    "gu": "તે રોબર્ટના બધા ખોરાક ખાય છે.",
+    "back": "The eggs of the eggs are eaten by eggs, eggs and eggs.",
+    "chrF": 15.5
+   },
+   {
+    "en": "I hope she embraces her journey and learns from every experience along the way.",
+    "gu": "હું આશા રાખું છું કે તે પોતાની યાત્રાને સ્વીકારે અને માર્ગમાં દરેક અનુભવમાંથી શીખે.",
+    "back": "It is my hope that Jaya will be able to take up his journey and learn from every experience along the way.",
+    "chrF": 65.9
+   },
+   {
+    "en": "Joshua, can you help?",
+    "gu": "જોશુઆ, તમે મને મદદ કરી શકો છો?",
+    "back": "Joshua, you can't let me down to the bottom of the Torah.",
+    "chrF": 32.4
+   },
+   {
+    "en": "I hope it’s sweet",
+    "gu": "હું આશા રાખું છું કે તે તમારા માટે મીઠી છે",
+    "back": "I'm hoping it's a nice snack for you too.",
+    "chrF": 13.4
+   },
+   {
+    "en": "Yeah, I try. Love her smile.",
+    "gu": "હા, હું પ્રયત્ન કરું છું.",
+    "back": "Oh, yeah, well, by the way.",
+    "chrF": 14.3
+   },
+   {
+    "en": "I feel more hopeful now.",
+    "gu": "હવે હું વધુ આશાવાદી અનુભવું છું.",
+    "back": "By the way, I'm a little bit more optimistic.",
+    "chrF": 15.3
+   },
+   {
+    "en": "Need phone numbers",
+    "gu": "તમને ફોન નંબરોની જરૂર છે",
+    "back": "In the U.S. and in the UK, there is a lot of people who want to know how to make a phone call.",
+    "chrF": 15.2
+   },
+   {
+    "en": "I will try",
+    "gu": "તમે છો છો?",
+    "back": ".. .. ..!",
+    "chrF": 0.0
+   },
+   {
+    "en": "Met diverse people",
+    "gu": "યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ",
+    "back": "The United States of America is the world's largest exporter of food and beverage products to the United States.",
+    "chrF": 10.1
+   },
+   {
+    "en": "She took it without fussing.",
+    "gu": "તેણીએ તેને ખલેલ પહોંચાડ્યા વિના લીધો.",
+    "back": "She nodded her ears and nodded without hesitating.",
+    "chrF": 32.8
+   },
+   {
+    "en": "Very funny, real comedy show.",
+    "gu": "ખૂબ જ રમુજી, વાસ્તવિક કોમેડી ટુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ",
+    "back": "Very funny, very real and very funny and very very funny.",
+    "chrF": 35.7
+   },
+   {
+    "en": "Exactly! When I eat my bread, I feel connected to all those different experiences.",
+    "gu": "જ્યારે હું મારી રોટલી ખાઉં છું, ત્યારે મને તે વિવિધ અનુભવો સાથે જોડાયેલું લાગે છે.",
+    "back": "When I eat a portion of my pork's pork, I feel that it is linked to different experiences.",
+    "chrF": 47.9
+   },
+   {
+    "en": "I am feeling relatively good this evening, thank you for asking.",
+    "gu": "હું આ સાંજે પ્રમાણમાં સારી રીતે અનુભવી રહ્યો છું, પરંતુ, હું તમને પૂછવા માટે આભાર માનું છું.",
+    "back": "I'm going to be a little late this evening in my sleep, but I'd like to thank you for asking.",
+    "chrF": 53.0
+   },
+   {
+    "en": "Thinking about moving in.",
+    "gu": "યુ - યુ - યુ - યુ - યુ - યુ - યુ - યુ - યુ - યુ - યુ - યુ",
+    "back": "\" наш наш наш и наш наш ро ро рой в наш наш \" \" \" , \" \" и \" \" рой \" , и \" е \" , как он был жив в рой ?",
+    "chrF": 0.0
+   },
+   {
+    "en": "Yes, I heard. Emily wants to follow in Elizabeth's footsteps.",
+    "gu": "હા, મેં સાંભળ્યું છે. એમિલી ઇસીના પગલે ચાલવા માંગે છે.",
+    "back": "Hey, hey, hey. Uh-huh. Uh, uh-huh, uh, uh. Uh. Uh Uh, Uh, um, uh uh, Uh. Yeah, uh... Uh, yeah, uhh, uh huh. Uh uh, ah, uh! Uh, Ugh, uhuh, uhhh, uhhhhh, uhhhh, uh Uh, ugh. Uh... uh uh uh.",
+    "chrF": 4.2
+   },
+   {
+    "en": "I would like mashed potatoes and green beans.",
+    "gu": "મને બટાકાના પિરાઈ અને લીલા બદામ ગમશે.",
+    "back": "I like the potatoes and the green berries.",
+    "chrF": 44.6
+   },
+   {
+    "en": "Exactly! We need more people like her.",
+    "gu": "અમને તેના જેવા વધુ લોકોની જરૂર છે.",
+    "back": "Ha Ha Ha Kha Khaooh, Ha Ha Hooh, ha Ha Haoh! Ha Haoooh, Hooh. Haoh Haoh, hooh! Hooh!",
+    "chrF": 2.6
+   },
+   {
+    "en": "That was hers",
+    "gu": "તે તમારી યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ યુ",
+    "back": "It's your U U U Y Y Y U Y U y U y u y U Y u y u Y u Y U",
+    "chrF": 3.3
+   },
+   {
+    "en": "You’re right about that. It’s amazing how resilient some people can be.",
+    "gu": "તે આશ્ચર્યજનક છે કે કેટલા લોકો પ્રતિરોધક હોઈ શકે છે.",
+    "back": "It's not surprising to see how many people can be immune to the urine for too long.",
+    "chrF": 28.3
+   },
+   {
+    "en": "And you know, we’ll probably have to deal with all her 'helpful' suggestions for decorating.",
+    "gu": "અને તમે જાણો છો, આપણે કદાચ તેના તમામ 'ઉપયોગી' સુશોભન સૂચનો સાથે વ્યવહાર કરવો પડશે.",
+    "back": "And you know, we're probably going to have to deal with all of the little things in our hair that we've been trying to get our hands on.",
+    "chrF": 45.6
+   },
+   {
+    "en": "I can just picture it now. You might need a banana bedspread to match!",
+    "gu": "હું હમણાં જ તેને કલ્પના કરી શકું છું.",
+    "back": "I can't even imagine how much longer it would be.",
+    "chrF": 14.7
+   },
+   {
+    "en": "Exactly! It's such a reminder of how rich our community is. And it’s great to see everyone appreciating each other's cultures like that.",
+    "gu": "બરાબર! તે આપણા સમુદાયની કેટલી સમૃદ્ધ છે તેની યાદ અપાવે છે. અને દરેકને એકબીજાની સંસ્કૃતિની આ રીતે પ્રશંસા કરતા જોવું સરસ છે.",
+    "back": "It is a reminder of the richness and prosperity of our wealthy community. And it is nice to see everyone praising each other's culture in this way.",
+    "chrF": 50.5
+   },
+   {
+    "en": "Sounds fun! Let’s finish your water first",
+    "gu": "તે આનંદદાયક લાગે છે! ચાલો તમને પહેલા તમારા પાણી પૂરું કરીએ.",
+    "back": "Let's go and get some water, and let's have some water.",
+    "chrF": 16.1
+   },
+   {
+    "en": "You won’t be disappointed",
+    "gu": "તમે તમારા પર નિરાશ થશો નહીં",
+    "back": "Let us not let ourselves be disappointed. Let us never allow ourselves to be discouraged.",
+    "chrF": 42.2
+   },
+   {
+    "en": "Right! They really need it.",
+    "gu": "એમને આપની જરૂર છે.",
+    "back": "Hey, hey hey hey, hey! Hey hey hey!",
+    "chrF": 8.5
+   },
+   {
+    "en": "She really is. So patient",
+    "gu": "તે ખરેખર છે.",
+    "back": "In the end, it's just a shame in itself.",
+    "chrF": 12.3
+   },
+   {
+    "en": "Was it serious?",
+    "gu": "",
+    "back": "S.",
+    "chrF": 0.0
+   },
+   {
+    "en": "Oh really? That's a surprise.",
+    "gu": "ઓહ, ખરેખર? તે તમને આશ્ચર્યજનક છે.",
+    "back": "Ohh, ohh, that's a surprise to you.",
+    "chrF": 52.3
+   },
+   {
+    "en": "Hey Emily, how's your day going?",
+    "gu": "હેય એમિલી, તમારો દિવસ કેવી રીતે ચાલી રહ્યો છે?",
+    "back": "Yoya Yuyaya Yuyyayaya Yuya Yuya Ayya, how's your day going?",
+    "chrF": 57.6
+   },
+   {
+    "en": "Definitely! We can have a taco night soon.",
+    "gu": "ટૂંક સમયમાં આપણે બે-કા-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ-એ",
+    "back": "Soon we will have two-ka-a-A-A a-A A-A.",
+    "chrF": 12.2
+   },
+   {
+    "en": "Sounds delicious! But I noticed something. Your breath is a bit strong today.",
+    "gu": "તમારા માટે સુખદ લાગે છે! પરંતુ મેં કંઈક નોંધ્યું છે. તમારી શ્વાસ આજે થોડી મજબૂત છે.",
+    "back": "But I noticed something. Your breath is a little strong today.",
+    "chrF": 70.0
+   },
+   {
+    "en": "Absolutely! So many backgrounds. Got any favorites?",
+    "gu": "ચોક્કસ! ઘણા બધા પૃષ્ઠભૂમિ. તમે કોઈ મનપસંદ છો?",
+    "back": "There's a lot of backgrounds that you can go through with a bunch of stories. I'm not sure how many stories you could go through.",
+    "chrF": 27.9
+   },
+   {
+    "en": "Oh, just a little something special",
+    "gu": "ઓહ, માત્ર તમારા માટે થોડું કંઈક ખાસ",
+    "back": "Oh, oh, wow wow. Oh, wow, wow.",
+    "chrF": 4.7
+   },
+   {
+    "en": "People can be so complicated sometimes.",
+    "gu": "લોકો ક્યારેક ખૂબ જ જટિલ હોઈ શકે છે.",
+    "back": "On the other hand, people in our households tend to be overly sophisticated.",
+    "chrF": 24.8
+   },
+   {
+    "en": "That’s a beautiful thought, Michael. Do you have any other favorite foods that connect you to your culture?",
+    "gu": "તે એક સુંદર વિચાર છે, માઇકલ. શું તમારી પાસે કોઈ અન્ય મનપસંદ ખોરાક છે જે તમને તમારી સંસ્કૃતિ સાથે જોડે છે?",
+    "back": "It's a great idea for us, by the way, for the sake of a buckwheat. By the way. Do you have any other favorite foods that connect you to your culture?",
+    "chrF": 65.8
+   },
+   {
+    "en": "You're welcome. I love spending time with you like this",
+    "gu": "હું તમારી સાથે આ રીતે સમય પસાર કરવાનું પસંદ કરું છું",
+    "back": "You and your family are always happy to spend time with you and your loved ones.",
+    "chrF": 33.8
+   },
+   {
+    "en": "You’re welcome! Do you want anything to drink?",
+    "gu": "આપનું સ્વાગત છે. શું તમે કંઈક પીવા માંગો છો?",
+    "back": "You're welcome to join Yow Yow, Yow.",
+    "chrF": 25.3
+   },
+   {
+    "en": "A night owl, huh? Fancy that!",
+    "gu": "મને તે ગમે છે!",
+    "back": "Please please please!",
+    "chrF": 2.9
+   },
+   {
+    "en": "Wow, that’s big! Exciting!",
+    "gu": "વાહ, તે મહાન છે!",
+    "back": "Wow, wow wow wow! Wow wow wow. Wow! Wow!",
+    "chrF": 8.4
+   },
+   {
+    "en": "Right! It’s important for everyone to feel included and appreciated. Amanda’s actions are a perfect example of how one person can influence the community.",
+    "gu": "અધિકાર! દરેક વ્યક્તિ માટે સમાવિષ્ટ અને પ્રશંસાનો અનુભવ કરવો મહત્વપૂર્ણ છે. અમાન્ડાની ક્રિયાઓ એક વ્યક્તિ સમુદાયને કેવી રીતે પ્રભાવિત કરી શકે છે તેનું સંપૂર્ણ ઉદાહરણ છે.",
+    "back": "Right! It's important for everyone to feel empathy and appreciation. Amanda's actions are a perfect example of how an individual can influence a community.",
+    "chrF": 71.5
+   },
+   {
+    "en": "I know but maybe ask him next time? You could share!",
+    "gu": "હું જાણું છું, પણ કદાચ આગલી વખતે મને પૂછો? તમે મને શેર કરી શકો છો!",
+    "back": "I'm sure you'll be surprised if it's too late, but maybe the next time you ask me? You might want to share it with me!",
+    "chrF": 39.1
+   },
+   {
+    "en": "Yeah, she sure does! You think she enjoys the food?",
+    "gu": "તમને લાગે છે કે તે ખોરાકનો આનંદ માણે છે?",
+    "back": "What do you think about the fact that a buff's buff is a bug?",
+    "chrF": 19.9
+   },
+   {
+    "en": "Hey, do you know why Andrew is calling all of John's friends?",
+    "gu": "હે, તમે જાણો છો કે શા માટે એન્ડ્ર્યુ લૂસીને બધા જ્હોનના મિત્રોને ફોન કરે છે?",
+    "back": "Ohh, ohh, oohh, Ohh. Ohh! Ohhh, ohhh! Ohh ohh! Ahhh, wow, oh, ohhhhh, ohhhh, oh ohhh, ooh, ohhhhhh, ohohhh, Ohhh. Oh, Ohhhhh, Oh, oh yeah, oh my God! Oh oh oh oh, Oh Oh oh Oh oh, ooh oh oh! Oh Oh Ohhh Oh oh my god! Ohhhhh! Oh my God, oh Oh Oh my god, oh My God! Why does Andrew Lucien call all of John's friends?",
+    "chrF": 28.7
+   },
+   {
+    "en": "That's great to hear! Ready for breakfast?",
+    "gu": "શું આપણે નાસ્તો માટે તૈયાર છીએ?",
+    "back": "Young Young Young, Young Young by Young Young. Young Young young, young young young are you ready for young young?",
+    "chrF": 14.0
+   },
+   {
+    "en": "Do you have a favorite dish?",
+    "gu": "શું તમારી મનપસંદ રાંધણકળા છે?",
+    "back": "Yan Yan Yan, Yue Yan, Yan Yan Yang, Yuan Yan Yan and Yan Yan Yue.",
+    "chrF": 4.1
+   },
+   {
+    "en": "Just don’t forget me when you’re a millionaire!",
+    "gu": "જ્યારે તમે મિલિયોનેર હોવ ત્યારે મને ભૂલશો નહીં!",
+    "back": "Do you ever want to be a millionaire or a billionaire?",
+    "chrF": 35.9
+   },
+   {
+    "en": "Absolutely! So much to celebrate!",
+    "gu": "અમને ઉજવણી કરવા માટે ઘણું બધું છે!",
+    "back": "There is still much more to do than you and your grandchildren.",
+    "chrF": 15.6
+   },
+   {
+    "en": "Absolutely! It's wonderful to see everyone come together and share their traditions. Did you get a chance to watch any of the performances?",
+    "gu": "ચોક્કસ! દરેકને ભેગા થતા અને તેમની પરંપરાઓ વહેંચતા જોવું અદ્ભુત છે. શું તમને કોઈ પ્રદર્શન જોવાની તક મળી?",
+    "back": "Sure! It's wonderful to see everyone gathering together and sharing their traditions. Did you get a chance to see an exhibition?",
+    "chrF": 64.6
+   },
+   {
+    "en": "Absolutely! Just us two and insomnia!",
+    "gu": "ચોક્કસ, અમે બે અને અમે ઊંઘી રહ્યા!",
+    "back": "Sure enough, the two of us had been hanging out for a while.",
+    "chrF": 13.8
+   },
+   {
+    "en": "True! Unity in diversity",
+    "gu": "યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ. યુ",
+    "back": "This is a list of the countries of the European Union and of the United States of America, including the United Kingdom and the United Arab Emirates.",
+    "chrF": 11.8
+   },
+   {
+    "en": "Thank you, Sarah. I appreciate it.",
+    "gu": "આભાર, સારાહ. હું પ્રશંસા કરું છું.",
+    "back": "Ja Ja Jaja Ja Ja ja ja ja Jaja ja jaja jaja Jajaja Ja jajaja jajaa jaja.",
+    "chrF": 2.9
+   },
+   {
+    "en": "A video call would be nice. They love seeing you.",
+    "gu": "વીડિયો કોલ સરસ હશે.",
+    "back": "You'll be able to make a good video call on your own.",
+    "chrF": 27.0
+   },
+   {
+    "en": "Oh really? What happened?",
+    "gu": "મને શું થયું?",
+    "back": "Ohh, what happened to me?",
+    "chrF": 47.5
+   },
+   {
+    "en": "Wow, that must've been fun!",
+    "gu": "વાહ, તે મજા હોઈ શકે છે!",
+    "back": "Wow, wow, that could be fun!",
+    "chrF": 35.0
+   },
+   {
+    "en": "Hey Michael, how was your day?",
+    "gu": "હેય માઈકલ, તમારો દિવસ કેવી રહ્યો?",
+    "back": "Hey, hey, hey Michael, how was your day?",
+    "chrF": 91.1
+   },
+   {
+    "en": "Okay, let’s get you some. How about a glass of cold water?",
+    "gu": "એક ગ્લાસ ઠંડા પાણી વિશે શું?",
+    "back": "How about a glass of half an ounce of cold water?",
+    "chrF": 54.8
+   },
+   {
+    "en": "Yep, just a check-up. Nothing to worry about.",
+    "gu": "હા, માત્ર એક ચકાસણી, ચિંતા કરવાની જરૂર નથી.",
+    "back": "Oh wow, just one check, no need to worry.",
+    "chrF": 29.6
+   },
+   {
+    "en": "Sure! Do you want sauce?",
+    "gu": "ખાતરી કરો કે તમે ચટણી ચા ચા ચા ચા ચા ચા ચા ચા?",
+    "back": "Are you sure you're going to make a sauce of tea?",
+    "chrF": 23.3
+   },
+   {
+    "en": "Hey there! How's your afternoon going?",
+    "gu": "હેલો ત્યાં! કેવી રીતે તમારી બપોરના બપોરનો બપોરનો દિવસ ચાલી રહ્યો છે?",
+    "back": "Hello there! How's your lunch lunch going?",
+    "chrF": 54.0
+   },
+   {
+    "en": "Perfect! I will get that ready for you. Any sides you want?",
+    "gu": "હું તમારા માટે તે તૈયાર કરીશું.",
+    "back": "I'll get it ready for you soon enough.",
+    "chrF": 32.3
+   },
+   {
+    "en": "That sounds delicious! Let’s plan for it.",
+    "gu": "તે સ્વાદિષ્ટ લાગે છે! ચાલો આપણે તેના માટે યોજના બનાવીએ.",
+    "back": "It sounds delicious! Let's make a plan for it.",
+    "chrF": 76.1
+   },
+   {
+    "en": "Hey, how’s it going today?",
+    "gu": "હેલો, આજે કેવી રીતે ચાલી રહ્યું છે?",
+    "back": "How's it going? Hi, how is it going today?",
+    "chrF": 60.1
+   },
+   {
+    "en": "Nice choice! Do you want toppings?",
+    "gu": "સરસ પસંદગી. શું તમે ટોપિંગ્સ અથવા ટોપિંગ્સ પસંદ કરો છો?",
+    "back": "Great choice. Do you prefer topping or topping?",
+    "chrF": 38.9
+   },
+   {
+    "en": "Hey, how's it going? Ready for dinner soon?",
+    "gu": "અમને ટૂંક સમયમાં જ રાત્રિભોજન માટે તૈયાર કરીશું?",
+    "back": "Do you want us to get ready for dinner soon?",
+    "chrF": 50.6
+   },
+   {
+    "en": "What else today? Any plans?",
+    "gu": "આજે અમારો બીજો શું પ્લાન છે?",
+    "back": "What else do we have in mind today?",
+    "chrF": 42.9
+   },
+   {
+    "en": "Hey there! How's it going?",
+    "gu": "હેલો, અમને કેવી રીતે ચાલી રહ્યું છે?",
+    "back": "How's the weather? How are we doing?",
+    "chrF": 33.5
+   },
+   {
+    "en": "Right? Perfect blend",
+    "gu": "તમારા માટે એક સંપૂર્ણ મિશ્રણ",
+    "back": "We'll give you a perfect blend of weeds.",
+    "chrF": 47.1
+   },
+   {
+    "en": "It sure was! We should plan another trip like that soon.",
+    "gu": "આપણે જલ્દી જ આવી બીજી સફર કરવાની યોજના બનાવવી જોઈએ.",
+    "back": "We need to plan a second such trip very soon.",
+    "chrF": 22.8
+   },
+   {
+    "en": "Okay, but I have to ask. Did you eat Robert's lunch again?",
+    "gu": "ઠીક છે, પણ મારે પૂછવું છે. શું તમે ફરીથી રોબર્ટનું લંચ ખાધું છે?",
+    "back": "Okay, but I have to ask. Have you eaten Robert's lunch again?",
+    "chrF": 80.6
+   },
+   {
+    "en": "That sounds fun! Does Susan want to talk?",
+    "gu": "સુસાન તેની સાથે વાત કરવા માંગે છે?",
+    "back": "Susannah wants to talk to Susan?",
+    "chrF": 30.3
+   },
+   {
+    "en": "They will be amazing!",
+    "gu": "તમે તમે અદ્ભુત છો?",
+    "back": "Do you think you're amazing?",
+    "chrF": 34.8
+   },
+   {
+    "en": "Did you drink enough water today?",
+    "gu": "શું તમે આજે પૂરતું પાણી પીધું છે?",
+    "back": "Do you have enough water to drink today?",
+    "chrF": 65.6
+   },
+   {
+    "en": "Great idea! Do you want me to set that up?",
+    "gu": "સરસ વિચાર. શું તમે ઇચ્છો છો કે હું તેને સેટ કરું?",
+    "back": "Great idea. Would you like me to set it up?",
+    "chrF": 44.1
+   },
+   {
+    "en": "That’s nice to hear! Did you catch any sleep earlier?",
+    "gu": "તે સાંભળવા માટે સરસ છે. શું તમે પહેલાં ઊંઘી ગયા છો?",
+    "back": "It's nice to hear. Have you ever slept before?",
+    "chrF": 30.4
+   },
+   {
+    "en": "Yeah, that's tough. Have you talked to Amanda about it?",
+    "gu": "હા, તે મુશ્કેલ છે. શું તમે આ વિશે અમાન્ડા સાથે વાત કરી છે?",
+    "back": "Yes, it is difficult. Have you spoken to Amanda about this?",
+    "chrF": 43.6
+   },
+   {
+    "en": "It's been a long day, hasn't it? Want to sit outside for a bit?",
+    "gu": "તે એક લાંબો દિવસ હતો, તે નથી? તમે થોડા સમય માટે બહાર બેસી કરવા માંગો છો?",
+    "back": "It's been a long day, hasn't it? Do you want to sit out for a while?",
+    "chrF": 70.7
+   }
+  ],
+  "share_chrF_below_40": 0.7,
+  "share_with_latin_letters": 0.0,
+  "mean_word_ratio_vs_english": 2.3826522364334073,
+  "examples_worst": [
+   {
+    "en": "Different cultures here",
+    "gu": "વિવિધ સંસ્કૃતિઓ",
+    "back": "    ἀ  ̓  ἐ  ὁ  ἰ  ̇  ",
+    "chrF": 0.0
+   },
+   {
+    "en": "Love you always",
+    "gu": "",
+    "back": "S.",
+    "chrF": 0.0
+   },
+   {
+    "en": "Pizza sounds great!",
+    "gu": "પિઝા સરસ લાગે છે - - - - - - - - - - - - - - - - - - - - - -",
+    "back": " ( (ııı).",
+    "chrF": 0.0
+   },
+   {
+    "en": "I will try",
+    "gu": "તમે છો છો?",
+    "back": ".. .. ..!",
+    "chrF": 0.0
+   },
+   {
+    "en": "Thinking about moving in.",
+    "gu": "યુ - યુ - યુ - યુ - યુ - યુ - યુ - યુ - યુ - યુ - યુ - યુ",
+    "back": "\" наш наш наш и наш наш ро ро рой в наш наш \" \" \" , \" \" и \" \" рой \" , и \" е \" , как он был жив в рой ?",
+    "chrF": 0.0
+   }
+  ]
+ },
+ "hi": {
+  "n": 120,
+  "roundtrip_chrF_mean": 38.7160755830392,
+  "roundtrip_chrF_median": 40.23552843867468,
+  "kept_share": 0.9916666666666667,
+  "kept_chrF_mean": 38.513078303037645,
+  "kept_chrF_median": 40.227764832950506,
+  "share_chrF_below_25": 0.35,
+  "median_word_ratio_vs_english": 1.2857142857142858,
+  "share_runaway_ratio_gt_3": 0.016666666666666666,
+  "per_sentence": [
+   {
+    "en": "Good idea. Maybe she can share some of her snacks too.",
+    "hi": "अच्छा विचार. शायद वह हमारे साथ कुछ स्नैक्स साझा कर सकते हैं.",
+    "back": "Good idea. Maybe he can share some snacks with us in the bathroom.",
+    "chrF": 64.6
+   },
+   {
+    "en": "Something tasty, please.",
+    "hi": "या कुछ स्वादिष्ट, कृपया.",
+    "back": "(Smooth)",
+    "chrF": 5.3
+   },
+   {
+    "en": "Yes, she helps John’s family.",
+    "hi": "हाँ, वह जॉन के परिवार की मदद करती है।",
+    "back": "(Mary) She helps John's family.",
+    "chrF": 60.4
+   },
+   {
+    "en": "Different cultures here",
+    "hi": "विभिन्न संस्कृतियों के साथ",
+    "back": "────── - - -  - - var varying cultures.",
+    "chrF": 29.5
+   },
+   {
+    "en": "I prefer it medium rare.",
+    "hi": "मैं इसे मध्यम दुर्लभ रूप से पसंद करता हूँ।",
+    "back": "(Sori) I prefer it in a moderately rare form.",
+    "chrF": 42.4
+   },
+   {
+    "en": "Food brings people together.",
+    "hi": "भोजन लोगों को एक साथ लाता है।",
+    "back": "The food brings people together.",
+    "chrF": 93.0
+   },
+   {
+    "en": "Not yet. But I think she should know. It’s unfair to Robert!",
+    "hi": "अभी तक नहीं, लेकिन मुझे लगता है कि उसे पता होना चाहिए. यह रॉबर्ट के लिए अन्यायपूर्ण है!",
+    "back": "Not yet, but I think he should know. It's unfair to Robert!",
+    "chrF": 75.2
+   },
+   {
+    "en": "Yes, please. Soon.",
+    "hi": "हाँ, कृपया, जल्द ही.",
+    "back": "\"I'll see you soon\".",
+    "chrF": 13.7
+   },
+   {
+    "en": "Music scene too!",
+    "hi": "और संगीत दृश्य भी!",
+    "back": "Hey Hey Hey, Hey, hey, Hey Hey! Hey Hey hey, hey hey! Hey hey!",
+    "chrF": 2.4
+   },
+   {
+    "en": "Next time, I’ll bring snacks.",
+    "hi": "अगली बार, मैं तुम्हारे लिए स्नैक्स लाऊंगा।",
+    "back": "Shaka, next time, I'll get you a snack.",
+    "chrF": 40.6
+   },
+   {
+    "en": "Watch a movie",
+    "hi": "मैं एक फिल्म देख रहा था",
+    "back": "(Souda) I was watching a film",
+    "chrF": 18.2
+   },
+   {
+    "en": "Love you always",
+    "hi": "मैं तुम्हें हमेशा प्यार करता हूँ",
+    "back": "\"I've always been in love with you\".",
+    "chrF": 36.8
+   },
+   {
+    "en": "I enjoy trying new foods from different countries.",
+    "hi": "मुझे विभिन्न देशों के नए खाद्य पदार्थों की कोशिश करना पसंद है।",
+    "back": "I like to try new foods from different countries.",
+    "chrF": 75.0
+   },
+   {
+    "en": "Emily thinks Susan is telling the truth.",
+    "hi": "एमिली सोचती है कि सुसान उसे सच बता रही है।",
+    "back": "What does it mean? Emily thinks that Susan is telling her the truth.",
+    "chrF": 73.3
+   },
+   {
+    "en": "Not really. He’s frustrated. I feel bad for him.",
+    "hi": "वास्तव में नहीं. वह निराश है. मैं उसके लिए बुरा महसूस कर रहा हूँ.",
+    "back": "He's disappointed. I feel bad for him.",
+    "chrF": 48.9
+   },
+   {
+    "en": "But worth it",
+    "hi": "लेकिन यह मूल्यवान है",
+    "back": "(Laughter)",
+    "chrF": 6.7
+   },
+   {
+    "en": "Maybe a walk? Fresh air.",
+    "hi": "थोड़ा आराम करने के लिए?",
+    "back": "Dohahaha-taha-daha is not enough to relax.",
+    "chrF": 11.6
+   },
+   {
+    "en": "Mom shops online",
+    "hi": "माँ की दुकानों पर",
+    "back": " ",
+    "chrF": 0.0
+   },
+   {
+    "en": "Thanks! I appreciate it.",
+    "hi": "धन्यवाद, मैं आपको सराहना करता हूँ।",
+    "back": "(sōla) (Sōla), I appreciate you.",
+    "chrF": 44.5
+   },
+   {
+    "en": "Yes, right on schedule today.",
+    "hi": "हाँ, आज ठीक समय पर.",
+    "back": ", : .",
+    "chrF": 3.2
+   },
+   {
+    "en": "Yes, she left the restaurant.",
+    "hi": "हाँ, उसने रेस्तरां छोड़ दिया.",
+    "back": "? ? ? , ? ?",
+    "chrF": 0.8
+   },
+   {
+    "en": "Absolutely! Different breads can reflect our diverse community and cultures, which is fascinating.",
+    "hi": "अलग-अलग रोटी हमारे विविध समुदायों और संस्कृतियों को प्रतिबिंबित कर सकती है, जो कि आकर्षक है।",
+    "back": "Different breads can reflect our diverse communities and cultures, which is fascinating.",
+    "chrF": 84.8
+   },
+   {
+    "en": "Yes! I really enjoy Honeycrisp apples. They are sweet and crunchy, perfect for breakfast.",
+    "hi": "हाँ, मुझे हनीक्रिसप सेब बहुत पसंद हैं, वे मधुर और क्रंचिंग हैं, नाश्ता के लिए एकदम सही हैं।",
+    "back": "Yes, I love honeycomb apples, they are sweet and crunchy, perfect for breakfast.",
+    "chrF": 65.4
+   },
+   {
+    "en": "Moving to Nashville?",
+    "hi": "तुम नाशविले जा रहे हो?",
+    "back": "\"ČČČ Č Č ČČ ČČČŠŠŠ Š Š ŠŠ ŠŠŠ Č ČŠŠŽŠŠ?",
+    "chrF": 0.8
+   },
+   {
+    "en": "I think it's wonderful to see diversity in career choices. Everyone brings their own unique experiences.",
+    "hi": "मुझे लगता है कि करियर के विकल्पों में विविधता देखना अद्भुत है। हर कोई अपना अनूठा अनुभव लाता है।",
+    "back": "I think it's amazing to see the diversity of career options. Everyone brings their own unique experience.",
+    "chrF": 69.5
+   },
+   {
+    "en": "Yes, I heard that Michael has beaten cancer. It is such a relief and a wonderful outcome.",
+    "hi": "हाँ, मैंने सुना है कि माइकल ने कैंसर को हराया है. यह बहुत राहत और एक अद्भुत परिणाम है।",
+    "back": "(Laughter) Yeah, I heard that Michael beat cancer. It's a lot of relief and an amazing result.",
+    "chrF": 50.4
+   },
+   {
+    "en": "I help mom",
+    "hi": "मैं माँ को मार मारने के लिए मदद करता हूँ",
+    "back": "I'm gonna help you to kill Mata.",
+    "chrF": 20.2
+   },
+   {
+    "en": "Tasty tacos today",
+    "hi": "आज के समय में हमारे पास बहुत स्वादिष्ट टैको है।",
+    "back": "Kanaka, we have a very tasty taco today.",
+    "chrF": 48.0
+   },
+   {
+    "en": "Exactly! Who needs food from different countries when we can just beat the meat here?",
+    "hi": "ठीक है, हमें अलग-अलग देशों से भोजन की आवश्यकता है जब हम यहां मांस को हरा सकते हैं?",
+    "back": "(Laughter) Well, we need food from different countries when we can beat meat here.",
+    "chrF": 62.2
+   },
+   {
+    "en": "It was nice to catch up.",
+    "hi": "यह आप को पकड़ने के लिए अच्छा था.",
+    "back": "(Medaha) (Souda) It was nice to catch you.",
+    "chrF": 69.8
+   },
+   {
+    "en": "Calls it like it is",
+    "hi": "यह कहते हैं के रूप में यह है",
+    "back": "̆̆, ̆ ̆, y̆̆̆.",
+    "chrF": 0.0
+   },
+   {
+    "en": "Best party ever, right?",
+    "hi": "हम सबसे अच्छा पार्टी है, ठीक है?",
+    "back": "\"I'm so happy that I'm here\".",
+    "chrF": 8.9
+   },
+   {
+    "en": "Bright green",
+    "hi": "उज्ज्वल हरा",
+    "back": "yellowish-green",
+    "chrF": 27.1
+   },
+   {
+    "en": "Watch TV? Or read something?",
+    "hi": "हम टीवी देखते हैं या कुछ पढ़ते हैं?",
+    "back": "Do you want to watch TV or read?",
+    "chrF": 29.3
+   },
+   {
+    "en": "Right? He always says that.",
+    "hi": "वो हमेशा यही कहता है.",
+    "back": "(Laughs) That's what she always says.",
+    "chrF": 45.3
+   },
+   {
+    "en": "And we can have a contest for the best meat-beater in the community.",
+    "hi": "और हम समुदाय में सबसे अच्छा मांस-बेटर के लिए एक प्रतियोगिता कर सकते हैं.",
+    "back": "And we can make a competition for the best meat-beater in the community.",
+    "chrF": 76.4
+   },
+   {
+    "en": "Lunch was good",
+    "hi": "खाना अच्छा था",
+    "back": "Koda, koda.",
+    "chrF": 7.3
+   },
+   {
+    "en": "Yeah, right! I'm basically a prodigy.",
+    "hi": "हाँ, ठीक है, मैं मूल रूप से एक चमत्कार हूँ।",
+    "back": "(Girls) Yes, well, I'm basically a miracle.",
+    "chrF": 39.3
+   },
+   {
+    "en": "I feel hungry now.",
+    "hi": "- अब मुझे भूख लग रही है।",
+    "back": "(Souda) I'm going to eat.",
+    "chrF": 8.3
+   },
+   {
+    "en": "Mix of both",
+    "hi": "दोनों के मिश्रण से",
+    "back": "(a) (b) (e) (i) (r)",
+    "chrF": 3.3
+   },
+   {
+    "en": "Yes, I love our multicultural neighborhood.",
+    "hi": "हाँ, मुझे हमारे बहुसांस्कृतिक पड़ोस पसंद है।",
+    "back": "Yes, I like our multicultural neighbourhood.",
+    "chrF": 79.3
+   },
+   {
+    "en": "Pizza sounds great!",
+    "hi": "पिज्जा बहुत अच्छा लगता है.",
+    "back": "The pizza is delicious.",
+    "chrF": 16.8
+   },
+   {
+    "en": "I feel tired",
+    "hi": "मैं बहुत थक गया हूँ",
+    "back": "♪ ♪ I'm so tired ♪",
+    "chrF": 29.1
+   },
+   {
+    "en": "Morning! I feel good.",
+    "hi": "मैं बहुत अच्छा महसूस कर रहा हूँ.",
+    "back": "I'm feeling very well.",
+    "chrF": 18.2
+   },
+   {
+    "en": "She eats all of Robert's food.",
+    "hi": "वह रॉबर्ट का सारा खाना खाती है।",
+    "back": "Umaha eats all the food that Robert eats.",
+    "chrF": 41.7
+   },
+   {
+    "en": "I hope she embraces her journey and learns from every experience along the way.",
+    "hi": "मुझे आशा है कि वह अपनी यात्रा को गले लगाएगी और रास्ते में हर अनुभव से सीख लेगी।",
+    "back": "I hope that she will embrace her journey and learn from every experience along the way.",
+    "chrF": 80.1
+   },
+   {
+    "en": "Joshua, can you help?",
+    "hi": "जोशुआ, क्या आप मुझे मदद कर सकते हैं?",
+    "back": "Joshua, can you please help me?",
+    "chrF": 70.9
+   },
+   {
+    "en": "I hope it’s sweet",
+    "hi": "मुझे आशा है कि यह आपके लिए प्यारा है",
+    "back": "I hope this is so cute.",
+    "chrF": 27.9
+   },
+   {
+    "en": "Yeah, I try. Love her smile.",
+    "hi": "हाँ, मैं कोशिश कर रहा हूँ.",
+    "back": "(Souda) - I'm trying to help you.",
+    "chrF": 11.4
+   },
+   {
+    "en": "I feel more hopeful now.",
+    "hi": "अब मैं अधिक आशावादी महसूस कर रहा हूँ.",
+    "back": "(Souda) I'm feeling more optimistic.",
+    "chrF": 21.6
+   },
+   {
+    "en": "Need phone numbers",
+    "hi": "आप के लिए फोन नंबर की आवश्यकता है",
+    "back": "(a) (e) ̆ ̆: (o) (i)",
+    "chrF": 2.1
+   },
+   {
+    "en": "I will try",
+    "hi": "मैं कोशिश कर रही हो",
+    "back": "Hey, I'm trying",
+    "chrF": 15.8
+   },
+   {
+    "en": "Met diverse people",
+    "hi": "मैं विभिन्न लोगों से मिला था",
+    "back": "",
+    "chrF": 0.0
+   },
+   {
+    "en": "She took it without fussing.",
+    "hi": "उसने हमें बिना किसी परेशानी के ले लिया।",
+    "back": "He didn 't bother to take us.",
+    "chrF": 12.7
+   },
+   {
+    "en": "Very funny, real comedy show.",
+    "hi": "बहुत हास्यास्पद, असली कॉमेडी शो के रूप में।",
+    "back": ":   (German)  -  (English)",
+    "chrF": 7.8
+   },
+   {
+    "en": "Exactly! When I eat my bread, I feel connected to all those different experiences.",
+    "hi": "जब मैं रोटी खाता हूँ, तो मुझे उन सभी अनुभवों से जुड़ा हुआ महसूस होता है।",
+    "back": "In the meantime, when I eat roti, I feel connected to all those experiences.",
+    "chrF": 58.7
+   },
+   {
+    "en": "I am feeling relatively good this evening, thank you for asking.",
+    "hi": "मैं आज शाम को अपेक्षाकृत अच्छा महसूस कर रहा हूँ, लेकिन, पूछने के लिए धन्यवाद.",
+    "back": "I'm feeling pretty good tonight, but, thank you for asking.",
+    "chrF": 53.2
+   },
+   {
+    "en": "Thinking about moving in.",
+    "hi": "हम में रहने के बारे में सोच रहा था.",
+    "back": "(Should have been thinking about this?)",
+    "chrF": 45.8
+   },
+   {
+    "en": "Yes, I heard. Emily wants to follow in Elizabeth's footsteps.",
+    "hi": "हाँ, मैंने सुना है. एमिली के पैरों पर चलना चाहती है.",
+    "back": "- Yeah, I heard. Emily wants to walk on her feet.",
+    "chrF": 42.7
+   },
+   {
+    "en": "I would like mashed potatoes and green beans.",
+    "hi": "मैं आलू के प्यूरी और हरी बीन्स चाहूँगा।",
+    "back": "I want puree of potatoes and green beans.",
+    "chrF": 59.7
+   },
+   {
+    "en": "Exactly! We need more people like her.",
+    "hi": "ठीक है, हमें उसके जैसे अधिक लोगों की जरूरत है।",
+    "back": "Well, we need more like him.",
+    "chrF": 38.3
+   },
+   {
+    "en": "That was hers",
+    "hi": "वह तुम्हारा था",
+    "back": "Hey, it was...",
+    "chrF": 18.0
+   },
+   {
+    "en": "You’re right about that. It’s amazing how resilient some people can be.",
+    "hi": "आप इस बारे में सही हैं. यह आश्चर्यजनक है कि कितने लचीले लोग हो सकते हैं.",
+    "back": "You're right about this. It's amazing how flexible people can be.",
+    "chrF": 58.6
+   },
+   {
+    "en": "And you know, we’ll probably have to deal with all her 'helpful' suggestions for decorating.",
+    "hi": "और आप जानते हैं, हमें शायद सजावट के लिए उसके सभी 'उपयोगी' सुझावों से निपटना होगा।",
+    "back": "And you know, we might have to deal with all her 'useful' suggestions for decoration.",
+    "chrF": 72.0
+   },
+   {
+    "en": "I can just picture it now. You might need a banana bedspread to match!",
+    "hi": "मैं इसे अब कल्पना कर सकता हूँ, मुझे एक मक्खन बिस्तर की आवश्यकता हो सकती है!",
+    "back": "I can imagine how it is now. I might need a butter bed!",
+    "chrF": 30.0
+   },
+   {
+    "en": "Exactly! It's such a reminder of how rich our community is. And it’s great to see everyone appreciating each other's cultures like that.",
+    "hi": "ठीक है! यह हमारे समुदाय की कितनी समृद्धता की याद दिलाता है। और यह देखना बहुत अच्छा है कि हर कोई एक दूसरे की संस्कृतियों की सराहना करता है।",
+    "back": "Well! It reminds us of how prosperous our community is. And it's great to see that everyone appreciates each other's cultures.",
+    "chrF": 62.9
+   },
+   {
+    "en": "Sounds fun! Let’s finish your water first",
+    "hi": "अच्छा लगता है, पहले तुमको अपने पानी को खत्म कर दो।",
+    "back": "(Souda) (souda), you should get rid of your water first.",
+    "chrF": 40.4
+   },
+   {
+    "en": "You won’t be disappointed",
+    "hi": "तुम पर विश्वास करने के लिए निराश नहीं हो जाएगा",
+    "back": "deva deva deva will not be disappointed",
+    "chrF": 59.4
+   },
+   {
+    "en": "Right! They really need it.",
+    "hi": "ठीक है, वे वास्तव में आप पर हमारी जरूरत है.",
+    "back": "Koda, Koda... they really need you.",
+    "chrF": 49.0
+   },
+   {
+    "en": "She really is. So patient",
+    "hi": "वह वास्तव में है।",
+    "back": "Yanya Yanya is actually Yanya.",
+    "chrF": 13.3
+   },
+   {
+    "en": "Was it serious?",
+    "hi": "क्या यह गंभीरता से किया जा सकता है?",
+    "back": "Do you mean that this can be done in a serious way?",
+    "chrF": 33.0
+   },
+   {
+    "en": "Oh really? That's a surprise.",
+    "hi": "यह आप के लिए एक आश्चर्य है.",
+    "back": "a.",
+    "chrF": 4.9
+   },
+   {
+    "en": "Hey Emily, how's your day going?",
+    "hi": "एमिली, आपका दिन कैसा चल रहा है?",
+    "back": "Erlaca, how's your day going?",
+    "chrF": 69.6
+   },
+   {
+    "en": "Definitely! We can have a taco night soon.",
+    "hi": "निश्चित रूप से, हम जल्द ही एक दो-उ-का-ओ-कौ को-इ-र-आई कर सकते हैं।",
+    "back": "Of course, we will soon be able to do a two-in-a-how co-e-r-i.",
+    "chrF": 15.0
+   },
+   {
+    "en": "Sounds delicious! But I noticed something. Your breath is a bit strong today.",
+    "hi": "तुम्हारे लिए बहुत स्वादिष्ट लगता है, लेकिन मैंने कुछ देखा। आज तुम्हारी सांस थोड़ी मजबूत है।",
+    "back": "Shūta is very tasty to you, but I noticed something. Your breathing is a little strong today.",
+    "chrF": 63.9
+   },
+   {
+    "en": "Absolutely! So many backgrounds. Got any favorites?",
+    "hi": "बहुत सारी पृष्ठभूमि है, क्या आपके पास कोई पसंदीदा है?",
+    "back": "There's a lot of backgrounds, do you have any favourites?",
+    "chrF": 41.9
+   },
+   {
+    "en": "Oh, just a little something special",
+    "hi": "तुम पर कुछ खास करने के लिए",
+    "back": "♪ ♪",
+    "chrF": 0.0
+   },
+   {
+    "en": "People can be so complicated sometimes.",
+    "hi": "कभी-कभी लोग बहुत जटिल हो जाते हैं।",
+    "back": "Sometimes people are too complicated and they can't be satisfied.",
+    "chrF": 54.4
+   },
+   {
+    "en": "That’s a beautiful thought, Michael. Do you have any other favorite foods that connect you to your culture?",
+    "hi": "क्या आपके पास कोई अन्य पसंदीदा भोजन है जो आपको अपनी संस्कृति से जोड़ता है?",
+    "back": "Do you have any other favourite dishes that can connect you to your own culture?",
+    "chrF": 53.2
+   },
+   {
+    "en": "You're welcome. I love spending time with you like this",
+    "hi": "मैं तुम्हारे साथ इस तरह समय बिताने के लिए प्यार करता हूँ",
+    "back": "I'd love to spend time with you this way.",
+    "chrF": 36.8
+   },
+   {
+    "en": "You’re welcome! Do you want anything to drink?",
+    "hi": "क्या आप कुछ पीना चाहते हैं?",
+    "back": "(Sot) (souda) - (suda) (Souda). - (Sauda) Do you want to have a drink?",
+    "chrF": 28.9
+   },
+   {
+    "en": "A night owl, huh? Fancy that!",
+    "hi": "एक रात के उल्लू, है ना?",
+    "back": "  ∙  ()  \" \" \".",
+    "chrF": 0.0
+   },
+   {
+    "en": "Wow, that’s big! Exciting!",
+    "hi": "वाह, यह बहुत बड़ा है!",
+    "back": ":  ",
+    "chrF": 0.0
+   },
+   {
+    "en": "Right! It’s important for everyone to feel included and appreciated. Amanda’s actions are a perfect example of how one person can influence the community.",
+    "hi": "सही! सभी के लिए शामिल और सराहना महसूस करना महत्वपूर्ण है। अमांडा के कार्यों से पता चलता है कि एक व्यक्ति समुदाय को कैसे प्रभावित कर सकता है।",
+    "back": "Right! It is important for everyone to feel included and appreciated. Amanda's actions show how an individual can influence a community.",
+    "chrF": 66.9
+   },
+   {
+    "en": "I know but maybe ask him next time? You could share!",
+    "hi": "मैं जानता हूँ, लेकिन शायद अगली बार मुझे मुझसे पूछो?",
+    "back": "\"I know, but maybe next time you'll ask me\".",
+    "chrF": 39.7
+   },
+   {
+    "en": "Yeah, she sure does! You think she enjoys the food?",
+    "hi": "क्या आपको लगता है कि उसे खाना पसंद है?",
+    "back": "Do you think he's got a taste for cocoa?",
+    "chrF": 20.6
+   },
+   {
+    "en": "Hey, do you know why Andrew is calling all of John's friends?",
+    "hi": "अरे, क्या आप जानते हैं कि एंड्रयू कोउ कोउ के सभी दोस्तों को बुला रहा है?",
+    "back": "(Laughs) Hey, do you know that Andrew Kow is calling all of Kow's friends?",
+    "chrF": 69.0
+   },
+   {
+    "en": "That's great to hear! Ready for breakfast?",
+    "hi": "हम तैयार हैं?",
+    "back": "Sh Shōshō, Shōsha, are we ready?",
+    "chrF": 12.9
+   },
+   {
+    "en": "Do you have a favorite dish?",
+    "hi": "क्या आपके पास हमारा पसंदीदा व्यंजन है?",
+    "back": "ֹֹֹ ֹ  ֹ, ֹוֹ ֹ.",
+    "chrF": 0.0
+   },
+   {
+    "en": "Just don’t forget me when you’re a millionaire!",
+    "hi": "मुझे मत भूलना जब आप एक करोड़पति हो जाओ!",
+    "back": "Don't forget me when you're getting a rat rat rated rat rat!",
+    "chrF": 40.2
+   },
+   {
+    "en": "Absolutely! So much to celebrate!",
+    "hi": "हमें बहुत कुछ जश्न मनाने के लिए!",
+    "back": "There's so much to celebrate that we don't need!",
+    "chrF": 50.1
+   },
+   {
+    "en": "Absolutely! It's wonderful to see everyone come together and share their traditions. Did you get a chance to watch any of the performances?",
+    "hi": "यह अद्भुत है कि सभी एक साथ आते हैं और अपनी परंपराओं को साझा करते हैं। क्या आपको किसी भी प्रदर्शन को देखने का मौका मिला?",
+    "back": "It's amazing that everyone can come together and share their traditions. Did you get a chance to see any of the performances?",
+    "chrF": 72.7
+   },
+   {
+    "en": "Absolutely! Just us two and insomnia!",
+    "hi": "बस हम दो और हम सोते हैं और हम मर जाते हैं!",
+    "back": "♪ ♪ ♪ Just the two of us ♪ ♪ We sleep and we die ♪",
+    "chrF": 16.7
+   },
+   {
+    "en": "True! Unity in diversity",
+    "hi": "हमारे बीच एकता और विविधता",
+    "back": "ćićići",
+    "chrF": 2.8
+   },
+   {
+    "en": "Thank you, Sarah. I appreciate it.",
+    "hi": "धन्यवाद, मैं प्यार करने के लिए आभारी हूँ।",
+    "back": "Sāshān, I'm grateful for the love of Shōshān.",
+    "chrF": 10.9
+   },
+   {
+    "en": "A video call would be nice. They love seeing you.",
+    "hi": "एक वीडियो कॉल अच्छा होगा.",
+    "back": "I don't know how to make a video-conferencing call.",
+    "chrF": 18.4
+   },
+   {
+    "en": "Oh really? What happened?",
+    "hi": "हमें क्या हुआ?",
+    "back": "Hey, hey, hey! What happened to me?",
+    "chrF": 47.9
+   },
+   {
+    "en": "Wow, that must've been fun!",
+    "hi": "वाह, यह बहुत मज़ा आ गया होगा!",
+    "back": "(Laughs) Wow, that must have been so much fun!",
+    "chrF": 61.2
+   },
+   {
+    "en": "Hey Michael, how was your day?",
+    "hi": "हाय माइकल, आपका दिन कैसा रहा?",
+    "back": "Hey Michael, how was your day ?",
+    "chrF": 100.0
+   },
+   {
+    "en": "Okay, let’s get you some. How about a glass of cold water?",
+    "hi": "एक गिलास ठंडा पानी के बारे में क्या?",
+    "back": "How about a glass of cold water?",
+    "chrF": 58.2
+   },
+   {
+    "en": "Yep, just a check-up. Nothing to worry about.",
+    "hi": "हाँ, बस एक चेक-अप. चिंता करने के लिए कुछ भी नहीं है.",
+    "back": "Yeah, just a check-up. There's nothing to worry about.",
+    "chrF": 79.2
+   },
+   {
+    "en": "Sure! Do you want sauce?",
+    "hi": "क्या आप सॉस लेवा से चाहेंगे?",
+    "back": "• Do you want some Leva sauce?",
+    "chrF": 58.9
+   },
+   {
+    "en": "Hey there! How's your afternoon going?",
+    "hi": "आपका दोपहर का काम कैसा चल रहा है?",
+    "back": "\"How's your afternoon work going?\"",
+    "chrF": 63.6
+   },
+   {
+    "en": "Perfect! I will get that ready for you. Any sides you want?",
+    "hi": "मैं तुम्हारे लिए तैयार कर दूँगा. क्या आप कोई पक्ष चाहते हैं?",
+    "back": "I'll make it ready for you. Do you want a side?",
+    "chrF": 41.0
+   },
+   {
+    "en": "That sounds delicious! Let’s plan for it.",
+    "hi": "यह स्वादिष्ट लगता है! चलो इसके लिए योजना बनाओ.",
+    "back": "- Hey, hey, hey. - This sounds delicious. Let's make a plan for it.",
+    "chrF": 59.6
+   },
+   {
+    "en": "Hey, how’s it going today?",
+    "hi": "अरे, आज कैसे चल रहा है?",
+    "back": ": Hey, how's it going?",
+    "chrF": 53.0
+   },
+   {
+    "en": "Nice choice! Do you want toppings?",
+    "hi": "एक अच्छा विकल्प! क्या आप टॉप-ओ-वून चाहते हैं?",
+    "back": "Do you want a top-of-the-line?",
+    "chrF": 33.1
+   },
+   {
+    "en": "Hey, how's it going? Ready for dinner soon?",
+    "hi": "हम जल्द ही रात के खाने के लिए तैयार हैं?",
+    "back": "(Sighs) Do you think we'll be ready for dinner soon?",
+    "chrF": 50.5
+   },
+   {
+    "en": "What else today? Any plans?",
+    "hi": "हमारे लिए कोई योजना है?",
+    "back": "Is there a plan for Usha?",
+    "chrF": 16.0
+   },
+   {
+    "en": "Hey there! How's it going?",
+    "hi": "कैसे चल रहा है?",
+    "back": "- Hey, how's it going?",
+    "chrF": 56.1
+   },
+   {
+    "en": "Right? Perfect blend",
+    "hi": "सही है?",
+    "back": "That's it, isn't it?",
+    "chrF": 6.6
+   },
+   {
+    "en": "It sure was! We should plan another trip like that soon.",
+    "hi": "हमें जल्द ही ऐसी एक और यात्रा की योजना बनानी चाहिए।",
+    "back": "We should plan another trip like this soon.",
+    "chrF": 70.0
+   },
+   {
+    "en": "Okay, but I have to ask. Did you eat Robert's lunch again?",
+    "hi": "ठीक है, लेकिन मुझे पूछना होगा. क्या आपने फिर से रॉबर्ट का दोपहर का भोजन खाया?",
+    "back": "Okay, but I have to ask, did you eat Robert's lunch again?",
+    "chrF": 89.7
+   },
+   {
+    "en": "That sounds fun! Does Susan want to talk?",
+    "hi": "क्या सुसान उसके साथ बात करना चाहती है?",
+    "back": "Does Susannah want to talk to her?",
+    "chrF": 48.8
+   },
+   {
+    "en": "They will be amazing!",
+    "hi": "तुम क्या कर रहे हो?",
+    "back": "- Oh, my God. - What are you doing?",
+    "chrF": 11.2
+   },
+   {
+    "en": "Did you drink enough water today?",
+    "hi": "क्या आपने आज पर्याप्त पानी पी है?",
+    "back": "Do you have enough to drink?",
+    "chrF": 33.1
+   },
+   {
+    "en": "Great idea! Do you want me to set that up?",
+    "hi": "क्या आप चाहते हैं कि मैं उसे स्थापित कर दूं?",
+    "back": "Tsuya: Do you want me to install it?",
+    "chrF": 39.3
+   },
+   {
+    "en": "That’s nice to hear! Did you catch any sleep earlier?",
+    "hi": "यह सुनकर अच्छा लगा! क्या आपने पहले कुछ सोया था?",
+    "back": "It's nice to hear that.",
+    "chrF": 26.2
+   },
+   {
+    "en": "Yeah, that's tough. Have you talked to Amanda about it?",
+    "hi": "क्या आपने अमांडा से इसके बारे में बात की है?",
+    "back": "Have you ever spoken to Amanda about this?",
+    "chrF": 40.2
+   },
+   {
+    "en": "It's been a long day, hasn't it? Want to sit outside for a bit?",
+    "hi": "यह एक लंबा दिन रहा है, है ना? आप बाहर कुछ समय के लिए बैठना चाहते हैं?",
+    "back": "Wow, it's been a long day, hasn't it? You want to sit outside for a while?",
+    "chrF": 80.3
+   }
+  ],
+  "share_chrF_below_40": 0.49166666666666664,
+  "share_with_latin_letters": 0.0,
+  "mean_word_ratio_vs_english": 1.3632385722818907,
+  "examples_worst": [
+   {
+    "en": "Mom shops online",
+    "hi": "माँ की दुकानों पर",
+    "back": " ",
+    "chrF": 0.0
+   },
+   {
+    "en": "Calls it like it is",
+    "hi": "यह कहते हैं के रूप में यह है",
+    "back": "̆̆, ̆ ̆, y̆̆̆.",
+    "chrF": 0.0
+   },
+   {
+    "en": "Met diverse people",
+    "hi": "मैं विभिन्न लोगों से मिला था",
+    "back": "",
+    "chrF": 0.0
+   },
+   {
+    "en": "Oh, just a little something special",
+    "hi": "तुम पर कुछ खास करने के लिए",
+    "back": "♪ ♪",
+    "chrF": 0.0
+   },
+   {
+    "en": "A night owl, huh? Fancy that!",
+    "hi": "एक रात के उल्लू, है ना?",
+    "back": "  ∙  ()  \" \" \".",
+    "chrF": 0.0
+   }
+  ]
+ }
+}

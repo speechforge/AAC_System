@@ -1,0 +1,15 @@
+system,mode,successes,rows
+archived_deployed,gold,5,8
+archived_deployed,orig,4,8
+archived_llm1_stage,gold,0,8
+archived_llm1_stage,orig,0,8
+archived_unconstrained_prompt,orig,0,8
+cascade_ungated_first,gold,0,8
+cascade_ungated_first,orig,0,8
+revised_cascade_first,gold,1,8
+revised_cascade_last,gold,1,8
+revised_hybrid,gold,8,8
+revised_llm1_stage,gold,0,8
+template_archived,gold,8,8
+template_archived,orig,6,8
+template_revised,gold,8,8

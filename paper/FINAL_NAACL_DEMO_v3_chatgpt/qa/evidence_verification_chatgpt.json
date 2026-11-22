@@ -1,0 +1,129 @@
+{
+  "checks": [
+    {
+      "check": "Scenario counts llm3_pre|ui",
+      "pass": true,
+      "detail": "[[3, 46], [24, 45], [20, 42], [18, 42], [65, 175]]"
+    },
+    {
+      "check": "Scenario counts deployed|ui",
+      "pass": true,
+      "detail": "[[22, 46], [31, 45], [21, 42], [23, 42], [97, 175]]"
+    },
+    {
+      "check": "Scenario counts template_only|ui",
+      "pass": true,
+      "detail": "[[33, 46], [31, 45], [27, 42], [27, 42], [118, 175]]"
+    },
+    {
+      "check": "Scenario counts naive_qwen|ui",
+      "pass": true,
+      "detail": "[[2, 46], [1, 45], [4, 42], [1, 42], [8, 175]]"
+    },
+    {
+      "check": "Scenario counts llm3_pre|st",
+      "pass": true,
+      "detail": "[[5, 46], [26, 45], [16, 42], [24, 42], [71, 175]]"
+    },
+    {
+      "check": "Scenario counts deployed|st",
+      "pass": true,
+      "detail": "[[33, 46], [41, 45], [26, 42], [32, 42], [132, 175]]"
+    },
+    {
+      "check": "Scenario counts template_only|st",
+      "pass": true,
+      "detail": "[[46, 46], [45, 45], [34, 42], [42, 42], [167, 175]]"
+    },
+    {
+      "check": "Scenario counts revised_cascade_first|rev",
+      "pass": true,
+      "detail": "[[6, 46], [29, 45], [27, 42], [26, 42], [88, 175]]"
+    },
+    {
+      "check": "Scenario counts revised_hybrid|rev",
+      "pass": true,
+      "detail": "[[46, 46], [45, 45], [42, 42], [42, 42], [175, 175]]"
+    },
+    {
+      "check": "Scenario counts template_revised|rev",
+      "pass": true,
+      "detail": "[[46, 46], [45, 45], [42, 42], [42, 42], [175, 175]]"
+    },
+    {
+      "check": "Regression summary agrees revised_cascade_first",
+      "pass": true,
+      "detail": "Independent summary CSV, not raw-CSV Boolean string coercion"
+    },
+    {
+      "check": "Regression summary agrees revised_hybrid",
+      "pass": true,
+      "detail": "Independent summary CSV, not raw-CSV Boolean string coercion"
+    },
+    {
+      "check": "Regression summary agrees template_revised",
+      "pass": true,
+      "detail": "Independent summary CSV, not raw-CSV Boolean string coercion"
+    },
+    {
+      "check": "Prediction raw-count gain en",
+      "pass": true,
+      "detail": "25/2220 = 1.126126 pp"
+    },
+    {
+      "check": "Prediction raw-count gain hi",
+      "pass": true,
+      "detail": "29/2437 = 1.189988 pp"
+    },
+    {
+      "check": "Four-language Figure 4",
+      "pass": true,
+      "detail": "Two underlying selections, four phases, four languages"
+    },
+    {
+      "check": "Six-family appendix coverage",
+      "pass": true,
+      "detail": "One message per family in all four languages; exact stored outputs"
+    },
+    {
+      "check": "Poppler native Unicode fidelity",
+      "pass": true,
+      "detail": "47/47 exact native strings"
+    },
+    {
+      "check": "No NUL characters",
+      "pass": true,
+      "detail": "Text remains searchable; no broken global XeTeX ActualText primitive"
+    },
+    {
+      "check": "Revised rows rendered correctly",
+      "pass": true,
+      "detail": "PDF checked after final table regeneration"
+    },
+    {
+      "check": "Main/appendix layout",
+      "pass": true,
+      "detail": "Main content through page 6; ethics/acknowledgments/references page 7; appendix pages 8--9"
+    },
+    {
+      "check": "Compile diagnostics",
+      "pass": true,
+      "detail": "0 overfull boxes, 0 missing-glyph warnings, 0 undefined citations/references"
+    },
+    {
+      "check": "Font embedding",
+      "pass": true,
+      "detail": "13 fonts embedded with Unicode maps"
+    }
+  ],
+  "passed": 23,
+  "total": 23,
+  "pdf_sha256": "cea2b1631601c0f384d2ea601f317034d4f23ec7d80bb65718a7df026c53e685",
+  "secondary_extractor": {
+    "मुझे पानी चाहिए।": false,
+    "મને પાણી જોઈએ છે.": true,
+    "मला पाणी हवे आहे.": true
+  },
+  "secondary_extractor_limit": "pypdf does not honor every Hindi ActualText span and reads the shaped i-vowel glyph as IPA ɟ. Poppler recovers all 47 source strings exactly; visual QA checks the shaped glyphs separately.",
+  "submission_readiness": "NOT READY: see author revision note for native validation, speech, public demo/video, CRediT/licensing, and one independent citation-index check."
+}

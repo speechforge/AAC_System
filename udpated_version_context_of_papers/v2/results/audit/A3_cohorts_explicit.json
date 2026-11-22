@@ -1,0 +1,30 @@
+{
+ "accepted_model": {
+  "n": 108,
+  "failing": 37
+ },
+ "template_fallback": {
+  "n": 67,
+  "failing": 6
+ },
+ "template_only": {
+  "n": 175,
+  "failing": 8
+ },
+ "template_only_failures_by_language": {
+  "gu": 8
+ },
+ "template_only_failures_by_family": {
+  "T4_negated_feeling": 8
+ },
+ "template_only_failure_ids": [
+  "gu-T4_negated_feeling-NO+HAPPY",
+  "gu-T4_negated_feeling-NO+SAD",
+  "gu-T4_negated_feeling-NO+ANGRY",
+  "gu-T4_negated_feeling-NO+TIRED",
+  "gu-T4_negated_feeling-NO+SICK",
+  "gu-T4_negated_feeling-NO+SCARED",
+  "gu-T4_negated_feeling-NO+LOVE",
+  "gu-T4_negated_feeling-NO+EXCITED"
+ ]
+}

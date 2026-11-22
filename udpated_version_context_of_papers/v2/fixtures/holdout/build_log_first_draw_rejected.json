@@ -1,0 +1,449 @@
+[
+ {
+  "family": "H1_request_more",
+  "slots": 2,
+  "candidates": [
+   [
+    "MORE",
+    "JUICE"
+   ],
+   [
+    "MORE",
+    "RICE"
+   ],
+   [
+    "MORE",
+    "ROTI"
+   ],
+   [
+    "MORE",
+    "SNACK"
+   ],
+   [
+    "MORE",
+    "WATER"
+   ]
+  ],
+  "drawn": [
+   [
+    "MORE",
+    "JUICE"
+   ],
+   [
+    "MORE",
+    "RICE"
+   ]
+  ]
+ },
+ {
+  "family": "H2_request_two_objects",
+  "slots": 2,
+  "candidates": [
+   [
+    "FRUIT",
+    "JUICE"
+   ],
+   [
+    "RICE",
+    "ROTI"
+   ],
+   [
+    "ROTI",
+    "TEA"
+   ],
+   [
+    "WATER",
+    "FRUIT"
+   ],
+   [
+    "WATER",
+    "MILK"
+   ]
+  ],
+  "drawn": [
+   [
+    "RICE",
+    "ROTI"
+   ],
+   [
+    "ROTI",
+    "TEA"
+   ]
+  ]
+ },
+ {
+  "family": "H3_refusal",
+  "slots": 3,
+  "candidates": [
+   [
+    "FRUIT",
+    "NO"
+   ],
+   [
+    "JUICE",
+    "NO"
+   ],
+   [
+    "NO",
+    "MILK",
+    "TEA"
+   ],
+   [
+    "NO",
+    "MORE",
+    "RICE"
+   ],
+   [
+    "NO",
+    "MORE",
+    "WATER"
+   ],
+   [
+    "NO",
+    "SNACK",
+    "JUICE"
+   ],
+   [
+    "PIZZA",
+    "NO"
+   ]
+  ],
+  "drawn": [
+   [
+    "FRUIT",
+    "NO"
+   ],
+   [
+    "NO",
+    "MORE",
+    "RICE"
+   ],
+   [
+    "NO",
+    "SNACK",
+    "JUICE"
+   ]
+  ]
+ },
+ {
+  "family": "H4_feeling",
+  "slots": 2,
+  "candidates": [
+   [
+    "EXCITED",
+    "ME"
+   ],
+   [
+    "ME",
+    "HAPPY"
+   ],
+   [
+    "ME",
+    "SICK"
+   ],
+   [
+    "ME",
+    "TIRED"
+   ],
+   [
+    "SCARED",
+    "ME"
+   ]
+  ],
+  "drawn": [
+   [
+    "EXCITED",
+    "ME"
+   ],
+   [
+    "ME",
+    "HAPPY"
+   ]
+  ]
+ },
+ {
+  "family": "H5_negated_feeling",
+  "slots": 3,
+  "candidates": [
+   [
+    "ANGRY",
+    "NO"
+   ],
+   [
+    "ME",
+    "NO",
+    "LOVE"
+   ],
+   [
+    "ME",
+    "NO",
+    "SICK"
+   ],
+   [
+    "NO",
+    "SCARED",
+    "ME"
+   ],
+   [
+    "SAD",
+    "NO"
+   ]
+  ],
+  "drawn": [
+   [
+    "ANGRY",
+    "NO"
+   ],
+   [
+    "ME",
+    "NO",
+    "LOVE"
+   ],
+   [
+    "SAD",
+    "NO"
+   ]
+  ]
+ },
+ {
+  "family": "H6_action_object",
+  "slots": 3,
+  "candidates": [
+   [
+    "DRINK",
+    "JUICE"
+   ],
+   [
+    "EAT",
+    "PIZZA"
+   ],
+   [
+    "EAT",
+    "SNACK"
+   ]
+  ],
+  "drawn": [
+   [
+    "DRINK",
+    "JUICE"
+   ],
+   [
+    "EAT",
+    "PIZZA"
+   ],
+   [
+    "EAT",
+    "SNACK"
+   ]
+  ]
+ },
+ {
+  "family": "H7_negated_action",
+  "slots": 3,
+  "candidates": [
+   [
+    "NO",
+    "BATH"
+   ],
+   [
+    "NO",
+    "DRINK",
+    "MILK"
+   ],
+   [
+    "NO",
+    "EAT",
+    "PIZZA"
+   ],
+   [
+    "NO",
+    "GO"
+   ],
+   [
+    "NO",
+    "STUDY"
+   ]
+  ],
+  "drawn": [
+   [
+    "NO",
+    "BATH"
+   ],
+   [
+    "NO",
+    "EAT",
+    "PIZZA"
+   ],
+   [
+    "NO",
+    "STUDY"
+   ]
+  ]
+ },
+ {
+  "family": "H8_help_call",
+  "slots": 3,
+  "candidates": [
+   [
+    "CALL",
+    "BROTHER"
+   ],
+   [
+    "CALL",
+    "FATHER"
+   ],
+   [
+    "CALL",
+    "FRIEND"
+   ],
+   [
+    "HELP",
+    "FRIEND"
+   ],
+   [
+    "HELP",
+    "TEACHER"
+   ]
+  ],
+  "drawn": [
+   [
+    "CALL",
+    "BROTHER"
+   ],
+   [
+    "CALL",
+    "FATHER"
+   ],
+   [
+    "CALL",
+    "FRIEND"
+   ]
+  ]
+ },
+ {
+  "family": "H9_feeling_request",
+  "slots": 2,
+  "candidates": [
+   [
+    "HAPPY",
+    "PLAY"
+   ],
+   [
+    "SICK",
+    "MEDICINE"
+   ],
+   [
+    "TIRED",
+    "SLEEP"
+   ]
+  ],
+  "drawn": [
+   [
+    "HAPPY",
+    "PLAY"
+   ],
+   [
+    "SICK",
+    "MEDICINE"
+   ]
+  ]
+ },
+ {
+  "family": "H10_personal",
+  "slots": 2,
+  "candidates": [
+   [
+    "CALL",
+    "~NAME1"
+   ],
+   [
+    "CALL",
+    "~NAME2"
+   ],
+   [
+    "EAT",
+    "~DISH1"
+   ],
+   [
+    "EAT",
+    "~DISH2"
+   ]
+  ],
+  "drawn": [
+   [
+    "EAT",
+    "~DISH1"
+   ],
+   [
+    "EAT",
+    "~DISH2"
+   ]
+  ]
+ },
+ {
+  "family": "H11_ambiguous",
+  "slots": 2,
+  "candidates": [
+   [
+    "BAD"
+   ],
+   [
+    "EYE"
+   ],
+   [
+    "HEART"
+   ],
+   [
+    "NOSE"
+   ]
+  ],
+  "drawn": [
+   [
+    "EYE"
+   ],
+   [
+    "NOSE"
+   ]
+  ]
+ },
+ {
+  "family": "H12_template_uncovered",
+  "slots": 3,
+  "candidates": [
+   [
+    "GO",
+    "HOME"
+   ],
+   [
+    "GO",
+    "HOSPITAL"
+   ],
+   [
+    "GO",
+    "SCHOOL"
+   ],
+   [
+    "NAMASTE",
+    "FRIEND"
+   ],
+   [
+    "NAMASTE",
+    "TEACHER"
+   ]
+  ],
+  "drawn": [
+   [
+    "GO",
+    "HOME"
+   ],
+   [
+    "GO",
+    "HOSPITAL"
+   ],
+   [
+    "NAMASTE",
+    "FRIEND"
+   ]
+  ]
+ }
+]

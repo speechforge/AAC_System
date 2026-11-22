@@ -1,0 +1,79 @@
+{
+ "split": "legacy",
+ "n": 192,
+ "unique_ids": true,
+ "groups": 54,
+ "groups_without_four_languages": [],
+ "label_mismatches": [],
+ "exact_sequence_overlap_with_dev": [],
+ "semantic_key_overlap_only_with_dev": [
+  [
+   "CM_hinglish",
+   "NO+TIRED"
+  ],
+  [
+   "T2_refuse_object",
+   "NO+ROTI"
+  ],
+  [
+   "T3_feeling",
+   "ANGRY"
+  ],
+  [
+   "T3_feeling",
+   "SAD"
+  ],
+  [
+   "T4_negated_feeling",
+   "NO+HAPPY"
+  ],
+  [
+   "T4_negated_feeling",
+   "NO+TIRED"
+  ]
+ ],
+ "exact_sequence_overlap_with_holdout": [],
+ "semantic_key_overlap_only_with_holdout": [
+  [
+   "CM_hinglish",
+   "TIRED"
+  ],
+  [
+   "T2_refuse_object",
+   "NO+FRUIT"
+  ],
+  [
+   "T3_feeling",
+   "EXCITED"
+  ],
+  [
+   "T3_feeling",
+   "TIRED"
+  ],
+  [
+   "T4_negated_feeling",
+   "NO+ANGRY"
+  ],
+  [
+   "T4_negated_feeling",
+   "NO+LOVE"
+  ],
+  [
+   "T4_negated_feeling",
+   "NO+SCARED"
+  ]
+ ],
+ "few_shot_prompt_overlap_ids": [
+  "cm-CM_hinglish-WATER",
+  "gu-T1_request_object-FOOD",
+  "gu-T1_request_object-WATER",
+  "gu-T2_refuse_object-NO+FOOD",
+  "gu-T3_feeling-HAPPY",
+  "hi-T1_request_object-WATER",
+  "mr-T1_request_object-FOOD",
+  "mr-T1_request_object-WATER",
+  "mr-T2_refuse_object-NO+FOOD",
+  "mr-T3_feeling-HAPPY"
+ ],
+ "violations": []
+}

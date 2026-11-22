@@ -1,0 +1,237 @@
+{
+ "en": {
+  "ours_template+gate": {
+   "n": 131,
+   "n_amb": 13,
+   "gate_accept": 130,
+   "act_ok": 130,
+   "entity_ok": 130,
+   "neg_ok": 130,
+   "no_additions": 130,
+   "neg_indep_ok": 130,
+   "entity_indep_ok": 124,
+   "native_script_ok": 130,
+   "no_output": 1,
+   "abstained_correctly": 13,
+   "amb_invented": 0
+  },
+  "literal_symbols": {
+   "n": 131,
+   "n_amb": 13,
+   "gate_accept": 45,
+   "act_ok": 45,
+   "entity_ok": 131,
+   "neg_ok": 131,
+   "no_additions": 131,
+   "neg_indep_ok": 131,
+   "entity_indep_ok": 131,
+   "native_script_ok": 131,
+   "abstained_correctly": 0,
+   "amb_invented": 13
+  }
+ },
+ "hi": {
+  "ours_template+gate": {
+   "n": 131,
+   "n_amb": 13,
+   "gate_accept": 130,
+   "act_ok": 130,
+   "entity_ok": 130,
+   "neg_ok": 130,
+   "no_additions": 130,
+   "neg_indep_ok": 130,
+   "entity_indep_ok": 124,
+   "native_script_ok": 130,
+   "no_output": 1,
+   "abstained_correctly": 13,
+   "amb_invented": 0
+  },
+  "literal_symbols": {
+   "n": 131,
+   "n_amb": 13,
+   "gate_accept": 54,
+   "act_ok": 54,
+   "entity_ok": 131,
+   "neg_ok": 131,
+   "no_additions": 131,
+   "neg_indep_ok": 131,
+   "entity_indep_ok": 131,
+   "native_script_ok": 131,
+   "abstained_correctly": 0,
+   "amb_invented": 13
+  }
+ },
+ "gu": {
+  "ours_template+gate": {
+   "n": 131,
+   "n_amb": 13,
+   "gate_accept": 127,
+   "act_ok": 130,
+   "entity_ok": 127,
+   "neg_ok": 130,
+   "no_additions": 130,
+   "neg_indep_ok": 129,
+   "entity_indep_ok": 123,
+   "native_script_ok": 130,
+   "no_output": 1,
+   "abstained_correctly": 13,
+   "amb_invented": 0
+  },
+  "literal_symbols": {
+   "n": 131,
+   "n_amb": 13,
+   "gate_accept": 42,
+   "act_ok": 42,
+   "entity_ok": 131,
+   "neg_ok": 131,
+   "no_additions": 131,
+   "neg_indep_ok": 110,
+   "entity_indep_ok": 131,
+   "native_script_ok": 131,
+   "abstained_correctly": 0,
+   "amb_invented": 13
+  }
+ },
+ "mr": {
+  "ours_template+gate": {
+   "n": 131,
+   "n_amb": 13,
+   "gate_accept": 130,
+   "act_ok": 130,
+   "entity_ok": 130,
+   "neg_ok": 130,
+   "no_additions": 130,
+   "neg_indep_ok": 130,
+   "entity_indep_ok": 118,
+   "native_script_ok": 130,
+   "no_output": 1,
+   "abstained_correctly": 13,
+   "amb_invented": 0
+  },
+  "literal_symbols": {
+   "n": 131,
+   "n_amb": 13,
+   "gate_accept": 21,
+   "act_ok": 54,
+   "entity_ok": 131,
+   "neg_ok": 131,
+   "no_additions": 98,
+   "neg_indep_ok": 131,
+   "entity_indep_ok": 131,
+   "native_script_ok": 131,
+   "abstained_correctly": 0,
+   "amb_invented": 13
+  }
+ },
+ "n_cases": 144,
+ "examples": {
+  "en": [
+   [
+    "Water",
+    "I want water.",
+    "ok"
+   ],
+   [
+    "No Want Medicine",
+    "I do not want medicine.",
+    "ok"
+   ],
+   [
+    "Pain Medicine",
+    "I am in pain, I want medicine.",
+    "ok"
+   ],
+   [
+    "Tired",
+    "I am tired.",
+    "ok"
+   ],
+   [
+    "I / Me Go School",
+    null,
+    "unsupported"
+   ]
+  ],
+  "hi": [
+   [
+    "पानी",
+    "मुझे पानी चाहिए।",
+    "ok"
+   ],
+   [
+    "नहीं चाहिए दवा",
+    "मुझे दवा नहीं चाहिए।",
+    "ok"
+   ],
+   [
+    "दर्द दवा",
+    "मुझे दर्द हो रहा है, मुझे दवा चाहिए।",
+    "ok"
+   ],
+   [
+    "थका हुआ",
+    "मुझे थकान हो रही है।",
+    "ok"
+   ],
+   [
+    "मैं जाना स्कूल",
+    null,
+    "unsupported"
+   ]
+  ],
+  "gu": [
+   [
+    "પાણી",
+    "મને પાણી જોઈએ છે.",
+    "ok"
+   ],
+   [
+    "ના જોઈએ દવા",
+    "મને દવા નથી જોઈતી.",
+    "ok"
+   ],
+   [
+    "દુખાવો દવા",
+    "મને દુખાવો થાય છે, મને દવા જોઈએ છે.",
+    "ok"
+   ],
+   [
+    "થાકેલું",
+    "મને થાક લાગ્યો છે.",
+    "ok"
+   ],
+   [
+    "હું જવું શાળા",
+    null,
+    "unsupported"
+   ]
+  ],
+  "mr": [
+   [
+    "पाणी",
+    "मला पाणी हवे आहे.",
+    "ok"
+   ],
+   [
+    "नाही पाहिजे औषध",
+    "मला औषध नको आहे.",
+    "ok"
+   ],
+   [
+    "वेदना औषध",
+    "मला वेदना होत आहेत, मला औषध हवे आहे.",
+    "ok"
+   ],
+   [
+    "दमलेला",
+    "मला थकवा आला आहे.",
+    "ok"
+   ],
+   [
+    "मी जाणे शाळा",
+    null,
+    "unsupported"
+   ]
+  ]
+ }
+}

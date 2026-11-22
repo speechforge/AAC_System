@@ -1,0 +1,20 @@
+\begin{tikzpicture}[>=Stealth, node distance=5mm,
+box/.style={draw=exampleblue,rounded corners=2pt,fill=panelgray,align=center,font=\small,minimum height=10mm,text width=31mm,inner sep=4pt},
+check/.style={box,draw=examplegreen,fill=examplegreen!4},
+edge/.style={->,thick,draw=exampleblue}]
+\node[box] (input) {Symbols + language\\act + polarity};
+\node[box,right=of input] (ledger) {Concept ledger\\required / forbidden};
+\node[box,right=of ledger] (model) {Prompted cascade\\candidate sentence};
+\node[check,right=of model] (gate) {Concept / act / polarity\\perspective / additions};
+\node[box,below=9mm of input] (ask) {Ambiguous: clarify\\unsupported: preview};
+\node[box,below=9mm of ledger] (template) {Language template\\checked before use};
+\node[box,below=9mm of model] (output) {Labelled returned text\\model / template};
+\node[box,below=9mm of gate] (speech) {Configured speech route\\or labelled test tone};
+\draw[edge] (input)--(ledger);\draw[edge] (ledger)--(model);\draw[edge] (model)--(gate);
+\draw[edge] (input)--(ask);
+\draw[edge] (gate.south west)--node[above,sloped,font=\scriptsize]{pass}(output.north east);
+\draw[edge] (gate.north) to[bend right=25] node[above,font=\scriptsize]{reject: one retry}(model.north);
+\draw[edge] (template)--node[above,font=\scriptsize]{if valid}(output);
+\draw[edge] (output)--(speech);
+\draw[edge] (ledger)--(template);
+\end{tikzpicture}

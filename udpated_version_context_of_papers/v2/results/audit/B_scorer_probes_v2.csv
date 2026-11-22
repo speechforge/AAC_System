@@ -1,0 +1,21 @@
+question,lang,text,expected,v1,v2,v1_ok,v2_ok
+refusal meaning,en,I can't have pizza.,True,False,False,False,False
+refusal meaning,en,I don't want pizza.,True,True,True,True,True
+refusal meaning,en,"I'm sorry, but I can't generate that.",False,False,False,True,True
+negation scope,en,"I am tired, I do not know.",False,True,False,False,True
+negation scope,en,I am not tired.,True,True,True,True,True
+negation scope,hi,"मैं थका हुआ हूँ, मुझे पानी नहीं चाहिए।",False,False,False,True,True
+perspective,en,"Water, please.",True,True,True,True,True
+perspective,en,He wants water.,False,True,False,False,True
+perspective,en,The user wants water.,False,False,False,True,True
+perspective,hi,पानी चाहिए।,True,True,True,True,True
+perspective,hi,उसे पानी चाहिए।,False,True,False,False,True
+perspective,gu,તેને પાણી જોઈએ છે.,False,True,False,False,True
+inflection/paraphrase,gu,મને ભાત જમવો છે.,True,False,True,False,True
+inflection/paraphrase,gu,મને થાકેલું લાગતું નથી.,True,False,True,False,True
+inflection/paraphrase,hi,मुझे पानी पीना है।,True,False,True,False,True
+inflection/paraphrase,mr,मला भात खायचा आहे.,True,False,True,False,True
+inflection/paraphrase,en,I would love some water.,True,False,True,False,True
+inflection/paraphrase,en,"Could I have some water, please?",True,True,True,True,True
+concept substitution,en,I want juice.,False,False,False,True,True
+added content,en,I am tired because of the long trip.,False,True,False,False,True

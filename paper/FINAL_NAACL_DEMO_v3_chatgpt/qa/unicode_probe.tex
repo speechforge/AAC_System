@@ -1,0 +1,10 @@
+\documentclass{article}
+\usepackage{fontspec,accsupp,hyperref}
+\newfontfamily\dev[Script=Devanagari]{Noto Sans Devanagari}
+\begin{document}
+Base: {\dev मुझे पानी चाहिए।}\\
+Raw: \special{pdf:literal direct /Span <</ActualText <FEFF092E0941091D09470020092A093E092809400020091A093E0939093F090F0964>>> BDC}{\dev मुझे पानी चाहिए।}\special{pdf:literal direct EMC}\\
+Acc: \BeginAccSupp{method=hex,ActualText=FEFF092E0941091D09470020092A093E092809400020091A093E0939093F090F0964}{\dev मुझे पानी चाहिए।}\EndAccSupp{}\\
+Pdf: \BeginAccSupp{method=pdfstringdef,ActualText={मुझे पानी चाहिए।}}{\dev मुझे पानी चाहिए।}\EndAccSupp{}
+\\Dyn: \pdfstringdef\aacactual{मुझे पानी चाहिए।}\special{pdf:literal direct /Span <</ActualText (\aacactual)>> BDC}{\dev मुझे पानी चाहिए।}\special{pdf:literal direct EMC}
+\end{document}

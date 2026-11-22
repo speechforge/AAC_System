@@ -1,0 +1,47 @@
+1
+00:00:04,218 --> 00:00:10,225
+Indic AAC Studio: a symbol board in English, Hindi, Gujarati and Marathi. Selections go to a local server.
+
+2
+00:00:11,519 --> 00:00:16,524
+1. Tap symbols. The shelf proposes next words from a trained infinity-gram model.
+
+3
+00:00:30,451 --> 00:00:38,455
+2. The model proposed “I need food.”; the validator rejected it (selected concept missing) and the template returned “I want Water.”.
+
+4
+00:00:38,455 --> 00:00:42,459
+The card does not show whether the model or the template produced the sentence.
+
+5
+00:00:46,892 --> 00:00:51,896
+Gujarati: “No” + “Water” (ના + પાણી). Labels exist in all four locales.
+
+6
+00:01:00,727 --> 00:01:08,731
+The validator accepted: “મને પાણી ના જોઈએ છે.” (negation kept).
+
+7
+00:01:12,957 --> 00:01:18,960
+Intent-sensitive case: the feeling “Tired”. The web client infers intent from the labels and sends REQUEST.
+
+8
+00:01:26,193 --> 00:01:35,195
+Accepted: “I'm feeling very tired. I need something to eat.”. The selected concept is present, but unselected content was added (a documented defect).
+
+9
+00:01:35,195 --> 00:01:43,199
+Evaluation: 175 frozen scenarios, four languages. The gate lifts success from 37% to 55%; explicit polarity and intent fields give 75%.
+
+10
+00:01:43,199 --> 00:01:50,201
+A template alone reaches 95% with explicit fields, so the gate is a safeguard, not a gain in sentence quality.
+
+11
+00:01:50,201 --> 00:01:56,204
+Speech: the IndicF5 checkpoint is gated; this build returns a placeholder tone. A narrated take is pending.
+
+12
+00:01:56,204 --> 00:02:01,207
+Package: source, fixtures, scorer and instructions. Download URL to be inserted at submission.

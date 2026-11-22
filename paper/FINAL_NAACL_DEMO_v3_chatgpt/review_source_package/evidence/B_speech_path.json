@@ -1,0 +1,721 @@
+{
+ "measured_at": "2026-11-13T10:31:58Z",
+ "runs": [
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "I want water.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 13621,
+   "t_text_s": 13.51,
+   "t_tts_s": 0.01,
+   "t_first_playback_ms": 13655,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "en",
+   "scenario": "water",
+   "repeat": 0,
+   "cold": true
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "I want water.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 12129,
+   "t_text_s": 12.07,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 12122,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "en",
+   "scenario": "water",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "I do not want pizza.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 12195,
+   "t_text_s": 12.14,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 12182,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "en",
+   "scenario": "no_pizza",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "I do not want pizza.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 12432,
+   "t_text_s": 12.39,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 12422,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "en",
+   "scenario": "no_pizza",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "I am tired.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 12144,
+   "t_text_s": 12.1,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 12137,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "en",
+   "scenario": "tired",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "I am tired.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 12363,
+   "t_text_s": 12.31,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 12357,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "en",
+   "scenario": "tired",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "Teacher, please help me.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 12823,
+   "t_text_s": 12.77,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 12821,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "en",
+   "scenario": "help_teacher",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "Teacher, please help me.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 12438,
+   "t_text_s": 12.37,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 12430,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "en",
+   "scenario": "help_teacher",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "मुझे पानी चाहिए।",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 9949,
+   "t_text_s": 9.89,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 9949,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "hi",
+   "scenario": "water",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "मुझे पानी चाहिए।",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 9848,
+   "t_text_s": 9.8,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 9845,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "hi",
+   "scenario": "water",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "मुझे पिज़्ज़ा नहीं चाहिए।",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 20781,
+   "t_text_s": 20.73,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 20769,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "hi",
+   "scenario": "no_pizza",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "मुझे पिज़्ज़ा नहीं चाहिए।",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 20589,
+   "t_text_s": 20.5,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 20577,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "hi",
+   "scenario": "no_pizza",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "मैं थका हुआ हूँ।",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 9711,
+   "t_text_s": 9.67,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 9704,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "hi",
+   "scenario": "tired",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "मैं थका हुआ हूँ।",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 9772,
+   "t_text_s": 9.7,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 9767,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "hi",
+   "scenario": "tired",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "शिक्षक, कृपया मेरी मदद कीजिए।",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 21628,
+   "t_text_s": 21.58,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 21619,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "hi",
+   "scenario": "help_teacher",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "शिक्षक, कृपया मेरी मदद कीजिए।",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 21551,
+   "t_text_s": 21.49,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 21540,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "hi",
+   "scenario": "help_teacher",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "મને પાણી જોઈએ છે.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 7845,
+   "t_text_s": 7.8,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 7835,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "gu",
+   "scenario": "water",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "મને પાણી જોઈએ છે.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 7855,
+   "t_text_s": 7.81,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 7848,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "gu",
+   "scenario": "water",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "મને પિઝા નથી જોઈતું.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 7956,
+   "t_text_s": 7.91,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 7949,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "gu",
+   "scenario": "no_pizza",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "મને પિઝા નથી જોઈતું.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 7976,
+   "t_text_s": 7.91,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 7966,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "gu",
+   "scenario": "no_pizza",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "હું થાકેલું છું.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 7848,
+   "t_text_s": 7.78,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 7842,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "gu",
+   "scenario": "tired",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "હું થાકેલું છું.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 7839,
+   "t_text_s": 7.79,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 7832,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "gu",
+   "scenario": "tired",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "મને શિક્ષક મદદ જોઈએ છે.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 8536,
+   "t_text_s": 8.49,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 8534,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "gu",
+   "scenario": "help_teacher",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "મને શિક્ષક મદદ જોઈએ છે.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 8493,
+   "t_text_s": 8.43,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 8482,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "gu",
+   "scenario": "help_teacher",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "मला पाणी हवे आहे.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 7091,
+   "t_text_s": 7.03,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 7079,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "mr",
+   "scenario": "water",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "मला पाणी हवे आहे.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 7070,
+   "t_text_s": 7.02,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 7064,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "mr",
+   "scenario": "water",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "मला पिझ्झा नको आहे.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 14229,
+   "t_text_s": 14.18,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 14218,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "mr",
+   "scenario": "no_pizza",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "मला पिझ्झा नको आहे.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 14206,
+   "t_text_s": 14.15,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 14200,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "mr",
+   "scenario": "no_pizza",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "मी दमलेला सांगत आहे.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 7212,
+   "t_text_s": 7.16,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 7202,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "mr",
+   "scenario": "tired",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_model",
+   "route": "model_first",
+   "text": "मी दमलेला सांगत आहे.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 7168,
+   "t_text_s": 7.12,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 7166,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "mr",
+   "scenario": "tired",
+   "repeat": 1,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "शिक्षक, कृपया मला मदत करा.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 15256,
+   "t_text_s": 15.2,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 15251,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "mr",
+   "scenario": "help_teacher",
+   "repeat": 0,
+   "cold": false
+  },
+  {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "शिक्षक, कृपया मला मदत करा.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 15201,
+   "t_text_s": 15.12,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 15198,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ],
+   "lang": "mr",
+   "scenario": "help_teacher",
+   "repeat": 1,
+   "cold": false
+  }
+ ],
+ "browser_voices": {
+  "n": 0,
+  "langs": []
+ },
+ "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/150.0.0.0 Safari/537.36",
+ "demo": {
+  "1_successful_render": {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "I want water.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 12216,
+   "t_text_s": 12.16,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 12213,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ]
+  },
+  "2_rejection_and_fallback": {
+   "outcome": "sentence_template",
+   "route": "template_after_rejection",
+   "text": "I do not want pizza.",
+   "audio_kind": "placeholder_tone",
+   "t_response_ms": 12273,
+   "t_text_s": 12.2,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": 12273,
+   "first_event": "audio.playing",
+   "events": [
+    "audio.play",
+    "audio.playing"
+   ]
+  },
+  "3_clarification": {
+   "outcome": "clarification",
+   "route": "clarification",
+   "text": "",
+   "audio_kind": "none",
+   "t_response_ms": 64,
+   "t_text_s": 0.0,
+   "t_tts_s": 0.0,
+   "t_first_playback_ms": null,
+   "first_event": null,
+   "events": []
+  },
+  "3b_after_user_choice": {
+   "text": "⚡\nIndic AAC Studio\n🇬🇧 English\n🇮🇳 हिन्दी (Hindi)\n🟡 ગુજરાતી (Gujarati)\n🟠 मराठी (Marathi)\nSign in\n📌\nMy Words\n🚨 QUICK EXPRESS\n🆘\nHelp Me!\n💧\nWater\n🚻\nBathroom\n🤕\nI Hurt\n🍎\nFood\n✨\nThank You\n❤️\nLove\nSENTENCE CANVAS\n1 word\nTOP WORDS:\n👍\nYes\n🙅\nNo\n🤲\nWant\n🆘\nHelp\n➕\nMore\n👃\nNose\n✕\nDelete Last\n🔀\nUn-Jumble\nSpeak\nMessage type\nAuto\nRequest\nFeeling\nQuestion\nComposing Sentence…\n⚡ NEXT WORD PREDICTIONS (∞-GRAM)\nContext: 1 "
+  },
+  "4_server_unreachable_has_literal_card": true
+ },
+ "summary": {
+  "n_runs": 32,
+  "n_cold": 1,
+  "n_warm": 31,
+  "click_to_first_playback_warm": {
+   "n": 31,
+   "median_ms": 9949,
+   "p95_ms": 20769
+  },
+  "click_to_response_warm": {
+   "n": 31,
+   "median_ms": 9949,
+   "p95_ms": 20781
+  },
+  "by_lang": {
+   "en": {
+    "n": 7,
+    "median_ms": 12357,
+    "p95_ms": 12430
+   },
+   "hi": {
+    "n": 8,
+    "median_ms": 15263,
+    "p95_ms": 21540
+   },
+   "gu": {
+    "n": 8,
+    "median_ms": 7898,
+    "p95_ms": 8482
+   },
+   "mr": {
+    "n": 8,
+    "median_ms": 10701,
+    "p95_ms": 15198
+   }
+  },
+  "by_route": {
+   "model_first": {
+    "n": 16,
+    "median_ms": 7898,
+    "p95_ms": 9845
+   },
+   "template_after_rejection": {
+    "n": 15,
+    "median_ms": 14200,
+    "p95_ms": 21540
+   }
+  },
+  "audio_kinds": {
+   "placeholder_tone": 32
+  },
+  "failures_sentence_without_playback_event": 0,
+  "peak_gpu_mem_mib_system_wide": 1858,
+  "tts_engine_mapping": "backend IndicF5Engine.generate_speech: lang en (not code-mixed) -> prompt 'english_female', hi/gu/mr -> prompt 'indic_female'; no IndicF5 checkpoint present -> every locale returns a 440 Hz placeholder tone; browser fallback speak(): en en-US/en-IN/en-GB, hi hi-IN, gu gu-IN->hi-IN->en-IN, mr mr-IN->hi-IN->en-IN"
+ }
+}

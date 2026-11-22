@@ -1,0 +1,27 @@
+panel,gate,system,category,count,n,pct
+A,V0_archived,,"accepted, correct",164,784,20.9
+A,V0_archived,,"accepted, wrong",177,784,22.6
+A,V0_archived,,"rejected, wrong",431,784,55.0
+A,V0_archived,,"rejected, correct",12,784,1.5
+A,V1_revised,,"accepted, correct",166,784,21.2
+A,V1_revised,,"accepted, wrong",3,784,0.4
+A,V1_revised,,"rejected, wrong",605,784,77.2
+A,V1_revised,,"rejected, correct",10,784,1.3
+B,,archived_deployed|orig,missed concept,0,168,0.0
+B,,revised_hybrid|rev,missed concept,0,168,0.0
+B,,archived_deployed|orig,added content,6,168,3.6
+B,,revised_hybrid|rev,added content,0,168,0.0
+B,,archived_deployed|orig,wrong act,46,168,27.4
+B,,revised_hybrid|rev,wrong act,0,168,0.0
+B,,archived_deployed|orig,act missing,18,168,10.7
+B,,revised_hybrid|rev,act missing,0,168,0.0
+B,,archived_deployed|orig,negation dropped,0,168,0.0
+B,,revised_hybrid|rev,negation dropped,0,168,0.0
+B,,archived_deployed|orig,spurious negation,0,168,0.0
+B,,revised_hybrid|rev,spurious negation,0,168,0.0
+B,,archived_deployed|orig,negation scope,8,168,4.8
+B,,revised_hybrid|rev,negation scope,0,168,0.0
+B,,archived_deployed|orig,third person,9,168,5.4
+B,,revised_hybrid|rev,third person,0,168,0.0
+B,,archived_deployed|orig,script error,0,168,0.0
+B,,revised_hybrid|rev,script error,0,168,0.0

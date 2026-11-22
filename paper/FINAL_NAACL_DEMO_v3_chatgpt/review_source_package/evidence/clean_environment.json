@@ -1,0 +1,32 @@
+{
+ "measured_at": "2026-11-13T10:16:14Z",
+ "procedure": "fresh python3 venv (pip install torch transformers fastapi uvicorn scipy pydantic safetensors vocos numpy python-multipart), package = working-tree copy without .git/paper/v2, CUDA_VISIBLE_DEVICES='' (CPU), HF_HUB_OFFLINE=1 with the shared HF cache (Qwen weights NOT re-downloaded), python app.py on PORT=8010",
+ "versions": "torch 2.15.0, transformers 5.22.2, fastapi 0.162.5, uvicorn 0.54.0, pydantic 2.14.3, scipy 1.18.1, numpy 2.5.4, vocos 0.1.0, safetensors 0.8.0 (newer than the paper's torch 2.11.0 / transformers 5.14.1)",
+ "health": "GET /api/health -> status ok",
+ "requests": [
+  {
+   "req": "legacy payload intent REQUEST, entities [Water], en",
+   "outcome": "sentence_template (template_after_rejection)",
+   "text": "I want water.",
+   "wall_s": 43.66,
+   "audio": "placeholder_tone"
+  },
+  {
+   "req": "new protocol act REQUEST negation true [pizza in Devanagari], hi",
+   "outcome": "sentence_template",
+   "text": "मुझे पिज़्ज़ा नहीं चाहिए।",
+   "wall_s": 60.26,
+   "audio": "placeholder_tone"
+  },
+  {
+   "req": "act UNKNOWN [Nose], en",
+   "outcome": "clarification",
+   "wall_s": 0.01
+  },
+  {
+   "req": "invalid body",
+   "http": 422
+  }
+ ],
+ "not_tested": "GPU path in the clean env; first-time Hugging Face download of Qwen; IndicF5 synthesis (weights gated); hosted demo and screencast links (none exist)"
+}

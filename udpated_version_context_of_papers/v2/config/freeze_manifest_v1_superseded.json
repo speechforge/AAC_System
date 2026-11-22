@@ -1,0 +1,51 @@
+{
+ "frozen_at_utc": "2026-11-13T09:59:41Z",
+ "source_commit": "fe4e185763a181674534656dbf95e30709cf83ff",
+ "dirty_status": [
+  "M indic-generative-aac/backend/app.py",
+  " M indic-generative-aac/backend/llm.py",
+  " M indic-generative-aac/backend/semantic.py",
+  " M indic-generative-aac/backend/tts.py",
+  " M indic-generative-aac/frontend/index.html",
+  "?? CONTEXT.md",
+  "?? NAACL_PAPER_BUNDLE.md",
+  "?? indic-generative-aac/backend/aac_lexicon.py",
+  "?? indic-generative-aac/backend/board_concepts.json",
+  "?? indic-generative-aac/backend/pipeline.py",
+  "?? indic-generative-aac/backend/templates.py",
+  "?? paper/",
+  "?? udpated_version_context_of_papers/"
+ ],
+ "files": {
+  "indic-generative-aac/backend/aac_lexicon.py": "4c7bbe49c3dd42757086e9c7bbae2d22fe014bacce8a8da0efafa10fd58255f3",
+  "indic-generative-aac/backend/templates.py": "9752990bd473a6ea82d036fd97418e9ba948f5ec696113dc01530dbee5387909",
+  "indic-generative-aac/backend/semantic.py": "0794791262da6a9f84bd094d38a58c4394c2e1bc071866397468f4891d8e369e",
+  "indic-generative-aac/backend/pipeline.py": "ebb3b3999d6b5dc23be7c9011f276d1059de7d0a2fb33bc91c7292ce6e8ff326",
+  "indic-generative-aac/backend/llm.py": "64b7a4c05329e25901e673e89eaa32e6efd2a051a9583bc97af876cd0e417a62",
+  "indic-generative-aac/backend/app.py": "80f7d31fa170bbde64603e1bf3c37424ab9aeabbf569894b4ae02a20a5035f51",
+  "indic-generative-aac/backend/tts.py": "b502a88ccf3838430dcb87b5209855b17b37a25e572f25370996c8832bfacf28",
+  "indic-generative-aac/backend/board_concepts.json": "542dc5f3fed75b654e6ff52400d673f8f813b74e061ceaf2ec7c93d482450cb5",
+  "indic-generative-aac/frontend/index.html": "c08779edb08151e9262c4269fc5367af990ed54d7d262f39290849d94837f4cf",
+  "udpated_version_context_of_papers/v2/src/score_v2.py": "8999f53e9980408957adb1b1160158c4794867c1989f8545b3cd3e3dff63d25a",
+  "udpated_version_context_of_papers/v2/src/build_fixtures.py": "e2b8f499063a9a1d11cd2a70f58a51234b8bfbcfe912239865e0a02889e0d58a",
+  "udpated_version_context_of_papers/v2/src/run_streams.py": "d4055474aee541c3ed0700bf3904d42d73ebe2ea34c94952af0ba285ddc4123a",
+  "udpated_version_context_of_papers/v2/src/run_onepass.py": "b23bbb4b2a3d159329cf479046bd6f7449bc782c68c62f3498f1ccf9b5419731",
+  "udpated_version_context_of_papers/v2/fixtures/PREREGISTRATION.md": "1a6a3bf79592422dd08f4be9f798788a059633706f9673411fbcb263c986eaa2"
+ },
+ "config": {
+  "seeds": [
+   11,
+   23,
+   47
+  ],
+  "bootstrap_seed": 20261113,
+  "bootstrap_resamples": 10000,
+  "scorer": "scorer-v2",
+  "gate": "gate-v2",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "model_revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "dtype": "float16",
+  "decoding": "realiser: Indic few-shot greedy (temperature 0.01, max_new_tokens 75); English/code-mixed temperature 0.1 (max_new_tokens 60); LLM-2 temperature 0.05 greedy (60); LLM-3 temperature 0.0 (120); retry MAX_RETRIES=2",
+  "metrics": "strict full-scenario success on determinate scenarios (scorer v2); denominators per table"
+ }
+}

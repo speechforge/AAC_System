@@ -1,0 +1,13 @@
+{
+  "url": "https://aac-mos-portal.indic-aac-speech-study-2026.workers.dev",
+  "normal_tls_verification": true,
+  "resolver_choice": "system resolver",
+  "listener_form": true,
+  "width_320_no_horizontal_overflow": true,
+  "admin_login": true,
+  "secure_http_only_cookie": true,
+  "csv_download": true,
+  "logout": true,
+  "created_test_participants": false,
+  "page_errors": []
+}

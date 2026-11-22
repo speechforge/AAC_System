@@ -1,0 +1,450 @@
+[
+  {
+    "id": "en-T1_request_object-WATER",
+    "group": "T1_request_object-WATER",
+    "lang": "en",
+    "labels": [
+      "Water"
+    ],
+    "act": "request",
+    "negation": false,
+    "candidate": "I need food.",
+    "candidate2": "I need food.",
+    "returned": "I want water.",
+    "route": "template_after_rejection",
+    "gate_reasons": "missing_concept:WATER|added_concept:FOOD|missing_concept:WATER|added_concept:FOOD",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "hi-T1_request_object-WATER",
+    "group": "T1_request_object-WATER",
+    "lang": "hi",
+    "labels": [
+      "पानी"
+    ],
+    "act": "request",
+    "negation": false,
+    "candidate": "मुझे पानी चाहिए।",
+    "candidate2": null,
+    "returned": "मुझे पानी चाहिए।",
+    "route": "model_first",
+    "gate_reasons": "",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": true
+  },
+  {
+    "id": "gu-T1_request_object-WATER",
+    "group": "T1_request_object-WATER",
+    "lang": "gu",
+    "labels": [
+      "પાણી"
+    ],
+    "act": "request",
+    "negation": false,
+    "candidate": "મને પાણી જોઈએ છે.",
+    "candidate2": null,
+    "returned": "મને પાણી જોઈએ છે.",
+    "route": "model_first",
+    "gate_reasons": "",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": true
+  },
+  {
+    "id": "mr-T1_request_object-WATER",
+    "group": "T1_request_object-WATER",
+    "lang": "mr",
+    "labels": [
+      "पाणी"
+    ],
+    "act": "request",
+    "negation": false,
+    "candidate": "मला पाणी हवे आहे.",
+    "candidate2": null,
+    "returned": "मला पाणी हवे आहे.",
+    "route": "model_first",
+    "gate_reasons": "",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": true
+  },
+  {
+    "id": "en-T4_negated_feeling-NO+HAPPY",
+    "group": "T4_negated_feeling-NO+HAPPY",
+    "lang": "en",
+    "labels": [
+      "No",
+      "Happy"
+    ],
+    "act": "feeling",
+    "negation": true,
+    "candidate": "I feel sad because I'm not happy with my decision.",
+    "candidate2": "I feel sad and disappointed.",
+    "returned": "I am not happy.",
+    "route": "template_after_rejection",
+    "gate_reasons": "added_concept:SAD|added_reason_time:because|missing_concept:HAPPY|added_concept:SAD|negation_missing",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "hi-T4_negated_feeling-NO+HAPPY",
+    "group": "T4_negated_feeling-NO+HAPPY",
+    "lang": "hi",
+    "labels": [
+      "नहीं",
+      "खुश"
+    ],
+    "act": "feeling",
+    "negation": true,
+    "candidate": "मैं खुश हूँ।",
+    "candidate2": "मैं खुश हूँ।",
+    "returned": "मैं खुश नहीं हूँ।",
+    "route": "template_after_rejection",
+    "gate_reasons": "negation_missing|negation_missing",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "gu-T4_negated_feeling-NO+HAPPY",
+    "group": "T4_negated_feeling-NO+HAPPY",
+    "lang": "gu",
+    "labels": [
+      "ના",
+      "ખુશ"
+    ],
+    "act": "feeling",
+    "negation": true,
+    "candidate": "હું ખુશ છું.",
+    "candidate2": "હું ખુશ છું.",
+    "returned": "હું ખુશ નથી.",
+    "route": "template_after_rejection",
+    "gate_reasons": "negation_missing|negation_missing",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "mr-T4_negated_feeling-NO+HAPPY",
+    "group": "T4_negated_feeling-NO+HAPPY",
+    "lang": "mr",
+    "labels": [
+      "नाही",
+      "आनंदी"
+    ],
+    "act": "feeling",
+    "negation": true,
+    "candidate": "मी आनंदी नाही.",
+    "candidate2": null,
+    "returned": "मी आनंदी नाही.",
+    "route": "model_first",
+    "gate_reasons": "",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "en-T2_refuse_object-NO+PIZZA",
+    "group": "T2_refuse_object-NO+PIZZA",
+    "lang": "en",
+    "labels": [
+      "No",
+      "Pizza"
+    ],
+    "act": "request",
+    "negation": true,
+    "candidate": "I cannot eat out because I am .",
+    "candidate2": "I cannot eat out because I am .",
+    "returned": "I do not want pizza.",
+    "route": "template_after_rejection",
+    "gate_reasons": "missing_concept:PIZZA|added_concept:EAT|added_reason_time:because|act_wrong|missing_concept:PIZZA|added_concept:EAT|added_reason_time:because|act_wrong",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "hi-T2_refuse_object-NO+PIZZA",
+    "group": "T2_refuse_object-NO+PIZZA",
+    "lang": "hi",
+    "labels": [
+      "नहीं",
+      "पिज़्ज़ा"
+    ],
+    "act": "request",
+    "negation": true,
+    "candidate": "पिज़्ज़ा, मुझे चाहिए।",
+    "candidate2": "पिज़्ज़ा, मुझे चाहिए।",
+    "returned": "मुझे पिज़्ज़ा नहीं चाहिए।",
+    "route": "template_after_rejection",
+    "gate_reasons": "negation_missing|negation_missing",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "gu-T2_refuse_object-NO+PIZZA",
+    "group": "T2_refuse_object-NO+PIZZA",
+    "lang": "gu",
+    "labels": [
+      "ના",
+      "પિઝા"
+    ],
+    "act": "request",
+    "negation": true,
+    "candidate": "મને પિઝા નથી જોઈતું.",
+    "candidate2": null,
+    "returned": "મને પિઝા નથી જોઈતું.",
+    "route": "model_first",
+    "gate_reasons": "",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "mr-T2_refuse_object-NO+PIZZA",
+    "group": "T2_refuse_object-NO+PIZZA",
+    "lang": "mr",
+    "labels": [
+      "नाही",
+      "पिझ्झा"
+    ],
+    "act": "request",
+    "negation": true,
+    "candidate": "मला पिझ्झा हवे आहे.",
+    "candidate2": "मला पिझ्झा हवे आहे.",
+    "returned": "मला पिझ्झा नको आहे.",
+    "route": "template_after_rejection",
+    "gate_reasons": "negation_missing|negation_missing",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "en-T3_feeling-TIRED",
+    "group": "T3_feeling-TIRED",
+    "lang": "en",
+    "labels": [
+      "Tired"
+    ],
+    "act": "feeling",
+    "negation": false,
+    "candidate": "I feel and want to eat out.",
+    "candidate2": "I feel and want to eat out.",
+    "returned": "I am tired.",
+    "route": "template_after_rejection",
+    "gate_reasons": "missing_concept:TIRED|added_concept:EAT|act_wrong|missing_concept:TIRED|added_concept:EAT|act_wrong",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "hi-T3_feeling-TIRED",
+    "group": "T3_feeling-TIRED",
+    "lang": "hi",
+    "labels": [
+      "थका हुआ"
+    ],
+    "act": "feeling",
+    "negation": false,
+    "candidate": "मैं थका हुआ हूँ।",
+    "candidate2": null,
+    "returned": "मैं थका हुआ हूँ।",
+    "route": "model_first",
+    "gate_reasons": "",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "gu-T3_feeling-TIRED",
+    "group": "T3_feeling-TIRED",
+    "lang": "gu",
+    "labels": [
+      "થાકેલું"
+    ],
+    "act": "feeling",
+    "negation": false,
+    "candidate": "હું થાકેલું છું.",
+    "candidate2": "હું થાકેલું છું.",
+    "returned": "હું થાકેલું છું.",
+    "route": "model_first",
+    "gate_reasons": "",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "mr-T3_feeling-TIRED",
+    "group": "T3_feeling-TIRED",
+    "lang": "mr",
+    "labels": [
+      "दमलेला"
+    ],
+    "act": "feeling",
+    "negation": false,
+    "candidate": "मी दमलेला सांगत आहे.",
+    "candidate2": null,
+    "returned": "मी दमलेला सांगत आहे.",
+    "route": "model_first",
+    "gate_reasons": "",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "en-T5_action_object-DRINK+WATER",
+    "group": "T5_action_object-DRINK+WATER",
+    "lang": "en",
+    "labels": [
+      "Drink",
+      "Water"
+    ],
+    "act": "request",
+    "negation": false,
+    "candidate": "The user requested water.",
+    "candidate2": "The user requested water.",
+    "returned": "I want to drink water.",
+    "route": "template_after_rejection",
+    "gate_reasons": "speaker_perspective|missing_concept:DRINK|act_missing|speaker_perspective|missing_concept:DRINK|act_missing",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "hi-T5_action_object-DRINK+WATER",
+    "group": "T5_action_object-DRINK+WATER",
+    "lang": "hi",
+    "labels": [
+      "पीना",
+      "पानी"
+    ],
+    "act": "request",
+    "negation": false,
+    "candidate": "पीना, मुझे पानी चाहिए।",
+    "candidate2": null,
+    "returned": "पीना, मुझे पानी चाहिए।",
+    "route": "model_first",
+    "gate_reasons": "",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "gu-T5_action_object-DRINK+WATER",
+    "group": "T5_action_object-DRINK+WATER",
+    "lang": "gu",
+    "labels": [
+      "પીવું",
+      "પાણી"
+    ],
+    "act": "request",
+    "negation": false,
+    "candidate": "મને પાણી જોઈએ છે.",
+    "candidate2": "મને પાણી જોઈએ છે.",
+    "returned": "મને પાણી પીવાનું મન છે.",
+    "route": "template_after_rejection",
+    "gate_reasons": "missing_concept:DRINK|missing_concept:DRINK",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "mr-T5_action_object-DRINK+WATER",
+    "group": "T5_action_object-DRINK+WATER",
+    "lang": "mr",
+    "labels": [
+      "पिणे",
+      "पाणी"
+    ],
+    "act": "request",
+    "negation": false,
+    "candidate": "मला पाणी हवे आहे.",
+    "candidate2": "मला पाणी हवे आहे.",
+    "returned": "मला पाणी पिण्याची इच्छा आहे.",
+    "route": "template_after_rejection",
+    "gate_reasons": "missing_concept:DRINK|missing_concept:DRINK",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "en-T6_help_person-CALL+MOTHER",
+    "group": "T6_help_person-CALL+MOTHER",
+    "lang": "en",
+    "labels": [
+      "Call",
+      "Mother"
+    ],
+    "act": "request",
+    "negation": false,
+    "candidate": "The user requested a meal.",
+    "candidate2": "The user requested to eat out.",
+    "returned": "I want to call my mother.",
+    "route": "template_after_rejection",
+    "gate_reasons": "speaker_perspective|missing_concept:CALL,MOTHER|added_concept:FOOD|act_missing|speaker_perspective|missing_concept:CALL,MOTHER|added_concept:EAT|act_missing",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "hi-T6_help_person-CALL+MOTHER",
+    "group": "T6_help_person-CALL+MOTHER",
+    "lang": "hi",
+    "labels": [
+      "फ़ोन करना",
+      "माँ"
+    ],
+    "act": "request",
+    "negation": false,
+    "candidate": "माँ, मुझे फ़ोन करना हूँ, मुझे चाहिए।",
+    "candidate2": null,
+    "returned": "माँ, मुझे फ़ोन करना हूँ, मुझे चाहिए।",
+    "route": "model_first",
+    "gate_reasons": "",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "gu-T6_help_person-CALL+MOTHER",
+    "group": "T6_help_person-CALL+MOTHER",
+    "lang": "gu",
+    "labels": [
+      "ફોન કરવો",
+      "માતા"
+    ],
+    "act": "request",
+    "negation": false,
+    "candidate": "મને ફોન કરવો માતા છે.",
+    "candidate2": "મને ફોન કરવો માતા છે.",
+    "returned": "મને માતાને ફોન કરવાનું મન છે.",
+    "route": "template_after_rejection",
+    "gate_reasons": "act_wrong|act_wrong",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  },
+  {
+    "id": "mr-T6_help_person-CALL+MOTHER",
+    "group": "T6_help_person-CALL+MOTHER",
+    "lang": "mr",
+    "labels": [
+      "फोन करणे",
+      "आई"
+    ],
+    "act": "request",
+    "negation": false,
+    "candidate": "मला आई फोन करणे आहे.",
+    "candidate2": "मला आई फोन करणे आहे.",
+    "returned": "मला आईला फोन करण्याची इच्छा आहे.",
+    "route": "template_after_rejection",
+    "gate_reasons": "act_wrong|act_wrong",
+    "seed": 11,
+    "split": "legacy regression; native review pending",
+    "prompt_overlap": false
+  }
+]

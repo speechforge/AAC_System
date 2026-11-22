@@ -1,0 +1,76 @@
+{
+  "checked_at": "2026-11-13T13:02:45+00:00",
+  "gates": [
+    {
+      "gate": "No unresolved markers",
+      "ok": true,
+      "detail": "0 marker(s)",
+      "kind": "fail"
+    },
+    {
+      "gate": "Citations verified (two sources + claim support)",
+      "ok": false,
+      "detail": "cited keys: 8 | bib entries: 8 | verified in lock: 7",
+      "kind": "fail"
+    },
+    {
+      "gate": "Prose: no coding terms or hollow openers",
+      "ok": false,
+      "detail": "22 file(s): 46 high, 6 medium, 23 low",
+      "kind": "fail"
+    },
+    {
+      "gate": "Figures, labels, and inputs resolve",
+      "ok": true,
+      "detail": "0 problem(s)",
+      "kind": "fail"
+    },
+    {
+      "gate": "Novelty thread runs through every section",
+      "ok": true,
+      "detail": "all sections carry the novelty",
+      "kind": "warn"
+    },
+    {
+      "gate": "Every claim has evidence",
+      "ok": true,
+      "detail": "11 supported, 3 bounded",
+      "kind": "fail"
+    },
+    {
+      "gate": "No experiment left pending",
+      "ok": true,
+      "detail": "none pending",
+      "kind": "warn"
+    },
+    {
+      "gate": "Credit and license statements present",
+      "ok": false,
+      "detail": "credit MISSING, license ok",
+      "kind": "fail"
+    },
+    {
+      "gate": "Project identity free of venue names",
+      "ok": true,
+      "detail": "Indic AAC Studio",
+      "kind": "fail"
+    },
+    {
+      "gate": "Venue requirements and checklist",
+      "ok": false,
+      "detail": "venue=generic ok=3 fail=7 blocking_fail=3 confirm=5 na=1  (see submission_checklist.md)",
+      "kind": "fail"
+    },
+    {
+      "gate": "LaTeX build",
+      "ok": false,
+      "detail": "tex-unavailable - No LaTeX installation found. Compile on Overleaf or install TeX Live; static checks still run.",
+      "kind": "warn"
+    }
+  ],
+  "claims": {
+    "supported": 11,
+    "partial": 3,
+    "open": 0
+  }
+}

@@ -1,0 +1,22 @@
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{2.6pt}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+ & \multicolumn{3}{c}{Client payload} & \multicolumn{3}{c}{Explicit fields} \\
+\cmidrule(lr){2-4}\cmidrule(l){5-7}
+Scenario family ($n$) & Pre & Dep. & Tmpl & Pre & Dep. & Tmpl \\
+\midrule
+Food/drink request (35) & 26 & 29 & 35 & 26 & 29 & 35 \\
+Refusal (\emph{No}+food) (38) & 19 & 33 & 38 & 10 & 38 & 38 \\
+Feeling (30) & 3 & 4 & 5 & 18 & 22 & 30 \\
+Negated feeling (32) & 2 & 1 & 0 & 2 & 13 & 24 \\
+Action + object (24) & 8 & 18 & 24 & 8 & 18 & 24 \\
+Help/call + person (16) & 7 & 12 & 16 & 7 & 12 & 16 \\
+\midrule
+All (175) & 65 & 97 & 118 & 71 & 132 & 167 \\
+\bottomrule
+\end{tabular}
+\caption{Successful scenarios by family on the primary set. Pre: cascade before the gate; Dep.: deployed output; Tmpl: template floor.}
+\label{tab:type}
+\end{table}

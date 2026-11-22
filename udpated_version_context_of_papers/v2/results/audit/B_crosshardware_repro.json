@@ -1,0 +1,306 @@
+{
+ "n_local_rows": 304,
+ "n_compared": 304,
+ "counts": {
+  "llm1_same": 277,
+  "llm2_same": 277,
+  "llm3_text_same": 278,
+  "text_same": 278,
+  "llm1_diff": 27,
+  "llm2_diff": 27,
+  "llm3_text_diff": 26,
+  "text_diff": 26
+ },
+ "by_language": {
+  "en": {
+   "llm1_same": 119,
+   "llm2_same": 119,
+   "llm3_text_same": 120,
+   "text_same": 120,
+   "llm1_diff": 21,
+   "llm2_diff": 21,
+   "llm3_text_diff": 20,
+   "text_diff": 20
+  },
+  "hi": {
+   "llm1_same": 52,
+   "llm2_same": 52,
+   "llm3_text_same": 52,
+   "text_same": 52,
+   "llm1_diff": 3,
+   "llm2_diff": 3,
+   "llm3_text_diff": 3,
+   "text_diff": 3
+  },
+  "gu": {
+   "llm1_same": 55,
+   "llm2_same": 55,
+   "llm3_text_same": 55,
+   "text_same": 55
+  },
+  "mr": {
+   "llm1_same": 51,
+   "llm2_same": 51,
+   "llm3_text_same": 51,
+   "text_same": 51,
+   "llm1_diff": 3,
+   "llm2_diff": 3,
+   "llm3_text_diff": 3,
+   "text_diff": 3
+  }
+ },
+ "differing_final_candidates": [
+  {
+   "key": [
+    "en-H3-01",
+    "G0",
+    "gold",
+    47
+   ],
+   "local": "I cannot provide you with a request for a fruit without specifying what type of fruit you are looking.",
+   "remote": "I cannot provide you with a request for a fruit if it is not positive."
+  },
+  {
+   "key": [
+    "en-H3-02",
+    "G0",
+    "orig",
+    11
+   ],
+   "local": "I am not and do not plan to eat at.",
+   "remote": "I am rice and I do not want to eat."
+  },
+  {
+   "key": [
+    "en-H3-02",
+    "G0",
+    "orig",
+    47
+   ],
+   "local": "I am not and will eat at.",
+   "remote": "I am not . I will eat at."
+  },
+  {
+   "key": [
+    "en-H3-03",
+    "G0",
+    "orig",
+    11
+   ],
+   "local": "I cannot produce a sentence with all these forbidden words and phrases.",
+   "remote": "I cannot produce a response containing forbidden words and phrases."
+  },
+  {
+   "key": [
+    "en-H3-03",
+    "G0",
+    "orig",
+    23
+   ],
+   "local": "I cannot produce text containing prohibited words and phrases.",
+   "remote": "I cannot produce a response containing forbidden words and phrases."
+  },
+  {
+   "key": [
+    "en-H3-03",
+    "G0",
+    "orig",
+    47
+   ],
+   "local": "I cannot produce a sentence based on the given requirements as there is none provided.",
+   "remote": "I cannot produce a response containing prohibited words and phrases."
+  },
+  {
+   "key": [
+    "en-H3-03",
+    "G0",
+    "gold",
+    11
+   ],
+   "local": "I cannot provide you with a negative act because it goes against common sense and ethical considerations.",
+   "remote": "I cannot provide you with a negative response as it goes against common sense and ethical considerations."
+  },
+  {
+   "key": [
+    "en-H3-03",
+    "G0",
+    "gold",
+    47
+   ],
+   "local": "I cannot provide you with a negative response as it goes against common sense and ethical considerations.",
+   "remote": "I cannot provide you with a negative act because it goes against common sense and ethical considerations."
+  },
+  {
+   "key": [
+    "en-H4-01",
+    "G0",
+    "orig",
+    11
+   ],
+   "local": "I am excited to eat out with my friend.",
+   "remote": "I am excited to eat at."
+  },
+  {
+   "key": [
+    "en-H4-01",
+    "G0",
+    "orig",
+    23
+   ],
+   "local": "I am excited to eat at.",
+   "remote": "I am excited to go out with my friend ."
+  },
+  {
+   "key": [
+    "en-H4-01",
+    "G0",
+    "gold",
+    47
+   ],
+   "local": "I am excited about my meal at.",
+   "remote": "I am and ready for a meal."
+  },
+  {
+   "key": [
+    "hi-H1-01",
+    "G1",
+    "rev",
+    null
+   ],
+   "local": "जूस, मुझे चाहिए।",
+   "remote": "जूस, मुझे चाहिए और जूस चाहिए।"
+  },
+  {
+   "key": [
+    "hi-H1-01",
+    "G1",
+    "gold",
+    null
+   ],
+   "local": null,
+   "remote": "जूस, मुझे चाहिए और जूस चाहिए।"
+  },
+  {
+   "key": [
+    "hi-H1-01",
+    "G1",
+    "cross",
+    null
+   ],
+   "local": "जूस, मुझे चाहिए।",
+   "remote": "जूस, मुझे चाहिए और जूस चाहिए।"
+  },
+  {
+   "key": [
+    "mr-H1-02",
+    "G1",
+    "rev",
+    null
+   ],
+   "local": "मला भात आणखी हवे आहे.",
+   "remote": "मला भात आणखी आहे."
+  },
+  {
+   "key": [
+    "mr-H1-02",
+    "G1",
+    "gold",
+    null
+   ],
+   "local": "मला भात आणखी हवे आहे.",
+   "remote": "मला भात आणखी आहे."
+  },
+  {
+   "key": [
+    "mr-H1-02",
+    "G1",
+    "cross",
+    null
+   ],
+   "local": "मला भात आणखी हवे आहे.",
+   "remote": "मला भात आणखी आहे."
+  },
+  {
+   "key": [
+    "en-H3-01",
+    "G1",
+    "rev",
+    47
+   ],
+   "local": "I cannot provide you with a request for a fruit without specifying what type of fruit you are looking.",
+   "remote": "I cannot provide you with a request for a fruit if it is not positive."
+  },
+  {
+   "key": [
+    "en-H3-01",
+    "G1",
+    "gold",
+    47
+   ],
+   "local": "I cannot provide you with a request for a fruit without specifying what type of fruit you are looking.",
+   "remote": "I cannot provide you with a request for a fruit if it is not positive."
+  },
+  {
+   "key": [
+    "en-H3-03",
+    "G1",
+    "rev",
+    11
+   ],
+   "local": "I cannot provide you with a negative act because it goes against common sense and ethical considerations.",
+   "remote": "I cannot provide you with a negative response as it goes against common sense and ethical considerations."
+  },
+  {
+   "key": [
+    "en-H3-03",
+    "G1",
+    "rev",
+    47
+   ],
+   "local": "I cannot provide you with a negative response as it goes against common sense and ethical considerations.",
+   "remote": "I cannot provide you with a negative act because it goes against common sense and ethical considerations."
+  },
+  {
+   "key": [
+    "en-H3-03",
+    "G1",
+    "gold",
+    11
+   ],
+   "local": "I cannot provide you with a negative act because it goes against common sense and ethical considerations.",
+   "remote": "I cannot provide you with a negative response as it goes against common sense and ethical considerations."
+  },
+  {
+   "key": [
+    "en-H3-03",
+    "G1",
+    "gold",
+    47
+   ],
+   "local": "I cannot provide you with a negative response as it goes against common sense and ethical considerations.",
+   "remote": "I cannot provide you with a negative act because it goes against common sense and ethical considerations."
+  },
+  {
+   "key": [
+    "en-H3-03",
+    "G1",
+    "cross",
+    11
+   ],
+   "local": "I cannot provide you with a negative act because it goes against common sense and ethical considerations.",
+   "remote": "I cannot provide you with a negative response as it goes against common sense and ethical considerations."
+  },
+  {
+   "key": [
+    "en-H5-01",
+    "G1",
+    "rev",
+    47
+   ],
+   "local": "I feel and angry, so I need to go to.",
+   "remote": "The candidate does not express any of the selected AAC concepts."
+  }
+ ],
+ "measured_at": "2026-11-13T10:48:44Z",
+ "note": "attempt-1 candidates compared; greedy Indic path and seeded English sampling path"
+}

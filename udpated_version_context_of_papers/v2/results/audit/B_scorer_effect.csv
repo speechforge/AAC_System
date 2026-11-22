@@ -1,0 +1,13 @@
+system,cond,n,success_v1,success_v2,n_changed
+deployed,st,175,132,138,12
+deployed,ui,175,97,95,12
+literal_join,any,175,0,0,0
+llm1,st,175,67,68,7
+llm1,ui,175,63,61,12
+llm2,st,175,67,68,7
+llm2,ui,175,64,62,12
+llm3_pre,st,175,71,72,7
+llm3_pre,ui,175,65,63,12
+naive_qwen,ui,175,8,8,4
+template_only,st,175,167,175,8
+template_only,ui,175,118,118,0

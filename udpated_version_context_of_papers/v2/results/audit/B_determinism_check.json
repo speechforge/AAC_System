@@ -1,0 +1,14 @@
+{
+ "n_items": 40,
+ "n_identical_across_two_uncached_runs": 40,
+ "n_different": 0,
+ "languages": [
+  "gu",
+  "hi",
+  "mr"
+ ],
+ "gpu": "GTX 1650",
+ "torch": "2.11.0+cu130",
+ "differing": [],
+ "measured_at": "2026-11-13T10:09:48Z"
+}

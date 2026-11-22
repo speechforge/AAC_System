@@ -1,0 +1,19 @@
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/00_abstract.tex:6 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/01_intro.tex:11 [low] long-sentence: sentence of 78 words; split it  <<The following are authored illustrations; recorded model out>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/01_intro.tex:24 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/01_intro.tex:41 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/02_related.tex:14 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/03_system.tex:31 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/03_system.tex:37 [medium] implementation-vocabulary: implementation vocabulary in the scientific narrative; describe the method, not the software  <<script>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/03_system.tex:39 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/03_system.tex:50 [medium] implementation-vocabulary: implementation vocabulary in the scientific narrative; describe the method, not the software  <<script>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/04_eval.tex:17 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/04_eval.tex:19 [medium] implementation-vocabulary: implementation vocabulary in the scientific narrative; describe the method, not the software  <<script>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/04_eval.tex:23 [medium] implementation-vocabulary: implementation vocabulary in the scientific narrative; describe the method, not the software  <<script>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/04_eval.tex:45 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/04_eval.tex:62 [medium] implementation-vocabulary: implementation vocabulary in the scientific narrative; describe the method, not the software  <<script>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/04_eval.tex:83 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/07_appendix.tex:23 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+paper/FINAL_NAACL_DEMO_v3_chatgpt/latex_source_v3/sections/07_appendix.tex:49 [low] filler: filler word; delete or replace with a measured fact  <<rather>>
+
+9 file(s): 0 high, 5 medium, 12 low

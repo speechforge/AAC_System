@@ -1,0 +1,26 @@
+{
+  "public_url": "https://aac-mos-portal.indic-aac-studio-ravindra.workers.dev",
+  "health": {
+    "status": "ok",
+    "stimuli": 20,
+    "languages": {
+      "en": 5,
+      "gu": 5,
+      "hi": 5,
+      "mr": 5
+    },
+    "storage": "local SQLite",
+    "schema_version": 1
+  },
+  "https_verified": true,
+  "public_form": true,
+  "admin_login": true,
+  "secure_cookie": true,
+  "unauthenticated_export_blocked": true,
+  "participant_csv_schema": true,
+  "registered_listeners": 0,
+  "ratings": 0,
+  "origin_update": true,
+  "created_test_participants": false,
+  "verified_from": "10.100.59.83, separate origin-check host"
+}

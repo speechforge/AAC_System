@@ -1,0 +1,20 @@
+## 9. Negative and null results, and material limitations (each stated once)
+
+**Negative or null results (measured).**
+1. **The gate does not make the model good; it hides it.** Only 35 of 154 hybrid sentences on the holdout are model outputs (model coverage 21 %); the template supplies 119. The hybrid does not beat the template on any template-covered item (100/100 vs 99/100). With the model alone behind the gate V1 the pipeline's quality is the template's quality.
+2. **English model output is unusable as realised** (ungated English 0 to 3.6 %): third-person narration ("The user requested ..."), which the gate now rejects but the archived gate accepted.
+3. **The matched one-pass prompt scores 3.6 %** (and 4.6 % on the original 175, equal to the archived unconstrained prompt): this is a statement about zero-shot Qwen2.5-0.5B in these languages, not about one-pass generation in general; a few-shot one-pass comparator was not pre-registered or run (the few-shot realiser alone: 33.0 %).
+4. **Repaired template vs archived template: no clear pooled gain under the lexical scorer.** Holdout pooled -4.5 pp (CI -20.5 to 10.7): +7 items on template-covered frames (feeling plus request), -12 on uncovered frames (literal preview against a lexically accepted ungrammatical sentence); legacy 0.0 pp (both 175/175). The gain in phrasing is untested until native raters answer.
+5. **Frozen-gate defects** (section 7.4): a Gujarati desire construction rejected, a two-letter form that rejects a valid Gujarati template, bare pronouns counted as state markers; the gate checks concepts, act markers and polarity, not sense ("હું ખરાબ છું." and "હૃદય હું કહું." were accepted under a user-chosen Feeling act).
+6. **Template-uncovered frames** end as literal previews by design, so strict success is 4/12 there; one could instead score "safe response" (sentence, clarification or literal preview) which is 112/112 for the hybrid, but that is a different metric and is not used for the headline.
+7. **Browser and gold inputs coincide** for the repaired client on all 304 selections (contexts identical): the "interface effect" of the repaired client is 0 by construction, so only the original-client contrast (section 7.3 point 7) is informative.
+8. **Not bit-reproducible across GPUs**: 91.4 % of candidates identical (section 7.5).
+
+**Material limitations.**
+* **Authorship and circularity.** One assistant session wrote the plan, the fixtures' gold annotation, the client rules, the gate, the templates and the scorer (separate code and tables, same author). No independent curator or annotator exists; the holdout is "fresh" only in the sense that it was generated after the freeze under pre-registered families. Gate-probe results (0 false accepts, 0 false rejects) are synthetic and were used for tuning.
+* **Scorer.** Lexical; no grammaticality or sense judgement; lexicon not native-reviewed; scorer v2 was corrected using Phase A findings and regression gaps (it is therefore not independent of the legacy set). The archived and repaired outputs are always scored with the same scorer version in the paired tables; v1 numbers are kept only in the archived report and `B_scorer_effect.csv`.
+* **Templates** are not native-reviewed; Gujarati and Marathi constructions (e.g. `મન છે`, `इच्छा आहे`, case forms) are the author's best forms and may be stilted; gender-neutral constructions were preferred.
+* **Sample size.** 28 determinate groups; per-language intervals are wide (one language = 28 items); family cells hold 8 to 12 items (flagged sparse); two ambiguous groups only; Hinglish n = 8 (exploratory, no UI path).
+* **Hardware and software.** Holdout GPU jobs ran on a TITAN Xp with torch 2.11.0+cu126; the paper's earlier numbers came from a GTX 1650 with cu130; dev streams and the speech check ran on the GTX 1650.
+* **Speech.** No IndicF5 weights, no real voices: speech quality, intelligibility and per-locale audibility are unevaluated; click-to-first-playback refers to a placeholder tone.
+* **No target-user data.** Nothing here speaks to AAC usability.

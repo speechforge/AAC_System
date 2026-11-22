@@ -1,0 +1,28 @@
+{
+  "project_name": "Indic AAC Studio",
+  "venue": "naacl",
+  "paper_title": "Indic AAC Studio: Concept-Gated Symbol Realization for English, Hindi, Gujarati, and Marathi",
+  "novelty_keywords": [
+    "concept",
+    "gate",
+    "polarity",
+    "template"
+  ],
+  "authors": [
+    {
+      "name": "Ravindrakumar M. Purohit",
+      "roles": []
+    },
+    {
+      "name": "Jaydeep Parmar",
+      "roles": []
+    },
+    {
+      "name": "Hemant A. Patil",
+      "roles": []
+    }
+  ],
+  "author_role_status": "Not supplied; do not invent individual CRediT assignments",
+  "release_status": "Local research package; public link and first-party license unverified",
+  "ai_assistance": "Claude, ChatGPT, and Codex assisted system integration, evaluation, and manuscript revision."
+}

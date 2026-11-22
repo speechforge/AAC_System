@@ -1,0 +1,91 @@
+comparison,A,B,lang,n_items,n_groups,diff_pp,lo,hi,n_a_only_wins,n_b_only_wins
+end-to-end: revised hybrid (browser) vs archived system (browser),revised_hybrid|rev,archived_deployed|orig,en,28,28,29.76,8.33,51.19,12,2
+end-to-end: revised hybrid (browser) vs archived system (browser),revised_hybrid|rev,archived_deployed|orig,hi,28,28,50.0,28.57,71.43,15,1
+end-to-end: revised hybrid (browser) vs archived system (browser),revised_hybrid|rev,archived_deployed|orig,gu,28,28,32.14,10.71,53.57,11,2
+end-to-end: revised hybrid (browser) vs archived system (browser),revised_hybrid|rev,archived_deployed|orig,mr,28,28,39.29,21.43,57.14,11,0
+end-to-end: revised hybrid (browser) vs archived system (browser),revised_hybrid|rev,archived_deployed|orig,ALL,112,28,37.8,21.73,53.87,49,5
+"end-to-end, explicit gold fields: revised hybrid vs archived system",revised_hybrid|gold,archived_deployed|gold,en,28,28,16.67,-3.57,35.71,7,2
+"end-to-end, explicit gold fields: revised hybrid vs archived system",revised_hybrid|gold,archived_deployed|gold,hi,28,28,21.43,3.57,39.29,7,1
+"end-to-end, explicit gold fields: revised hybrid vs archived system",revised_hybrid|gold,archived_deployed|gold,gu,28,28,21.43,0.0,42.86,8,2
+"end-to-end, explicit gold fields: revised hybrid vs archived system",revised_hybrid|gold,archived_deployed|gold,mr,28,28,32.14,14.29,50.0,9,0
+"end-to-end, explicit gold fields: revised hybrid vs archived system",revised_hybrid|gold,archived_deployed|gold,ALL,112,28,22.92,10.12,35.71,31,5
+gate effect: revised hybrid vs same generator without gate/fallback (first candidate),revised_hybrid|rev,revised_cascade_first|rev,en,28,28,89.29,75.0,100.0,25,0
+gate effect: revised hybrid vs same generator without gate/fallback (first candidate),revised_hybrid|rev,revised_cascade_first|rev,hi,28,28,60.71,42.86,78.57,17,0
+gate effect: revised hybrid vs same generator without gate/fallback (first candidate),revised_hybrid|rev,revised_cascade_first|rev,gu,28,28,42.86,25.0,60.71,12,0
+gate effect: revised hybrid vs same generator without gate/fallback (first candidate),revised_hybrid|rev,revised_cascade_first|rev,mr,28,28,46.43,28.57,64.29,13,0
+gate effect: revised hybrid vs same generator without gate/fallback (first candidate),revised_hybrid|rev,revised_cascade_first|rev,ALL,112,28,59.82,47.32,71.43,67,0
+"gate effect, gold fields",revised_hybrid|gold,revised_cascade_first|gold,en,28,28,89.29,75.0,100.0,25,0
+"gate effect, gold fields",revised_hybrid|gold,revised_cascade_first|gold,hi,28,28,60.71,42.86,78.57,17,0
+"gate effect, gold fields",revised_hybrid|gold,revised_cascade_first|gold,gu,28,28,42.86,25.0,60.71,12,0
+"gate effect, gold fields",revised_hybrid|gold,revised_cascade_first|gold,mr,28,28,46.43,28.57,64.29,13,0
+"gate effect, gold fields",revised_hybrid|gold,revised_cascade_first|gold,ALL,112,28,59.82,47.32,71.43,67,0
+"gate effect, archived system (browser): deployed vs ungated first candidate",archived_deployed|orig,cascade_ungated_first|orig,en,28,28,59.52,41.67,76.19,18,0
+"gate effect, archived system (browser): deployed vs ungated first candidate",archived_deployed|orig,cascade_ungated_first|orig,hi,28,28,25.0,10.71,42.86,7,0
+"gate effect, archived system (browser): deployed vs ungated first candidate",archived_deployed|orig,cascade_ungated_first|orig,gu,28,28,14.29,3.57,28.57,4,0
+"gate effect, archived system (browser): deployed vs ungated first candidate",archived_deployed|orig,cascade_ungated_first|orig,mr,28,28,14.29,0.0,32.14,5,1
+"gate effect, archived system (browser): deployed vs ungated first candidate",archived_deployed|orig,cascade_ungated_first|orig,ALL,112,28,28.27,19.05,37.2,34,1
+"gate effect, archived system (gold): deployed vs ungated first candidate",archived_deployed|gold,cascade_ungated_first|gold,en,28,28,69.05,51.19,85.71,20,0
+"gate effect, archived system (gold): deployed vs ungated first candidate",archived_deployed|gold,cascade_ungated_first|gold,hi,28,28,42.86,25.0,60.71,12,0
+"gate effect, archived system (gold): deployed vs ungated first candidate",archived_deployed|gold,cascade_ungated_first|gold,gu,28,28,39.29,21.43,57.14,11,0
+"gate effect, archived system (gold): deployed vs ungated first candidate",archived_deployed|gold,cascade_ungated_first|gold,mr,28,28,14.29,3.57,28.57,4,0
+"gate effect, archived system (gold): deployed vs ungated first candidate",archived_deployed|gold,cascade_ungated_first|gold,ALL,112,28,41.37,30.65,52.68,47,0
+pure gate change V0 -> V1 on identical archived candidates (gold fields),gate_only_v1|gold,archived_deployed|gold,en,28,28,20.24,7.14,35.71,6,0
+pure gate change V0 -> V1 on identical archived candidates (gold fields),gate_only_v1|gold,archived_deployed|gold,hi,28,28,17.86,3.57,32.14,5,0
+pure gate change V0 -> V1 on identical archived candidates (gold fields),gate_only_v1|gold,archived_deployed|gold,gu,28,28,21.43,7.14,39.29,6,0
+pure gate change V0 -> V1 on identical archived candidates (gold fields),gate_only_v1|gold,archived_deployed|gold,mr,28,28,32.14,14.29,50.0,9,0
+pure gate change V0 -> V1 on identical archived candidates (gold fields),gate_only_v1|gold,archived_deployed|gold,ALL,112,28,22.92,14.88,31.55,26,0
+pure gate change V0 -> V1 on identical archived candidates (browser),gate_only_v1|orig,archived_deployed|orig,en,28,28,15.48,4.76,28.57,6,0
+pure gate change V0 -> V1 on identical archived candidates (browser),gate_only_v1|orig,archived_deployed|orig,hi,28,28,28.57,14.29,46.43,8,0
+pure gate change V0 -> V1 on identical archived candidates (browser),gate_only_v1|orig,archived_deployed|orig,gu,28,28,14.29,3.57,28.57,4,0
+pure gate change V0 -> V1 on identical archived candidates (browser),gate_only_v1|orig,archived_deployed|orig,mr,28,28,25.0,10.71,42.86,7,0
+pure gate change V0 -> V1 on identical archived candidates (browser),gate_only_v1|orig,archived_deployed|orig,ALL,112,28,20.83,13.1,28.87,25,0
+revised hybrid vs matched one-pass prompt (browser fields),revised_hybrid|rev,onepass|rev,en,28,28,75.0,58.33,89.29,22,0
+revised hybrid vs matched one-pass prompt (browser fields),revised_hybrid|rev,onepass|rev,hi,28,28,96.43,89.29,100.0,27,0
+revised hybrid vs matched one-pass prompt (browser fields),revised_hybrid|rev,onepass|rev,gu,28,28,92.86,82.14,100.0,26,0
+revised hybrid vs matched one-pass prompt (browser fields),revised_hybrid|rev,onepass|rev,mr,28,28,92.86,82.14,100.0,26,0
+revised hybrid vs matched one-pass prompt (browser fields),revised_hybrid|rev,onepass|rev,ALL,112,28,89.29,80.65,96.43,101,0
+revised hybrid vs matched one-pass prompt (gold fields),revised_hybrid|gold,onepass|gold,en,28,28,75.0,58.33,89.29,22,0
+revised hybrid vs matched one-pass prompt (gold fields),revised_hybrid|gold,onepass|gold,hi,28,28,96.43,89.29,100.0,27,0
+revised hybrid vs matched one-pass prompt (gold fields),revised_hybrid|gold,onepass|gold,gu,28,28,92.86,82.14,100.0,26,0
+revised hybrid vs matched one-pass prompt (gold fields),revised_hybrid|gold,onepass|gold,mr,28,28,92.86,82.14,100.0,26,0
+revised hybrid vs matched one-pass prompt (gold fields),revised_hybrid|gold,onepass|gold,ALL,112,28,89.29,80.65,96.43,101,0
+"revised hybrid vs the few-shot realiser alone (LLM-1 stage, no refiner / verifier / gate)",revised_hybrid|rev,revised_llm1_stage|rev,en,28,28,89.29,75.0,100.0,25,0
+"revised hybrid vs the few-shot realiser alone (LLM-1 stage, no refiner / verifier / gate)",revised_hybrid|rev,revised_llm1_stage|rev,hi,28,28,60.71,42.86,78.57,17,0
+"revised hybrid vs the few-shot realiser alone (LLM-1 stage, no refiner / verifier / gate)",revised_hybrid|rev,revised_llm1_stage|rev,gu,28,28,42.86,25.0,60.71,12,0
+"revised hybrid vs the few-shot realiser alone (LLM-1 stage, no refiner / verifier / gate)",revised_hybrid|rev,revised_llm1_stage|rev,mr,28,28,46.43,28.57,64.29,13,0
+"revised hybrid vs the few-shot realiser alone (LLM-1 stage, no refiner / verifier / gate)",revised_hybrid|rev,revised_llm1_stage|rev,ALL,112,28,59.82,47.32,71.43,67,0
+revised hybrid vs repaired template alone (browser),revised_hybrid|rev,template_revised|rev,en,28,28,0.0,0.0,0.0,0,0
+revised hybrid vs repaired template alone (browser),revised_hybrid|rev,template_revised|rev,hi,28,28,7.14,0.0,17.86,2,0
+revised hybrid vs repaired template alone (browser),revised_hybrid|rev,template_revised|rev,gu,28,28,7.14,0.0,17.86,2,0
+revised hybrid vs repaired template alone (browser),revised_hybrid|rev,template_revised|rev,mr,28,28,3.57,0.0,10.71,1,0
+revised hybrid vs repaired template alone (browser),revised_hybrid|rev,template_revised|rev,ALL,112,28,4.46,0.89,9.82,5,0
+revised hybrid vs repaired template alone (gold),revised_hybrid|gold,template_revised|gold,en,28,28,0.0,0.0,0.0,0,0
+revised hybrid vs repaired template alone (gold),revised_hybrid|gold,template_revised|gold,hi,28,28,7.14,0.0,17.86,2,0
+revised hybrid vs repaired template alone (gold),revised_hybrid|gold,template_revised|gold,gu,28,28,7.14,0.0,17.86,2,0
+revised hybrid vs repaired template alone (gold),revised_hybrid|gold,template_revised|gold,mr,28,28,3.57,0.0,10.71,1,0
+revised hybrid vs repaired template alone (gold),revised_hybrid|gold,template_revised|gold,ALL,112,28,4.46,0.89,9.82,5,0
+repaired template (revised client) vs archived template (original client),template_revised|rev,template_archived|orig,en,28,28,14.29,-7.14,35.71,7,3
+repaired template (revised client) vs archived template (original client),template_revised|rev,template_archived|orig,hi,28,28,14.29,-7.14,35.71,7,3
+repaired template (revised client) vs archived template (original client),template_revised|rev,template_archived|orig,gu,28,28,10.71,-10.71,32.14,7,4
+repaired template (revised client) vs archived template (original client),template_revised|rev,template_archived|orig,mr,28,28,14.29,-7.14,35.71,7,3
+repaired template (revised client) vs archived template (original client),template_revised|rev,template_archived|orig,ALL,112,28,13.39,-8.04,34.82,28,13
+repaired template vs archived template (gold fields),template_revised|gold,template_archived|gold,en,28,28,-3.57,-17.86,10.71,2,3
+repaired template vs archived template (gold fields),template_revised|gold,template_archived|gold,hi,28,28,-3.57,-17.86,10.71,2,3
+repaired template vs archived template (gold fields),template_revised|gold,template_archived|gold,gu,28,28,-7.14,-25.0,10.71,2,4
+repaired template vs archived template (gold fields),template_revised|gold,template_archived|gold,mr,28,28,-3.57,-17.86,10.71,2,3
+repaired template vs archived template (gold fields),template_revised|gold,template_archived|gold,ALL,112,28,-4.46,-20.54,10.71,8,13
+interface effect: revised-browser vs explicit gold fields (hybrid),revised_hybrid|rev,revised_hybrid|gold,en,28,28,0.0,0.0,0.0,0,0
+interface effect: revised-browser vs explicit gold fields (hybrid),revised_hybrid|rev,revised_hybrid|gold,hi,28,28,0.0,0.0,0.0,0,0
+interface effect: revised-browser vs explicit gold fields (hybrid),revised_hybrid|rev,revised_hybrid|gold,gu,28,28,0.0,0.0,0.0,0,0
+interface effect: revised-browser vs explicit gold fields (hybrid),revised_hybrid|rev,revised_hybrid|gold,mr,28,28,0.0,0.0,0.0,0,0
+interface effect: revised-browser vs explicit gold fields (hybrid),revised_hybrid|rev,revised_hybrid|gold,ALL,112,28,0.0,0.0,0.0,0,0
+"interface effect: same realiser, original-client payload vs revised-client payload",revised_hybrid|cross,revised_hybrid|rev,en,28,28,-3.57,-10.71,0.0,0,1
+"interface effect: same realiser, original-client payload vs revised-client payload",revised_hybrid|cross,revised_hybrid|rev,hi,28,28,-3.57,-10.71,0.0,0,1
+"interface effect: same realiser, original-client payload vs revised-client payload",revised_hybrid|cross,revised_hybrid|rev,gu,28,28,0.0,0.0,0.0,0,0
+"interface effect: same realiser, original-client payload vs revised-client payload",revised_hybrid|cross,revised_hybrid|rev,mr,28,28,-3.57,-10.71,0.0,0,1
+"interface effect: same realiser, original-client payload vs revised-client payload",revised_hybrid|cross,revised_hybrid|rev,ALL,112,28,-2.68,-7.14,0.0,0,3
+interface effect on the template,template_revised|rev,template_revised|gold,en,28,28,0.0,0.0,0.0,0,0
+interface effect on the template,template_revised|rev,template_revised|gold,hi,28,28,0.0,0.0,0.0,0,0
+interface effect on the template,template_revised|rev,template_revised|gold,gu,28,28,0.0,0.0,0.0,0,0
+interface effect on the template,template_revised|rev,template_revised|gold,mr,28,28,0.0,0.0,0.0,0,0
+interface effect on the template,template_revised|rev,template_revised|gold,ALL,112,28,0.0,0.0,0.0,0,0

@@ -1,0 +1,35 @@
+{
+ "literal_join|any": {
+  "primary_175": 0,
+  "all_184_incl_prompt_overlap": 0
+ },
+ "naive_qwen|ui": {
+  "primary_175": 8,
+  "all_184_incl_prompt_overlap": 8
+ },
+ "template_only|ui": {
+  "primary_175": 118,
+  "all_184_incl_prompt_overlap": 125
+ },
+ "llm3_pre|ui": {
+  "primary_175": 65,
+  "all_184_incl_prompt_overlap": 72
+ },
+ "deployed|ui": {
+  "primary_175": 97,
+  "all_184_incl_prompt_overlap": 104
+ },
+ "template_only|st": {
+  "primary_175": 167,
+  "all_184_incl_prompt_overlap": 176
+ },
+ "llm3_pre|st": {
+  "primary_175": 71,
+  "all_184_incl_prompt_overlap": 80
+ },
+ "deployed|st": {
+  "primary_175": 132,
+  "all_184_incl_prompt_overlap": 141
+ },
+ "_note": "all-184 rows INCLUDE the 9 scenarios whose prompt input reproduces a few-shot example (prompt overlap); Hinglish (8) stays exploratory and is excluded from both."
+}

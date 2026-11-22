@@ -1,0 +1,30 @@
+\section{Introduction}
+\label{sec:intro}
+
+A person who communicates through a symbol-based AAC board composes a message by tapping pictograms, and the device voices the selected labels.
+The message is telegraphic (\emph{Water}, or \emph{No}\,+\,\emph{Pizza}) and the listener cannot see the selection, so a fluent sentence that misstates it can cause harm when the message is a request, a refusal, or a report of pain.
+For a water request, a single \emph{Water} symbol can be realized as a complete sentence in each language, with a verb-final, experiencer-dative construction for the want:
+
+\begin{center}
+\small\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}lll@{}}
+\lang{Hindi} & \hi{मुझे पानी चाहिए।} & \multirow{3}{*}{\gloss{I want water.}}\\
+\lang{Gujarati} & \gu{મને પાણી જોઈએ છે.} & \\
+\lang{Marathi} & \hi{मला पाणी हवे आहे.} & \\
+\end{tabular}
+\end{center}
+
+Feelings and negation use other constructions, so a literal join of labels is hard to parse.
+A language model can generalize across combinations, but the small model that fits a 4\,GB GPU in our setup, \qwen{}, produced a successful sentence for only \XNaiveSucc{} of our scenarios when prompted without constraints (Section~\ref{sec:eval}).
+Even when fluent, the cascade evaluated here fails in three ways (Figure~\ref{fig:teaser}): it replaced the concept for \emph{Water}, inverted polarity for Marathi \emph{No}\,+\,\emph{Water}, and added content for \emph{Tired}; with explicit negation, it dropped or inverted polarity in \XPreSPol{} scenarios.
+
+\sys{} treats the selection as a contract.
+A \emph{concept ledger} lists the concepts that must appear and those that must not; a prompted cascade proposes a sentence; a deterministic \emph{gate} accepts it only if its checks on concepts, polarity, and communicative act pass; and otherwise a template built from the user's own labels is spoken.
+\qwen{} and \indicf{} are used as released.
+Our contribution is the application and evaluation of explicit concept, polarity, and act checks in an Indic symbol-to-speech workflow, including the consequences of its fallback policy, for symbol-board users and the caregivers and clinicians who configure boards.
+
+\begin{itemize}
+\item \textbf{Concept-gated realization:} a ledger, a four-part acceptance rule, retry, and a template floor (Section~\ref{sec:system}).
+\item \textbf{A four-language demo} with predictors trained on AAC dialogues (Section~\ref{sec:system}, Appendix Table~\ref{tab:models}).
+\item \textbf{A frozen, paired evaluation} of \NPrimAll{} scenarios and the audit-driven repair (Sections~\ref{sec:eval} and~\ref{sec:repair}).
+\end{itemize}

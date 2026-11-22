@@ -70,3 +70,7 @@ AI4Bharat-Indic-TTS/checkpoint
 !.env.example
 *.pem
 *.key
+
+# Added 2026-11-22: secrets and large regenerable data
+.webui_secret_key
+paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/data_native/*_native_train.txt

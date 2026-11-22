@@ -1,0 +1,9 @@
+# Adversarial self-review (author-side simulation)
+
+1. **Why use a model if the template is stronger?** The archived policy trails the template by 12.0 percentage points on browser inputs. The revised system matches its repaired template on the legacy regression grid. The paper claims an inspectable safeguard and diagnostic workflow, not a demonstrated phrasing advantage.
+2. **Does 175/175 mean semantic reliability?** No. It is a measured regression under scorer v2 on a grid used during repair. The scorer and gold share authoring assumptions. The fresh 120-item gold review and human ratings remain incomplete, and their scores are excluded.
+3. **Are all three Indic languages actually represented?** Yes: native-script examples occur in the introduction, system description, error analysis, Figure 4 and Table 4. Every displayed regression quotation matches a recorded trace. Awkward accepted outputs are preserved and explicitly not endorsed as fluent.
+4. **Are speech and reproducibility complete?** No. Thirty-two browser trials used test tones, not real synthesized speech. Clean installation reused cached weights and tested CPU requests. The public package, narrated video and real speech remain submission blockers.
+5. **Is the single-prompt model comparison fair evidence for all one-pass systems?** No. The 8/175 result is tied to an unconstrained no-example prompt. No few-shot matched one-pass advantage is claimed. The paired before/after candidate comparison isolates the combined policy more directly.
+
+Strongest evidence: reproduced archived counts, group-bootstrap policy differences, explicit failure accounting, and exact predictor counts. Highest scientific risk: no independent native-speaker validation or meaning/phrasing outcome. The manuscript no longer claims semantic guarantees, a public release, four-language audible speech, or hybrid superiority over templates.

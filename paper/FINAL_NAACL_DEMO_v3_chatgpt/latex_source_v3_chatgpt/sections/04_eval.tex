@@ -1,0 +1,90 @@
+\section{Evaluation and Error Analysis}
+\label{sec:eval}
+We first evaluate the archived web-client path and then use explicit gold fields as a controlled diagnostic.
+A separate regression analysis concerns the revised policy.
+The systems, scorers, and input conditions are kept distinct because changing a scorer can alter a count without changing any sentence.
+
+\subsection{Archived protocol and scoring}
+The archived set has 184 monolingual scenarios: 46 selections in each language, comprising ten object requests, ten refusals, eight feelings, eight negated feelings, six action--object selections, and four help or call selections.
+Nine selections duplicate few-shot examples and are excluded from the primary analysis, leaving 175 scenarios: 46 English, 45 Hindi, 42 Gujarati, and 42 Marathi.
+Eight Hinglish scenarios are exploratory and are not pooled with these counts.
+The archived run used one NVIDIA GTX~1650 with 4\,GB memory.
+
+The lexical scorer requires every selected concept, correct gold polarity and act, no detected unselected concept, and an on-task sentence in the target script.
+Concept retention has a different denominator: 215 required content-concept instances, rather than 175 scenarios.
+Wrong act, missing act, added content, and off-task flags can overlap.
+An off-task refusal is a model declining to answer, such as “I cannot help with that”; a legitimate user refusal, such as “I do not want pizza,” is on-task.
+Lexical success does not establish grammaticality, meaning in context, or usefulness to AAC users.
+
+The comparison includes literal labels, one unconstrained prompt to the same model, the archived cascade candidate before checking, the deployed policy, and the matched template.
+The candidate and final text come from the same recorded response, isolating the joint effect of the gate, retry, and fallback.
+The unconstrained prompt requests one sentence without a ledger, examples, refinement, or verification, using greedy decoding with a 75-token output cap; its 8/175 score diagnoses that prompt, rather than all one-pass methods.
+Paired pooled intervals resample 46 underlying selection groups across their language versions, using 10,000 bootstrap resamples.
+
+\input{generated/tab_results}
+
+\subsection{Web-client results and gold-field diagnostic}
+With actual browser-inferred fields, the deployed policy succeeds on 97/175 scenarios, versus 65/175 before checking and 118/175 for the template (Table~\ref{tab:results}, panel A).
+The policy--cascade difference is +18.3 percentage points (95\% interval 11.9 to 25.2); the policy--template difference is $-12.0$ points ($-17.9$ to $-6.4$).
+The deployed policy retains 215/215 selected concept instances and has no detected polarity error, but still has 54 wrong-act outputs, four outputs with added content, and ten off-task outputs.
+These diagnostics explain why complete retention alone is insufficient.
+
+Supplying gold act and polarity raises the same deployed policy to 132/175, versus 71/175 before checking and 167/175 for the template (panel B).
+The joint policy effect is +34.9 points (26.7 to 43.4); the gold-field--browser gap is +20.0 points (12.0 to 28.7).
+The ungated gold-field cascade has 36 polarity errors, whereas the deployed output has zero detected errors.
+Nevertheless, 37/108 accepted model outputs and 6/67 template fallbacks fail the full archived scorer.
+Checker acceptance is therefore not interchangeable with independent success.
+
+\subsection{Multilingual failure mechanisms}
+The browser diagnostic sends 27 of 32 isolated feeling selections as requests.
+Here 32 means eight feeling symbols in four locales, before any prompt-overlap exclusion; it is not the 30 feeling scenarios remaining in the primary score table.
+The substring negation rule also mislabels three of 276 isolated symbol--language selections, including English \emph{Nose} and Gujarati \gu{નાક}.
+Separating concept identity, act, and polarity directly addresses this input-layer defect.
+
+The failure analysis includes all three Indic languages.
+Recorded \lang{Hindi} feeling outputs include \bad{\hi{मुझे गुस्सा चाहिए।}} (\emph{“I want anger”}), where an intended state is realized as a request.
+For \lang{Gujarati}, the eight apparent gold-field template failures are negated feelings with \gu{નથી}; the archived scorer omits this valid negator in its feeling-pattern test.
+They are scorer lexical gaps, rather than evidence that these eight templates are wrong.
+A recorded \lang{Marathi} tiredness output, \bad{\hi{मला दमलेला हवे आहे.}}, uses the request predicate \hi{हवे आहे} for an intended feeling; the archived scorer flags the act mismatch.
+The checker must address act, perspective, and additions in each language; transferring English patterns alone does not do so.
+
+The audit classifies the 37 accepted-model failures under gold fields as nine third-person reports, 12 negated-want constructions for feelings, ten malformed constructions, four additions, and two scorer gaps.
+The six fallback failures are also scorer gaps.
+These are assistant-produced diagnostic labels, not native-speaker judgments.
+In particular, the lexical scorer's coverage affects both error counts and baseline rankings.
+
+\subsection{Revised policy: regression evidence}
+The repairs replace label-substring inference with concept-aware interpretation, add multilingual act and perspective checks, and check the fallback before returning it.
+The same 175 scenarios informed these repairs and are therefore a regression set.
+Under scorer v2, the archived policy scores 95/175 with browser fields and 138/175 with gold fields; the archived gold-field template scores 175/175 after its lexical gaps are corrected.
+These are rescored archived sentences, not a new run of the old model.
+
+The revised browser path and repaired template both score 175/175 on this set (Table~\ref{tab:results}, panel C).
+The revised cascade alone scores 88/175, yielding a joint policy gain of 49.7 points (42.3 to 57.1).
+This is a measured regression result, not evidence of generalization or superiority over the template.
+A fresh 120-scenario set and blind rating materials exist, but native-speaker confirmation of their gold annotations and ratings are incomplete; we report no holdout performance or preference claim.
+Figure~\ref{fig:workflow} and Table~\ref{tab:cases} show representative recorded cases rather than selecting only passing outputs.
+
+\input{generated/tab_pred}
+
+\subsection{Next-word prediction}
+Table~\ref{tab:pred} evaluates AAC-user utterances in 60 held-out source conversations per evaluated language, not 60 utterances out of an unspecified pool.
+Each language has 300 source conversations: 240 for training and 60 for testing, with every fifth source held out and no separate validation split in this evaluation.
+All n-gram baselines and the evaluated suffix trie are rebuilt on the same 240 training sources, separately from the full-data deployed predictor.
+Compared with trigram backoff, the trie gains 25/2,220 English and 29/2,437 Hindi hit@1 predictions: +1.126 points (95\% interval 0.505 to 1.766) and +1.190 points (0.463 to 1.922), computed from unrounded counts.
+The corresponding hit@5 gains are 13/2,220 (+0.586 points) and 2/2,437 (+0.082 points).
+
+Source conversations are disjoint, but 18 of 392 distinct English and 28 of 384 Hindi test utterances repeat training text.
+Removing contexts from repeated utterances leaves 2,170 English and 2,352 Hindi contexts; trie--trigram hit@1 gains remain +0.968 and +1.020 points.
+Out-of-vocabulary targets count as misses.
+Gujarati and Marathi have no matched AAC prediction evaluation, so Table~\ref{tab:pred} records their coverage without inventing scores or treating language identity as a baseline method.
+
+\subsection{Runtime and reproduction scope}
+The revised browser-to-playback audit contains 32 runs across four languages, with one cold and 31 warm runs, on the GTX~1650.
+Median click-to-first-playback is 9.9\,s and the 95th percentile is 20.8\,s; language medians are 12.4\,s (English), 15.3\,s (Hindi), 7.9\,s (Gujarati), and 10.7\,s (Marathi).
+Every run plays a 440 Hz test tone: these are playback-integration timings, not click-to-audible-speech latency.
+Greedy Indic retries repeated their first candidates in 40/40 uncached audit repeats, so the retry can add delay without changing the answer.
+
+A CPU-only installation check reused cached weights; first-time download, clean GPU installation, and real synthesis were untested.
+The model executes on the backend, but the browser requires externally hosted interface libraries and therefore is not verified as offline-ready.
+No accessible public package or demo-video link was verified in the audit.

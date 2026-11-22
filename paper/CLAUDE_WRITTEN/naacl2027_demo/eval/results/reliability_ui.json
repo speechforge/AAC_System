@@ -1,0 +1,86 @@
+{
+ "api_invalid_request": {
+  "status": 422,
+  "body": "{\"detail\":[{\"type\":\"missing\",\"loc\":[\"body\",\"entities\"],\"msg\":\"Field required\",\"input\":{\"intent\":\"REQUEST\"}}]}"
+ },
+ "api_empty_entities": {
+  "status": 200,
+  "body": "{\"predictions\":[{\"word\":\"i\",\"prob\":0.238,\"emoji\":\"👤\",\"order\":0,\"order_label\":\"Prior\"},{\"word\":\"yes\",\"prob\":0.168,\"emoji\":\"✅\",\"order\":0,\"order_label\":\"Prior\"},{\"word\":\"that\",\"prob\":0.152,\"emoji\":\"💬\",\"order\":0,\"order_label\":\"Prior\"},{\"word\":\"oh\",\"prob\":0.081,\"emoji\":\"💬\",\"order\":0,\"order_lab"
+ },
+ "api_unknown_voice_delete": {
+  "status": 400,
+  "body": "{\"detail\":\"Only custom cloned voices can be removed.\"}"
+ },
+ "api_clone_non_audio": null,
+ "frontend_with_external_hosts_blocked": {
+  "visible_text_chars": 0,
+  "rendered_app": false,
+  "first_errors": [
+   "Failed to load resource: net::ERR_FAILED",
+   "Failed to load resource: net::ERR_FAILED",
+   "Failed to load resource: net::ERR_FAILED"
+  ]
+ },
+ "keyboard": {
+  "words_before": 0,
+  "words_after_enter_on_focused": 1,
+  "tab_stops_sampled": [
+   "🇬🇧 English\n🇮🇳 हिन्दी (Hind",
+   "Sign in",
+   "📌\nMy Words",
+   "",
+   "",
+   "",
+   "",
+   "🆘\nHelp Me!",
+   "💧\nWater",
+   "🚻\nBathroom",
+   "🤕\nI Hurt",
+   "🍎\nFood",
+   "✨\nThank You",
+   "❤️\nLove",
+   "👍\nYes",
+   "🙅\nNo",
+   "🤲\nWant",
+   "🆘\nHelp",
+   "➕\nMore",
+   "",
+   "👤\ni\n24%",
+   "✅\nyes\n17%",
+   "💬\nthat\n15%",
+   "💬\noh\n8%",
+   "💬\ngood\n8%"
+  ],
+  "focus_reaches_symbol_cards": false,
+  "distinct_tab_stops": 41,
+  "words_after_enter_on_focused_Yes_card": 2,
+  "words_after_space_on_focused_Yes_card": 3
+ },
+ "aria": {
+  "role_counts": {
+   "banner": 1,
+   "text": 12,
+   "combobox": 1,
+   "option": 4,
+   "button": 69,
+   "img": 10,
+   "main": 1,
+   "textbox": 1,
+   "contentinfo": 1
+  },
+  "buttons_with_empty_accessible_name": 0,
+  "aria_label_attrs": 0,
+  "html_lang": "en",
+  "live_regions": 0
+ },
+ "unjumble_without_HMM2": {
+  "toast_text_found": false,
+  "snippet": [
+   "Un-Jumble"
+  ]
+ },
+ "touch_emulated": {
+  "words_after_tap": 1,
+  "note": "Chromium touch emulation, not a physical device"
+ }
+}

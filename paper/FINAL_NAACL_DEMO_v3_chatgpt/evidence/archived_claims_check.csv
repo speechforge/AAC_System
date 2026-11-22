@@ -1,0 +1,21 @@
+claim,manuscript,recomputed,match
+unconstrained Qwen success (single prompt),8/175,8/175,True
+"cascade before gate, browser input",65/175,65/175,True
+"deployed, browser input",97/175,97/175,True
+"template alone, browser input",118/175,118/175,True
+"cascade before gate, explicit gold fields",71/175,71/175,True
+"deployed, explicit gold fields",132/175,132/175,True
+"template alone, explicit gold fields",167/175,167/175,True
+"concept retention, deployed (browser)",215/215,215/215,True
+"concept retention, deployed (explicit)",215/215,215/215,True
+"concept retention, cascade before gate (browser)",175/215,175/215,True
+"concept retention, cascade before gate (explicit)",185/215,185/215,True
+"polarity errors vs gold, cascade (explicit)",36/175,36/175,True
+"polarity errors vs gold, deployed (explicit)",0/175,0/175,True
+"wrong-act outputs, deployed (browser)",54/175,54/175,True
+"wrong-act outputs, deployed (explicit)",17/175,17/175,True
+accepted outputs failing full scoring (explicit),37/108,37/108,True
+template fallbacks failing full scoring (explicit),6/67,6/67,True
+template-only failures (explicit),8/175,8/175,True
+primary scenarios by language EN/HI/GU/MR,46/45/42/42,46/45/42/42,True
+monolingual scenarios / excluded / Hinglish,184 / 9 / 8,184 / 9 / 8,True

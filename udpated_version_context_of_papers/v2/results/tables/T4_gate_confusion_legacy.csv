@@ -1,0 +1,11 @@
+gate,generator,lang,n,accept_correct,accept_wrong,reject_wrong,reject_correct,coverage_accept_rate,accepted_error_rate,false_reject_of_correct,false_accept_of_wrong
+V0_archived,G1,ALL,368,194,42,132,0,0.641,0.178,0.0,0.241
+V0_archived,G1,en,92,12,22,58,0,0.37,0.647,0.0,0.275
+V0_archived,G1,gu,92,62,4,26,0,0.717,0.061,0.0,0.133
+V0_archived,G1,hi,92,60,6,26,0,0.717,0.091,0.0,0.188
+V0_archived,G1,mr,92,60,10,22,0,0.761,0.143,0.0,0.312
+V1_revised,G1,ALL,368,192,0,174,2,0.522,0.0,0.01,0.0
+V1_revised,G1,en,92,12,0,80,0,0.13,0.0,0.0,0.0
+V1_revised,G1,gu,92,60,0,30,2,0.652,0.0,0.032,0.0
+V1_revised,G1,hi,92,60,0,32,0,0.652,0.0,0.0,0.0
+V1_revised,G1,mr,92,60,0,32,0,0.652,0.0,0.0,0.0

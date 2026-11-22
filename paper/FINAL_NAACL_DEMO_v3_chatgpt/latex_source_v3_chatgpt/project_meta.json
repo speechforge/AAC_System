@@ -1,0 +1,31 @@
+{
+  "project_name": "Indic AAC Studio",
+  "venue": "naacl",
+  "authors": [
+    {
+      "name": "Ravindrakumar M. Purohit",
+      "roles": []
+    },
+    {
+      "name": "Jaydeep Parmar",
+      "roles": []
+    },
+    {
+      "name": "Hemant A. Patil",
+      "roles": []
+    }
+  ],
+  "role_status": "Author-specific CRediT assignments not provided; no roles invented.",
+  "release_status": "Unverified; no licence grant invented.",
+  "ai_assistance": "Claude, ChatGPT, and Codex assisted system/evaluation/manuscript work.",
+  "human_subjects": {
+    "involved": false
+  },
+  "novelty_keywords": [
+    "concept",
+    "polarity",
+    "act",
+    "fallback",
+    "gate"
+  ]
+}

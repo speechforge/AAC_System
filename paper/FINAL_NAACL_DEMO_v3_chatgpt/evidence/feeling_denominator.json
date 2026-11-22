@@ -1,0 +1,53 @@
+{
+ "denominator": "single-symbol selections: 8 feeling symbols x 4 locales = 32 (NOT scenarios, NOT the 175)",
+ "n_feeling_selections": 32,
+ "n_sent_as_REQUEST": 27,
+ "n_sent_as_STATEMENT": 5,
+ "statement_cases": [
+  [
+   "HAPPY",
+   "en",
+   "Happy"
+  ],
+  [
+   "HAPPY",
+   "hi",
+   "खुश"
+  ],
+  [
+   "SAD",
+   "en",
+   "Sad"
+  ],
+  [
+   "SAD",
+   "hi",
+   "उदास"
+  ],
+  [
+   "LOVE",
+   "en",
+   "Love"
+  ]
+ ],
+ "n_single_selections_all_categories": 276,
+ "n_false_negation": 3,
+ "false_negation_cases": [
+  [
+   "BATH",
+   "gu",
+   "નાહવું"
+  ],
+  [
+   "NOSE",
+   "en",
+   "Nose"
+  ],
+  [
+   "NOSE",
+   "gu",
+   "નાક"
+  ]
+ ],
+ "note": "the client marks a selection negated when the joined lower-cased label string CONTAINS 'no','not','नहीं','ના','नाही' as a substring"
+}

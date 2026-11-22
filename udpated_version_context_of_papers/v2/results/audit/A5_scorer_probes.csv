@@ -1,0 +1,21 @@
+question,lang,concepts,gold_neg,gold_act,text,expected_success,scorer_success,agrees,kind,offtask,act_ok,polarity_ok,unsupported_hits,note
+refusal meaning,en,PIZZA,True,request,I can't have pizza.,True,False,False,false_reject,True,False,True,,legitimate negated request; 'can't' is both a negator and an off-task (model-refusal) pattern
+refusal meaning,en,PIZZA,True,request,I don't want pizza.,True,True,True,ok,False,True,True,,control
+refusal meaning,en,WATER,False,request,"I'm sorry, but I can't generate that.",False,False,True,ok,True,False,False,,genuine model refusal
+negation scope,en,TIRED,True,feeling,"I am tired, I do not know.",False,True,False,false_accept,False,True,True,,negator in an unrelated clause; the selected feeling is not negated
+negation scope,en,TIRED,True,feeling,I am not tired.,True,True,True,ok,False,True,True,,control
+negation scope,hi,TIRED,True,feeling,"मैं थका हुआ हूँ, मुझे पानी नहीं चाहिए।",False,False,True,ok,False,False,True,पानी,"negation attaches to 'water' (added), not to 'tired'"
+perspective,en,WATER,False,request,"Water, please.",True,True,True,ok,False,True,True,,implicit first person is valid
+perspective,en,WATER,False,request,He wants water.,False,True,False,false_accept,False,True,True,,third-person report
+perspective,en,WATER,False,request,The user wants water.,False,False,True,ok,True,True,True,,third-person report
+perspective,hi,WATER,False,request,पानी चाहिए।,True,True,True,ok,False,True,True,,implicit first person (pro-drop) is valid Hindi
+perspective,hi,WATER,False,request,उसे पानी चाहिए।,False,True,False,false_accept,False,True,True,,third person: 'he/she needs water'
+perspective,gu,WATER,False,request,તેને પાણી જોઈએ છે.,False,True,False,false_accept,False,True,True,,third person: 'he/she wants water'
+inflection/paraphrase,gu,EAT+RICE,False,request,મને ભાત જમવો છે.,True,False,False,false_reject,False,False,True,,valid desire construction 'I want to eat rice' (no જોઈએ)
+inflection/paraphrase,gu,TIRED,True,feeling,મને થાકેલું લાગતું નથી.,True,False,False,false_reject,False,False,True,,valid 'I do not feel tired'; verb લાગતું not in the feeling-marker list
+inflection/paraphrase,hi,DRINK+WATER,False,request,मुझे पानी पीना है।,True,False,False,false_reject,False,False,True,,valid 'I want to drink water'
+inflection/paraphrase,mr,EAT+RICE,False,request,मला भात खायचा आहे.,True,False,False,false_reject,False,False,True,,valid 'I want to eat rice'
+inflection/paraphrase,en,WATER,False,request,I would love some water.,True,False,False,false_reject,False,False,True,love,"valid request paraphrase ('would like' is listed, 'would love' is not)"
+inflection/paraphrase,en,WATER,False,request,"Could I have some water, please?",True,True,True,ok,False,True,True,,valid polite request
+concept substitution,en,WATER,False,request,I want juice.,False,False,True,ok,False,True,True,juice,substituted concept
+added content,en,TIRED,False,feeling,I am tired because of the long trip.,False,True,False,false_accept,False,True,True,,added reason not selected (not in the distractor lexicon)

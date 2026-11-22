@@ -1,0 +1,57 @@
+{
+  "pdf_pages": 9,
+  "main_content_pages": 6,
+  "ethics_acknowledgments_references": "pages 6--7",
+  "appendix_pages": [
+    8,
+    9
+  ],
+  "native_strings_checked": 47,
+  "poppler_exact_strings": 29,
+  "poppler_missing": [
+    "नको",
+    "पीना, मुझे पानी चाहिए।",
+    "मला आईला फोन करण्याची इच्छा आहे.",
+    "मला दमलेला हवे आहे.",
+    "मला पाणी पिण्याची इच्छा आहे.",
+    "मला पिझ्झा नको आहे.",
+    "माँ, मुझे फ़ोन करना हूँ, मुझे चाहिए।",
+    "मी आनंदी नाही.",
+    "मी दमलेला सांगत आहे.",
+    "मुझे गुस्सा चाहिए।",
+    "मुझे पिज़्ज़ा नहीं चाहिए।",
+    "मैं खुश नहीं हूँ।",
+    "मैं थका हुआ हूँ।",
+    "મને પાણી પીવાનું મન છે.",
+    "મને માતાને ફોન કરવાનું મન છે.",
+    "હું ખરાબ છું.",
+    "હું ખુશ નથી.",
+    "હું થાકેલું છું."
+  ],
+  "required_strings": {
+    "मुझे पानी चाहिए।": {
+      "source": true,
+      "poppler_exact": true,
+      "pypdf_exact": false
+    },
+    "મને પાણી જોઈએ છે.": {
+      "source": true,
+      "poppler_exact": true,
+      "pypdf_exact": true
+    },
+    "मला पाणी हवे आहे.": {
+      "source": true,
+      "poppler_exact": true,
+      "pypdf_exact": true
+    }
+  },
+  "null_characters": 0,
+  "font_embedding": "all fonts embedded, see fonts_chatgpt.txt",
+  "build_log": {
+    "overfull": 0,
+    "missing_glyph": 0,
+    "unresolved_citations": 0
+  },
+  "pdf_sha256": "b0f78e8f58c82c2cc73bf275d71eef6f3d24e0dcd7e64f873631284d2d37b6ad",
+  "extraction_limit": "pypdf does not fully honor ActualText for Hindi and reads a shaped i-vowel glyph as IPA ɟ. Poppler extracts all required strings exactly; the visible shaped glyphs are unchanged."
+}

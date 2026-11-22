@@ -1,0 +1,142 @@
+{
+ "en": {
+  "train_sentences": 2659,
+  "train_tokens": 18404,
+  "vocab": 1876,
+  "type_token_ratio": 0.1019343620951967,
+  "hapax_share_of_vocab": 0.44189765458422176,
+  "avg_word_len": 4.296565963920886,
+  "sets": {
+   "aac": {
+    "words": 2470,
+    "oov_token_pct": 7.125506072874494,
+    "oov_type_pct": 21.552878179384205,
+    "oov_near_inflection_pct_of_oov": 35.79545454545455,
+    "oracle_ksr_pool": 69.27867151011935,
+    "oracle_ksr_vocab": 72.90384757950923,
+    "shipped_ksr": 53.69560382533916,
+    "improved_ksr": 54.42212172881607
+   },
+   "care": {
+    "words": 3367,
+    "oov_token_pct": 4.098604098604099,
+    "oov_type_pct": 17.338709677419356,
+    "oov_near_inflection_pct_of_oov": 29.71014492753623,
+    "oracle_ksr_pool": 72.93531211056984,
+    "oracle_ksr_vocab": 75.65424266455194,
+    "shipped_ksr": 58.87617537102073,
+    "improved_ksr": 59.227370567576756
+   }
+  },
+  "oov_token_pct_by_train_fraction": {
+   "0.25": 13.465821483638855,
+   "0.5": 8.10347781394552,
+   "1.0": 5.3794757580949115
+  }
+ },
+ "hi": {
+  "train_sentences": 3897,
+  "train_tokens": 30880,
+  "vocab": 2283,
+  "type_token_ratio": 0.07393134715025906,
+  "hapax_share_of_vocab": 0.38501971090670173,
+  "avg_word_len": 3.451619170984456,
+  "sets": {
+   "aac": {
+    "words": 3340,
+    "oov_token_pct": 4.700598802395209,
+    "oov_type_pct": 17.032258064516128,
+    "oov_near_inflection_pct_of_oov": 36.30573248407644,
+    "oracle_ksr_pool": 69.48921237327788,
+    "oracle_ksr_vocab": 73.22589030413309,
+    "shipped_ksr": 55.653756173641796,
+    "improved_ksr": 56.72602027553938
+   },
+   "care": {
+    "words": 4076,
+    "oov_token_pct": 2.4533856722276743,
+    "oov_type_pct": 12.073863636363637,
+    "oov_near_inflection_pct_of_oov": 33.0,
+    "oracle_ksr_pool": 71.04312485888462,
+    "oracle_ksr_vocab": 74.00654775344321,
+    "shipped_ksr": 57.82908105667193,
+    "improved_ksr": 59.15556559042673
+   }
+  },
+  "oov_token_pct_by_train_fraction": {
+   "0.25": 8.994066882416398,
+   "0.5": 5.434196332254585,
+   "1.0": 3.465480043149946
+  }
+ },
+ "mr": {
+  "train_sentences": 2541,
+  "train_tokens": 15892,
+  "vocab": 3024,
+  "type_token_ratio": 0.19028441983387867,
+  "hapax_share_of_vocab": 0.5826719576719577,
+  "avg_word_len": 4.7108608104706775,
+  "sets": {
+   "aac": {
+    "words": 2178,
+    "oov_token_pct": 14.18732782369146,
+    "oov_type_pct": 31.670281995661604,
+    "oov_near_inflection_pct_of_oov": 37.54045307443366,
+    "oracle_ksr_pool": 60.7627765064836,
+    "oracle_ksr_vocab": 64.80549199084668,
+    "shipped_ksr": 46.17086193745233,
+    "improved_ksr": 46.51411136536995
+   },
+   "care": {
+    "words": 2724,
+    "oov_token_pct": 9.654919236417033,
+    "oov_type_pct": 26.737967914438503,
+    "oov_near_inflection_pct_of_oov": 41.06463878326996,
+    "oracle_ksr_pool": 66.56972986945844,
+    "oracle_ksr_vocab": 70.31149024169575,
+    "shipped_ksr": 51.29895308259015,
+    "improved_ksr": 52.2424712420835
+   }
+  },
+  "oov_token_pct_by_train_fraction": {
+   "0.25": 22.868217054263567,
+   "0.5": 16.666666666666668,
+   "1.0": 11.668706650346797
+  }
+ },
+ "gu": {
+  "train_sentences": 2497,
+  "train_tokens": 19402,
+  "vocab": 2473,
+  "type_token_ratio": 0.1274610864859293,
+  "hapax_share_of_vocab": 0.5293166194904974,
+  "avg_word_len": 3.9458818678486756,
+  "sets": {
+   "aac": {
+    "words": 2571,
+    "oov_token_pct": 10.073901205756515,
+    "oov_type_pct": 29.368932038834952,
+    "oov_near_inflection_pct_of_oov": 38.22393822393823,
+    "oracle_ksr_pool": 64.43150892047173,
+    "oracle_ksr_vocab": 68.06017538554582,
+    "shipped_ksr": 50.922286059872995,
+    "improved_ksr": 52.1469609918355
+   },
+   "care": {
+    "words": 3348,
+    "oov_token_pct": 6.093189964157706,
+    "oov_type_pct": 22.444183313748532,
+    "oov_near_inflection_pct_of_oov": 38.72549019607843,
+    "oracle_ksr_pool": 68.22424242424242,
+    "oracle_ksr_vocab": 71.46666666666667,
+    "shipped_ksr": 55.157575757575756,
+    "improved_ksr": 56.35151515151515
+   }
+  },
+  "oov_token_pct_by_train_fraction": {
+   "0.25": 15.762797769893563,
+   "0.5": 10.947795235681703,
+   "1.0": 7.822267274877513
+  }
+ }
+}

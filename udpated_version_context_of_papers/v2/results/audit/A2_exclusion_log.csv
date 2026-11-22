@@ -1,0 +1,10 @@
+id,lang,type,conds,matching_prompt_input,prompt_example_output,rule
+hi-T1_request_object-WATER,hi,T1_request_object,ui+structured,Input Sequence: मुझे चाहिए + पानी,मुझे पानी चाहिए।,query string built by llm.py equals a few-shot example input (exact string)
+gu-T1_request_object-WATER,gu,T1_request_object,ui+structured,ઈનપુટ ક્રમ: મને જોઈએ છે + પાણી,મને પાણી જોઈએ છે.,query string built by llm.py equals a few-shot example input (exact string)
+gu-T1_request_object-FOOD,gu,T1_request_object,ui+structured,ઈનપુટ ક્રમ: મને જોઈએ છે + ખોરાક,મને ખોરાક જોઈએ છે.,query string built by llm.py equals a few-shot example input (exact string)
+gu-T2_refuse_object-NO+FOOD,gu,T2_refuse_object,structured,ઈનપુટ ક્રમ: નથી જોઈતું + ખોરાક,મને ખોરાક નથી જોઈતો.,query string built by llm.py equals a few-shot example input (exact string)
+gu-T3_feeling-HAPPY,gu,T3_feeling,structured,ઈનપુટ ક્રમ: હું કહું છું + ખુશ,હું ખુશ છું.,query string built by llm.py equals a few-shot example input (exact string)
+mr-T1_request_object-WATER,mr,T1_request_object,ui+structured,इनपुट क्रम: मला हवे आहे + पाणी,मला पाणी हवे आहे.,query string built by llm.py equals a few-shot example input (exact string)
+mr-T1_request_object-FOOD,mr,T1_request_object,ui+structured,इनपुट क्रम: मला हवे आहे + जेवण,मला जेवण हवे आहे.,query string built by llm.py equals a few-shot example input (exact string)
+mr-T2_refuse_object-NO+FOOD,mr,T2_refuse_object,structured,इनपुट क्रम: नको आहे + जेवण,मला जेवण नको आहे.,query string built by llm.py equals a few-shot example input (exact string)
+mr-T3_feeling-HAPPY,mr,T3_feeling,structured,इनपुट क्रम: मी सांगत आहे + आनंदी,मी आनंदी आहे.,query string built by llm.py equals a few-shot example input (exact string)

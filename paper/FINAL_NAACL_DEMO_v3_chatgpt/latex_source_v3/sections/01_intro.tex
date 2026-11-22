@@ -1,0 +1,41 @@
+\section{Introduction}
+\label{sec:intro}
+A symbol-based augmentative and alternative communication (AAC) board lets a person compose a message by selecting pictograms.
+The labels alone do not determine a sentence: \emph{Water} can request a drink, whereas \emph{No}\,+\,\emph{Water} can refuse one.
+Adding grammatical structure must therefore preserve both the selected concepts and the communicative act.
+This matters for users who rely on the device to express needs, discomfort, and refusals to a listener who may not see the board.
+
+\begin{figure}[t]
+\centering
+\input{figures/teaser}
+\caption{Concept-gated realization, illustrated with an authored example. A water request must not acquire an unselected time or lose its act. Red text is labelled as added content; blue text is the intended realization. Acceptance is a heuristic check, not a semantic guarantee.}
+\label{fig:teaser}
+\end{figure}
+
+For a water request, a single symbol can be realized as a complete sentence in each language.
+The following are authored illustrations; recorded model outputs are kept separate in Appendix~\ref{app:traces}.
+\begin{quote}\small
+\lang{English reference}\quad\good{I want water.}\\[2pt]
+\lang{Hindi}\quad\good{\hi{मुझे पानी चाहिए।}}\\[2pt]
+\lang{Gujarati}\quad\good{\gu{મને પાણી જોઈએ છે.}}\\[2pt]
+\lang{Marathi}\quad\good{\hi{मला पाणी हवे आहे.}}
+\end{quote}
+The three Indic sentences share the English gloss \emph{``I want water.''}
+Feelings, refusals, and actions require other constructions, so a realization policy must distinguish them rather than place every label in a request frame.
+
+A language model can supply these constructions but can also replace a concept or add an explanation (Figure~\ref{fig:teaser}).
+Our approach builds a \emph{concept ledger} from the selection and checks each proposed sentence for concepts, polarity, act cues, and unrequested content before returning it.
+The revised workflow also checks its template fallback and asks for a message type when the selection is ambiguous.
+These checks are deliberately inspectable, but their finite vocabulary does not determine every possible meaning.
+
+We evaluate what candidate checking adds beyond templates.
+On the archived grid, the policy improves its ungated cascade but trails a template baseline.
+We trace errors across input interpretation, generation, checking, and scoring.
+Symbol-board users compose messages; caregivers, clinicians, and researchers configure vocabulary.
+We make three contributions:
+\begin{itemize}
+\item \textbf{A concept-gated realization policy} with explicit concept, polarity, and act checks, and a revised checked-template fallback.
+\item \textbf{A four-language interaction} that separates generated sentences, template sentences, clarification, and literal previews.
+\item \textbf{A paired evaluation and error audit} that exposes the template advantage, interface failures, and scorer limitations, followed by a separately labelled repair regression.
+\end{itemize}
+The contribution is the design and evaluation of these checks for Indic symbol realization, rather than multilingual AAC or grammatical expansion alone.

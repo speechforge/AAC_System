@@ -1,0 +1,69 @@
+{
+ "causes": {
+  "llm1|ui": {
+   "meta:the user": 23
+  },
+  "llm2|ui": {
+   "meta:the user": 23
+  },
+  "llm3_pre|ui": {
+   "meta:the user": 23
+  },
+  "deployed|ui": {
+   "meta:the user": 11
+  },
+  "llm1|st": {
+   "meta:the user": 20,
+   "meta:sorry": 1
+  },
+  "llm2|st": {
+   "meta:the user": 20,
+   "meta:sorry": 1
+  },
+  "llm3_pre|st": {
+   "meta:the user": 20,
+   "meta:sorry": 1
+  },
+  "deployed|st": {
+   "meta:the user": 10
+  },
+  "naive_qwen|ui": {
+   "latin_leak_in_indic": 20,
+   "longer_than_25_tokens": 1
+  }
+ },
+ "examples": {
+  "meta:the user": [
+   "The user requested milk for breakfast.",
+   "The user requested milk for breakfast.",
+   "The user requested milk."
+  ],
+  "meta:sorry": [
+   "I am sorry, but I cannot fulfill this request as it contains negative intent and negates multiple options without providing a clear alternative.",
+   "I am sorry, but I cannot fulfill this request as it contains negative intent and negates multiple options without providing a clear alternative.",
+   "I am sorry, but I cannot fulfill this request as it contains negative intent and negates multiple options without providing a clear alternative."
+  ],
+  "latin_leak_in_indic": [
+   "The selected symbol is \"फल\".",
+   "\"जूस\" in Hindi means \"yes\" or \"okay.\"",
+   "\"नहीं\" and \"खाना\" both mean \"no\" in Hindi."
+  ],
+  "longer_than_25_tokens": [
+   "Tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired tired"
+  ]
+ },
+ "scorer_meta_patterns": [
+  "sorry",
+  "can't",
+  "cannot generate",
+  "as an ai",
+  "language model",
+  "ethical",
+  "guidelines",
+  "copyright",
+  "the user",
+  "user's",
+  "instead, i"
+ ],
+ "note": "'off-task' bundles model refusals/meta text, the English third-person pattern 'the user', empty/long text and Latin leakage. It is NOT a test of a user's own refusal; the pattern \"can't\" would flag a legitimate user refusal."
+}

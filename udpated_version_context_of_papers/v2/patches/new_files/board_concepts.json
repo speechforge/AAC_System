@@ -1,0 +1,558 @@
+{
+ "_source": "indic-generative-aac/frontend/index.html SYMBOL_DATABASE (extracted by paper/CLAUDE_WRITTEN/naacl2027_demo/eval/extract_board.py)",
+ "_source_sha256": "0c8da90b05786630f203a6d4e7f22cbe121e6c61a3caa7053e5a7d86f51ce71d",
+ "concepts": {
+  "YES": {
+   "cat": "core",
+   "emoji": "👍",
+   "en": "Yes",
+   "hi": "हाँ",
+   "gu": "હા",
+   "mr": "हो"
+  },
+  "NO": {
+   "cat": "core",
+   "emoji": "🙅",
+   "en": "No",
+   "hi": "नहीं",
+   "gu": "ના",
+   "mr": "नाही"
+  },
+  "WANT": {
+   "cat": "core",
+   "emoji": "🤲",
+   "en": "Want",
+   "hi": "चाहिए",
+   "gu": "જોઈએ",
+   "mr": "पाहिजे"
+  },
+  "HELP": {
+   "cat": "core",
+   "emoji": "🆘",
+   "en": "Help",
+   "hi": "मदद",
+   "gu": "મદદ",
+   "mr": "मदत"
+  },
+  "MORE": {
+   "cat": "core",
+   "emoji": "➕",
+   "en": "More",
+   "hi": "और",
+   "gu": "વધુ",
+   "mr": "आणखी"
+  },
+  "STOP": {
+   "cat": "core",
+   "emoji": "🛑",
+   "en": "Stop",
+   "hi": "रुकें",
+   "gu": "ઊભા રહો",
+   "mr": "थांबा"
+  },
+  "ME": {
+   "cat": "core",
+   "emoji": "👤",
+   "en": "I / Me",
+   "hi": "मैं",
+   "gu": "હું",
+   "mr": "मी"
+  },
+  "YOU": {
+   "cat": "core",
+   "emoji": "👉",
+   "en": "You",
+   "hi": "आप",
+   "gu": "તમે",
+   "mr": "तुम्ही"
+  },
+  "GOOD": {
+   "cat": "core",
+   "emoji": "✨",
+   "en": "Good",
+   "hi": "अच्छा",
+   "gu": "સારું",
+   "mr": "चांगले"
+  },
+  "BAD": {
+   "cat": "core",
+   "emoji": "⚠️",
+   "en": "Bad",
+   "hi": "खराब",
+   "gu": "ખરાબ",
+   "mr": "वाईट"
+  },
+  "EAT": {
+   "cat": "actions",
+   "emoji": "🍽️",
+   "en": "Eat",
+   "hi": "खाना",
+   "gu": "જમવું",
+   "mr": "खाणे"
+  },
+  "DRINK": {
+   "cat": "actions",
+   "emoji": "💧",
+   "en": "Drink",
+   "hi": "पीना",
+   "gu": "પીવું",
+   "mr": "पिणे"
+  },
+  "PLAY": {
+   "cat": "actions",
+   "emoji": "🎮",
+   "en": "Play",
+   "hi": "खेलना",
+   "gu": "રમવું",
+   "mr": "खेळणे"
+  },
+  "SLEEP": {
+   "cat": "actions",
+   "emoji": "🛌",
+   "en": "Sleep",
+   "hi": "सोना",
+   "gu": "ઊંઘવું",
+   "mr": "झोपणे"
+  },
+  "GO": {
+   "cat": "actions",
+   "emoji": "🚶",
+   "en": "Go",
+   "hi": "जाना",
+   "gu": "જવું",
+   "mr": "जाणे"
+  },
+  "STUDY": {
+   "cat": "actions",
+   "emoji": "📚",
+   "en": "Study",
+   "hi": "पढ़ना",
+   "gu": "ભણવું",
+   "mr": "अभ्यास"
+  },
+  "BATH": {
+   "cat": "actions",
+   "emoji": "🚿",
+   "en": "Bathe",
+   "hi": "नहाना",
+   "gu": "નાહવું",
+   "mr": "आंघोळ"
+  },
+  "CALL": {
+   "cat": "actions",
+   "emoji": "📞",
+   "en": "Call",
+   "hi": "फ़ोन करना",
+   "gu": "ફોન કરવો",
+   "mr": "फोन करणे"
+  },
+  "WRITE": {
+   "cat": "actions",
+   "emoji": "✏️",
+   "en": "Write",
+   "hi": "लिखना",
+   "gu": "લખવું",
+   "mr": "लिहिणे"
+  },
+  "LOOK": {
+   "cat": "actions",
+   "emoji": "👀",
+   "en": "Look",
+   "hi": "देखना",
+   "gu": "જોવું",
+   "mr": "पाहणे"
+  },
+  "WATER": {
+   "cat": "food",
+   "emoji": "💧",
+   "en": "Water",
+   "hi": "पानी",
+   "gu": "પાણી",
+   "mr": "पाणी"
+  },
+  "FOOD": {
+   "cat": "food",
+   "emoji": "🍎",
+   "en": "Food",
+   "hi": "खाना",
+   "gu": "ખોરાક",
+   "mr": "जेवण"
+  },
+  "MILK": {
+   "cat": "food",
+   "emoji": "🥛",
+   "en": "Milk",
+   "hi": "दूध",
+   "gu": "દૂધ",
+   "mr": "दूध"
+  },
+  "RICE": {
+   "cat": "food",
+   "emoji": "🍚",
+   "en": "Rice",
+   "hi": "चावल",
+   "gu": "ભાત",
+   "mr": "भात"
+  },
+  "ROTI": {
+   "cat": "food",
+   "emoji": "🍞",
+   "en": "Bread/Roti",
+   "hi": "रोटी",
+   "gu": "રોટલી",
+   "mr": "पोळी"
+  },
+  "FRUIT": {
+   "cat": "food",
+   "emoji": "🍌",
+   "en": "Fruit",
+   "hi": "फल",
+   "gu": "ફળ",
+   "mr": "फळ"
+  },
+  "TEA": {
+   "cat": "food",
+   "emoji": "🫖",
+   "en": "Tea",
+   "hi": "चाय",
+   "gu": "ચા",
+   "mr": "चहा"
+  },
+  "JUICE": {
+   "cat": "food",
+   "emoji": "🧃",
+   "en": "Juice",
+   "hi": "जूस",
+   "gu": "જ્યુસ",
+   "mr": "रस"
+  },
+  "SNACK": {
+   "cat": "food",
+   "emoji": "🍪",
+   "en": "Biscuit",
+   "hi": "बिस्कुट",
+   "gu": "બિસ્કિટ",
+   "mr": "बिस्किट"
+  },
+  "PIZZA": {
+   "cat": "food",
+   "emoji": "🍕",
+   "en": "Pizza",
+   "hi": "पिज़्ज़ा",
+   "gu": "પિઝા",
+   "mr": "पिझ्झा"
+  },
+  "HAPPY": {
+   "cat": "feelings",
+   "emoji": "😊",
+   "en": "Happy",
+   "hi": "खुश",
+   "gu": "ખુશ",
+   "mr": "आनंदी"
+  },
+  "SAD": {
+   "cat": "feelings",
+   "emoji": "😢",
+   "en": "Sad",
+   "hi": "उदास",
+   "gu": "ઉદાસ",
+   "mr": "दुःखी"
+  },
+  "ANGRY": {
+   "cat": "feelings",
+   "emoji": "😡",
+   "en": "Angry",
+   "hi": "गुस्सा",
+   "gu": "ગુસ્સો",
+   "mr": "रागात"
+  },
+  "TIRED": {
+   "cat": "feelings",
+   "emoji": "😴",
+   "en": "Tired",
+   "hi": "थका हुआ",
+   "gu": "થાકેલું",
+   "mr": "दमलेला"
+  },
+  "SICK": {
+   "cat": "feelings",
+   "emoji": "🤒",
+   "en": "Sick",
+   "hi": "बीमार",
+   "gu": "બીમાર",
+   "mr": "आजारी"
+  },
+  "SCARED": {
+   "cat": "feelings",
+   "emoji": "😨",
+   "en": "Scared",
+   "hi": "डरा हुआ",
+   "gu": "ડરેલું",
+   "mr": "घाबरलेला"
+  },
+  "LOVE": {
+   "cat": "feelings",
+   "emoji": "❤️",
+   "en": "Love",
+   "hi": "प्यार",
+   "gu": "પ્રેમ",
+   "mr": "प्रेम"
+  },
+  "EXCITED": {
+   "cat": "feelings",
+   "emoji": "😁",
+   "en": "Excited",
+   "hi": "उत्साहित",
+   "gu": "ઉત્સાહિત",
+   "mr": "उत्साही"
+  },
+  "MOTHER": {
+   "cat": "people",
+   "emoji": "👩",
+   "en": "Mother",
+   "hi": "माँ",
+   "gu": "માતા",
+   "mr": "आई"
+  },
+  "FATHER": {
+   "cat": "people",
+   "emoji": "👨",
+   "en": "Father",
+   "hi": "पिताजी",
+   "gu": "પિતાજી",
+   "mr": "बाबा"
+  },
+  "SISTER": {
+   "cat": "people",
+   "emoji": "👧",
+   "en": "Sister",
+   "hi": "बहन",
+   "gu": "બહેન",
+   "mr": "बहीण"
+  },
+  "BROTHER": {
+   "cat": "people",
+   "emoji": "👦",
+   "en": "Brother",
+   "hi": "भाई",
+   "gu": "ભાઈ",
+   "mr": "भाऊ"
+  },
+  "TEACHER": {
+   "cat": "people",
+   "emoji": "👩‍🏫",
+   "en": "Teacher",
+   "hi": "शिक्षक",
+   "gu": "શિક્ષક",
+   "mr": "शिक्षक"
+  },
+  "DOCTOR": {
+   "cat": "people",
+   "emoji": "👨‍⚕️",
+   "en": "Doctor",
+   "hi": "डॉक्टर",
+   "gu": "ડૉક્ટર",
+   "mr": "डॉक्टर"
+  },
+  "FRIEND": {
+   "cat": "people",
+   "emoji": "👫",
+   "en": "Friend",
+   "hi": "दोस्त",
+   "gu": "મિત્ર",
+   "mr": "मित्र"
+  },
+  "HOME": {
+   "cat": "places",
+   "emoji": "🏠",
+   "en": "Home",
+   "hi": "घर",
+   "gu": "ઘર",
+   "mr": "घर"
+  },
+  "SCHOOL": {
+   "cat": "places",
+   "emoji": "🏫",
+   "en": "School",
+   "hi": "स्कूल",
+   "gu": "શાળા",
+   "mr": "शाळा"
+  },
+  "HOSPITAL": {
+   "cat": "places",
+   "emoji": "🏥",
+   "en": "Hospital",
+   "hi": "अस्पताल",
+   "gu": "હોસ્પિટલ",
+   "mr": "रुग्णालय"
+  },
+  "TOILET": {
+   "cat": "places",
+   "emoji": "🚽",
+   "en": "Toilet",
+   "hi": "शौचालय",
+   "gu": "શૌચાલય",
+   "mr": "शौचालय"
+  },
+  "ROOM": {
+   "cat": "places",
+   "emoji": "🛏️",
+   "en": "Bedroom",
+   "hi": "कमरा",
+   "gu": "ઓરડો",
+   "mr": "खोली"
+  },
+  "MARKET": {
+   "cat": "places",
+   "emoji": "🛒",
+   "en": "Market",
+   "hi": "बाज़ार",
+   "gu": "બજાર",
+   "mr": "बाजार"
+  },
+  "LUNGS": {
+   "cat": "body",
+   "emoji": "🫁",
+   "en": "Lungs",
+   "hi": "फेफड़े",
+   "gu": "ફેફસાં",
+   "mr": "फुप्फुसे"
+  },
+  "HEART": {
+   "cat": "body",
+   "emoji": "🫀",
+   "en": "Heart",
+   "hi": "दिल",
+   "gu": "હૃદય",
+   "mr": "हृदय"
+  },
+  "BRAIN": {
+   "cat": "body",
+   "emoji": "🧠",
+   "en": "Brain",
+   "hi": "दिमाग",
+   "gu": "મગજ",
+   "mr": "मेंदू"
+  },
+  "BONE": {
+   "cat": "body",
+   "emoji": "🦴",
+   "en": "Bone",
+   "hi": "हड्डी",
+   "gu": "હાડકું",
+   "mr": "हाड"
+  },
+  "TOOTH": {
+   "cat": "body",
+   "emoji": "🦷",
+   "en": "Tooth",
+   "hi": "दांत",
+   "gu": "દાંત",
+   "mr": "दात"
+  },
+  "EYE": {
+   "cat": "body",
+   "emoji": "👁️",
+   "en": "Eye",
+   "hi": "आँख",
+   "gu": "આંખ",
+   "mr": "डोळा"
+  },
+  "EAR": {
+   "cat": "body",
+   "emoji": "👂",
+   "en": "Ear",
+   "hi": "कान",
+   "gu": "કાન",
+   "mr": "कान"
+  },
+  "NOSE": {
+   "cat": "body",
+   "emoji": "👃",
+   "en": "Nose",
+   "hi": "नाक",
+   "gu": "નાક",
+   "mr": "नाक"
+  },
+  "NAMASTE": {
+   "cat": "chat",
+   "emoji": "🙏",
+   "en": "Hello",
+   "hi": "नमस्ते",
+   "gu": "નમસ્તે",
+   "mr": "नमस्ते"
+  },
+  "THANKS": {
+   "cat": "chat",
+   "emoji": "🙌",
+   "en": "Thank You",
+   "hi": "धन्यवाद",
+   "gu": "આભાર",
+   "mr": "धन्यवाद"
+  },
+  "HOW": {
+   "cat": "chat",
+   "emoji": "❓",
+   "en": "How are you?",
+   "hi": "कैसे हैं?",
+   "gu": "કેમ છો?",
+   "mr": "कसे आहात?"
+  },
+  "BYE": {
+   "cat": "chat",
+   "emoji": "👋",
+   "en": "Goodbye",
+   "hi": "अलविदा",
+   "gu": "આવજો",
+   "mr": "बाय"
+  },
+  "PLEASE": {
+   "cat": "chat",
+   "emoji": "🤝",
+   "en": "Please",
+   "hi": "कृपया",
+   "gu": "મહેરબાની કરીને",
+   "mr": "कृपया"
+  },
+  "HELP_EMERGENCY": {
+   "cat": "emergency",
+   "emoji": "🆘",
+   "en": "Help!",
+   "hi": "मदद चाहिए!",
+   "gu": "મદદ કરો!",
+   "mr": "मदत हवी!"
+  },
+  "PAIN": {
+   "cat": "emergency",
+   "emoji": "😖",
+   "en": "Pain",
+   "hi": "दर्द",
+   "gu": "દુખાવો",
+   "mr": "वेदना"
+  },
+  "MEDICINE": {
+   "cat": "emergency",
+   "emoji": "💊",
+   "en": "Medicine",
+   "hi": "दवा",
+   "gu": "દવા",
+   "mr": "औषध"
+  },
+  "AMBULANCE": {
+   "cat": "emergency",
+   "emoji": "🚑",
+   "en": "Ambulance",
+   "hi": "एम्बुलेंस",
+   "gu": "એમ્બ્યુલન્સ",
+   "mr": "रुग्णवाहिका"
+  },
+  "FIRE": {
+   "cat": "emergency",
+   "emoji": "🔥",
+   "en": "Danger / Fire",
+   "hi": "खतरा / आग",
+   "gu": "જોખમ",
+   "mr": "धोका"
+  }
+ }
+}

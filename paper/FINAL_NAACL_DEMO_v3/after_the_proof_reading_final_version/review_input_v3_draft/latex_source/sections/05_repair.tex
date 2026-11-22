@@ -1,0 +1,12 @@
+\section{From Audit to a Workable Build}
+\label{sec:repair}
+
+The audit traced the errors above to four defects, each repaired before any new scenario was drawn and frozen by recorded file hashes.
+\textbf{Interface:} board symbols carry concept identifiers, intent is split into an act and a polarity field, typed words match only as whole tokens, and a message-type control and a two-button clarification card replace guessing; driving the real page, the original client sent a wrong act for 59 of 184 selections and the repaired client for none.
+\textbf{Gate and templates:} the gate tests the writing system, speaker perspective, concept presence by identifier with inflected forms, added content, negation within the clause of the selected concept, and the act marker, with a reason code per rejection; compositional, locale-specific frames cover requests, refusals, feelings, negated feelings, actions, and calls for help, and an uncovered selection yields a labeled literal preview.
+\textbf{Scorer:} version 2 adds the valid constructions that version 1 missed, moving the archived deployed count from 97 to 95 (client) and from 132 to 138 (explicit) and the template floor from 167 to 175.
+
+\paragraph{Regression result.}
+On the original \NPrimAll{} scenarios under version 2, the repaired hybrid and the repaired template both score 175/175 with client and explicit inputs (archived system: 95 and 138; matched one-pass \qwen{} prompt: 8/175), and the hybrid exceeds the same cascade without gate and fallback by 49.7 percentage points (95\% CI 42.3--57.1).
+These scenarios informed the repairs, so 175/175 is a regression target and not a test result, and a lexical scorer cannot separate hybrid from template.
+A fresh set of 120 scenarios (30 per language) was generated after the freeze; its gold annotation awaits two native speakers per language, so no score on it is reported, and blind native ratings of meaning and phrasing remain the pending test.

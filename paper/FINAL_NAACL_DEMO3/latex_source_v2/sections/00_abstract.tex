@@ -1,0 +1,9 @@
+\begin{abstract}
+Symbol-based augmentative and alternative communication (AAC) devices voice telegraphic labels, whereas Hindi, Gujarati, and Marathi need case marking, agreement, and negation.
+A language model can expand a selection into a sentence, but it can also replace a concept, drop a negation, or add content, and an AAC device speaks for its user.
+We present \sys{}, a web system for English, Hindi, Gujarati, and Marathi that speaks a model-generated sentence only if a deterministic gate confirms the selected concepts, polarity, and intended act, and otherwise speaks a template built from the user's own labels.
+On \NPrimAll{} frozen scenarios, the gate keeps all \NConc{} required concepts (the ungated cascade keeps \XPreUKeptPct{}--\XPreSKeptPct{}), removes its polarity errors (\XPreSPol{} with explicit intent fields), and raises success from \XPreSSuccPct{} to \XDepSSuccPct{} when intent and polarity are passed explicitly (\XPreUSuccPct{} to \XDepUSuccPct{} with the web client's inferred fields); one unconstrained prompt succeeds on \XNaiveSuccPct{}.
+A template alone reaches \XTmplSSuccPct{} under explicit fields, so the gate is a safeguard and not a quality gain.
+A suffix-trie predictor trained on AAC dialogues exceeds trigram backoff by 1.1 hit@1 points in English and 1.2 in Hindi.
+Speech synthesis is integrated but was not evaluated; code, fixtures, scorer, and a screencast are released.
+\end{abstract}

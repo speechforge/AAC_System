@@ -1,0 +1,561 @@
+[
+  {
+    "id": "en-T1_request_object-WATER",
+    "group": "T1_request_object-WATER",
+    "language": "en",
+    "labels": [
+      "Water"
+    ],
+    "act": "request",
+    "negative": false,
+    "candidate": "I need food.",
+    "attempts": [
+      "I need food.",
+      "I need food."
+    ],
+    "returned": "I want water.",
+    "route": "template_after_rejection",
+    "gate_reasons": "missing_concept:WATER|added_concept:FOOD|missing_concept:WATER|added_concept:FOOD",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "hi-T1_request_object-WATER",
+    "group": "T1_request_object-WATER",
+    "language": "hi",
+    "labels": [
+      "पानी"
+    ],
+    "act": "request",
+    "negative": false,
+    "candidate": "मुझे पानी चाहिए।",
+    "attempts": [
+      "मुझे पानी चाहिए।"
+    ],
+    "returned": "मुझे पानी चाहिए।",
+    "route": "model_first",
+    "gate_reasons": "",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "gu-T1_request_object-WATER",
+    "group": "T1_request_object-WATER",
+    "language": "gu",
+    "labels": [
+      "પાણી"
+    ],
+    "act": "request",
+    "negative": false,
+    "candidate": "મને પાણી જોઈએ છે.",
+    "attempts": [
+      "મને પાણી જોઈએ છે."
+    ],
+    "returned": "મને પાણી જોઈએ છે.",
+    "route": "model_first",
+    "gate_reasons": "",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "mr-T1_request_object-WATER",
+    "group": "T1_request_object-WATER",
+    "language": "mr",
+    "labels": [
+      "पाणी"
+    ],
+    "act": "request",
+    "negative": false,
+    "candidate": "मला पाणी हवे आहे.",
+    "attempts": [
+      "मला पाणी हवे आहे."
+    ],
+    "returned": "मला पाणी हवे आहे.",
+    "route": "model_first",
+    "gate_reasons": "",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "en-T2_refuse_object-NO+PIZZA",
+    "group": "T2_refuse_object-NO+PIZZA",
+    "language": "en",
+    "labels": [
+      "No",
+      "Pizza"
+    ],
+    "act": "request",
+    "negative": true,
+    "candidate": "I cannot eat out because I am .",
+    "attempts": [
+      "I cannot eat out because I am .",
+      "I cannot eat out because I am ."
+    ],
+    "returned": "I do not want pizza.",
+    "route": "template_after_rejection",
+    "gate_reasons": "missing_concept:PIZZA|added_concept:EAT|added_reason_time:because|act_wrong|missing_concept:PIZZA|added_concept:EAT|added_reason_time:because|act_wrong",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "hi-T2_refuse_object-NO+PIZZA",
+    "group": "T2_refuse_object-NO+PIZZA",
+    "language": "hi",
+    "labels": [
+      "नहीं",
+      "पिज़्ज़ा"
+    ],
+    "act": "request",
+    "negative": true,
+    "candidate": "पिज़्ज़ा, मुझे चाहिए।",
+    "attempts": [
+      "पिज़्ज़ा, मुझे चाहिए।",
+      "पिज़्ज़ा, मुझे चाहिए।"
+    ],
+    "returned": "मुझे पिज़्ज़ा नहीं चाहिए।",
+    "route": "template_after_rejection",
+    "gate_reasons": "negation_missing|negation_missing",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "gu-T2_refuse_object-NO+PIZZA",
+    "group": "T2_refuse_object-NO+PIZZA",
+    "language": "gu",
+    "labels": [
+      "ના",
+      "પિઝા"
+    ],
+    "act": "request",
+    "negative": true,
+    "candidate": "મને પિઝા નથી જોઈતું.",
+    "attempts": [
+      "મને પિઝા નથી જોઈતું."
+    ],
+    "returned": "મને પિઝા નથી જોઈતું.",
+    "route": "model_first",
+    "gate_reasons": "",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "mr-T2_refuse_object-NO+PIZZA",
+    "group": "T2_refuse_object-NO+PIZZA",
+    "language": "mr",
+    "labels": [
+      "नाही",
+      "पिझ्झा"
+    ],
+    "act": "request",
+    "negative": true,
+    "candidate": "मला पिझ्झा हवे आहे.",
+    "attempts": [
+      "मला पिझ्झा हवे आहे.",
+      "मला पिझ्झा हवे आहे."
+    ],
+    "returned": "मला पिझ्झा नको आहे.",
+    "route": "template_after_rejection",
+    "gate_reasons": "negation_missing|negation_missing",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "en-T3_feeling-TIRED",
+    "group": "T3_feeling-TIRED",
+    "language": "en",
+    "labels": [
+      "Tired"
+    ],
+    "act": "feeling",
+    "negative": false,
+    "candidate": "I feel and want to eat out.",
+    "attempts": [
+      "I feel and want to eat out.",
+      "I feel and want to eat out."
+    ],
+    "returned": "I am tired.",
+    "route": "template_after_rejection",
+    "gate_reasons": "missing_concept:TIRED|added_concept:EAT|act_wrong|missing_concept:TIRED|added_concept:EAT|act_wrong",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "hi-T3_feeling-TIRED",
+    "group": "T3_feeling-TIRED",
+    "language": "hi",
+    "labels": [
+      "थका हुआ"
+    ],
+    "act": "feeling",
+    "negative": false,
+    "candidate": "मैं थका हुआ हूँ।",
+    "attempts": [
+      "मैं थका हुआ हूँ।"
+    ],
+    "returned": "मैं थका हुआ हूँ।",
+    "route": "model_first",
+    "gate_reasons": "",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "gu-T3_feeling-TIRED",
+    "group": "T3_feeling-TIRED",
+    "language": "gu",
+    "labels": [
+      "થાકેલું"
+    ],
+    "act": "feeling",
+    "negative": false,
+    "candidate": "હું થાકેલું છું.",
+    "attempts": [
+      "હું થાકેલું છું.",
+      "હું થાકેલું છું."
+    ],
+    "returned": "હું થાકેલું છું.",
+    "route": "model_first",
+    "gate_reasons": "",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "mr-T3_feeling-TIRED",
+    "group": "T3_feeling-TIRED",
+    "language": "mr",
+    "labels": [
+      "दमलेला"
+    ],
+    "act": "feeling",
+    "negative": false,
+    "candidate": "मी दमलेला सांगत आहे.",
+    "attempts": [
+      "मी दमलेला सांगत आहे."
+    ],
+    "returned": "मी दमलेला सांगत आहे.",
+    "route": "model_first",
+    "gate_reasons": "",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "en-T4_negated_feeling-NO+HAPPY",
+    "group": "T4_negated_feeling-NO+HAPPY",
+    "language": "en",
+    "labels": [
+      "No",
+      "Happy"
+    ],
+    "act": "feeling",
+    "negative": true,
+    "candidate": "I feel sad because I'm not happy with my decision.",
+    "attempts": [
+      "I feel sad because I'm not happy with my decision.",
+      "I feel sad and disappointed."
+    ],
+    "returned": "I am not happy.",
+    "route": "template_after_rejection",
+    "gate_reasons": "added_concept:SAD|added_reason_time:because|missing_concept:HAPPY|added_concept:SAD|negation_missing",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "hi-T4_negated_feeling-NO+HAPPY",
+    "group": "T4_negated_feeling-NO+HAPPY",
+    "language": "hi",
+    "labels": [
+      "नहीं",
+      "खुश"
+    ],
+    "act": "feeling",
+    "negative": true,
+    "candidate": "मैं खुश हूँ।",
+    "attempts": [
+      "मैं खुश हूँ।",
+      "मैं खुश हूँ।"
+    ],
+    "returned": "मैं खुश नहीं हूँ।",
+    "route": "template_after_rejection",
+    "gate_reasons": "negation_missing|negation_missing",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "gu-T4_negated_feeling-NO+HAPPY",
+    "group": "T4_negated_feeling-NO+HAPPY",
+    "language": "gu",
+    "labels": [
+      "ના",
+      "ખુશ"
+    ],
+    "act": "feeling",
+    "negative": true,
+    "candidate": "હું ખુશ છું.",
+    "attempts": [
+      "હું ખુશ છું.",
+      "હું ખુશ છું."
+    ],
+    "returned": "હું ખુશ નથી.",
+    "route": "template_after_rejection",
+    "gate_reasons": "negation_missing|negation_missing",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "mr-T4_negated_feeling-NO+HAPPY",
+    "group": "T4_negated_feeling-NO+HAPPY",
+    "language": "mr",
+    "labels": [
+      "नाही",
+      "आनंदी"
+    ],
+    "act": "feeling",
+    "negative": true,
+    "candidate": "मी आनंदी नाही.",
+    "attempts": [
+      "मी आनंदी नाही."
+    ],
+    "returned": "मी आनंदी नाही.",
+    "route": "model_first",
+    "gate_reasons": "",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "en-T5_action_object-DRINK+WATER",
+    "group": "T5_action_object-DRINK+WATER",
+    "language": "en",
+    "labels": [
+      "Drink",
+      "Water"
+    ],
+    "act": "request",
+    "negative": false,
+    "candidate": "The user requested water.",
+    "attempts": [
+      "The user requested water.",
+      "The user requested water."
+    ],
+    "returned": "I want to drink water.",
+    "route": "template_after_rejection",
+    "gate_reasons": "speaker_perspective|missing_concept:DRINK|act_missing|speaker_perspective|missing_concept:DRINK|act_missing",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "hi-T5_action_object-DRINK+WATER",
+    "group": "T5_action_object-DRINK+WATER",
+    "language": "hi",
+    "labels": [
+      "पीना",
+      "पानी"
+    ],
+    "act": "request",
+    "negative": false,
+    "candidate": "पीना, मुझे पानी चाहिए।",
+    "attempts": [
+      "पीना, मुझे पानी चाहिए।"
+    ],
+    "returned": "पीना, मुझे पानी चाहिए।",
+    "route": "model_first",
+    "gate_reasons": "",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "gu-T5_action_object-DRINK+WATER",
+    "group": "T5_action_object-DRINK+WATER",
+    "language": "gu",
+    "labels": [
+      "પીવું",
+      "પાણી"
+    ],
+    "act": "request",
+    "negative": false,
+    "candidate": "મને પાણી જોઈએ છે.",
+    "attempts": [
+      "મને પાણી જોઈએ છે.",
+      "મને પાણી જોઈએ છે."
+    ],
+    "returned": "મને પાણી પીવાનું મન છે.",
+    "route": "template_after_rejection",
+    "gate_reasons": "missing_concept:DRINK|missing_concept:DRINK",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "mr-T5_action_object-DRINK+WATER",
+    "group": "T5_action_object-DRINK+WATER",
+    "language": "mr",
+    "labels": [
+      "पिणे",
+      "पाणी"
+    ],
+    "act": "request",
+    "negative": false,
+    "candidate": "मला पाणी हवे आहे.",
+    "attempts": [
+      "मला पाणी हवे आहे.",
+      "मला पाणी हवे आहे."
+    ],
+    "returned": "मला पाणी पिण्याची इच्छा आहे.",
+    "route": "template_after_rejection",
+    "gate_reasons": "missing_concept:DRINK|missing_concept:DRINK",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "en-T6_help_person-CALL+MOTHER",
+    "group": "T6_help_person-CALL+MOTHER",
+    "language": "en",
+    "labels": [
+      "Call",
+      "Mother"
+    ],
+    "act": "request",
+    "negative": false,
+    "candidate": "The user requested a meal.",
+    "attempts": [
+      "The user requested a meal.",
+      "The user requested to eat out."
+    ],
+    "returned": "I want to call my mother.",
+    "route": "template_after_rejection",
+    "gate_reasons": "speaker_perspective|missing_concept:CALL,MOTHER|added_concept:FOOD|act_missing|speaker_perspective|missing_concept:CALL,MOTHER|added_concept:EAT|act_missing",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "hi-T6_help_person-CALL+MOTHER",
+    "group": "T6_help_person-CALL+MOTHER",
+    "language": "hi",
+    "labels": [
+      "फ़ोन करना",
+      "माँ"
+    ],
+    "act": "request",
+    "negative": false,
+    "candidate": "माँ, मुझे फ़ोन करना हूँ, मुझे चाहिए।",
+    "attempts": [
+      "माँ, मुझे फ़ोन करना हूँ, मुझे चाहिए।"
+    ],
+    "returned": "माँ, मुझे फ़ोन करना हूँ, मुझे चाहिए।",
+    "route": "model_first",
+    "gate_reasons": "",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "gu-T6_help_person-CALL+MOTHER",
+    "group": "T6_help_person-CALL+MOTHER",
+    "language": "gu",
+    "labels": [
+      "ફોન કરવો",
+      "માતા"
+    ],
+    "act": "request",
+    "negative": false,
+    "candidate": "મને ફોન કરવો માતા છે.",
+    "attempts": [
+      "મને ફોન કરવો માતા છે.",
+      "મને ફોન કરવો માતા છે."
+    ],
+    "returned": "મને માતાને ફોન કરવાનું મન છે.",
+    "route": "template_after_rejection",
+    "gate_reasons": "act_wrong|act_wrong",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  },
+  {
+    "id": "mr-T6_help_person-CALL+MOTHER",
+    "group": "T6_help_person-CALL+MOTHER",
+    "language": "mr",
+    "labels": [
+      "फोन करणे",
+      "आई"
+    ],
+    "act": "request",
+    "negative": false,
+    "candidate": "मला आई फोन करणे आहे.",
+    "attempts": [
+      "मला आई फोन करणे आहे.",
+      "मला आई फोन करणे आहे."
+    ],
+    "returned": "मला आईला फोन करण्याची इच्छा आहे.",
+    "route": "template_after_rejection",
+    "gate_reasons": "act_wrong|act_wrong",
+    "lexical_success": "1",
+    "source_stream": "results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+    "source_scored": "results/scored/legacy_scored.csv",
+    "scorer": "v2",
+    "scope": "regression, native review pending"
+  }
+]

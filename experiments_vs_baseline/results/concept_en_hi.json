@@ -1,0 +1,26 @@
+{
+ "en": {
+  "n_test_sentences": 805,
+  "sentences_with_2plus_concepts": 213,
+  "next_concept_events": 272,
+  "word_to_concept_coverage_pct": 13.825595340071954,
+  "hit_pct": {
+   "1": 11.764705882352942,
+   "3": 16.176470588235293,
+   "5": 20.220588235294116,
+   "10": 44.85294117647059
+  }
+ },
+ "hi": {
+  "n_test_sentences": 1027,
+  "sentences_with_2plus_concepts": 206,
+  "next_concept_events": 243,
+  "word_to_concept_coverage_pct": 11.542610571736786,
+  "hit_pct": {
+   "1": 9.053497942386832,
+   "3": 17.695473251028808,
+   "5": 30.041152263374485,
+   "10": 38.68312757201646
+  }
+ }
+}

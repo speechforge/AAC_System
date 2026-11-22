@@ -1,0 +1,36 @@
+{
+ "split": "dev",
+ "n": 84,
+ "unique_ids": true,
+ "groups": 21,
+ "groups_without_four_languages": [],
+ "label_mismatches": [],
+ "exact_sequence_overlap_with_legacy": [],
+ "semantic_key_overlap_only_with_legacy": [
+  [
+   "D3_refusal",
+   "ROTI+NO"
+  ],
+  [
+   "D4_feeling",
+   "ANGRY+ME"
+  ],
+  [
+   "D4_feeling",
+   "ME+SAD"
+  ],
+  [
+   "D5_negated_feeling",
+   "HAPPY+NO"
+  ],
+  [
+   "D5_negated_feeling",
+   "ME+NO+TIRED"
+  ]
+ ],
+ "few_shot_prompt_overlap_ids": [
+  "gu-D6-02",
+  "mr-D6-02"
+ ],
+ "violations": []
+}

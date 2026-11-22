@@ -1,0 +1,39 @@
+{
+ "split": "holdout",
+ "n": 120,
+ "unique_ids": true,
+ "groups": 30,
+ "groups_without_four_languages": [],
+ "label_mismatches": [],
+ "exact_sequence_overlap_with_legacy": [],
+ "semantic_key_overlap_only_with_legacy": [
+  [
+   "H3_refusal",
+   "FRUIT+NO"
+  ],
+  [
+   "H4_feeling",
+   "EXCITED+ME"
+  ],
+  [
+   "H4_feeling",
+   "ME+TIRED"
+  ],
+  [
+   "H5_negated_feeling",
+   "ANGRY+NO"
+  ],
+  [
+   "H5_negated_feeling",
+   "ME+NO+LOVE"
+  ],
+  [
+   "H5_negated_feeling",
+   "NO+SCARED+ME"
+  ]
+ ],
+ "exact_sequence_overlap_with_dev": [],
+ "semantic_key_overlap_only_with_dev": [],
+ "few_shot_prompt_overlap_ids": [],
+ "violations": []
+}

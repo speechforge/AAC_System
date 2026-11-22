@@ -1,0 +1,38 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Expanding telegraphic input.}
+Compansion expanded telegraphic AAC input into well-formed sentences with syntactic and semantic rules \citep{mccoy1998compansion}.
+Recent systems apply language models to other inputs: SpeakFaster expands abbreviated text for eye-gaze typists with ALS \citep{cai2024speakfaster}; ConnecTone suggests text from conversational context and speaks it with a style-adaptive TTS \citep{francis2024connectone}; and \citet{mohan2024composition} compose messages from typed, emoji, or spoken input in the user's own voice.
+\citet{karmakar-sinha-2024-aiding} propose a language-agnostic mapping between text and AAC symbols, and \citet{vertanen2026multilingual} contribute multilingual AAC text collections.
+\sys{} starts from symbol selections, which give the model a small concept set whose omission or inversion can be checked.
+
+\paragraph{Boards and voices.}
+Cboard is an open-source web board that states support for 46 languages without naming Hindi, Gujarati, or Marathi \citep{cboard}; Jellow lists 24 languages including all three and offers pre-made sentences \citep{jellow}; Avaz provides regional vocabularies and predictive text \citep{avaz}, and its FreeSpeech app teaches grammar by sentence building \citep{avazfreespeech}.
+\citet{francis2025static} add generated symbols and zero-shot voice cloning to a symbol board.
+
+\paragraph{Gap.}
+Table~\ref{tab:related} compares documented capabilities (\nstated{}: not stated by the source, not absent).
+Among these sources, none documents a deterministic check that preserves selected concepts and polarity in model-generated Indian-language sentences on a symbol board; we make no claim about undocumented products, and Section~\ref{sec:eval} compares against matched baselines instead.
+
+\begin{table*}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}L{2.0cm}L{2.5cm}L{2.9cm}L{2.7cm}L{2.2cm}L{2.0cm}@{}}
+\toprule
+System & Input & Languages (as stated) & Sentence realization & Output check & Speech \\
+\midrule
+Cboard & symbols, text & 46; HI, GU, MR not named & \nstated & \nstated & text-to-speech \\
+Jellow & symbols, keyboard & 24, incl.\ HI, MR, GU & pre-made sentences & \nstated & Google TTS \\
+Avaz & symbols, keyboard & regional; list \nstated & predictive text & \nstated & \nstated \\
+\citeauthor{francis2025static} & symbols (generated) & \nstated & none described & \nstated & zero-shot cloning \\
+ConnecTone & speech, text & \nstated & suggestions from context & \nstated & style-adaptive TTS \\
+\citeauthor{mohan2024composition} & typed, emoji, spoken & \nstated & LLM phrase suggestions & \nstated & user's own voice \\
+SpeakFaster & abbreviated text (gaze) & \nstated & LLM abbreviation expansion & \nstated & \nstated \\
+\midrule
+\textbf{\sys{}} & symbols, text & EN, HI, GU, MR; Hinglish option & prompted Qwen cascade & concept, polarity, intent gate & IndicF5, browser speech \\
+\bottomrule
+\end{tabular}
+\caption{Documented capabilities of the closest systems, from the cited paper or the vendor page read on 2026-11-12. \nstated{}: not stated by the source.}
+\label{tab:related}
+\end{table*}

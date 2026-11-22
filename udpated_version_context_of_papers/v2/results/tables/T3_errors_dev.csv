@@ -1,0 +1,9 @@
+system,mode,n_rows,n_sentence,n_not_sentence,concept_instances,missed_concepts,polarity_drop,polarity_spur,polarity_scope,act_wrong,act_missing,unsupported,third_person,offtask,latin_leak,script_err,success
+revised_cascade_first,gold,80,80,0,116,21,16,4,1,13,14,12,9,0,0,0,24
+revised_cascade_last,gold,80,80,0,116,21,16,4,1,13,14,12,9,0,0,0,24
+revised_hybrid,gold,80,80,0,116,0,0,0,0,0,0,0,0,0,0,0,80
+template_archived,gold,80,80,0,116,0,0,0,0,8,0,0,0,0,0,0,72
+template_archived,orig,80,80,0,116,0,0,0,0,22,0,0,0,0,0,0,58
+template_archived,rev,80,80,0,116,0,0,0,0,8,0,0,0,0,0,0,72
+template_revised,gold,80,80,0,116,0,0,0,0,0,0,0,0,0,0,0,80
+template_revised,rev,80,80,0,116,0,0,0,0,0,0,0,0,0,0,0,80

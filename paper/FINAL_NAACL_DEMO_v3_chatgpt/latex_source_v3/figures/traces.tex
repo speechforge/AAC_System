@@ -1,0 +1,20 @@
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}L{2.1cm}L{2.4cm}L{4.0cm}L{2.1cm}L{3.65cm}@{}}
+\toprule
+Language & 1. Selection & 2. First candidate & 3. Gate / route & 4. Returned text\\
+\midrule
+\multicolumn{5}{@{}l}{\textbf{Request: \emph{``I want water.''}}}\\[2pt]
+\lang{English reference} & Water & I need \bad{food}.\newline\emph{[added: food; water omitted]} & Reject; checked template & \kept{I want water.}\\[3pt]
+\lang{Hindi extension} & \hi{पानी} & \good{\hi{मुझे पानी चाहिए।}} & Accept model & \kept{\hi{मुझे पानी चाहिए।}}\\[3pt]
+\lang{Gujarati extension} & \gu{પાણી} & \good{\gu{મને પાણી જોઈએ છે.}} & Accept model & \kept{\gu{મને પાણી જોઈએ છે.}}\\[3pt]
+\lang{Marathi extension} & \hi{पाणी} & \good{\hi{मला पाणी हवे आहे.}} & Accept model & \kept{\hi{मला पाणी हवे आहे.}}\\[3pt]
+\midrule
+\multicolumn{5}{@{}l}{\textbf{Negated feeling: \emph{``I am not happy.''}}}\\[2pt]
+\lang{English reference} & No + Happy & \bad{I feel sad because I'm not happy with my decision.} & Reject; checked template & \kept{I am not happy.}\\[3pt]
+\lang{Hindi extension} & \hi{नहीं + खुश} & \bad{\hi{मैं खुश हूँ।}} & Reject; checked template & \kept{\hi{मैं खुश नहीं हूँ।}}\\[3pt]
+\lang{Gujarati extension} & \gu{ના + ખુશ} & \bad{\gu{હું ખુશ છું.}} & Reject; checked template & \kept{\gu{હું ખુશ નથી.}}\\[3pt]
+\lang{Marathi extension} & \hi{नाही + आनंदी} & \good{\hi{मी आनंदी नाही.}} & Accept model & \kept{\hi{मी आनंदी नाही.}}\\[3pt]
+\bottomrule
+\end{tabular}

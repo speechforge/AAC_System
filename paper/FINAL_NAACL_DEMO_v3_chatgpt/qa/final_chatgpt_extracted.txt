@@ -1,0 +1,566 @@
+     Indic AAC Studio: Concept-Gated Symbol-to-Sentence Generation
+                for English, Hindi, Gujarati, and Marathi
+            Ravindrakumar M. Purohit                                   Jaydeep Parmar
+                Speech Research Lab                                 Pandit Deendayal Energy
+       Dhirubhai Ambani University (DA-IICT)                          University (PDEU)
+                 Gandhinagar, India                                    Gandhinagar, India
+
+                                     Hemant A. Patil
+      Speech Research Lab, Dhirubhai Ambani University (DA-IICT), Gandhinagar, India
+
+
+                     Abstract                                 1   Select Water [request]
+                                                              2   Propose I want water today.
+    Expanding a symbol selection into a sentence                                                           [added: time]
+    for augmentative and alternative communica-               3   Check concept + polarity + act
+    tion (AAC) must preserve the user’s message.                                              reject the added time
+    A language model may instead replace a con-
+                                                              4   Return I want water.
+    cept, reverse negation, or introduce an unse-                                                   checked template
+    lected need. We present Indic AAC Studio,
+    a four-language prototype that checks candi-              If no sentence passes: show literal words.
+                                                              If the act is ambiguous: ask the user.
+    date concepts, polarity, and communicative
+    act, then retries or uses a template when a
+    candidate fails. On 175 archived scenarios,             Figure 1: Concept-gated realization (authored illustra-
+    the complete gate, retry, and fallback policy           tion). A water request is expanded, checked, and either
+    raises lexical success from 65/175 to 97/175            accepted or replaced by a checked template. The red,
+    with actual web-client inputs, retains 215/215          labelled addition is unselected content; blue marks the
+    required concept instances, and produces no             retained message. A literal preview is shown when nei-
+    detected polarity error. The matched template           ther path passes. These are decision rules, not a seman-
+    scores 118/175, so this evidence supports a             tic guarantee.
+    safeguard against cascade errors rather than a
+    phrasing advantage over templates. An audit
+    motivates explicit act selection, multilingual             For a water request, a single symbol can be real-
+    checks, and checked fallbacks; both the revised         ized as a complete sentence in each language. The
+    hybrid and template reach 175/175 on the same           following are authored illustrations, with English
+    regression set, which informed these repairs.           as a reference language and the three Indic lan-
+    English and Hindi next-word prediction gains            guages as the proposed extensions:
+    are supported separately; native-speaker vali-
+    dation, audible speech, and public demo avail-                English I want water.
+                                                                  Hindi मुझे पानी चाहिए।
+    ability remain unverified.
+                                                                  Gujarati મને પાણી જોઈએ છે.
+                                                                  Marathi मला पाणी हवे आहे.
+1 Introduction
+                                                            English gloss: “I want water.” The language-
+A person using a symbol-based augmentative and              specific predicates and negation patterns motivate
+alternative communication (AAC) board selects               checks beyond an English-only word list. A single
+pictograms to express a request, refusal, feeling, or       symbol does not determine its act in every context;
+action. The selected labels are often telegraphic:          the water example assumes a request, rather than
+Water, No + Pizza, or Tired. Expanding these la-            inferring that intention universally.
+bels requires grammatical material, but an added               Indic AAC Studio combines a symbol board,
+meal, changed speaker, or missing negation can              a prompted Qwen2.5-0.5B-Instruct model (Qwen
+misrepresent the person whose message is being              Team, 2024), a concept ledger, deterministic accep-
+voiced. The central problem is to permit sentence           tance checks, and language-specific fallback tem-
+realization while making the acceptance decision            plates (Figure 1). The ledger records selected con-
+inspectable.                                                cepts, the intended act, and polarity; the checker
+
+                                                        1
+tests whether a candidate conforms to those con-              System          Input / realization   Relevance to this
+straints. The revised interface separates act from                                                  study
+negation and asks for clarification when the selec-           Compansion      telegraphic text;   grammatical
+                                                                              rule expansion      expansion predates
+tion has no determinate act. The intended audi-                                                   LLMs
+ence is symbol-board users and the caregivers, clin-          Karmakar &      text and symbols; Bengali
+icians, and researchers who configure their vocab-            Sinha           bilingual resources symbol-to-text work
+                                                              Jellow Basic    symbols;            HI, GU, MR
+ulary.                                                                        expressive buttons, documented
+    Our novelty is the design and audit of explicit                           pre-made
+acceptance checks in this multilingual workflow,                              sentences
+                                                              SpeakFaster     abbreviations;      eye-gaze text entry
+including what the fallback policy does when gen-                             LLM expansion
+eration fails. Grammatical expansion and Indian-              ConnecTone      context; generative conversational text
+language AAC already exist (Section 2); we do                                 suggestions         and speech
+                                                              Indic AAC       symbols; model or explicit concept,
+not claim either as a first. The archived web-                Studio          checked template polarity, act policy
+client comparison improves lexical success by 18.3
+percentage points over its ungated cascade, but              Table 1: Task positioning from the cited primary
+remains 12.0 points below the template baseline.             sources. HI, GU, and MR denote Hindi, Gujarati, and
+This trade-off motivates measuring model cover-              Marathi. These are descriptions, not a product bench-
+                                                             mark.
+age and failures alongside success, rather than
+treating every accepted sentence as faithful. We
+make three scoped contributions:                             umented capabilities from the acceptance policy
+• An inspectable realization policy connecting               studied here; a missing description is not evidence
+   the concept ledger, candidate checks, retry, tem-         that a product lacks a feature.
+   plate fallback, clarification, and literal preview.
+• A paired four-language audit that separates
+                                                             3     System Design and Walkthrough
+   browser interpretation, model output, checker de-
+   cisions, templates, and scorer defects.
+                                                             3.1    Selection and interpretation
+• Evidence-linked revisions and examples that
+   document the repairs, an explicitly labelled re-          The board contains 69 symbols in nine categories,
+   gression comparison, and representative input–            with English, Hindi, Gujarati, and Marathi labels.
+   output cases in all four languages.                       The user chooses a language, adds symbols or per-
+                                                             sonal words to a sentence canvas, and may ac-
+2 Related Work                                               cept next-word suggestions. Literal Speak uses
+                                                             browser speech synthesis when a suitable voice ex-
+Compansion expands telegraphic AAC input with
+                                                             ists; AI Polish & Speak requests sentence realiza-
+syntactic and semantic rules (McCoy et al., 1998).
+                                                             tion. Quick Express, saved selections, replay, con-
+Karmakar and Sinha (2024) study bidirectional
+                                                             trast, and text-size controls support repeated use;
+text–symbol communication, including symbol-to-
+                                                             no AAC-user evaluation was conducted.
+text generation and Bengali translation. These
+                                                                 The archived client guessed intent from sub-
+works establish that expansion and Indic-language
+                                                             strings in the displayed labels. It treated most selec-
+AAC are prior capabilities; the question here
+                                                             tions as requests, recognized a few feeling labels,
+is how candidate acceptance and fallback affect
+                                                             and detected negation even inside unrelated words.
+preservation of a particular selection.
+                                                             The revised client instead uses board-concept iden-
+   Other model-assisted AAC systems address dif-
+                                                             tities and categories, carries act and negation sep-
+ferent input conditions. SpeakFaster expands ab-
+                                                             arately, and offers a message-type control. An ex-
+breviated text for eye-gaze typing (Cai et al., 2024),
+                                                             plicit user choice takes precedence over automatic
+whereas ConnecTone predicts context-dependent
+                                                             interpretation. For an unresolved selection, clar-
+text and provides style-adaptive speech (Francis
+                                                             ification precedes sentence generation; an unsup-
+et al., 2024). Jellow Basic already documents sen-
+                                                             ported determinate selection receives a labelled lit-
+tence construction and support for Hindi, Gujarati,
+                                                             eral preview rather than an inferred sentence (Fig-
+and Marathi.1 Table 1 distinguishes these doc-
+                                                             ure 2).
+   1
+    https://www.jellow.org/jellow-basic.php
+(Last Accessed Date: November 13th , 2026). Integrated       Basic edition; its language list has no version number.
+
+
+                                                         2
+                                                                                       reject: one retry
+
+
+
+      Symbols + language            Concept ledger                   Prompted cascade               Concept / act / polarity
+        act + polarity            required / forbidden               candidate sentence             perspective / additions
+
+
+
+
+                                                                                              s
+                                                                                             pas
+       Ambiguous: clarify         Language template      if valid   Labelled returned text                 Configured
+      unsupported: preview        checked before use                  model / template                    speech route
+                                                                                                      or labelled test tone
+
+Figure 2: Revised decision path. The selected concepts, act, and polarity form the ledger. Model candidates and
+template fallbacks both pass through the checker. Clarification and literal preview do not initiate automatic speech.
+Prediction is a separate suggestion path; the speech route depends on installed weights or browser voices.
+
+
+3.2    Ledger, generation, and acceptance
+The ledger specifies the speaker, selected concepts,
+communicative act, and polarity, together with un-
+selected content to reject. The archived ledger
+forbids 21 default time, meal, and venue expres-
+sions unless selected. Three prompted roles share
+one frozen Qwen2.5-0.5B-Instruct model: realiza-
+tion, refinement, and advisory verification. The In-
+dic realizer has 12 Hindi, nine Gujarati, and nine
+Marathi examples and uses greedy decoding; En-
+glish uses sampling at temperature 0.1. The refiner
+is skipped for Indic-script candidates. The verifier
+                                                                 Figure 3: Recorded revised interface: (top detail) a re-
+may suggest a rewrite, but its verdict alone cannot
+                                                                 jected candidate leads to a labelled checked-template
+authorize the output.                                            output; (bottom detail) an ambiguous selection asks the
+   Let E be the selected concepts, a the act, ν the              user to choose an act. The captured build labels its un-
+polarity, F the forbidden expressions, and y a can-              available speech output as a 440 Hz test tone.
+didate. The archived acceptance rule is
+      A0 (y) = C(E, y) ∧ N (ν, y) ∧ I0 (a, y)                    policy composes a language-specific template and
+                                                       (1)
+                 ∧ ¬B(F, y) ∧ ¬T (E, y).                         checks it as well. If the template fails or no frame
+                                                                 applies, the interface returns literal words without
+C matches selected labels using substring, plural,
+                                                                 automatic speech. The archived policy returned its
+and Indic-stem rules; N matches listed negators;
+                                                                 fallback without this second check.
+I0 applies English feeling and question patterns; B
+detects forbidden words; and T detects unselected
+                                                                 3.3     Fallbacks, prediction, and speech
+time expressions. Thus the intended contract is
+broader than the archived checks actually enforce:               Templates separately realize requests, refusals,
+first-person perspective and all possible additions              feelings, negated feelings, action–object selec-
+are not guaranteed by Equation 1.                                tions, and calls for a person. For Hindi, a negated
+   The revised checker uses multilingual concept                 feeling uses a state predicate with नहीं; Gujarati
+forms, act patterns, speaker-perspective patterns,               uses forms such as નથી; Marathi uses नाही for states
+and checks for additional board concepts or unre-                and नको in refusals. These are authored lexical
+quested reasons and times. It rejects a feeling ex-              resources, not independently validated language
+pressed as a want and distinguishes the user’s re-               rules. Figure 3 shows the revised clarification and
+fusal from a model’s refusal to answer. These re-                fallback states, and Appendix A shows recorded
+main finite lexical checks; a candidate can match                language-specific decisions.
+them while using an unnatural or wrong-sense con-                   Next-word suggestions use an unbounded-order
+struction. A rejection permits one further cascade               suffix trie inspired by infini-gram (Liu et al., 2024),
+attempt. After two rejected candidates, the revised              with suffix backoff weight 0.4. The deployed trie
+
+                                                             3
+contains 15,505 English and Hindi AAC-dialogue               missing act, added content, and off-task flags can
+sentences and permits contexts up to depth 181.              overlap. An off-task refusal is a model declining to
+Only English and Hindi have evaluated predictors;            answer, such as “I cannot help with that”; a legiti-
+Gujarati returns English suggestions and Marathi             mate user refusal, such as “I do not want pizza,” is
+reuses the Hindi trie. Optional hidden Markov                on-task. Lexical success does not establish gram-
+model (HMM) predictors and word reordering                   maticality, meaning in context, or usefulness to
+lack the required checkpoints in the evaluated               AAC users.
+build. They therefore contribute no evidence to the             The comparison includes literal labels, one
+sentence-generation comparison.                              unconstrained prompt to the same model, the
+   The configured neural speech route is IndicF5,            archived cascade candidate before checking, the
+with a 24 kHz Vocos vocoder and reference-audio              deployed policy, and the matched template. The
+conditioning (Praveen S V et al., 2025; Siuzdak,             candidate and final text come from the same
+2023). The IndicF5 model card lists Hindi, Gu-               recorded response, isolating the joint effect of
+jarati, and Marathi among 11 supported languages,            the gate, retry, and fallback. The unconstrained
+but does not list English. The implementation                prompt requests one sentence without a ledger, ex-
+nevertheless selects an English reference for En-            amples, refinement, or verification, using greedy
+glish and an Indic reference for the other three lan-        decoding with a 75-token output cap; its 8/175
+guages; this routing is not evidence of successful           score diagnoses that prompt, rather than all one-
+synthesis. The audited machines lacked the gated             pass methods. Paired pooled intervals resample 46
+IndicF5 weights, all measured playback was a 440             underlying selection groups across their language
+Hz test tone, and headless Chrome exposed no                 versions, using 10,000 bootstrap resamples.
+browser voices. Accordingly, the verified scope of
+this paper is sentence generation and playback inte-         4.2   Web-client results and gold-field
+gration, rather than audible four-language speech.                 diagnostic
+                                                             With actual browser-inferred fields, the deployed
+4 Evaluation and Error Analysis                              policy succeeds on 97/175 scenarios, versus
+                                                             65/175 before checking and 118/175 for the tem-
+We first evaluate the archived web-client path and           plate (Table 2, panel A). The policy–cascade differ-
+then use explicit gold fields as a controlled diagnos-       ence is +18.3 percentage points (95% interval 11.9
+tic. A separate regression analysis concerns the re-         to 25.2); the policy–template difference is −12.0
+vised policy. The systems, scorers, and input con-           points (−17.9 to −6.4). The deployed policy re-
+ditions are kept distinct because changing a scorer          tains 215/215 selected concept instances and has
+can alter a count without changing any sentence.             no detected polarity error, but still has 54 wrong-
+                                                             act outputs, four outputs with added content, and
+4.1   Archived protocol and scoring
+                                                             ten off-task outputs. These diagnostics explain
+The archived set has 184 monolingual scenarios:              why complete retention alone is insufficient.
+46 selections in each language, comprising ten                  Supplying gold act and polarity raises the same
+object requests, ten refusals, eight feelings, eight         deployed policy to 132/175, versus 71/175 before
+negated feelings, six action–object selections, and          checking and 167/175 for the template (panel B).
+four help or call selections. Nine selections du-            The joint policy effect is +34.9 points (26.7 to
+plicate few-shot examples and are excluded from              43.4); the gold-field–browser gap is +20.0 points
+the primary analysis, leaving 175 scenarios: 46              (12.0 to 28.7). The ungated gold-field cascade has
+English, 45 Hindi, 42 Gujarati, and 42 Marathi.              36 polarity errors, whereas the deployed output
+Eight Hinglish scenarios are exploratory and are             has zero detected errors. Nevertheless, 37/108 ac-
+not pooled with these counts. The archived run               cepted model outputs and 6/67 template fallbacks
+used one NVIDIA GTX 1650 with 4 GB memory.                   fail the full archived scorer. Checker acceptance
+   The lexical scorer requires every selected con-           is therefore not interchangeable with independent
+cept, correct gold polarity and act, no detected             success.
+unselected concept, and an on-task sentence in
+the target script. Concept retention has a differ-           4.3   Multilingual failure mechanisms
+ent denominator: 215 required content-concept in-            The browser diagnostic sends 27 of 32 isolated feel-
+stances, rather than 175 scenarios. Wrong act,               ing selections as requests. Here 32 means eight
+
+                                                         4
+             System / condition                               English    Hindi   Gujarati   Marathi   Pooled
+             A. Archived web client; scorer v1
+             Unconstrained Qwen (diagnostic)                     2/46     1/45     4/42      1/42      8/175
+             Cascade before checking                             3/46    24/45    20/42     18/42     65/175
+             Gate + retry + fallback                             22/46   31/45    21/42     23/42      97/175
+             Matched template baseline                           33/46   31/45    27/42     27/42     118/175
+             B. Archived explicit gold act and polarity; scorer v1
+             Cascade before checking                             5/46    26/45    16/42     24/42     71/175
+             Gate + retry + fallback                            33/46    41/45    26/42     32/42     132/175
+             Matched template baseline                          46/46    45/45    34/42     42/42     167/175
+             C. Revised browser path; scorer v2; regression only
+             Revised cascade before checking                  6/46       29/45    27/42     26/42     88/175
+             Revised gate + retry + checked fallback          46/46      45/45    42/42     42/42     175/175
+             Repaired template baseline                       46/46      45/45    42/42     42/42     175/175
+
+Table 2: Scenario success as counts over the same 175 selections. Panels A and B reproduce the archived lexical
+scorer; panel C is a scorer-v2 regression comparison on scenarios that informed the repairs. Scores across scorers are
+not directly comparable. English is a language reference; Hindi, Gujarati, and Marathi evaluate language extensions.
+The template is the method baseline in every language.
+
+
+feeling symbols in four locales, before any prompt-               4.4    Revised policy: regression evidence
+overlap exclusion; it is not the 30 feeling scenar-               The repairs replace label-substring inference with
+ios remaining in the primary score table. The sub-                concept-aware interpretation, add multilingual act
+string negation rule also mislabels three of 276 iso-             and perspective checks, and check the fallback be-
+lated symbol–language selections, including En-                   fore returning it. The same 175 scenarios informed
+glish Nose and Gujarati નાક. Separating concept                   these repairs and are therefore a regression set. Un-
+identity, act, and polarity directly addresses this               der scorer v2, the archived policy scores 95/175
+input-layer defect.                                               with browser fields and 138/175 with gold fields;
+                                                                  the archived gold-field template scores 175/175
+   The failure analysis includes all three Indic lan-             after its lexical gaps are corrected. These are
+guages. Recorded Hindi feeling outputs include                    rescored archived sentences, not a new run of the
+मुझे गुस्सा चाहिए। (“I want anger”), where an in-                 old model.
+tended state is realized as a request. For Gu-                       The revised browser path and repaired template
+jarati, the eight apparent gold-field template fail-              both score 175/175 on this set (Table 2, panel C).
+ures are negated feelings with નથી; the archived                  The revised cascade alone scores 88/175, yielding
+scorer omits this valid negator in its feeling-pattern            a joint policy gain of 49.7 points (42.3 to 57.1).
+test. They are scorer lexical gaps, rather than ev-               This is a measured regression result, not evidence
+idence that these eight templates are wrong. A                    of generalization or superiority over the template.
+recorded Marathi tiredness output,                                A fresh 120-scenario set and blind rating materi-
+     मला दमलेला हवे आहे.
+     , uses the request predicate हवे आहे for an in-              als exist, but native-speaker confirmation of their
+tended feeling; the archived scorer flags the act                 gold annotations and ratings are incomplete; we re-
+mismatch. The checker must address act, perspec-                  port no holdout performance or preference claim.
+tive, and additions in each language; transferring                Figure 4 and Table 4 show representative recorded
+English patterns alone does not do so.                            cases rather than selecting only passing outputs.
+
+   The audit classifies the 37 accepted-model fail-               4.5    Next-word prediction
+ures under gold fields as nine third-person reports,              Table 3 evaluates AAC-user utterances in 60 held-
+12 negated-want constructions for feelings, ten                   out source conversations per evaluated language,
+malformed constructions, four additions, and two                  not 60 utterances out of an unspecified pool. Each
+scorer gaps. The six fallback failures are also                   language has 300 source conversations: 240 for
+scorer gaps. These are assistant-produced diagnos-                training and 60 for testing, with every fifth source
+tic labels, not native-speaker judgments. In partic-              held out and no separate validation split in this
+ular, the lexical scorer’s coverage affects both error            evaluation. All n-gram baselines and the evalu-
+counts and baseline rankings.                                     ated suffix trie are rebuilt on the same 240 train-
+
+                                                             5
+                     English (reference)       Hindi           tion, and real synthesis were untested. The model
+Model                 @1 @5        MRR @1 @5 MRR               executes on the backend, but the browser requires
+Unigram               3.6 11.6     0.069 6.4 14.5 0.099        externally hosted interface libraries and therefore
+Bigram backoff       13.6 29.5     0.204 24.0 43.1 0.320       is not verified as offline-ready. No accessible pub-
+Trigram backoff      16.0 32.8     0.234 25.9 44.0 0.334       lic package or demo-video link was verified in the
+Suffix trie (∞-gram) 17.2 33.4     0.240 27.0 44.1 0.343
+Gutenberg HMM         6.7 15.5     0.105    –    –     –       audit.
+Hindi AAC HMM           –    –         – 24.5 41.9 0.315
+Gujarati: no matched evaluation; shelf returns English.        5   Limitations and Conclusion
+Marathi: no matched evaluation; reuses Hindi predictor.
+                                                               The evidence comes from a small synthetic selec-
+Table 3: Next-word prediction on AAC-user utterances           tion grid and a project-developed lexical scorer.
+from 60 of 300 source conversations per evaluated lan-         Native-speaker judgments and AAC-user studies
+guage (240 training; every fifth source held out). There       have not established meaning preservation, natural-
+are 2,220 English and 2,437 Hindi prediction contexts.
+                                                               ness, communication speed, or preference. The re-
+Hit@1 and hit@5 are percentages; MRR is truncated
+at rank 10. Unigram is the frequency baseline. Dashes          pairs used regression scenarios; perfect scores do
+denote unmeasured cells, not zero performance.                 not establish semantic safety. Gujarati and Marathi
+                                                               prediction, real speech, first-time installation, and
+                                                               offline operation remain unverified. Native review,
+ing sources, separately from the full-data deployed            word-sense disambiguation, and complex negation
+predictor. Compared with trigram backoff, the trie             scope are unresolved.
+gains 25/2,220 English and 29/2,437 Hindi hit@1
+predictions: +1.126 points (95% interval 0.505 to              Availability and license. Local reproduction
+1.766) and +1.190 points (0.463 to 1.922), com-                materials include scenarios, recorded candidates,
+puted from unrounded counts. The correspond-                   scorers, repairs, and analysis procedures. Public
+ing hit@5 gains are 13/2,220 (+0.586 points) and               access and release licences for project code, dia-
+2/2,437 (+0.082 points).                                       logue data, manuscript figures, and demo media
+   Source conversations are disjoint, but 18 of 392            were not established. Third-party terms remain
+distinct English and 28 of 384 Hindi test utterances           Apache-2.0 for Qwen, MIT for IndicF5 and Vocos,
+repeat training text. Removing contexts from re-               and SIL OFL for Noto fonts. Voice conditioning
+peated utterances leaves 2,170 English and 2,352               requires permission for the reference voice.
+Hindi contexts; trie–trigram hit@1 gains remain
++0.968 and +1.020 points. Out-of-vocabulary tar-               Conclusion. Indic AAC Studio makes concept,
+gets count as misses. Gujarati and Marathi have                polarity, act checks, and fallback explicit for four-
+no matched AAC prediction evaluation, so Table 3               language symbol-to-sentence generation. The
+records their coverage without inventing scores or             archived policy improves its ungated cascade while
+treating language identity as a baseline method.               trailing a matched template; the audit identifies de-
+                                                               fects in input interpretation, multilingual checks,
+4.6     Runtime and reproduction scope                         and scoring. The revised policy checks templates
+                                                               and offers clarification or literal preview. Its re-
+The revised browser-to-playback audit contains                 gression result supports these repairs, while the
+32 runs across four languages, with one cold                   value of model phrasing beyond templates remains
+and 31 warm runs, on the GTX 1650. Median                      unmeasured.
+click-to-first-playback is 9.9 s and the 95th per-
+centile is 20.8 s; language medians are 12.4 s (En-            Acknowledgments
+glish), 15.3 s (Hindi), 7.9 s (Gujarati), and 10.7 s
+(Marathi). Every run plays a 440 Hz test tone:                 Generative AI assistants Claude (Anthropic), Chat-
+these are playback-integration timings, not click-             GPT, and Codex (OpenAI) assisted system merg-
+to-audible-speech latency. Greedy Indic retries                ing, evaluation, scoring, manuscript revision, fig-
+repeated their first candidates in 40/40 uncached              ures, and examples. GPT-4o-mini generated the
+audit repeats, so the retry can add delay without              AAC dialogues; OPUS-MT English–Hindi trans-
+changing the answer.                                           lated the Hindi data. Numerical statements trace to
+   A CPU-only installation check reused cached                 recorded results; these tools do not replace native-
+weights; first-time download, clean GPU installa-              language review.
+
+                                                           6
+Ethics Statement                                                Hubert Siuzdak. 2023. Vocos: Closing the gap between
+                                                                  time-domain and Fourier-based neural vocoders for
+An AAC system can misattribute needs, feelings,                   high-quality audio synthesis. arXiv preprint.
+or consent to its user. The interface should ex-
+pose returned text and its route, preserve user con-
+trol, and avoid automatically speaking ambiguous
+or unchecked content. Neither a lexical score nor
+a checker verdict is a clinical safety certificate. No
+AAC users or native raters participated in the re-
+ported results; the prepared rating materials do not
+constitute a completed study. Future participant
+studies require appropriate consent, review, and
+accessible procedures. Reference voices must be
+used only with explicit permission, and recordings
+or personal vocabulary should not be released with-
+out consent.
+
+
+References
+Shanqing Cai, Subhashini Venugopalan, Katie Seaver,
+  Xiang Xiao, Katrin Tomanek, Sri Jalasutram, Mered-
+  ith Ringel Morris, Shaun Kane, Ajit Narayanan,
+  Robert L. MacDonald, Emily Kornman, Daniel
+  Vance, Blair Casey, Steve M. Gleason, Philip Q. Nel-
+  son, and Michael P. Brenner. 2024. Using large lan-
+  guage models to accelerate communication for eye
+  gaze typing users with ALS. Nature Communica-
+  tions, 15(1):9449.
+
+Juliana Francis, Éva Székely, and Joakim Gustafson.
+   2024. ConnecTone: a modular AAC system proto-
+   type with contextual generative text prediction and
+   style-adaptive conversational TTS. In Proceedings
+   of Interspeech 2024, pages 1001–1002. ISCA.
+
+Piyali Karmakar and Manjira Sinha. 2024. Aiding non-
+   verbal communication: A bidirectional language ag-
+   nostic framework for automating text to AAC genera-
+   tion. In Proceedings of the 21st International Confer-
+   ence on Natural Language Processing (ICON), pages
+   324–331, AU-KBC Research Centre, Chennai, India.
+   NLP Association of India (NLPAI).
+
+Jiacheng Liu, Sewon Min, Luke Zettlemoyer, Yejin
+   Choi, and Hannaneh Hajishirzi. 2024. Infini-gram:
+   Scaling unbounded n-gram language models to a tril-
+   lion tokens. arXiv preprint.
+
+Kathleen F. McCoy, Christopher A. Pennington, and
+  Arlene Luberoff Badman. 1998. Compansion: From
+  research prototype to practical integration. Natural
+  Language Engineering, 4(1):73–95.
+
+Praveen S V, Srija Anand, Soma Siddhartha, and
+  Mitesh M. Khapra. 2025. IndicF5: High-quality text-
+  to-speech for Indian languages. Last Accessed Date:
+  November 13th , 2026.
+
+Qwen Team. 2024. Qwen2.5-0.5B-Instruct model card.
+  Last Accessed Date: November 13th , 2026.
+
+
+                                                            7
+    Language    1. Selection      2. First candidate                  3. Check / route     4. Returned text
+    A. Water request (positive polarity)
+    English    Water             I need food.                         Reject: concept      I want water.
+    reference                    [added: food; water missing]         mismatch; checked
+                                                                      template
+    Hindi                         मुझे पानी चाहिए।                    Pass; model text     मुझे पानी चाहिए।
+    extension   पानी
+    Gujarati                      મને પાણી જોઈએ છે.                   Pass; model text     મને પાણી જોઈએ છે.
+    extension   પાણી
+    Marathi                       मला पाणी हवे आहे.                   Pass; model text     मला पाणी हवे आहे.
+    extension   पाणी
+
+    B. Pizza refusal (negative polarity)
+    English     No + Pizza        I cannot eat out because I am .     Reject: concept      I do not want pizza.
+    reference                     [added: action/reason; pizza        mismatch; checked
+                                  missing]                            template
+    Hindi                         पिज़्ज़ा, मुझे चाहिए।               Reject: negation     मुझे पिज़्ज़ा नहीं चाहिए।
+    extension नहीं + पिज़्ज़ा                                         missing; checked
+                                                                      template
+    Gujarati                      મને પિઝા નથી જોઈતું.                Pass; model text     મને પિઝા નથી જોઈતું.
+    extension   ના + પિઝા
+    Marathi                       मला पिझ्झा हवे आहे.                 Reject: negation     मला पिझ्झा नको आहे.
+    extension   नाही + पिझ्झा                                         missing; checked
+                                                                      template
+
+Figure 4: Phase-wise recorded regression traces for all languages. Phase 1 supplies symbols and act/polarity, phase
+2 proposes a candidate, phase 3 checks it (and retries if rejected), and phase 4 returns model or checked-template
+text. Panel A intends “I want water”; panel B intends “I do not want pizza.” Outputs are reproduced verbatim,
+including Gujarati agreement. “Pass” means checker acceptance, not native-judged correctness. English provides
+a reference-language row; Hindi, Gujarati, and Marathi are the proposed language extensions.
+
+
+A     Four-Language Interaction Traces                                 The archived scorer defines off-task behavior
+                                                                    through refusal-to-answer patterns, third-person
+Figure 4 follows the same two selections through
+                                                                    narration, empty output, length over 25 whitespace
+all four phases in English and each Indic exten-
+                                                                    tokens, and Latin leakage in an Indic target. It
+sion. English is a language reference, not a com-
+                                                                    can confuse a missing pattern with an error, as the
+peting system: every row uses the revised hybrid,
+                                                                    Gujarati negated-feeling audit demonstrates. The
+the same model, and the same decision policy. All
+                                                                    revised scorer broadens lexical forms and sepa-
+candidate and returned strings are recorded regres-
+                                                                    rates perspective, polarity, act, and additional con-
+sion outputs; green or blue text marks retained ex-
+                                                                    cepts. It is still not a native-speaker assessor, and
+amples, and red marks a labelled unsupported ad-
+                                                                    scorer-v1 and scorer-v2 success totals must not be
+dition. Missing negation or a missing concept is
+                                                                    merged.
+stated explicitly because absent words cannot be
+highlighted.
+                                                                    C Reproduction and Language Coverage
+B Representative Test Cases and Scorer
+                                                                    The           prompted            model            is
+  Scope
+                                                                    Qwen2.5-0.5B-Instruct,                      revision
+Table 4 samples every family in the six-family                      7ae557604adf67be50417f59c2c2f167def9a775.
+archived evaluation rather than listing every item.                 It is used as released, without task-specific fine-
+The complete recorded scenario grid remains the                     tuning, with 16-bit floating-point inference on
+denominator for reported results. These cases ad-                   GPU. Archived generation ran on a GTX 1650
+ditionally expose model acceptance, rejected can-                   (4 GB); revised regression generation ran on a
+didates, checked fallbacks, and a limitation of lex-                TITAN Xp (12 GB) with PyTorch 2.11.0 and
+ical evaluation. The corresponding phase-wise se-                   Transformers 5.14.1. English regression sampling
+lections and outputs in Figure 4 are a qualitative                  uses seed 11; the three Indic paths are greedy. The
+comparison, not evidence that one language per-                     complete saved stream, rather than a selectively
+forms better than another.                                          regenerated candidate, is replayed for each paired
+
+                                                               8
+  Selection / intended   English returned text       Indic selections −→ returned text
+  act
+  Water / request        I want water.               HI पानी → मुझे पानी चाहिए।
+                                                     GU પાણી → મને પાણી જોઈએ છે.
+                                                     MR पाणी → मला पाणी हवे आहे.
+  No + Pizza / refusal   I do not want pizza.        HI नहीं + पिज़्ज़ा → मुझे पिज़्ज़ा नहीं चाहिए।
+                                                     GU ના + પિઝા → મને પિઝા નથી જોઈતું.
+                                                     MR नाही + पिझ्झा → मला पिझ्झा नको आहे.
+  Tired / feeling        I am tired.                 HI थका हुआ → मैं थका हुआ हूँ।
+                                                     GU થાકેલું → હું થાકેલું છું.
+                                                     MR दमलेला → मी दमलेला सांगत आहे.
+  No + Happy /           I am not happy.             HI नहीं + खुश → मैं खुश नहीं हूँ।
+  negated feeling                                    GU ના + ખુશ → હું ખુશ નથી.
+                                                     MR नाही + आनंदी → मी आनंदी नाही.
+  Drink + Water /        I want to drink water.      HI पीना + पानी → पीना, मुझे पानी चाहिए।
+  action request                                     GU પીવું + પાણી → મને પાણી પીવાનું મન છે.
+                                                     MR पिणे + पाणी → मला पाणी पिण्याची इच्छा आहे.
+  Call + Mother / call   I want to call my mother.   HI फ़ोन करना + माँ → माँ, मुझे फ़ोन करना हूँ, मुझे चाहिए।
+  request                                            GU ફોન કરવો + માતા → મને માતાને ફોન કરવાનું મન છે.
+                                                     MR फोन करणे + आई → मला आईला फोन करण्याची इच्छा आहे.
+
+Table 4: Representative recorded revised-browser regression cases: one underlying message per archived family,
+shown in all four languages. HI: Hindi; GU: Gujarati; MR: Marathi. Act and polarity are supplied separately from
+the visible labels. These are exact system outputs, including awkward accepted constructions (e.g., the Marathi
+tiredness report and Hindi call request). Colour indicates an example, not human validation.
+
+
+policy comparison.
+   The predictor split has 240 training and 60 test
+source conversations per evaluated language (300
+in total; no separate validation split). Each target is
+a next word from an AAC-user utterance; source-
+conversation bootstrap intervals keep its contexts
+together. HMM baselines in Table 3 are sepa-
+rate prediction components, not the sentence real-
+izer. Gujarati and Marathi text-generation cover-
+age therefore does not imply evaluated next-word
+prediction or verified speech coverage.
+   Clarification is tested separately from sentence
+success. In the recorded user-choice probe, the
+user selects an act for an ambiguous word before
+the system continues; the act choice can still lead
+to a lexical match with the wrong sense. For ex-
+ample, a Gujarati feeling interpretation of an am-
+biguous label yields હું ખરાબ છું., which can mean
+“I am bad” rather than feeling unwell. The gate’s
+lexical match does not settle that distinction. An
+unavailable server yields a labelled literal preview;
+no candidate is invented to fill that failure.
+
+
+
+
+                                                          9
+

@@ -1,0 +1,67 @@
+==============================================================================================================
+ IMPROVEMENT PLAN - HOW TO MAKE THE INDIC AAC SYSTEM PERFORM BETTER, AND HOW EACH STEP IS MEASURED
+==============================================================================================================
+ Written 2026-11-19, from the measured results in RESULTS_vs_baseline.txt. Metrics: KSR ↑ (keystroke savings, higher is
+ better), top-k hit ↑, perplexity ↓ (lower is better), latency ↓. Every step is judged with the SAME protocol and splits.
+
+--------------------------------------------------------------------------------------------------------------
+ 1. WHERE WE STAND (the gaps the plan has to close)
+--------------------------------------------------------------------------------------------------------------
+  G1  English accuracy: ∞-gram KSR 55.9 vs in-domain-adapted OPT-125m 62.6 (-6.7 points); top-5 30.5 vs 44.9.   [accuracy gap]
+  G2  The shipped "never re-suggest a selected word" rule costs 0.3-1.1 KSR points in every language.            [free fix]
+  G3  Unlimited context depth gives nothing on 7-word sentences (a 2-word cap ties or wins).                    [design]
+  G4  Marathi (48.9) and Gujarati (53.3) are weakest; their test text is machine translated and Marathi OOV is
+      11.7%. In the app Marathi reuses the Hindi trie and Gujarati has no statistical model of its own.         [coverage]
+  G5  Data is tiny (2.5-3.9 k training sentences) and synthetic; no real AAC-user text.                          [data]
+  G6  The generation layer is only measured on a closed 69-concept board; the Qwen LLM cascade has no current
+      measurement (the repo has one old 10-case run: 90% valid, 4/10 fell back to templates).                   [evidence]
+  G7  The word-to-concept coverage of the board is only 6-14% of dataset words.                                 [coverage]
+
+--------------------------------------------------------------------------------------------------------------
+ 2. THE PLAN (ordered cheap -> costly; each step has a measurable success test)
+--------------------------------------------------------------------------------------------------------------
+ STEP 1  Remove the selected-word exclusion in the predictor            targets G2       effort: minutes
+         How: make `exclude_selected` an option in infinity_gram.predict_next (keep the UI default only for symbol grids).
+         Success test: KSR ↑ in all 4 languages vs shipped. Expected +0.3 to +1.1.
+ STEP 2  Hybrid ∞-gram + char 12-gram (CPU only, no new model)          targets G1,G4    effort: hours
+         How: mix the two word distributions over the candidate pool, weight tuned on dev. Char model gives OOV/morphology
+         robustness, which helps most on the high-OOV Marathi and Gujarati.
+         Success test: KSR ↑ and top-10 ↑ over step 1 in every language; latency stays < 1 ms.
+ STEP 3  Small adapted LM as a re-ranker of ∞-gram candidates (English first)    targets G1  effort: 1 day
+         How: fine-tune OPT-125m-class model on the train split (1 epoch was best), re-rank only the top-N candidates the
+         ∞-gram proposes, mix probabilities. Runs on GPU or quantised CPU; falls back to ∞-gram if unavailable.
+         Success test: close at least half of the 6.7-point KSR gap to the adapted OPT, at a fraction of its cost.
+ STEP 4  Per-language ∞-gram engines in the app (Marathi, Gujarati)     targets G4        effort: 1 day
+         How: one trie per language (mr and gu currently share the Hindi / English root); add a language-id for gu.
+         Success test: mr/gu predictions come from a mr/gu model; KSR ↑ vs the concept-only predictor.
+ STEP 5  Fix the context policy: cap at 2-3 words, keep unlimited only as back-off   targets G3   effort: minutes
+         Success test: KSR ≥ shipped in all languages (already shown on the existing data).
+ STEP 6  More and better data                                           targets G5,G4,G7  effort: days
+         6a collect a small NATIVE Marathi and Gujarati test set (200+ sentences each, native speakers);
+         6b add public conversational corpora per language for the LM (e.g. DailyDialog-style English; IndicCorp / IndicTrans
+            data for hi/mr/gu), classify them for AAC-likeness as the baseline paper does (its Sec. 5.3-5.4);
+         6c enlarge the symbol board beyond 69 concepts (core words per language) to raise concept coverage.
+         Success test: KSR on the native test set; OOV rate < 5%.
+ STEP 7  Personalisation (the baseline's own "future work")             targets G5        effort: days
+         How: adapt the trie online with the user's My-Words / accepted sentences; measure on a held-out user stream.
+         Success test: KSR ↑ over the static model after N sessions.
+ STEP 8  Evaluate the generation layer end to end                       targets G6        effort: days
+         8a run the live-backend cascade on the 144-selection suite and the 10-case suite (validity, fallback rate, latency);
+         8b add free-form (non-board) selections and noisy-typing variants (the *_augmented.jsonl have noisy_* fields);
+         8c TTS naturalness via the MOS portal (instructions already revised to "overall speech naturalness");
+         8d a small user study (selection rate, words/min, preference).
+         Success test: validity ≥ 95% with fallback ≤ 20% on free-form input; MOS reported per language with CI.
+ STEP 9  Statistical rigour for every comparison                        all gaps         effort: hours
+         How: repeat over 5 random conversation splits, report mean ± 95% bootstrap CI, paired test on KSR.
+         Success test: every claim in the paper has a CI; differences < CI are called ties.
+
+--------------------------------------------------------------------------------------------------------------
+ 3. WHAT TO CLAIM IN THE PAPER (given the current numbers)
+--------------------------------------------------------------------------------------------------------------
+  * Do claim: CPU-only speed (~0.05 ms), sentence-generation fidelity (97-99%, abstains on ambiguity), four-language coverage.
+  * Do NOT claim: better next-word accuracy than LLMs (it is not), or a benefit from "infinite" context (not shown).
+  * After Step 3, a hybrid claim ("LM re-ranking recovers X of the gap at Y ms") is available if the numbers support it.
+
+--------------------------------------------------------------------------------------------------------------
+ 4. EXECUTION LOG  (what has actually been run)
+--------------------------------------------------------------------------------------------------------------

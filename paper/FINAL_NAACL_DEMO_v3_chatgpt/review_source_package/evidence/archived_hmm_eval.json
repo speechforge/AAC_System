@@ -1,0 +1,260 @@
+{
+ "en": {
+  "language": "en",
+  "n_items": 2220,
+  "n_clusters": 60,
+  "model_meta": {
+   "path": "/home/linux/Videos/AAC_System_Jaydeep/indic-generative-aac/backend/hmm_model.pkl",
+   "sha256": "6da984231faf26130e9b266e47b51d045fbb880359c87ba5b4bf4a48974cec74",
+   "bytes": 38202239,
+   "sentences": 188402,
+   "bigram_states": 63783,
+   "trigram_states": 713845
+  },
+  "systems": {
+   "gutenberg_hmm_english": {
+    "hit1": {
+     "value": 0.0671,
+     "ci95": [
+      0.0566,
+      0.0774
+     ]
+    },
+    "hit3": {
+     "value": 0.1203,
+     "ci95": [
+      0.1049,
+      0.1368
+     ]
+    },
+    "hit5": {
+     "value": 0.1554,
+     "ci95": [
+      0.1386,
+      0.1736
+     ]
+    },
+    "mrr": {
+     "value": 0.1055,
+     "ci95": [
+      0.0933,
+      0.1177
+     ]
+    }
+   },
+   "trigram_backoff": {
+    "hit1": {
+     "value": 0.1604,
+     "ci95": [
+      0.1397,
+      0.1827
+     ]
+    },
+    "hit3": {
+     "value": 0.2788,
+     "ci95": [
+      0.2469,
+      0.3129
+     ]
+    },
+    "hit5": {
+     "value": 0.3279,
+     "ci95": [
+      0.2953,
+      0.3636
+     ]
+    },
+    "mrr": {
+     "value": 0.2339,
+     "ci95": [
+      0.2083,
+      0.2616
+     ]
+    }
+   },
+   "infinity_gram_deployed": {
+    "hit1": {
+     "value": 0.1716,
+     "ci95": [
+      0.1489,
+      0.1957
+     ]
+    },
+    "hit3": {
+     "value": 0.2829,
+     "ci95": [
+      0.25,
+      0.3179
+     ]
+    },
+    "hit5": {
+     "value": 0.3338,
+     "ci95": [
+      0.3015,
+      0.3691
+     ]
+    },
+    "mrr": {
+     "value": 0.2404,
+     "ci95": [
+      0.2137,
+      0.2693
+     ]
+    }
+   }
+  },
+  "paired_hmm_minus_infinity_gram": {
+   "hit1": {
+    "diff": -0.1045,
+    "ci95": [
+     -0.1278,
+     -0.0827
+    ]
+   },
+   "hit5": {
+    "diff": -0.1784,
+    "ci95": [
+     -0.2103,
+     -0.1508
+    ]
+   },
+   "mrr": {
+    "diff": -0.135,
+    "ci95": [
+     -0.162,
+     -0.1108
+    ]
+   }
+  }
+ },
+ "hi": {
+  "language": "hi",
+  "n_items": 2437,
+  "n_clusters": 60,
+  "model_meta": {
+   "sentences": 3078,
+   "vocab": 1932,
+   "bigram_contexts": 1809,
+   "trigram_contexts": 7960
+  },
+  "systems": {
+   "hindi_hmm_retrained": {
+    "hit1": {
+     "value": 0.245,
+     "ci95": [
+      0.2254,
+      0.2661
+     ]
+    },
+    "hit3": {
+     "value": 0.3656,
+     "ci95": [
+      0.3382,
+      0.3948
+     ]
+    },
+    "hit5": {
+     "value": 0.4194,
+     "ci95": [
+      0.3904,
+      0.4498
+     ]
+    },
+    "mrr": {
+     "value": 0.3154,
+     "ci95": [
+      0.2935,
+      0.3393
+     ]
+    }
+   },
+   "trigram_backoff": {
+    "hit1": {
+     "value": 0.2585,
+     "ci95": [
+      0.2375,
+      0.281
+     ]
+    },
+    "hit3": {
+     "value": 0.3878,
+     "ci95": [
+      0.3598,
+      0.4179
+     ]
+    },
+    "hit5": {
+     "value": 0.4399,
+     "ci95": [
+      0.4121,
+      0.4694
+     ]
+    },
+    "mrr": {
+     "value": 0.3343,
+     "ci95": [
+      0.3117,
+      0.3589
+     ]
+    }
+   },
+   "infinity_gram_deployed": {
+    "hit1": {
+     "value": 0.2704,
+     "ci95": [
+      0.2482,
+      0.2935
+     ]
+    },
+    "hit3": {
+     "value": 0.3964,
+     "ci95": [
+      0.3673,
+      0.4272
+     ]
+    },
+    "hit5": {
+     "value": 0.4407,
+     "ci95": [
+      0.4125,
+      0.4704
+     ]
+    },
+    "mrr": {
+     "value": 0.3427,
+     "ci95": [
+      0.3188,
+      0.3678
+     ]
+    }
+   }
+  },
+  "paired_hmm_minus_infinity_gram": {
+   "hit1": {
+    "diff": -0.0254,
+    "ci95": [
+     -0.036,
+     -0.0154
+    ]
+   },
+   "hit5": {
+    "diff": -0.0213,
+    "ci95": [
+     -0.033,
+     -0.0095
+    ]
+   },
+   "mrr": {
+    "diff": -0.0273,
+    "ci95": [
+     -0.0358,
+     -0.0192
+    ]
+   }
+  }
+ },
+ "hmm2_unjumble": {
+  "status": "not_evaluated",
+  "reason": "hmm2_unjumble_latest.pkl (Git LFS object) not present at dual_hmm_streaming_kit/models/"
+ }
+}

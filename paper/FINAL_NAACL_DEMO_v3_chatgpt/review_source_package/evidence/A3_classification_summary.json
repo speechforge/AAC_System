@@ -1,0 +1,16 @@
+{
+ "n_rows": 51,
+ "by_cohort_and_category": {
+  "accepted_model|ADDED_CONTENT": 4,
+  "accepted_model|NEGATED_WANT": 12,
+  "accepted_model|SCORER_LEXICAL_GAP": 2,
+  "accepted_model|THIRD_PERSON": 9,
+  "accepted_model|UNGRAMMATICAL": 10,
+  "template_fallback|SCORER_LEXICAL_GAP": 6,
+  "template_only|SCORER_LEXICAL_GAP": 8
+ },
+ "accepted_model_genuine": 35,
+ "accepted_model_scorer_gap": 2,
+ "fallback_and_template_only_scorer_gap": 14,
+ "unclassified": 0
+}

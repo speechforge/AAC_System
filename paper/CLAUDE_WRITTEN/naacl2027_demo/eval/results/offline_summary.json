@@ -1,0 +1,20 @@
+{
+ "time_to_ready_s": 10.2,
+ "hf_hub_offline": true,
+ "guard": "in-process socket guard (not an OS-level disconnect)",
+ "first_generate_en_s": 13.94,
+ "first_generate_en_fallback": true,
+ "generate_hi_s": 10.1,
+ "generate_hi_fallback": false,
+ "predict_next_s": 0.0,
+ "translit_mapped_source": "offline",
+ "translit_unmapped_source": "passthrough",
+ "attempted_external_connections": [
+  [
+   "dns",
+   "inputtools.google.com",
+   0
+  ]
+ ],
+ "earlier_two_server_run": "logs/evidence_cuda_oom_two_servers_fallback.log: CUDA OOM on 3.63 GiB GPU shared by two servers -> 2 pipeline errors -> template fallback"
+}

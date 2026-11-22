@@ -1,0 +1,11 @@
+{
+  "updated_iso": "2026-11-17T08:32:59.454061+00:00",
+  "public_url": "https://aac-mos-portal.indic-aac-speech-study-2026.workers.dev",
+  "participant_admin_link": false,
+  "participant_footer": false,
+  "mother_tongue_requires_acknowledgement": true,
+  "server_checks_acknowledgement": true,
+  "shuffle": "SystemRandom per participant; 20 unique files; five per language; order retained on resume",
+  "backend_tests_passed": 9,
+  "data_preserved": true
+}

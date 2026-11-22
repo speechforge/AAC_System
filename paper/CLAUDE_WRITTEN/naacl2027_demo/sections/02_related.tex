@@ -1,0 +1,38 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Generative AAC from text or speech.}
+ConnecTone \citep{francis2024connectone} suggests text from conversation context captured by speech recognition and voices it with a TTS that moves between reading and conversational style; its abstract reports no evaluation.
+\citet{mohan2024composition} add LLM phrase suggestions with an emotional tone to typed, emoji or spoken input and voice the result in the user's own voice.
+SpeakFaster \citep{cai2024speakfaster} expands abbreviated text for eye-gaze typing; it reports 57\% more saved motor actions than predictive keyboards in simulation and text-entry rates 29--60\% above baselines for two users with ALS.
+All three start from letters or speech. \sys{} starts from symbol selections, which give the model a small concept set whose omission or inversion is checkable.
+
+\paragraph{Symbols, voices and boards.}
+\citet{francis2025static} generate symbols with DALL-E~3 and clone voices with XTTS on a Proloquo2Go-like board, but describe no sentence realization and report no evaluation; we adopt their interaction pattern.
+The symbol boards Cboard, Jellow and Avaz \citep{cboard,jellow,avaz} state 46, an unspecified number and ``15+'' languages, do not name Hindi, Gujarati or Marathi for their apps (Jellow offers a Hindi website), and do not mention LLM sentence generation.
+\citet{vertanen2026multilingual} releases AAC text in 34 languages; its table lists no Hindi, Gujarati or Marathi.
+
+\paragraph{Gap.}
+Table~\ref{tab:related} compares documented capabilities (\nstated{}: not stated by the source, not absent); external results are not comparable to ours.
+Among these sources, none documents a deterministic concept-and-polarity gate over LLM output on a symbol board for an Indian language; we make no claim about undocumented products.
+We therefore test the gate against matched baselines on one protocol (\S\ref{sec:eval}).
+
+\begin{table*}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}L{2.0cm}L{2.2cm}L{2.3cm}L{2.3cm}L{2.0cm}L{1.8cm}L{1.7cm}@{}}
+\toprule
+System & Input & Languages & LLM realization & Polarity / intent & Speech & Evaluation \\
+\midrule
+ConnecTone & partner speech, text & \nstated & text suggestions from context & \nstated & style-adaptive TTS & none in abstract \\
+\citet{francis2025static} & symbols (generated images) & \nstated & none described & --- & zero-shot cloning & none reported \\
+\citet{mohan2024composition} & typed, emoji, spoken & \nstated & phrase suggestions & \nstated & user's own voice & \nstated \\
+SpeakFaster & abbreviated text (gaze) & \nstated & abbreviation expansion & --- & \nstated & simulation; 19 + 2 users \\
+Cboard, Jellow, Avaz & symbols, icons, text & 46; Hindi site; 15+ (HI, GU, MR not stated for apps) & \nstated & \nstated & TTS (Cboard, Jellow) & \nstated \\
+\midrule
+\sys{} (ours) & symbols, text & EN, HI, GU, MR; Hinglish flag & prompted Qwen cascade & explicit fields; concept and polarity gate & IndicF5 + Vocos & this paper \\
+\bottomrule
+\end{tabular}
+\caption{Documented capabilities of the closest systems, from the cited paper or the vendor page read on 2026-11-11. \nstated{}: not stated.}
+\label{tab:related}
+\end{table*}

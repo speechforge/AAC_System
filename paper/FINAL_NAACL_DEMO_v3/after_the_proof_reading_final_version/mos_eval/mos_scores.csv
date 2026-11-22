@@ -1,0 +1,185 @@
+file,group,lang,id,text,duration_s,utmos,nisqa_mos,nisqa_noi,nisqa_dis,nisqa_col,nisqa_loud
+reference__KAN_F_HAPPY_00001.wav,reference,kn,KAN_F_HAPPY_00001,,11.572,3.4528462886810303,4.8313127,4.621299,4.6913,4.5365644,4.5809393
+reference__MAR_F_HAPPY_00001.wav,reference,mr,MAR_F_HAPPY_00001,,4.851,2.6612613201141357,4.4871435,4.169733,4.42242,4.4289055,4.2474484
+reference__MAR_F_WIKI_00001.wav,reference,mr,MAR_F_WIKI_00001,,5.985,3.854006767272949,4.8276157,4.439264,4.612886,4.535662,4.432987
+reference__MAR_M_WIKI_00001.wav,reference,mr,MAR_M_WIKI_00001,,8.718,3.070915937423706,5.1260552,4.6256404,4.7053037,4.5559797,4.661636
+reference__PAN_F_HAPPY_00001.wav,reference,pa,PAN_F_HAPPY_00001,,8.1,3.82509183883667,4.7429852,4.41906,4.6194706,4.601462,4.510546
+reference__PAN_F_HAPPY_00002.wav,reference,pa,PAN_F_HAPPY_00002,,6.914,3.554809093475342,4.7157583,4.3534594,4.6599154,4.655387,4.453897
+reference__TAM_F_HAPPY_00001.wav,reference,ta,TAM_F_HAPPY_00001,,6.288,3.701632261276245,4.789307,4.266138,4.6526527,4.4810686,4.448948
+reference__basic_ref_en.wav,reference,en,basic_ref_en,"Some call me nature, others call me mother nature.",5.333,4.266615390777588,4.4977207,4.0895815,4.5318103,4.4239984,4.5321875
+placeholder__tone.wav,placeholder,all,tone,,1.2,1.539661169052124,1.1225169,2.1228874,3.6174772,1.2577763,1.8510227
+standin__en__en-T1_request_object-WATER.wav,standin,en,en-T1_request_object-WATER,I want Water.,1.296,3.7291200160980225,4.3931336,4.220694,4.639888,4.006116,4.329095
+standin__en__en-T1_request_object-FOOD.wav,standin,en,en-T1_request_object-FOOD,I need food.,1.008,3.462749481201172,4.176305,3.326487,4.4095488,3.7301111,4.253141
+standin__en__en-T1_request_object-MILK.wav,standin,en,en-T1_request_object-MILK,The user requested milk.,2.032,3.9886512756347656,4.8348093,4.633362,4.8729076,4.4240866,4.6729674
+standin__en__en-T1_request_object-RICE.wav,standin,en,en-T1_request_object-RICE,The user requested rice.,2.256,4.280116081237793,4.6718554,4.540034,4.7656846,4.4353404,4.599009
+standin__en__en-T1_request_object-ROTI.wav,standin,en,en-T1_request_object-ROTI,The user requested bread and roti.,3.088,4.068859577178955,4.622839,4.420453,4.7575784,4.284994,4.5085545
+standin__en__en-T1_request_object-FRUIT.wav,standin,en,en-T1_request_object-FRUIT,I want Fruit.,1.152,3.565983772277832,4.6918545,4.4996367,4.795856,4.3800344,4.5575023
+standin__en__en-T1_request_object-TEA.wav,standin,en,en-T1_request_object-TEA,The user requested tea.,2.064,4.356444358825684,4.45761,4.3247952,4.3795066,4.055361,4.3563056
+standin__en__en-T1_request_object-JUICE.wav,standin,en,en-T1_request_object-JUICE,The user requested juice.,2.128,4.062987804412842,4.7332587,4.435596,4.816096,4.3212314,4.704943
+standin__en__en-T1_request_object-SNACK.wav,standin,en,en-T1_request_object-SNACK,I want Biscuit.,1.648,3.977189540863037,4.618694,4.590715,4.6507716,4.2021575,4.426909
+standin__en__en-T1_request_object-PIZZA.wav,standin,en,en-T1_request_object-PIZZA,The user requested a pizza.,2.016,4.033599853515625,4.9267554,4.5794163,4.9463477,4.4738755,4.6929603
+standin__en__en-T2_refuse_object-NO+WATER.wav,standin,en,en-T2_refuse_object-NO+WATER,I want No Water.,1.584,4.136405944824219,4.426496,4.319567,4.672729,4.091931,4.298286
+standin__en__en-T2_refuse_object-NO+FOOD.wav,standin,en,en-T2_refuse_object-NO+FOOD,I want No Food.,1.568,3.49678897857666,4.754423,4.1613474,4.8648415,4.3750086,4.606767
+standin__en__en-T2_refuse_object-NO+MILK.wav,standin,en,en-T2_refuse_object-NO+MILK,I want No Milk.,1.344,3.864752769470215,3.3700535,3.9585798,2.9531372,3.501915,3.7050674
+standin__en__en-T2_refuse_object-NO+RICE.wav,standin,en,en-T2_refuse_object-NO+RICE,I want No Rice.,1.408,4.229753494262695,4.658274,4.408686,4.804204,4.3091497,4.5863533
+standin__en__en-T2_refuse_object-NO+ROTI.wav,standin,en,en-T2_refuse_object-NO+ROTI,I want No Bread/Roti.,1.664,3.5689167976379395,2.3757262,3.8421986,2.3948643,2.774708,3.5848668
+standin__en__en-T2_refuse_object-NO+FRUIT.wav,standin,en,en-T2_refuse_object-NO+FRUIT,I am not a fruit. I do not eat fruits.,2.784,4.209160804748535,4.692115,4.4789143,4.6971,4.1918254,4.49227
+standin__en__en-T2_refuse_object-NO+TEA.wav,standin,en,en-T2_refuse_object-NO+TEA,I want No Tea.,1.408,4.261713981628418,4.5659885,4.4473715,4.661942,4.2594934,4.501523
+standin__en__en-T2_refuse_object-NO+JUICE.wav,standin,en,en-T2_refuse_object-NO+JUICE,I want No Juice.,1.536,4.0103230476379395,4.508562,4.4967837,4.765256,4.2435045,4.5449786
+standin__en__en-T2_refuse_object-NO+SNACK.wav,standin,en,en-T2_refuse_object-NO+SNACK,I want No Biscuit.,1.904,4.311957359313965,4.731392,4.6557956,4.7609725,4.3466167,4.5351005
+standin__en__en-T2_refuse_object-NO+PIZZA.wav,standin,en,en-T2_refuse_object-NO+PIZZA,I want No Pizza.,1.6,4.161113262176514,4.81832,4.5513763,4.83639,4.3412304,4.6362753
+standin__en__en-T3_feeling-HAPPY.wav,standin,en,en-T3_feeling-HAPPY,I feel Happy.,1.376,3.773651123046875,3.8084242,4.2193236,3.981302,3.4149635,3.9877014
+standin__en__en-T3_feeling-SAD.wav,standin,en,en-T3_feeling-SAD,I feel Sad.,1.424,4.10479736328125,4.535928,4.377306,4.679775,4.256986,4.5113125
+standin__en__en-T3_feeling-ANGRY.wav,standin,en,en-T3_feeling-ANGRY,I want Angry.,1.456,3.267533540725708,3.4946408,3.8371062,3.9341161,3.7497385,4.062417
+standin__en__en-T3_feeling-TIRED.wav,standin,en,en-T3_feeling-TIRED,The user is tired of waiting for their meal and wants to go out to eat.,4.288,4.353522777557373,4.7035685,4.456958,4.741232,4.281288,4.4133954
+standin__en__en-T3_feeling-SICK.wav,standin,en,en-T3_feeling-SICK,I want Sick.,0.992,4.020967483520508,4.5271773,3.7751946,4.687889,4.2315497,4.438242
+standin__en__en-T3_feeling-SCARED.wav,standin,en,en-T3_feeling-SCARED,I want Scared.,1.456,4.400496482849121,4.6453686,4.5193286,4.7622275,4.3837466,4.6006813
+standin__en__en-T3_feeling-LOVE.wav,standin,en,en-T3_feeling-LOVE,I love spending time with you.,2.352,3.652311086654663,4.5088105,4.596572,4.574663,4.240644,4.38641
+standin__en__en-T3_feeling-EXCITED.wav,standin,en,en-T3_feeling-EXCITED,I am excited to eat at.,1.808,4.2923359870910645,5.017143,4.71764,4.869539,4.4720716,4.709901
+standin__en__en-T4_negated_feeling-NO+HAPPY.wav,standin,en,en-T4_negated_feeling-NO+HAPPY,I am not happy with the food at.,2.384,4.09768533706665,4.382956,4.1754894,4.3982377,3.8535862,4.233431
+standin__en__en-T4_negated_feeling-NO+SAD.wav,standin,en,en-T4_negated_feeling-NO+SAD,I want No Sad.,1.536,3.8949813842773438,4.7651353,4.266464,4.8052015,4.3265166,4.611876
+standin__en__en-T4_negated_feeling-NO+ANGRY.wav,standin,en,en-T4_negated_feeling-NO+ANGRY,I want No Angry.,1.472,3.0260355472564697,3.936451,4.127002,4.3798833,4.059024,4.1942344
+standin__en__en-T4_negated_feeling-NO+TIRED.wav,standin,en,en-T4_negated_feeling-NO+TIRED,I want No Tired.,1.6,3.9670169353485107,4.59055,4.380044,4.695958,4.283097,4.4551706
+standin__en__en-T4_negated_feeling-NO+SICK.wav,standin,en,en-T4_negated_feeling-NO+SICK,I want No Sick.,1.232,4.139345645904541,4.7195067,4.4335637,4.760924,4.3346696,4.6016197
+standin__en__en-T4_negated_feeling-NO+SCARED.wav,standin,en,en-T4_negated_feeling-NO+SCARED,I want No Scared.,1.744,4.369366645812988,4.7591915,4.5798435,4.855672,4.315228,4.5941844
+standin__en__en-T4_negated_feeling-NO+LOVE.wav,standin,en,en-T4_negated_feeling-NO+LOVE,I want No Love.,1.648,4.000255107879639,4.3430223,4.016469,4.3894873,3.9586058,4.1598682
+standin__en__en-T4_negated_feeling-NO+EXCITED.wav,standin,en,en-T4_negated_feeling-NO+EXCITED,I want No Excited.,1.776,4.2292280197143555,4.8784194,4.6201625,4.8788896,4.5138435,4.660576
+standin__en__en-T5_action_object-EAT+RICE.wav,standin,en,en-T5_action_object-EAT+RICE,The user wants to eat rice.,2.032,4.227762222290039,4.5647016,4.413104,4.604713,4.2063756,4.441501
+standin__en__en-T5_action_object-EAT+ROTI.wav,standin,en,en-T5_action_object-EAT+ROTI,The user requested bread and roti for eating.,3.92,4.365124702453613,4.571531,4.449743,4.5633674,4.1388974,4.3902245
+standin__en__en-T5_action_object-EAT+FRUIT.wav,standin,en,en-T5_action_object-EAT+FRUIT,I want Eat Fruit.,1.312,3.8924179077148438,4.4656167,4.295552,4.5958667,4.0565257,4.3751993
+standin__en__en-T5_action_object-DRINK+WATER.wav,standin,en,en-T5_action_object-DRINK+WATER,I want Drink Water.,1.76,4.164061069488525,3.0611253,3.9248536,2.7318444,3.2187314,3.7149458
+standin__en__en-T5_action_object-DRINK+MILK.wav,standin,en,en-T5_action_object-DRINK+MILK,The user requested milk for their drink.,3.008,3.782015800476074,4.5147953,4.43545,4.6274943,4.1419845,4.379602
+standin__en__en-T5_action_object-DRINK+TEA.wav,standin,en,en-T5_action_object-DRINK+TEA,I want Drink Tea.,1.552,4.241764545440674,4.6456385,4.4268594,4.6391926,4.313244,4.595616
+standin__en__en-T6_help_person-HELP+DOCTOR.wav,standin,en,en-T6_help_person-HELP+DOCTOR,I want Help Doctor.,1.792,3.9718141555786133,2.0608604,3.6994643,2.2611618,2.706159,3.5651963
+standin__en__en-T6_help_person-HELP+MOTHER.wav,standin,en,en-T6_help_person-HELP+MOTHER,I want Help Mother.,1.728,4.125173091888428,4.1644616,4.352738,4.5005507,3.9783115,4.267048
+standin__en__en-T6_help_person-CALL+DOCTOR.wav,standin,en,en-T6_help_person-CALL+DOCTOR,I want Call Doctor.,1.84,4.282217502593994,4.215336,4.0262628,4.5098033,3.7479818,4.2201004
+standin__en__en-T6_help_person-CALL+MOTHER.wav,standin,en,en-T6_help_person-CALL+MOTHER,I want Call Mother.,1.568,4.263616561889648,4.8258862,4.5300155,4.814842,4.4270377,4.5226145
+standin__hi__hi-T1_request_object-FOOD.wav,standin,hi,hi-T1_request_object-FOOD,मुझे खाना चाहिए।,1.872,3.984361171722412,4.516335,3.9981263,4.3152604,4.041932,4.1957254
+standin__hi__hi-T1_request_object-MILK.wav,standin,hi,hi-T1_request_object-MILK,मुझे दूध चाहिए।,1.328,3.575873374938965,3.7214668,3.6078696,4.186411,3.4407856,3.7252257
+standin__hi__hi-T1_request_object-RICE.wav,standin,hi,hi-T1_request_object-RICE,मुझे चावल चाहिए।,1.68,3.7271738052368164,3.8498619,3.8692687,4.080562,3.467922,3.793307
+standin__hi__hi-T1_request_object-ROTI.wav,standin,hi,hi-T1_request_object-ROTI,मुझे रोटी चाहिए।,1.744,3.671886444091797,4.2949915,4.024834,4.2408113,3.5634344,3.9062686
+standin__hi__hi-T1_request_object-FRUIT.wav,standin,hi,hi-T1_request_object-FRUIT,मुझे फल चाहिए।,1.248,3.9942100048065186,4.139449,4.2534175,4.4013815,3.7023103,3.9690018
+standin__hi__hi-T1_request_object-TEA.wav,standin,hi,hi-T1_request_object-TEA,मुझे चाय चाहिए।,1.312,3.829245090484619,3.3624177,3.554131,3.688416,3.1874175,3.4730415
+standin__hi__hi-T1_request_object-JUICE.wav,standin,hi,hi-T1_request_object-JUICE,"जूस, मुझे चाहिए।",1.696,3.952885866165161,2.591183,3.6245975,3.9999084,2.2777889,3.4481523
+standin__hi__hi-T1_request_object-SNACK.wav,standin,hi,hi-T1_request_object-SNACK,"बिस्कुट, मुझे चाहिए।",1.872,4.054441928863525,3.590616,4.0388427,4.1812344,2.9699597,3.7032301
+standin__hi__hi-T1_request_object-PIZZA.wav,standin,hi,hi-T1_request_object-PIZZA,मुझे पिज़्ज़ा चाहिए।,1.696,3.9941318035125732,2.9090176,3.5068614,2.694881,3.095558,3.64753
+standin__hi__hi-T2_refuse_object-NO+WATER.wav,standin,hi,hi-T2_refuse_object-NO+WATER,मुझे नहीं पानी चाहिए।,1.984,3.8334882259368896,4.126983,3.6790109,4.0216866,3.418465,3.7922256
+standin__hi__hi-T2_refuse_object-NO+FOOD.wav,standin,hi,hi-T2_refuse_object-NO+FOOD,"नहीं, मैं खाना चाहिए।",1.936,4.086595058441162,3.6540284,4.002508,3.6725855,3.8585858,4.0905166
+standin__hi__hi-T2_refuse_object-NO+MILK.wav,standin,hi,hi-T2_refuse_object-NO+MILK,"नहीं, नहीं, दूध चाहिए।",1.712,3.4807538986206055,3.9682972,3.3618917,4.0004697,3.4750178,3.9137414
+standin__hi__hi-T2_refuse_object-NO+RICE.wav,standin,hi,hi-T2_refuse_object-NO+RICE,"नहीं, नहीं, चावल चाहिए।",1.904,3.79280948638916,3.5953999,3.5691879,4.1784215,3.3586962,3.9155037
+standin__hi__hi-T2_refuse_object-NO+ROTI.wav,standin,hi,hi-T2_refuse_object-NO+ROTI,"नहीं, रोटी चाहिए।",1.6,3.2698111534118652,2.0354846,2.0271025,1.7909782,2.3556337,3.2292697
+standin__hi__hi-T2_refuse_object-NO+FRUIT.wav,standin,hi,hi-T2_refuse_object-NO+FRUIT,"फल नहीं है, नहीं चाहिए।",1.904,2.924945592880249,3.248198,2.5624316,4.032067,3.5037184,3.8083286
+standin__hi__hi-T2_refuse_object-NO+TEA.wav,standin,hi,hi-T2_refuse_object-NO+TEA,"नहीं, नहीं, चाय चाहिए।",1.648,2.624119281768799,2.6292195,2.0551074,3.8767614,2.8800514,3.35825
+standin__hi__hi-T2_refuse_object-NO+JUICE.wav,standin,hi,hi-T2_refuse_object-NO+JUICE,"जूस, मुझे नहीं चाहिए।",1.888,3.8135581016540527,3.993123,4.094229,4.102372,3.54959,3.957896
+standin__hi__hi-T2_refuse_object-NO+SNACK.wav,standin,hi,hi-T2_refuse_object-NO+SNACK,"नहीं, नहीं, बिस्कुट चाहिए।",1.792,3.6182055473327637,4.6427712,4.3140736,4.520051,4.077345,4.3260026
+standin__hi__hi-T2_refuse_object-NO+PIZZA.wav,standin,hi,hi-T2_refuse_object-NO+PIZZA,मुझे नहीं पिज़्ज़ा चाहिए।,1.648,3.1956019401550293,2.8059042,3.9545546,3.7584527,2.7129972,3.1545384
+standin__hi__hi-T3_feeling-HAPPY.wav,standin,hi,hi-T3_feeling-HAPPY,"मैं खुश हूँ, मैं कह रहा हूँ।",3.216,3.336808443069458,3.148414,2.7159255,4.101819,3.6011424,3.7611556
+standin__hi__hi-T3_feeling-SAD.wav,standin,hi,hi-T3_feeling-SAD,"उदास, मैं कह रहा हूँ।",2.4,3.5950756072998047,3.45534,2.7576056,4.2483597,3.8290327,3.8481145
+standin__hi__hi-T3_feeling-ANGRY.wav,standin,hi,hi-T3_feeling-ANGRY,मुझे गुस्सा चाहिए।,1.712,4.190730571746826,4.1893773,4.143417,4.216526,3.7922127,4.0758443
+standin__hi__hi-T3_feeling-TIRED.wav,standin,hi,hi-T3_feeling-TIRED,"मुझे थका हुआ हूँ, मुझे चाहिए।",2.704,3.3740851879119873,3.5402143,2.5149174,4.2431054,3.6769092,3.9405658
+standin__hi__hi-T3_feeling-SICK.wav,standin,hi,hi-T3_feeling-SICK,"मुझे बीमार हूँ, मुझे चाहिए।",2.784,4.053470134735107,3.3045409,3.422871,3.5260153,2.8013506,3.2093344
+standin__hi__hi-T3_feeling-SCARED.wav,standin,hi,hi-T3_feeling-SCARED,मुझे डरा हुआ चाहिए।,1.936,3.7766342163085938,4.0044394,3.9777215,4.0915575,3.7094715,3.8587396
+standin__hi__hi-T3_feeling-LOVE.wav,standin,hi,hi-T3_feeling-LOVE,मुझे प्यार चाहिए।,1.744,4.242725372314453,4.3184524,4.20479,4.418662,3.7516685,4.0041394
+standin__hi__hi-T3_feeling-EXCITED.wav,standin,hi,hi-T3_feeling-EXCITED,"उत्साहित, मुझे चाहिए।",2.24,3.8134584426879883,3.9394183,3.8592448,3.9706476,3.2015283,3.767451
+standin__hi__hi-T4_negated_feeling-NO+HAPPY.wav,standin,hi,hi-T4_negated_feeling-NO+HAPPY,"नहीं, खुश है, नहीं चाहिए।",2.032,3.4563770294189453,3.864118,3.7655103,4.173478,3.6140723,4.0033617
+standin__hi__hi-T4_negated_feeling-NO+SAD.wav,standin,hi,hi-T4_negated_feeling-NO+SAD,"उदास, नहीं चाहिए।",1.616,3.476257801055908,2.7073538,2.0501928,3.8535883,3.0285137,3.7338204
+standin__hi__hi-T4_negated_feeling-NO+ANGRY.wav,standin,hi,hi-T4_negated_feeling-NO+ANGRY,"गुस्सा, नहीं चाहिए।",1.2,3.575181722640991,3.5100286,4.0021067,4.394007,4.010958,4.213892
+standin__hi__hi-T4_negated_feeling-NO+TIRED.wav,standin,hi,hi-T4_negated_feeling-NO+TIRED,"नहीं, मुझे थका हुआ चाहिए।",2.096,3.816967010498047,3.8935056,4.0243473,4.172221,3.5009022,3.6662393
+standin__hi__hi-T4_negated_feeling-NO+SICK.wav,standin,hi,hi-T4_negated_feeling-NO+SICK,"बीमार, नहीं चाहिए।",1.328,3.4202136993408203,3.3620305,2.2877686,3.9227927,3.3351307,3.7362354
+standin__hi__hi-T4_negated_feeling-NO+SCARED.wav,standin,hi,hi-T4_negated_feeling-NO+SCARED,"नहीं, डरा हुआ है, नहीं चाहिए।",2.688,3.5686635971069336,3.8807976,2.6753073,4.2244883,3.982233,4.242372
+standin__hi__hi-T4_negated_feeling-NO+LOVE.wav,standin,hi,hi-T4_negated_feeling-NO+LOVE,"प्यार, नहीं चाहिए।",1.488,3.057914972305298,2.8535972,2.1847923,4.2382474,3.795769,3.9520895
+standin__hi__hi-T4_negated_feeling-NO+EXCITED.wav,standin,hi,hi-T4_negated_feeling-NO+EXCITED,"उत्साहित, नहीं चाहिए।",1.76,2.979846477508545,3.1462963,2.276109,4.2238784,3.578866,3.8558302
+standin__hi__hi-T5_action_object-EAT+RICE.wav,standin,hi,hi-T5_action_object-EAT+RICE,मुझे खाना चावल चाहिए।,2.08,3.8215866088867188,2.7559254,3.8273108,2.8784077,2.92012,3.520295
+standin__hi__hi-T5_action_object-EAT+ROTI.wav,standin,hi,hi-T5_action_object-EAT+ROTI,मुझे खाना रोटी चाहिए।,2.032,4.047064781188965,2.7541533,3.8692083,2.7774394,2.3987322,3.1248665
+standin__hi__hi-T5_action_object-EAT+FRUIT.wav,standin,hi,hi-T5_action_object-EAT+FRUIT,मुझे खाना फल चाहिए।,1.952,3.9927542209625244,3.6301596,4.1586804,4.233258,3.008893,3.7811282
+standin__hi__hi-T5_action_object-DRINK+WATER.wav,standin,hi,hi-T5_action_object-DRINK+WATER,"पीना, मुझे पानी चाहिए।",2.16,4.017017841339111,4.404302,3.6622796,4.4326005,4.0343285,4.147785
+standin__hi__hi-T5_action_object-DRINK+MILK.wav,standin,hi,hi-T5_action_object-DRINK+MILK,मुझे पीना दूध चाहिए।,1.744,3.9267630577087402,2.8425865,4.01595,2.8951821,3.1904593,3.6124191
+standin__hi__hi-T5_action_object-DRINK+TEA.wav,standin,hi,hi-T5_action_object-DRINK+TEA,मुझे पीना चाय चाहिए।,1.936,4.299312114715576,3.2892654,3.847997,3.8053553,3.0218515,3.560326
+standin__hi__hi-T6_help_person-HELP+DOCTOR.wav,standin,hi,hi-T6_help_person-HELP+DOCTOR,"मदद, मुझे डॉक्टर चाहिए।",1.92,2.9890248775482178,3.0621884,3.6106386,3.8920076,2.296471,3.4296725
+standin__hi__hi-T6_help_person-HELP+MOTHER.wav,standin,hi,hi-T6_help_person-HELP+MOTHER,"मदद, मुझे माँ चाहिए।",1.632,3.7413127422332764,3.5579236,3.9284115,4.0518494,2.859772,3.6648638
+standin__hi__hi-T6_help_person-CALL+DOCTOR.wav,standin,hi,hi-T6_help_person-CALL+DOCTOR,"फ़ोन करना गया है, मुझे डॉक्टर चाहिए।",2.88,3.2422475814819336,3.6560931,4.0167475,4.2541857,2.9989498,3.7811263
+standin__hi__hi-T6_help_person-CALL+MOTHER.wav,standin,hi,hi-T6_help_person-CALL+MOTHER,"माँ, मुझे फ़ोन करना है, मुझे चाहिए।",3.04,3.4448795318603516,3.5582383,3.9035594,3.719332,2.9256852,3.4350963
+standin__gu__gu-T1_request_object-MILK.wav,standin,gu,gu-T1_request_object-MILK,મને દૂધ જોઈએ છે.,1.216,3.9105825424194336,4.8907905,4.232086,4.7948723,4.4934125,4.6831794
+standin__gu__gu-T1_request_object-RICE.wav,standin,gu,gu-T1_request_object-RICE,મને ભાત જોઈએ છે.,1.184,4.147713661193848,5.0019617,4.5719337,4.812016,4.4861116,4.6990514
+standin__gu__gu-T1_request_object-ROTI.wav,standin,gu,gu-T1_request_object-ROTI,મને રોટલી જોઈએ છે.,1.296,3.5417346954345703,4.8432565,4.4004703,4.7401485,4.420875,4.619525
+standin__gu__gu-T1_request_object-FRUIT.wav,standin,gu,gu-T1_request_object-FRUIT,મને ફળ જોઈએ છે.,1.216,3.8130602836608887,4.9361467,4.244031,4.7813563,4.519842,4.754797
+standin__gu__gu-T1_request_object-TEA.wav,standin,gu,gu-T1_request_object-TEA,મને ચા જોઈએ છે.,1.168,4.118409156799316,4.933137,4.5635023,4.739261,4.4497266,4.671301
+standin__gu__gu-T1_request_object-JUICE.wav,standin,gu,gu-T1_request_object-JUICE,મને જ્યુસ જોઈએ છે.,1.264,3.7960944175720215,4.8069587,4.257256,4.648456,4.3877087,4.63846
+standin__gu__gu-T1_request_object-SNACK.wav,standin,gu,gu-T1_request_object-SNACK,મને બિસ્કિટ જોઈએ છે.,1.28,3.9764902591705322,4.9507194,4.2750745,4.6974454,4.4501963,4.6874948
+standin__gu__gu-T1_request_object-PIZZA.wav,standin,gu,gu-T1_request_object-PIZZA,મને પિઝા જોઈએ છે.,1.328,4.180309772491455,4.9226184,4.583391,4.8018594,4.4632874,4.6891294
+standin__gu__gu-T2_refuse_object-NO+WATER.wav,standin,gu,gu-T2_refuse_object-NO+WATER,મને પાણી ના જોઈએ છે.,1.536,3.620837926864624,4.6635265,4.3012266,4.6195946,4.266194,4.4974093
+standin__gu__gu-T2_refuse_object-NO+MILK.wav,standin,gu,gu-T2_refuse_object-NO+MILK,મારે ના દૂધ છે.,1.12,3.968674898147583,5.056706,4.2528977,4.596458,4.155843,4.4630423
+standin__gu__gu-T2_refuse_object-NO+RICE.wav,standin,gu,gu-T2_refuse_object-NO+RICE,મને ના ભાત જોઈએ છે.,1.776,4.019222259521484,4.945898,4.668924,4.888352,4.533742,4.7589
+standin__gu__gu-T2_refuse_object-NO+ROTI.wav,standin,gu,gu-T2_refuse_object-NO+ROTI,મારે રોટલી ના નથી જોઈતું.,1.504,3.435302972793579,4.8193736,4.381862,4.644623,4.389324,4.5573406
+standin__gu__gu-T2_refuse_object-NO+FRUIT.wav,standin,gu,gu-T2_refuse_object-NO+FRUIT,મારે ના ફળ છે.,1.056,4.010814666748047,5.0214715,4.414422,4.8259225,4.4976697,4.7456083
+standin__gu__gu-T2_refuse_object-NO+TEA.wav,standin,gu,gu-T2_refuse_object-NO+TEA,મારે ના ચા નથી જોઈતું.,1.408,3.8256237506866455,4.759009,4.4765773,4.48974,4.24642,4.497177
+standin__gu__gu-T2_refuse_object-NO+JUICE.wav,standin,gu,gu-T2_refuse_object-NO+JUICE,મને ના જ્યુસ જોઈએ છે.,1.44,4.096578598022461,4.846941,4.051746,4.674718,4.398279,4.6043177
+standin__gu__gu-T2_refuse_object-NO+SNACK.wav,standin,gu,gu-T2_refuse_object-NO+SNACK,મને ના બિસ્કિટ જોઈતું.,1.408,4.156179428100586,4.986196,4.3466897,4.858567,4.5505543,4.7614217
+standin__gu__gu-T2_refuse_object-NO+PIZZA.wav,standin,gu,gu-T2_refuse_object-NO+PIZZA,મારે ના પિઝા છે.,1.168,4.273281097412109,4.9434357,4.546651,4.7880025,4.409712,4.6725125
+standin__gu__gu-T3_feeling-SAD.wav,standin,gu,gu-T3_feeling-SAD,મને ઉદાસ જોઈએ છે.,1.344,4.120798110961914,4.8953195,4.377264,4.7171984,4.4849005,4.658955
+standin__gu__gu-T3_feeling-ANGRY.wav,standin,gu,gu-T3_feeling-ANGRY,મને ગુસ્સો જોઈએ છે.,1.232,3.496971845626831,4.781137,4.0783706,4.568614,4.3505206,4.583886
+standin__gu__gu-T3_feeling-TIRED.wav,standin,gu,gu-T3_feeling-TIRED,મને થાકેલું જોઈએ છે.,1.424,3.919447660446167,4.9075465,4.4768705,4.692086,4.433715,4.6943083
+standin__gu__gu-T3_feeling-SICK.wav,standin,gu,gu-T3_feeling-SICK,મને બીમાર જોઈએ છે.,1.264,4.09213924407959,4.8797765,4.274968,4.7377963,4.4349203,4.6777897
+standin__gu__gu-T3_feeling-SCARED.wav,standin,gu,gu-T3_feeling-SCARED,મને ડરેલું જોઈએ છે.,1.36,3.440197229385376,4.8122897,4.236212,4.7151823,4.425314,4.6320105
+standin__gu__gu-T3_feeling-LOVE.wav,standin,gu,gu-T3_feeling-LOVE,મને પ્રેમ જોઈએ છે.,1.232,3.8118033409118652,4.8456964,4.3002524,4.68897,4.4135056,4.6679235
+standin__gu__gu-T3_feeling-EXCITED.wav,standin,gu,gu-T3_feeling-EXCITED,મને ઉત્સાહિત જોઈએ છે.,1.424,3.9022586345672607,4.882551,4.30546,4.6978316,4.4413395,4.6855125
+standin__gu__gu-T4_negated_feeling-NO+HAPPY.wav,standin,gu,gu-T4_negated_feeling-NO+HAPPY,મને ના ખુશ જોઈએ છે.,1.392,3.2078542709350586,4.836983,4.42663,4.727488,4.419383,4.630725
+standin__gu__gu-T4_negated_feeling-NO+SAD.wav,standin,gu,gu-T4_negated_feeling-NO+SAD,મારે ના અને ઉદાસ છે.,1.68,4.020444393157959,4.903002,4.4303164,4.750695,4.560295,4.7379465
+standin__gu__gu-T4_negated_feeling-NO+ANGRY.wav,standin,gu,gu-T4_negated_feeling-NO+ANGRY,મારે ના ગુસ્સો છે.,1.216,4.0063018798828125,4.9791555,4.093766,4.802637,4.5284724,4.753371
+standin__gu__gu-T4_negated_feeling-NO+TIRED.wav,standin,gu,gu-T4_negated_feeling-NO+TIRED,મને ના થાકેલું જોઈએ છે.,1.6,4.0738630294799805,4.943447,4.434338,4.6994424,4.4361763,4.6813583
+standin__gu__gu-T4_negated_feeling-NO+SICK.wav,standin,gu,gu-T4_negated_feeling-NO+SICK,મને ના બીમાર જોઈતું.,1.28,3.957305431365967,4.9612627,4.555145,4.8592744,4.530125,4.715477
+standin__gu__gu-T4_negated_feeling-NO+SCARED.wav,standin,gu,gu-T4_negated_feeling-NO+SCARED,મારે ના ડરેલું છે.,1.232,3.5610451698303223,4.9151115,4.3023224,4.757271,4.4216537,4.6506596
+standin__gu__gu-T4_negated_feeling-NO+LOVE.wav,standin,gu,gu-T4_negated_feeling-NO+LOVE,મને ના પ્રેમ નથી જોઈતું.,1.456,3.8527746200561523,4.888844,4.569859,4.6853704,4.3711543,4.569641
+standin__gu__gu-T4_negated_feeling-NO+EXCITED.wav,standin,gu,gu-T4_negated_feeling-NO+EXCITED,મને ના ઉત્સાહિત છે.,1.344,3.9467666149139404,4.5974884,4.222912,4.4023747,4.0728135,4.481256
+standin__gu__gu-T5_action_object-EAT+RICE.wav,standin,gu,gu-T5_action_object-EAT+RICE,મને જમવું છે ભાત.,1.728,3.894829273223877,5.0950813,4.696418,4.9026475,4.5547957,4.7957015
+standin__gu__gu-T5_action_object-EAT+ROTI.wav,standin,gu,gu-T5_action_object-EAT+ROTI,મને જમવું જોઈએ છે. રોટલી જોઈએ છે.,2.784,3.9892847537994385,4.961334,4.6805677,4.84123,4.513125,4.7176666
+standin__gu__gu-T5_action_object-EAT+FRUIT.wav,standin,gu,gu-T5_action_object-EAT+FRUIT,મને જમવું જોઈએ છે. ફળ આપો.,1.84,3.4148173332214355,4.8623357,4.488463,4.6607943,4.4074097,4.6609654
+standin__gu__gu-T5_action_object-DRINK+WATER.wav,standin,gu,gu-T5_action_object-DRINK+WATER,મને પાણી જોઈએ છે. પીવું પાણી જોઈએ છે.,2.784,4.041367530822754,4.9184895,4.615043,4.7880445,4.4488144,4.703026
+standin__gu__gu-T5_action_object-DRINK+MILK.wav,standin,gu,gu-T5_action_object-DRINK+MILK,મને પીવું જોઈએ છે. દૂધ આપે.,1.856,3.9782023429870605,4.994229,4.483963,4.801288,4.4902916,4.699012
+standin__gu__gu-T5_action_object-DRINK+TEA.wav,standin,gu,gu-T5_action_object-DRINK+TEA,મને પીવું જોઈએ છે. ચા.,1.376,4.0993242263793945,4.9487896,4.6451755,4.7898173,4.478721,4.6876945
+standin__gu__gu-T6_help_person-HELP+DOCTOR.wav,standin,gu,gu-T6_help_person-HELP+DOCTOR,મને ડૉક્ટર મદદ જોઈએ છે.,1.68,3.6620421409606934,5.009285,4.4531765,4.7524896,4.5333247,4.7347527
+standin__gu__gu-T6_help_person-HELP+MOTHER.wav,standin,gu,gu-T6_help_person-HELP+MOTHER,મને મદદ માતા જોઈએ છે.,1.552,3.9161083698272705,4.9284043,4.480227,4.843426,4.5267415,4.669916
+standin__gu__gu-T6_help_person-CALL+DOCTOR.wav,standin,gu,gu-T6_help_person-CALL+DOCTOR,મને ડૉક્ટર ફોન કરવો છે.,1.584,3.7642650604248047,5.129734,4.624977,4.85848,4.5423145,4.7814946
+standin__gu__gu-T6_help_person-CALL+MOTHER.wav,standin,gu,gu-T6_help_person-CALL+MOTHER,મને ફોન કરવો માતા છે.,1.552,3.86879563331604,5.0190916,4.4925184,4.8655,4.5596256,4.753207
+standin__mr__mr-T1_request_object-MILK.wav,standin,mr,mr-T1_request_object-MILK,मला दूध हवे आहे.,1.616,3.261366367340088,3.162751,3.9214184,3.4335713,3.144152,2.929311
+standin__mr__mr-T1_request_object-RICE.wav,standin,mr,mr-T1_request_object-RICE,मला भात हवे आहे.,1.536,2.7503039836883545,4.4602656,4.343332,4.4919605,4.1439867,4.3303084
+standin__mr__mr-T1_request_object-ROTI.wav,standin,mr,mr-T1_request_object-ROTI,मला पोळी हवे आहे.,1.872,3.2892305850982666,4.2731647,4.177519,4.3807893,4.0279984,3.8980458
+standin__mr__mr-T1_request_object-FRUIT.wav,standin,mr,mr-T1_request_object-FRUIT,मला फळ हवे आहे.,1.648,2.5336363315582275,4.223786,4.000258,4.191339,3.523942,3.6135736
+standin__mr__mr-T1_request_object-TEA.wav,standin,mr,mr-T1_request_object-TEA,मला चहा हवे आहे.,1.472,3.1997361183166504,3.7548816,3.9434068,4.07025,3.5491817,3.8056278
+standin__mr__mr-T1_request_object-JUICE.wav,standin,mr,mr-T1_request_object-JUICE,मला रस हवे आहे.,1.44,3.5091822147369385,3.4931414,4.0022955,3.101186,2.987404,3.335389
+standin__mr__mr-T1_request_object-SNACK.wav,standin,mr,mr-T1_request_object-SNACK,मला बिस्किट हवे आहे.,2.0,3.9213967323303223,4.631963,4.2193027,4.533644,4.3597054,4.4360547
+standin__mr__mr-T1_request_object-PIZZA.wav,standin,mr,mr-T1_request_object-PIZZA,मला पिझ्झा हवे आहे.,1.984,3.4188904762268066,4.5591965,4.1194158,4.4289675,4.1771164,4.39715
+standin__mr__mr-T2_refuse_object-NO+WATER.wav,standin,mr,mr-T2_refuse_object-NO+WATER,मला नाही पाणी हवे आहे.,2.448,3.8599274158477783,3.7803233,3.7793725,3.955108,3.2896504,3.1102884
+standin__mr__mr-T2_refuse_object-NO+MILK.wav,standin,mr,mr-T2_refuse_object-NO+MILK,मला नाही दूध हवे आहे.,1.904,2.8831377029418945,3.2589836,3.7315545,3.5147498,3.3368707,2.9323401
+standin__mr__mr-T2_refuse_object-NO+RICE.wav,standin,mr,mr-T2_refuse_object-NO+RICE,मला नाही भात हवे आहे.,2.016,2.8235597610473633,3.4609993,3.9054854,3.538074,3.146703,3.00154
+standin__mr__mr-T2_refuse_object-NO+ROTI.wav,standin,mr,mr-T2_refuse_object-NO+ROTI,मला नाही पोळी हवे आहे.,2.496,3.4540319442749023,4.0499268,4.0656767,4.154978,3.6250122,3.4830105
+standin__mr__mr-T2_refuse_object-NO+FRUIT.wav,standin,mr,mr-T2_refuse_object-NO+FRUIT,मला नाही फळ हवे आहे.,1.92,3.2251076698303223,3.3589816,3.8771572,3.4831512,3.1310074,3.0381808
+standin__mr__mr-T2_refuse_object-NO+TEA.wav,standin,mr,mr-T2_refuse_object-NO+TEA,मला चहा नाही आहे.,1.792,3.648146390914917,3.8669121,4.0430484,4.165652,3.5560431,3.3744054
+standin__mr__mr-T2_refuse_object-NO+JUICE.wav,standin,mr,mr-T2_refuse_object-NO+JUICE,मला नाही रस हवे आहे.,1.888,3.2210693359375,3.4984715,4.203519,3.5452392,3.5929465,3.6845849
+standin__mr__mr-T2_refuse_object-NO+SNACK.wav,standin,mr,mr-T2_refuse_object-NO+SNACK,मला नाही बिस्किट हवे आहे.,2.224,3.7751755714416504,4.5830574,4.4296384,4.603519,4.053734,4.3544354
+standin__mr__mr-T2_refuse_object-NO+PIZZA.wav,standin,mr,mr-T2_refuse_object-NO+PIZZA,मला नाही पिझ्झा हवे आहे.,2.4,3.1921682357788086,3.344509,2.9680295,3.5450401,3.5040977,3.8708963
+standin__mr__mr-T3_feeling-SAD.wav,standin,mr,mr-T3_feeling-SAD,मला दुःखी हवे आहे.,1.648,3.1693735122680664,3.8420975,4.074751,4.079223,3.6819134,3.5784981
+standin__mr__mr-T3_feeling-ANGRY.wav,standin,mr,mr-T3_feeling-ANGRY,मला रागात हवे आहे.,1.408,2.8122293949127197,2.8035269,3.41666,3.1422312,3.3107,3.336175
+standin__mr__mr-T3_feeling-TIRED.wav,standin,mr,mr-T3_feeling-TIRED,मला दमलेला हवे आहे.,2.064,3.2783873081207275,4.1509347,3.7517102,4.208932,3.5884662,3.783613
+standin__mr__mr-T3_feeling-SICK.wav,standin,mr,mr-T3_feeling-SICK,मला आजारी हवे आहे.,1.744,3.8951878547668457,4.8595505,4.3791933,4.8475256,4.4131,4.416498
+standin__mr__mr-T3_feeling-SCARED.wav,standin,mr,mr-T3_feeling-SCARED,मला घाबरलेला हवे आहे.,1.952,3.256350517272949,4.6190867,4.3925285,4.5522842,4.1187534,4.2360845
+standin__mr__mr-T3_feeling-LOVE.wav,standin,mr,mr-T3_feeling-LOVE,मला प्रेम हवे आहे.,1.36,3.55204439163208,4.042043,4.088512,4.2341714,3.9127479,3.8095713
+standin__mr__mr-T3_feeling-EXCITED.wav,standin,mr,mr-T3_feeling-EXCITED,मला उत्साही हवे आहे.,1.76,3.0617146492004395,4.180637,4.265953,4.2493644,3.7033808,3.9181316
+standin__mr__mr-T4_negated_feeling-NO+HAPPY.wav,standin,mr,mr-T4_negated_feeling-NO+HAPPY,मला नाही आनंदी हवे आहे.,2.256,3.1434948444366455,3.1719582,3.7780278,3.44394,3.247939,3.3173041
+standin__mr__mr-T4_negated_feeling-NO+SAD.wav,standin,mr,mr-T4_negated_feeling-NO+SAD,मला नाही दुःखी हवे आहे.,2.416,3.0779495239257812,2.7382083,4.044001,2.7906032,2.8631902,3.0581715
+standin__mr__mr-T4_negated_feeling-NO+ANGRY.wav,standin,mr,mr-T4_negated_feeling-NO+ANGRY,मला नाही रागात हवे आहे.,2.096,2.9001986980438232,3.5194347,3.5391953,3.391594,3.2874358,3.1176255
+standin__mr__mr-T4_negated_feeling-NO+TIRED.wav,standin,mr,mr-T4_negated_feeling-NO+TIRED,मला नाही दमलेला हवे आहे.,2.336,3.617051124572754,4.047488,3.807214,4.042319,3.5066118,3.540602
+standin__mr__mr-T4_negated_feeling-NO+SICK.wav,standin,mr,mr-T4_negated_feeling-NO+SICK,मला अनुभव नाही आजारी.,2.336,3.129091501235962,2.4120371,3.5165334,2.5079036,2.553106,2.796262
+standin__mr__mr-T4_negated_feeling-NO+SCARED.wav,standin,mr,mr-T4_negated_feeling-NO+SCARED,मला घाबरलेला नाही आहे.,2.112,3.1359992027282715,4.48783,4.2685347,4.5032215,4.031616,4.037755
+standin__mr__mr-T4_negated_feeling-NO+LOVE.wav,standin,mr,mr-T4_negated_feeling-NO+LOVE,मला नाही प्रेम हवे आहे.,2.032,2.9296724796295166,2.8649213,3.6186688,3.4724567,3.1169376,2.7911963
+standin__mr__mr-T4_negated_feeling-NO+EXCITED.wav,standin,mr,mr-T4_negated_feeling-NO+EXCITED,मला नाही उत्साही हवे आहे.,2.112,2.96405291557312,4.218628,4.133,4.324603,3.790423,3.9694662
+standin__mr__mr-T5_action_object-EAT+RICE.wav,standin,mr,mr-T5_action_object-EAT+RICE,मला भात खाणे आहे.,1.728,3.1678895950317383,4.486106,4.405478,4.415553,4.1230345,4.304456
+standin__mr__mr-T5_action_object-EAT+ROTI.wav,standin,mr,mr-T5_action_object-EAT+ROTI,मला पोळी खाणे आहे.,2.0,4.173153400421143,4.960326,4.4934387,4.8728065,4.532157,4.6282954
+standin__mr__mr-T5_action_object-EAT+FRUIT.wav,standin,mr,mr-T5_action_object-EAT+FRUIT,मला फळ खाणे हवे आहे.,2.064,3.8625683784484863,4.616346,4.3301983,4.552018,4.124105,4.156401
+standin__mr__mr-T5_action_object-DRINK+WATER.wav,standin,mr,mr-T5_action_object-DRINK+WATER,मला पिणे पाणी हवे आहे.,2.272,3.8413562774658203,4.598372,4.310668,4.5826726,4.2925873,4.3888664
+standin__mr__mr-T5_action_object-DRINK+MILK.wav,standin,mr,mr-T5_action_object-DRINK+MILK,मला पिणे दूध हवे आहे.,2.08,3.727125883102417,4.5785117,4.278797,4.4371686,4.0571394,4.099369
+standin__mr__mr-T5_action_object-DRINK+TEA.wav,standin,mr,mr-T5_action_object-DRINK+TEA,मला पिणे चहा हवे आहे.,2.24,3.755309581756592,4.5989385,4.3534346,4.623147,4.249936,4.246369
+standin__mr__mr-T6_help_person-HELP+DOCTOR.wav,standin,mr,mr-T6_help_person-HELP+DOCTOR,मला डॉक्टर मदत हवे आहे.,1.888,2.9067351818084717,3.8189003,4.0415754,4.0068765,3.670758,3.5571961
+standin__mr__mr-T6_help_person-HELP+MOTHER.wav,standin,mr,mr-T6_help_person-HELP+MOTHER,मला मदत हवे आहे. मदत आई.,2.464,3.2058427333831787,3.506899,3.3112009,4.112653,3.7992976,4.0608225
+standin__mr__mr-T6_help_person-CALL+DOCTOR.wav,standin,mr,mr-T6_help_person-CALL+DOCTOR,मला डॉक्टर फोन करणे मिळू शकता का?,2.64,2.601759910583496,4.5214324,4.340305,4.31631,3.9388158,4.165552
+standin__mr__mr-T6_help_person-CALL+MOTHER.wav,standin,mr,mr-T6_help_person-CALL+MOTHER,मला फोन करणे आई आहे.,2.24,4.06428337097168,4.4620256,4.241421,4.3810287,4.0300775,4.06561

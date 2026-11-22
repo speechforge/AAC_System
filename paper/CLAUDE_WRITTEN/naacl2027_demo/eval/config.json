@@ -1,0 +1,17 @@
+{
+ "endpoint": "http://localhost:8000",
+ "scenarios": "fixtures/scenarios.jsonl",
+ "request_timeout_s": 300,
+ "qwen_model": "Qwen/Qwen2.5-0.5B-Instruct",
+ "qwen_revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+ "decoding": "greedy (backend temperature<=0.05 => do_sample=False); max_new_tokens per stage as in backend/llm.py",
+ "bootstrap": {"resamples": 10000, "seed": 20261111, "unit": "scenario (paired)"},
+ "prediction_split": {"holdout_every_kth_source_conversation": 5, "offset": 0},
+ "primary_comparisons": [
+   ["deployed_ui", "literal_join_ui"],
+   ["deployed_ui", "naive_qwen_ui"],
+   ["deployed_ui", "template_only_ui"],
+   ["deployed_ui", "llm3_prefinal_ui"],
+   ["deployed_structured", "deployed_ui"]
+ ]
+}

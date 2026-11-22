@@ -1,0 +1,19 @@
+\section{Availability and Limitations}
+\label{sec:limits}
+
+\paragraph{Availability.}
+The submission package contains the source tree (frontend, backend, trainers), the frozen scenarios, lexicon and scorer, all raw outputs, the figure sources and installation instructions (Python 3.13, PyTorch with CUDA, a 4\,GB GPU; Qwen2.5-0.5B-Instruct is fetched from the Hugging Face Hub on first start). \textbf{[Download URL to be inserted at submission.]}
+The repository does not yet declare a license, so we do not call the code open source.
+Qwen2.5-0.5B-Instruct (Apache-2.0), Vocos (MIT) and IndicF5 (MIT; gated on the Hugging Face Hub) carry their own terms, and bundled fonts are under the SIL Open Font License.
+The HMM checkpoints are Git LFS objects in a repository that is not publicly accessible.
+A new locale needs labels for the 69 symbols and nine categories (\texttt{index.html}), Quick Express phrases, a few-shot prompt and template branch (\texttt{llm.py}), negators and time words (\texttt{semantic.py}), a voice prompt (\texttt{tts.py}) and dialogue text for the predictor, each with native-speaker review.
+
+\paragraph{Limitations.}
+The scorer is lexical and its Indic lexicon is not native-reviewed; scenarios cover one- and two-concept selections; the Hindi dialogues are machine translations; English and code-mixed results are single samples; no user study was run; and latency holds for one 4\,GB GPU.
+Speech was not evaluated because the gated IndicF5 checkpoint was unavailable (the interface labels placeholder audio ``IndicF5 Voice''); HMM-1 and HMM-2 could not be scored because their checkpoints were unavailable.
+Accessibility testing covered keyboard activation (Tab, Enter, Space) and emulated touch; screen readers and switch scanning were not tested, and the output card is not announced to assistive technology.
+Offline operation was verified for the server only.
+
+\section{Conclusion}
+A deterministic concept gate makes a small prompted LLM safe to place in front of an AAC voice: every selected concept was kept and no polarity error occurred on the frozen scenarios, but a template alone matched or exceeded the pipeline once polarity and intent were explicit.
+The measured defects (client intent inference, an English-only intent test, and Indic template branches) are the next engineering targets, and the released fixtures make each fix measurable.

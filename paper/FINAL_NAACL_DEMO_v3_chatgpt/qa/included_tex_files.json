@@ -1,0 +1,21 @@
+[
+  "figures/appendix_header.tex",
+  "figures/architecture.tex",
+  "figures/teaser.tex",
+  "figures/traces.tex",
+  "figures/ui_states.tex",
+  "generated/appendix_cases.tex",
+  "generated/numbers.tex",
+  "generated/tab_pred.tex",
+  "generated/tab_results.tex",
+  "main.tex",
+  "sections/00_abstract.tex",
+  "sections/01_intro.tex",
+  "sections/02_related.tex",
+  "sections/03_system.tex",
+  "sections/04_eval.tex",
+  "sections/05_limits.tex",
+  "sections/06_ack.tex",
+  "sections/06_ethics.tex",
+  "sections/07_appendix.tex"
+]

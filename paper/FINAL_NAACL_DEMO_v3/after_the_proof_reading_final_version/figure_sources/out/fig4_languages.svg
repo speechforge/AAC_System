@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 212.48" width="640" height="212.48" font-family="Noto Sans, DejaVu Sans, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker></defs>
+<rect width="640" height="212.48" fill="#fff"/>
+<rect x="74" y="1.66" width="142" height="200.85999999999999" rx="9" fill="#FAFAFA" stroke="#6B6B6B" stroke-width="1.4"/>
+<text x="83" y="15.16" font-size="12" font-weight="700" fill="#6B6B6B">Baseline</text>
+<rect x="215" y="1.66" width="424" height="200.85999999999999" rx="9" fill="#F6FAFD" stroke="#155B8A" stroke-width="1.4"/>
+<text x="224" y="15.16" font-size="12" font-weight="700" fill="#155B8A">Proposed Indic extension</text>
+<rect x="4" y="19.919999999999998" width="66" height="28.22" rx="6" fill="#E8F1FA" stroke="#0072B2" stroke-width="1.5"/>
+<text x="11" y="31.3" text-anchor="start" font-size="10" font-weight="700" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">1  Selection</text>
+<text x="11" y="43.5" text-anchor="start" font-size="10" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">client input</text>
+<rect x="4" y="56.44" width="66" height="46.48" rx="6" fill="#E3F4EC" stroke="#007A5A" stroke-width="1.5"/>
+<text x="11" y="77.0" text-anchor="start" font-size="10" font-weight="700" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">2  Cascade</text>
+<text x="11" y="89.2" text-anchor="start" font-size="10" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">output</text>
+<rect x="4" y="111.22" width="66" height="31.54" rx="6" fill="#FBE9E6" stroke="#B03A2E" stroke-width="1.5"/>
+<text x="11" y="124.3" text-anchor="start" font-size="10" font-weight="700" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">3  Gate</text>
+<text x="11" y="136.5" text-anchor="start" font-size="10" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">check</text>
+<rect x="4" y="151.06" width="66" height="46.48" rx="6" fill="#FFFFFF" stroke="#0072B2" stroke-width="1.5"/>
+<text x="11" y="171.6" text-anchor="start" font-size="10" font-weight="700" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">4  Spoken</text>
+<text x="11" y="183.8" text-anchor="start" font-size="10" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">sentence</text>
+<rect x="78" y="19.919999999999998" width="134" height="28.22" rx="6" fill="#F4F4F4" stroke="#6B6B6B" stroke-width="1.5"/>
+<text x="145.0" y="31.1" text-anchor="middle" font-size="11.0" font-weight="700" font-style="italic" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">English</text>
+<text x="145.0" y="44.5" text-anchor="middle" font-size="10.45" font-weight="700" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">No + Water</text>
+<rect x="78" y="56.44" width="134" height="46.48" rx="6" fill="#FBEAEA" stroke="#AC252B" stroke-width="1.5"/>
+<text x="145.0" y="77.0" text-anchor="middle" font-size="10.0" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#AC252B">“I am not and will</text>
+<text x="145.0" y="89.2" text-anchor="middle" font-size="10.0" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#AC252B">eat at.”</text>
+<rect x="78" y="111.22" width="134" height="31.54" rx="6" fill="#FBEAEA" stroke="#AC252B" stroke-width="1.5"/>
+<text x="145.0" y="124.2" text-anchor="middle" font-size="10.5" font-weight="700" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#AC252B">Rejected twice</text>
+<text x="145.0" y="137.0" text-anchor="middle" font-size="9.975" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">selected concept missing</text>
+<rect x="78" y="151.06" width="134" height="46.48" rx="6" fill="#E9F1F8" stroke="#155B8A" stroke-width="1.5"/>
+<text x="145.0" y="165.5" text-anchor="middle" font-size="10.0" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#155B8A">“I want No Water.”</text>
+<text x="145.0" y="177.7" text-anchor="middle" font-size="8.6" font-weight="700" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#155B8A">template fallback</text>
+<text x="145.0" y="189.9" text-anchor="middle" font-size="8.6" font-style="italic" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#5A5A5A">template; stilted</text>
+<rect x="219" y="19.919999999999998" width="134" height="28.22" rx="6" fill="#E8F1FA" stroke="#0072B2" stroke-width="1.5"/>
+<text x="286.0" y="31.1" text-anchor="middle" font-size="11.0" font-weight="700" font-style="italic" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">Hindi</text>
+<text x="286.0" y="44.5" text-anchor="middle" font-size="10.45" font-weight="700" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#111">नहीं + पानी</text>
+<rect x="219" y="56.44" width="134" height="46.48" rx="6" fill="#FBEAEA" stroke="#AC252B" stroke-width="1.5"/>
+<text x="286.0" y="83.1" text-anchor="middle" font-size="10.0" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#AC252B">“नहीं, मैं नहीं चाहिए।”</text>
+<rect x="219" y="111.22" width="134" height="31.54" rx="6" fill="#FBEAEA" stroke="#AC252B" stroke-width="1.5"/>
+<text x="286.0" y="124.2" text-anchor="middle" font-size="10.5" font-weight="700" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#AC252B">Rejected twice</text>
+<text x="286.0" y="137.0" text-anchor="middle" font-size="9.975" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">selected concept missing</text>
+<rect x="219" y="151.06" width="134" height="46.48" rx="6" fill="#E9F1F8" stroke="#155B8A" stroke-width="1.5"/>
+<text x="286.0" y="165.5" text-anchor="middle" font-size="10.0" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#155B8A">“मुझे नहीं पानी चाहिए।”</text>
+<text x="286.0" y="177.7" text-anchor="middle" font-size="8.6" font-weight="700" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#155B8A">template fallback</text>
+<text x="286.0" y="189.9" text-anchor="middle" font-size="8.6" font-style="italic" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#5A5A5A">gloss: “I do not want water”</text>
+<rect x="360" y="19.919999999999998" width="134" height="28.22" rx="6" fill="#E8F1FA" stroke="#0072B2" stroke-width="1.5"/>
+<text x="427.0" y="31.1" text-anchor="middle" font-size="11.0" font-weight="700" font-style="italic" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">Gujarati</text>
+<text x="427.0" y="44.5" text-anchor="middle" font-size="10.45" font-weight="700" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#111">ના + પાણી</text>
+<rect x="360" y="56.44" width="134" height="46.48" rx="6" fill="#EAF6F0" stroke="#17674A" stroke-width="1.5"/>
+<text x="427.0" y="77.0" text-anchor="middle" font-size="10.0" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#17674A">“મને પાણી ના જોઈએ છે.”</text>
+<text x="427.0" y="89.2" text-anchor="middle" font-size="8.6" font-style="italic" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#5A5A5A">gloss: “I do not want water”</text>
+<rect x="360" y="111.22" width="134" height="31.54" rx="6" fill="#EAF6F0" stroke="#17674A" stroke-width="1.5"/>
+<text x="427.0" y="124.2" text-anchor="middle" font-size="10.5" font-weight="700" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#17674A">Accepted</text>
+<text x="427.0" y="137.0" text-anchor="middle" font-size="9.975" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">all checks pass</text>
+<rect x="360" y="151.06" width="134" height="46.48" rx="6" fill="#EAF6F0" stroke="#17674A" stroke-width="1.5"/>
+<text x="427.0" y="165.5" text-anchor="middle" font-size="10.0" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#17674A">“મને પાણી ના જોઈએ છે.”</text>
+<text x="427.0" y="177.7" text-anchor="middle" font-size="8.6" font-weight="700" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#17674A">model sentence</text>
+<text x="427.0" y="189.9" text-anchor="middle" font-size="8.6" font-style="italic" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#5A5A5A">gloss: “I do not want water”</text>
+<rect x="501" y="19.919999999999998" width="134" height="28.22" rx="6" fill="#E8F1FA" stroke="#0072B2" stroke-width="1.5"/>
+<text x="568.0" y="31.1" text-anchor="middle" font-size="11.0" font-weight="700" font-style="italic" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">Marathi</text>
+<text x="568.0" y="44.5" text-anchor="middle" font-size="10.45" font-weight="700" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#111">नाही + पाणी</text>
+<rect x="501" y="56.44" width="134" height="46.48" rx="6" fill="#FBEAEA" stroke="#AC252B" stroke-width="1.5"/>
+<text x="568.0" y="77.0" text-anchor="middle" font-size="10.0" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#AC252B">“मला पाणी हवे आहे.”</text>
+<text x="568.0" y="89.2" text-anchor="middle" font-size="8.6" font-style="italic" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#5A5A5A">gloss: “I want water”</text>
+<rect x="501" y="111.22" width="134" height="31.54" rx="6" fill="#FBEAEA" stroke="#AC252B" stroke-width="1.5"/>
+<text x="568.0" y="124.2" text-anchor="middle" font-size="10.5" font-weight="700" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#AC252B">Rejected twice</text>
+<text x="568.0" y="137.0" text-anchor="middle" font-size="9.975" font-family="Noto Sans, DejaVu Sans, sans-serif" fill="#111">negation missing</text>
+<rect x="501" y="151.06" width="134" height="46.48" rx="6" fill="#E9F1F8" stroke="#155B8A" stroke-width="1.5"/>
+<text x="568.0" y="165.5" text-anchor="middle" font-size="10.0" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#155B8A">“मला नाही पाणी हवे आहे.”</text>
+<text x="568.0" y="177.7" text-anchor="middle" font-size="8.6" font-weight="700" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#155B8A">template fallback</text>
+<text x="568.0" y="189.9" text-anchor="middle" font-size="8.6" font-style="italic" font-family="Noto Sans Devanagari, Noto Sans Gujarati, Noto Sans, DejaVu Sans, sans-serif" fill="#5A5A5A">gloss: “I do not want water”</text>
+<polyline points="145.0,48.14 145.0,56.44" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#ah)"/>
+<polyline points="145.0,102.92 145.0,111.22" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#ah)"/>
+<polyline points="145.0,142.76 145.0,151.06" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#ah)"/>
+<polyline points="286.0,48.14 286.0,56.44" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#ah)"/>
+<polyline points="286.0,102.92 286.0,111.22" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#ah)"/>
+<polyline points="286.0,142.76 286.0,151.06" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#ah)"/>
+<polyline points="427.0,48.14 427.0,56.44" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#ah)"/>
+<polyline points="427.0,102.92 427.0,111.22" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#ah)"/>
+<polyline points="427.0,142.76 427.0,151.06" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#ah)"/>
+<polyline points="568.0,48.14 568.0,56.44" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#ah)"/>
+<polyline points="568.0,102.92 568.0,111.22" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#ah)"/>
+<polyline points="568.0,142.76 568.0,151.06" fill="none" stroke="#333" stroke-width="1.4" marker-end="url(#ah)"/>
+</svg>

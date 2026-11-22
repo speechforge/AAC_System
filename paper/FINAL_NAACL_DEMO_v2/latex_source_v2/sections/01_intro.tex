@@ -1,0 +1,30 @@
+\section{Introduction}
+\label{sec:intro}
+
+A person who communicates through a symbol-based AAC board composes a message by tapping pictograms, and the device voices the selected labels.
+The message is telegraphic---\emph{Water}, or \emph{No}\,+\,\emph{Pizza}---and the listener cannot see the selection.
+For people who cannot rely on speech, such messages carry requests, refusals, and reports of pain, so a sentence that sounds fluent but misstates the selection can cause harm.
+
+\paragraph{Why Indian languages need more than labels.}
+India's 2011 Census recorded 26.8~million persons with disabilities, 2.21\% of the population \citep{census2011}, without isolating those who rely on AAC.
+Hindi, Gujarati, and Marathi express a want with a verb-final, experiencer-dative construction: \emph{Water} becomes \hi{मुझे पानी चाहिए।} in Hindi, \gu{મને પાણી જોઈએ છે.} in Gujarati, and \hi{मला पाणी हवे आहे.} in Marathi.
+Feelings and negation use other constructions, so a literal join of labels is hard for a listener to parse.
+A language model can generalize across combinations, but the small model that fits a 4\,GB GPU in our setup, Qwen2.5-0.5B-Instruct, produced a successful sentence for only \XNaiveSucc{} of our scenarios when prompted without constraints (Section~\ref{sec:eval}).
+
+\paragraph{Fluent is not faithful.}
+An AAC device speaks for its user, so the sentence must preserve what was selected.
+Figure~\ref{fig:teaser} shows how the cascade evaluated here fails: it replaced the concept for \emph{Water}, inverted polarity for Marathi \emph{No}\,+\,\emph{Water}, and added content for \emph{Tired}.
+When negation was passed explicitly, the ungated cascade dropped or inverted polarity in \XPreSPol{} scenarios.
+
+\paragraph{Concept-gated generation.}
+\sys{} treats the selection as a contract.
+A \emph{concept ledger} lists the concepts that must appear and those that must not; a prompted cascade proposes a sentence; a deterministic \emph{gate} accepts it only if the ledger is satisfied; and otherwise a template built from the user's own labels is spoken (Figure~\ref{fig:teaser}).
+The model can improve phrasing but cannot change what was selected.
+Qwen2.5-0.5B-Instruct and IndicF5 are used as released; our contributions are the constraint layer, the interface and trained predictors around it, and a frozen protocol that measures them against matched baselines.
+The system serves symbol-board users in these four languages and the caregivers, clinicians, and researchers who configure boards.
+
+\begin{itemize}
+\item \textbf{Concept-gated realization:} a ledger, a four-part acceptance rule, a retry policy, and a template floor, behind an interface that carries intent and polarity explicitly (Section~\ref{sec:system}).
+\item \textbf{A four-language demo} with a \NSymbols{}-symbol board, Quick Express phrases, personal vocabulary, voice cloning, and predictors trained on AAC dialogues and streamed text (Section~\ref{sec:system}, Appendix~\ref{app:models}).
+\item \textbf{A frozen, paired evaluation} of \NPrimAll{} scenarios against literal, template, unconstrained-prompt, and pre-gate baselines: the gate keeps every selected concept and removes all polarity errors, explicit intent fields cut wrong-act outputs from \XDepUWrong{} to \XDepSWrong{}, and a template alone is a strong floor on this closed grid (Section~\ref{sec:eval}).
+\end{itemize}

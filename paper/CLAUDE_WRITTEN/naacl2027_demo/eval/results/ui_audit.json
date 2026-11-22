@@ -1,0 +1,2351 @@
+{
+ "summary": {
+  "n_single_selections": 276,
+  "n_symbols": 69,
+  "false_negation": [
+   [
+    "BATH",
+    "gu",
+    "નાહવું"
+   ],
+   [
+    "NOSE",
+    "en",
+    "Nose"
+   ],
+   [
+    "NOSE",
+    "gu",
+    "નાક"
+   ]
+  ],
+  "false_question": [],
+  "statement_intent_symbols": [
+   "HAPPY",
+   "LOVE",
+   "SAD"
+  ],
+  "feelings_sent_as_REQUEST": [
+   [
+    "HAPPY",
+    "gu"
+   ],
+   [
+    "HAPPY",
+    "mr"
+   ],
+   [
+    "SAD",
+    "gu"
+   ],
+   [
+    "SAD",
+    "mr"
+   ],
+   [
+    "ANGRY",
+    "en"
+   ],
+   [
+    "ANGRY",
+    "hi"
+   ],
+   [
+    "ANGRY",
+    "gu"
+   ],
+   [
+    "ANGRY",
+    "mr"
+   ],
+   [
+    "TIRED",
+    "en"
+   ],
+   [
+    "TIRED",
+    "hi"
+   ],
+   [
+    "TIRED",
+    "gu"
+   ],
+   [
+    "TIRED",
+    "mr"
+   ],
+   [
+    "SICK",
+    "en"
+   ],
+   [
+    "SICK",
+    "hi"
+   ],
+   [
+    "SICK",
+    "gu"
+   ],
+   [
+    "SICK",
+    "mr"
+   ],
+   [
+    "SCARED",
+    "en"
+   ],
+   [
+    "SCARED",
+    "hi"
+   ],
+   [
+    "SCARED",
+    "gu"
+   ],
+   [
+    "SCARED",
+    "mr"
+   ],
+   [
+    "LOVE",
+    "hi"
+   ],
+   [
+    "LOVE",
+    "gu"
+   ],
+   [
+    "LOVE",
+    "mr"
+   ],
+   [
+    "EXCITED",
+    "en"
+   ],
+   [
+    "EXCITED",
+    "hi"
+   ],
+   [
+    "EXCITED",
+    "gu"
+   ],
+   [
+    "EXCITED",
+    "mr"
+   ]
+  ],
+  "n_false_negation": 3,
+  "n_feelings_sent_as_REQUEST": 27
+ },
+ "rows": [
+  {
+   "category": "core",
+   "id": "YES",
+   "lang": "en",
+   "label": "Yes",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "YES",
+   "lang": "hi",
+   "label": "हाँ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "YES",
+   "lang": "gu",
+   "label": "હા",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "YES",
+   "lang": "mr",
+   "label": "हो",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "NO",
+   "lang": "en",
+   "label": "No",
+   "ui_intent": "NEGATION",
+   "ui_negation": true
+  },
+  {
+   "category": "core",
+   "id": "NO",
+   "lang": "hi",
+   "label": "नहीं",
+   "ui_intent": "NEGATION",
+   "ui_negation": true
+  },
+  {
+   "category": "core",
+   "id": "NO",
+   "lang": "gu",
+   "label": "ના",
+   "ui_intent": "NEGATION",
+   "ui_negation": true
+  },
+  {
+   "category": "core",
+   "id": "NO",
+   "lang": "mr",
+   "label": "नाही",
+   "ui_intent": "NEGATION",
+   "ui_negation": true
+  },
+  {
+   "category": "core",
+   "id": "WANT",
+   "lang": "en",
+   "label": "Want",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "WANT",
+   "lang": "hi",
+   "label": "चाहिए",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "WANT",
+   "lang": "gu",
+   "label": "જોઈએ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "WANT",
+   "lang": "mr",
+   "label": "पाहिजे",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "HELP",
+   "lang": "en",
+   "label": "Help",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "HELP",
+   "lang": "hi",
+   "label": "मदद",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "HELP",
+   "lang": "gu",
+   "label": "મદદ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "HELP",
+   "lang": "mr",
+   "label": "मदत",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "MORE",
+   "lang": "en",
+   "label": "More",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "MORE",
+   "lang": "hi",
+   "label": "और",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "MORE",
+   "lang": "gu",
+   "label": "વધુ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "MORE",
+   "lang": "mr",
+   "label": "आणखी",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "STOP",
+   "lang": "en",
+   "label": "Stop",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "STOP",
+   "lang": "hi",
+   "label": "रुकें",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "STOP",
+   "lang": "gu",
+   "label": "ઊભા રહો",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "STOP",
+   "lang": "mr",
+   "label": "थांबा",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "ME",
+   "lang": "en",
+   "label": "I / Me",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "ME",
+   "lang": "hi",
+   "label": "मैं",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "ME",
+   "lang": "gu",
+   "label": "હું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "ME",
+   "lang": "mr",
+   "label": "मी",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "YOU",
+   "lang": "en",
+   "label": "You",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "YOU",
+   "lang": "hi",
+   "label": "आप",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "YOU",
+   "lang": "gu",
+   "label": "તમે",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "YOU",
+   "lang": "mr",
+   "label": "तुम्ही",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "GOOD",
+   "lang": "en",
+   "label": "Good",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "GOOD",
+   "lang": "hi",
+   "label": "अच्छा",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "GOOD",
+   "lang": "gu",
+   "label": "સારું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "GOOD",
+   "lang": "mr",
+   "label": "चांगले",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "BAD",
+   "lang": "en",
+   "label": "Bad",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "BAD",
+   "lang": "hi",
+   "label": "खराब",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "BAD",
+   "lang": "gu",
+   "label": "ખરાબ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "core",
+   "id": "BAD",
+   "lang": "mr",
+   "label": "वाईट",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "EAT",
+   "lang": "en",
+   "label": "Eat",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "EAT",
+   "lang": "hi",
+   "label": "खाना",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "EAT",
+   "lang": "gu",
+   "label": "જમવું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "EAT",
+   "lang": "mr",
+   "label": "खाणे",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "DRINK",
+   "lang": "en",
+   "label": "Drink",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "DRINK",
+   "lang": "hi",
+   "label": "पीना",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "DRINK",
+   "lang": "gu",
+   "label": "પીવું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "DRINK",
+   "lang": "mr",
+   "label": "पिणे",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "PLAY",
+   "lang": "en",
+   "label": "Play",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "PLAY",
+   "lang": "hi",
+   "label": "खेलना",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "PLAY",
+   "lang": "gu",
+   "label": "રમવું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "PLAY",
+   "lang": "mr",
+   "label": "खेळणे",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "SLEEP",
+   "lang": "en",
+   "label": "Sleep",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "SLEEP",
+   "lang": "hi",
+   "label": "सोना",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "SLEEP",
+   "lang": "gu",
+   "label": "ઊંઘવું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "SLEEP",
+   "lang": "mr",
+   "label": "झोपणे",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "GO",
+   "lang": "en",
+   "label": "Go",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "GO",
+   "lang": "hi",
+   "label": "जाना",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "GO",
+   "lang": "gu",
+   "label": "જવું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "GO",
+   "lang": "mr",
+   "label": "जाणे",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "STUDY",
+   "lang": "en",
+   "label": "Study",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "STUDY",
+   "lang": "hi",
+   "label": "पढ़ना",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "STUDY",
+   "lang": "gu",
+   "label": "ભણવું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "STUDY",
+   "lang": "mr",
+   "label": "अभ्यास",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "BATH",
+   "lang": "en",
+   "label": "Bathe",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "BATH",
+   "lang": "hi",
+   "label": "नहाना",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "BATH",
+   "lang": "gu",
+   "label": "નાહવું",
+   "ui_intent": "NEGATION",
+   "ui_negation": true
+  },
+  {
+   "category": "actions",
+   "id": "BATH",
+   "lang": "mr",
+   "label": "आंघोळ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "CALL",
+   "lang": "en",
+   "label": "Call",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "CALL",
+   "lang": "hi",
+   "label": "फ़ोन करना",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "CALL",
+   "lang": "gu",
+   "label": "ફોન કરવો",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "CALL",
+   "lang": "mr",
+   "label": "फोन करणे",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "WRITE",
+   "lang": "en",
+   "label": "Write",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "WRITE",
+   "lang": "hi",
+   "label": "लिखना",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "WRITE",
+   "lang": "gu",
+   "label": "લખવું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "WRITE",
+   "lang": "mr",
+   "label": "लिहिणे",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "LOOK",
+   "lang": "en",
+   "label": "Look",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "LOOK",
+   "lang": "hi",
+   "label": "देखना",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "LOOK",
+   "lang": "gu",
+   "label": "જોવું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "actions",
+   "id": "LOOK",
+   "lang": "mr",
+   "label": "पाहणे",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "WATER",
+   "lang": "en",
+   "label": "Water",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "WATER",
+   "lang": "hi",
+   "label": "पानी",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "WATER",
+   "lang": "gu",
+   "label": "પાણી",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "WATER",
+   "lang": "mr",
+   "label": "पाणी",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "FOOD",
+   "lang": "en",
+   "label": "Food",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "FOOD",
+   "lang": "hi",
+   "label": "खाना",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "FOOD",
+   "lang": "gu",
+   "label": "ખોરાક",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "FOOD",
+   "lang": "mr",
+   "label": "जेवण",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "MILK",
+   "lang": "en",
+   "label": "Milk",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "MILK",
+   "lang": "hi",
+   "label": "दूध",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "MILK",
+   "lang": "gu",
+   "label": "દૂધ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "MILK",
+   "lang": "mr",
+   "label": "दूध",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "RICE",
+   "lang": "en",
+   "label": "Rice",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "RICE",
+   "lang": "hi",
+   "label": "चावल",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "RICE",
+   "lang": "gu",
+   "label": "ભાત",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "RICE",
+   "lang": "mr",
+   "label": "भात",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "ROTI",
+   "lang": "en",
+   "label": "Bread/Roti",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "ROTI",
+   "lang": "hi",
+   "label": "रोटी",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "ROTI",
+   "lang": "gu",
+   "label": "રોટલી",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "ROTI",
+   "lang": "mr",
+   "label": "पोळी",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "FRUIT",
+   "lang": "en",
+   "label": "Fruit",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "FRUIT",
+   "lang": "hi",
+   "label": "फल",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "FRUIT",
+   "lang": "gu",
+   "label": "ફળ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "FRUIT",
+   "lang": "mr",
+   "label": "फळ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "TEA",
+   "lang": "en",
+   "label": "Tea",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "TEA",
+   "lang": "hi",
+   "label": "चाय",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "TEA",
+   "lang": "gu",
+   "label": "ચા",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "TEA",
+   "lang": "mr",
+   "label": "चहा",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "JUICE",
+   "lang": "en",
+   "label": "Juice",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "JUICE",
+   "lang": "hi",
+   "label": "जूस",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "JUICE",
+   "lang": "gu",
+   "label": "જ્યુસ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "JUICE",
+   "lang": "mr",
+   "label": "रस",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "SNACK",
+   "lang": "en",
+   "label": "Biscuit",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "SNACK",
+   "lang": "hi",
+   "label": "बिस्कुट",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "SNACK",
+   "lang": "gu",
+   "label": "બિસ્કિટ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "SNACK",
+   "lang": "mr",
+   "label": "बिस्किट",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "PIZZA",
+   "lang": "en",
+   "label": "Pizza",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "PIZZA",
+   "lang": "hi",
+   "label": "पिज़्ज़ा",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "PIZZA",
+   "lang": "gu",
+   "label": "પિઝા",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "food",
+   "id": "PIZZA",
+   "lang": "mr",
+   "label": "पिझ्झा",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "HAPPY",
+   "lang": "en",
+   "label": "Happy",
+   "ui_intent": "STATEMENT",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "HAPPY",
+   "lang": "hi",
+   "label": "खुश",
+   "ui_intent": "STATEMENT",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "HAPPY",
+   "lang": "gu",
+   "label": "ખુશ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "HAPPY",
+   "lang": "mr",
+   "label": "आनंदी",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "SAD",
+   "lang": "en",
+   "label": "Sad",
+   "ui_intent": "STATEMENT",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "SAD",
+   "lang": "hi",
+   "label": "उदास",
+   "ui_intent": "STATEMENT",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "SAD",
+   "lang": "gu",
+   "label": "ઉદાસ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "SAD",
+   "lang": "mr",
+   "label": "दुःखी",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "ANGRY",
+   "lang": "en",
+   "label": "Angry",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "ANGRY",
+   "lang": "hi",
+   "label": "गुस्सा",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "ANGRY",
+   "lang": "gu",
+   "label": "ગુસ્સો",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "ANGRY",
+   "lang": "mr",
+   "label": "रागात",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "TIRED",
+   "lang": "en",
+   "label": "Tired",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "TIRED",
+   "lang": "hi",
+   "label": "थका हुआ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "TIRED",
+   "lang": "gu",
+   "label": "થાકેલું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "TIRED",
+   "lang": "mr",
+   "label": "दमलेला",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "SICK",
+   "lang": "en",
+   "label": "Sick",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "SICK",
+   "lang": "hi",
+   "label": "बीमार",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "SICK",
+   "lang": "gu",
+   "label": "બીમાર",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "SICK",
+   "lang": "mr",
+   "label": "आजारी",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "SCARED",
+   "lang": "en",
+   "label": "Scared",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "SCARED",
+   "lang": "hi",
+   "label": "डरा हुआ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "SCARED",
+   "lang": "gu",
+   "label": "ડરેલું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "SCARED",
+   "lang": "mr",
+   "label": "घाबरलेला",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "LOVE",
+   "lang": "en",
+   "label": "Love",
+   "ui_intent": "STATEMENT",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "LOVE",
+   "lang": "hi",
+   "label": "प्यार",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "LOVE",
+   "lang": "gu",
+   "label": "પ્રેમ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "LOVE",
+   "lang": "mr",
+   "label": "प्रेम",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "EXCITED",
+   "lang": "en",
+   "label": "Excited",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "EXCITED",
+   "lang": "hi",
+   "label": "उत्साहित",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "EXCITED",
+   "lang": "gu",
+   "label": "ઉત્સાહિત",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "feelings",
+   "id": "EXCITED",
+   "lang": "mr",
+   "label": "उत्साही",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "MOTHER",
+   "lang": "en",
+   "label": "Mother",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "MOTHER",
+   "lang": "hi",
+   "label": "माँ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "MOTHER",
+   "lang": "gu",
+   "label": "માતા",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "MOTHER",
+   "lang": "mr",
+   "label": "आई",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "FATHER",
+   "lang": "en",
+   "label": "Father",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "FATHER",
+   "lang": "hi",
+   "label": "पिताजी",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "FATHER",
+   "lang": "gu",
+   "label": "પિતાજી",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "FATHER",
+   "lang": "mr",
+   "label": "बाबा",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "SISTER",
+   "lang": "en",
+   "label": "Sister",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "SISTER",
+   "lang": "hi",
+   "label": "बहन",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "SISTER",
+   "lang": "gu",
+   "label": "બહેન",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "SISTER",
+   "lang": "mr",
+   "label": "बहीण",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "BROTHER",
+   "lang": "en",
+   "label": "Brother",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "BROTHER",
+   "lang": "hi",
+   "label": "भाई",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "BROTHER",
+   "lang": "gu",
+   "label": "ભાઈ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "BROTHER",
+   "lang": "mr",
+   "label": "भाऊ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "TEACHER",
+   "lang": "en",
+   "label": "Teacher",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "TEACHER",
+   "lang": "hi",
+   "label": "शिक्षक",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "TEACHER",
+   "lang": "gu",
+   "label": "શિક્ષક",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "TEACHER",
+   "lang": "mr",
+   "label": "शिक्षक",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "DOCTOR",
+   "lang": "en",
+   "label": "Doctor",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "DOCTOR",
+   "lang": "hi",
+   "label": "डॉक्टर",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "DOCTOR",
+   "lang": "gu",
+   "label": "ડૉક્ટર",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "DOCTOR",
+   "lang": "mr",
+   "label": "डॉक्टर",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "FRIEND",
+   "lang": "en",
+   "label": "Friend",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "FRIEND",
+   "lang": "hi",
+   "label": "दोस्त",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "FRIEND",
+   "lang": "gu",
+   "label": "મિત્ર",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "people",
+   "id": "FRIEND",
+   "lang": "mr",
+   "label": "मित्र",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "HOME",
+   "lang": "en",
+   "label": "Home",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "HOME",
+   "lang": "hi",
+   "label": "घर",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "HOME",
+   "lang": "gu",
+   "label": "ઘર",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "HOME",
+   "lang": "mr",
+   "label": "घर",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "SCHOOL",
+   "lang": "en",
+   "label": "School",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "SCHOOL",
+   "lang": "hi",
+   "label": "स्कूल",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "SCHOOL",
+   "lang": "gu",
+   "label": "શાળા",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "SCHOOL",
+   "lang": "mr",
+   "label": "शाळा",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "HOSPITAL",
+   "lang": "en",
+   "label": "Hospital",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "HOSPITAL",
+   "lang": "hi",
+   "label": "अस्पताल",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "HOSPITAL",
+   "lang": "gu",
+   "label": "હોસ્પિટલ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "HOSPITAL",
+   "lang": "mr",
+   "label": "रुग्णालय",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "TOILET",
+   "lang": "en",
+   "label": "Toilet",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "TOILET",
+   "lang": "hi",
+   "label": "शौचालय",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "TOILET",
+   "lang": "gu",
+   "label": "શૌચાલય",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "TOILET",
+   "lang": "mr",
+   "label": "शौचालय",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "ROOM",
+   "lang": "en",
+   "label": "Bedroom",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "ROOM",
+   "lang": "hi",
+   "label": "कमरा",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "ROOM",
+   "lang": "gu",
+   "label": "ઓરડો",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "ROOM",
+   "lang": "mr",
+   "label": "खोली",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "MARKET",
+   "lang": "en",
+   "label": "Market",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "MARKET",
+   "lang": "hi",
+   "label": "बाज़ार",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "MARKET",
+   "lang": "gu",
+   "label": "બજાર",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "places",
+   "id": "MARKET",
+   "lang": "mr",
+   "label": "बाजार",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "LUNGS",
+   "lang": "en",
+   "label": "Lungs",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "LUNGS",
+   "lang": "hi",
+   "label": "फेफड़े",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "LUNGS",
+   "lang": "gu",
+   "label": "ફેફસાં",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "LUNGS",
+   "lang": "mr",
+   "label": "फुप्फुसे",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "HEART",
+   "lang": "en",
+   "label": "Heart",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "HEART",
+   "lang": "hi",
+   "label": "दिल",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "HEART",
+   "lang": "gu",
+   "label": "હૃદય",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "HEART",
+   "lang": "mr",
+   "label": "हृदय",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "BRAIN",
+   "lang": "en",
+   "label": "Brain",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "BRAIN",
+   "lang": "hi",
+   "label": "दिमाग",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "BRAIN",
+   "lang": "gu",
+   "label": "મગજ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "BRAIN",
+   "lang": "mr",
+   "label": "मेंदू",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "BONE",
+   "lang": "en",
+   "label": "Bone",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "BONE",
+   "lang": "hi",
+   "label": "हड्डी",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "BONE",
+   "lang": "gu",
+   "label": "હાડકું",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "BONE",
+   "lang": "mr",
+   "label": "हाड",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "TOOTH",
+   "lang": "en",
+   "label": "Tooth",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "TOOTH",
+   "lang": "hi",
+   "label": "दांत",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "TOOTH",
+   "lang": "gu",
+   "label": "દાંત",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "TOOTH",
+   "lang": "mr",
+   "label": "दात",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "EYE",
+   "lang": "en",
+   "label": "Eye",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "EYE",
+   "lang": "hi",
+   "label": "आँख",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "EYE",
+   "lang": "gu",
+   "label": "આંખ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "EYE",
+   "lang": "mr",
+   "label": "डोळा",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "EAR",
+   "lang": "en",
+   "label": "Ear",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "EAR",
+   "lang": "hi",
+   "label": "कान",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "EAR",
+   "lang": "gu",
+   "label": "કાન",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "EAR",
+   "lang": "mr",
+   "label": "कान",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "NOSE",
+   "lang": "en",
+   "label": "Nose",
+   "ui_intent": "NEGATION",
+   "ui_negation": true
+  },
+  {
+   "category": "body",
+   "id": "NOSE",
+   "lang": "hi",
+   "label": "नाक",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "body",
+   "id": "NOSE",
+   "lang": "gu",
+   "label": "નાક",
+   "ui_intent": "NEGATION",
+   "ui_negation": true
+  },
+  {
+   "category": "body",
+   "id": "NOSE",
+   "lang": "mr",
+   "label": "नाक",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "NAMASTE",
+   "lang": "en",
+   "label": "Hello",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "NAMASTE",
+   "lang": "hi",
+   "label": "नमस्ते",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "NAMASTE",
+   "lang": "gu",
+   "label": "નમસ્તે",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "NAMASTE",
+   "lang": "mr",
+   "label": "नमस्ते",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "THANKS",
+   "lang": "en",
+   "label": "Thank You",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "THANKS",
+   "lang": "hi",
+   "label": "धन्यवाद",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "THANKS",
+   "lang": "gu",
+   "label": "આભાર",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "THANKS",
+   "lang": "mr",
+   "label": "धन्यवाद",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "HOW",
+   "lang": "en",
+   "label": "How are you?",
+   "ui_intent": "QUESTION",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "HOW",
+   "lang": "hi",
+   "label": "कैसे हैं?",
+   "ui_intent": "QUESTION",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "HOW",
+   "lang": "gu",
+   "label": "કેમ છો?",
+   "ui_intent": "QUESTION",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "HOW",
+   "lang": "mr",
+   "label": "कसे आहात?",
+   "ui_intent": "QUESTION",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "BYE",
+   "lang": "en",
+   "label": "Goodbye",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "BYE",
+   "lang": "hi",
+   "label": "अलविदा",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "BYE",
+   "lang": "gu",
+   "label": "આવજો",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "BYE",
+   "lang": "mr",
+   "label": "बाय",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "PLEASE",
+   "lang": "en",
+   "label": "Please",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "PLEASE",
+   "lang": "hi",
+   "label": "कृपया",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "PLEASE",
+   "lang": "gu",
+   "label": "મહેરબાની કરીને",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "chat",
+   "id": "PLEASE",
+   "lang": "mr",
+   "label": "कृपया",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "HELP_EMERGENCY",
+   "lang": "en",
+   "label": "Help!",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "HELP_EMERGENCY",
+   "lang": "hi",
+   "label": "मदद चाहिए!",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "HELP_EMERGENCY",
+   "lang": "gu",
+   "label": "મદદ કરો!",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "HELP_EMERGENCY",
+   "lang": "mr",
+   "label": "मदत हवी!",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "PAIN",
+   "lang": "en",
+   "label": "Pain",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "PAIN",
+   "lang": "hi",
+   "label": "दर्द",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "PAIN",
+   "lang": "gu",
+   "label": "દુખાવો",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "PAIN",
+   "lang": "mr",
+   "label": "वेदना",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "MEDICINE",
+   "lang": "en",
+   "label": "Medicine",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "MEDICINE",
+   "lang": "hi",
+   "label": "दवा",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "MEDICINE",
+   "lang": "gu",
+   "label": "દવા",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "MEDICINE",
+   "lang": "mr",
+   "label": "औषध",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "AMBULANCE",
+   "lang": "en",
+   "label": "Ambulance",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "AMBULANCE",
+   "lang": "hi",
+   "label": "एम्बुलेंस",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "AMBULANCE",
+   "lang": "gu",
+   "label": "એમ્બ્યુલન્સ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "AMBULANCE",
+   "lang": "mr",
+   "label": "रुग्णवाहिका",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "FIRE",
+   "lang": "en",
+   "label": "Danger / Fire",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "FIRE",
+   "lang": "hi",
+   "label": "खतरा / आग",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "FIRE",
+   "lang": "gu",
+   "label": "જોખમ",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  },
+  {
+   "category": "emergency",
+   "id": "FIRE",
+   "lang": "mr",
+   "label": "धोका",
+   "ui_intent": "REQUEST",
+   "ui_negation": false
+  }
+ ]
+}

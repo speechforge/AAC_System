@@ -1,0 +1,3 @@
+cited keys: 8 | bib entries: 8 | verified in lock: 7
+ERROR: 'karmakar-sinha-2024-aiding' is not verified (status: single-source) (02_related.tex:4)
+FAIL (1 errors)

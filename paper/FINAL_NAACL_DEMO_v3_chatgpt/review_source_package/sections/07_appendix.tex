@@ -1,0 +1,54 @@
+Figure~\ref{fig:workflow} places English as the reference language beside Hindi, Gujarati, and Marathi extensions of the same realization policy.
+The four phases are selection, first cascade candidate, gate decision, and returned text.
+These are recorded regression traces, not authored paraphrases or a new performance sample.
+Water examples include prompt-overlapping cases excluded from the primary result.
+Blue denotes a quoted example, green the returned text, and red a rejected candidate or explicitly labelled addition; the written verdict carries the same information in grayscale.
+
+
+\section{Representative Test Cases}
+\label{app:cases}
+Table~\ref{tab:representative} supplies one common message per remaining primary family in all four languages.
+Together with the request and negated-feeling traces in Figure~\ref{fig:workflow}, it covers the six archived scenario families without listing every scenario.
+The shared intended messages are \emph{“I do not want pizza,” “I am tired,” “I want to drink water,”} and \emph{“I want to call my mother.”}
+Outputs are preserved even where the model's construction is awkward; the examples do not substitute for native-speaker ratings.
+
+\begin{table*}[t]
+\centering
+\input{generated/appendix_cases}
+\caption{Representative recorded regression inputs and outputs. M: accepted model text; T: checked template after rejection. Blue marks quotations, not a naturalness judgment. In particular, accepted Hindi action/call and Marathi feeling outputs illustrate why lexical success needs independent language assessment. All four languages use the same decision policy.}
+\label{tab:representative}
+\end{table*}
+
+\paragraph{Accepted failures in the archived policy.}
+For Hindi \hi{नहीं + उदास}, the gate accepted \hi{उदास, मुझे नहीं }\bad{\hi{चाहिए}}\hi{।}, a negated want rather than the intended negated feeling.
+For Gujarati \gu{થાકેલું}, it accepted \gu{મારે થાકેલું હું કહું.}, classified as structurally ill-formed in the audit.
+For Marathi \hi{नाही + आनंदी}, it accepted \hi{मला आनंदी }\bad{\hi{नको}}\hi{ आहे.}, likewise classified as a negated want.
+The red spans identify unwanted act cues, not newly added board concepts.
+An English example for \emph{Sick} was “I am sick and need to \bad{eat out}.”
+Here the red span is an unselected addition.
+These classifications are diagnostic and have not been adjudicated by native speakers.
+
+\paragraph{Clarification and unavailable service.}
+The clean-environment check records an English \emph{Nose} request with unspecified act producing clarification.
+The interface captures also show a server-unreachable state returning a labelled literal preview without guessed wording.
+These examples distinguish interaction outcomes from successful sentence realization.
+Clarification requires a user choice before generation; a literal preview preserves the visible labels but is not counted as a complete sentence.
+
+\section{Scoring and Reproducibility Details}
+\label{app:scorer}
+The archived scorer matches lexical concept forms and stems, then checks polarity, act markers, additions, and off-task patterns.
+A negator in a valid user refusal is correct; a refusal by the model to generate text is off-task.
+The scorer-v1 Gujarati feeling-act gap explains all eight gold-field template failures.
+Scorer v2 adds or repairs multilingual forms, perspective checks, negative-scope checks, and script checks; scores under it are reported only with that label.
+Neither version is an independent semantic reference.
+
+The repaired regression uses Qwen revision beginning 7ae5576, half precision, PyTorch 2.11.0, and Transformers 5.14.1 on a TITAN Xp.
+English seed 11 and greedy Indic decoding are kept fixed.
+Archived and repaired candidate streams remain separate, and the gate/retry/template policy is replayed over saved candidates.
+The suffix-trie prediction comparison uses separate source-conversation partitions; the Hindi dialogues are translated synthetic conversations.
+The native-review dependency is retained for the prepared 120-scenario evaluation rather than resolved by the lexical scorer.
+
+\balance
+The optional HMM checkpoints and a companion English \emph{FLAN-T5-small} refiner are not the evaluated Qwen realization path.
+The companion refiner was trained on template-generated data; its template agreement cannot establish independent naturalness or AAC usability.
+No result from it is used to support the gate contribution.

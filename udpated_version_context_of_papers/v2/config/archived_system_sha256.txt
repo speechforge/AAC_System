@@ -1,0 +1,15 @@
+c9c0c68191fcc7463f6d6b9dc82900b3e76b16c4008c05c31d9f0be776f27c6b  ./indic-generative-aac/backend/app.py
+946a6dc7ee1949f9a3ac80b377c7a75bf3dcd7257b25c2c66df355b36ccb7fad  ./indic-generative-aac/backend/build_large_hmm.py
+f58a328bfc83267659a6298337bce6f45984f314691201abb4cfe80dbddc8374  ./indic-generative-aac/backend/evaluate.py
+4517d411e2f8afce8fedd17bbb3fe61b337edef4687b286d890e6d114da3e6ec  ./indic-generative-aac/backend/hmm.py
+cb7251a5093b6cee863f159940105963d9bbec55974ac9726a68bcad9ed76d4b  ./indic-generative-aac/backend/infinity_gram.py
+bfed96567593010c8b0e75272c913824e9ac3a5c07f027e5702901529cc9568f  ./indic-generative-aac/backend/keep_alive.sh
+eabeb94e83781a9ee0e3d53ba0d8755a8d7c89c8c8be2ca352147d05f95a1d65  ./indic-generative-aac/backend/llm.py
+27dc6b6726d84ff9ba290e8f4b1cf84ec3210aa868ac80cc6fc906b2d93eae7b  ./indic-generative-aac/backend/segmentation.py
+e5d6bda162790dab6dfeddab5855d8640db051ccd1165a6aeed4510e941e5acc  ./indic-generative-aac/backend/semantic.py
+a8f880e6084ffdf8766b23b37a20986d0970d9306fa357e7f686c246d8e734fd  ./indic-generative-aac/backend/start_server.sh
+c7ba2144575c4f14096a45a13dd97326e4d2ceb9587560b6777074923ad55cd9  ./indic-generative-aac/backend/test_llm.py
+ece7ba56faedb1038f073d6bea15d8bc08cb6f4b2bdb1bf20af10e9f1d43894d  ./indic-generative-aac/backend/test_tts.py
+0731e6498382c7beee45f7875af8d3c90385a46f027846bb50b5e5f9d51c4e7a  ./indic-generative-aac/backend/train_hmm_large.py
+5d5b733a3006e403959937d0466d66a8e822ab669257981411eb210b2de1b0ea  ./indic-generative-aac/backend/tts.py
+0c8da90b05786630f203a6d4e7f22cbe121e6c61a3caa7053e5a7d86f51ce71d  ./indic-generative-aac/frontend/index.html

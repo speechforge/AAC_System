@@ -1,0 +1,16 @@
+{
+ "en": {
+  "E (no COV)": {
+   "app_module_ksr": 56.51520970857154,
+   "experiment_ksr": 56.51520970857154,
+   "abs_diff": 0.0,
+   "seconds": 33
+  },
+  "E+COV": {
+   "app_module_ksr": 57.49455058661185,
+   "experiment_ksr": 57.49455058661185,
+   "abs_diff": 0.0,
+   "seconds": 40
+  }
+ }
+}

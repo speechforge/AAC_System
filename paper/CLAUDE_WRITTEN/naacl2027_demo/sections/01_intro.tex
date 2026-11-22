@@ -1,0 +1,15 @@
+\section{Introduction}
+\label{sec:intro}
+
+A person who communicates through an AAC board composes a message by selecting symbols, and a speech-generating device voices the selected labels.
+The result is telegraphic: \emph{Water}, or \emph{No}+\emph{Pizza}. A language model can expand such selections into sentences, and Indian-language boards would benefit from this because Hindi, Gujarati and Marathi require agreement, postpositions and negation forms that a literal join of labels cannot supply.
+For AAC, however, fluency is not sufficient, because the device speaks on behalf of the user and the listener cannot see the selection.
+Three outputs of the cascade evaluated in this paper illustrate the risk: for \emph{Water} it produced ``I need food.'' (a concept replaced); for \emph{No}+\emph{Water} in Marathi it produced \hi{मला पाणी हवे आहे.} (``I want water''; polarity inverted); and for \emph{Tired} it produced ``The user is tired of waiting for their meal and wants to go out to eat.'' (content added).
+
+\sys{} addresses this with a \emph{concept gate}. The selection is converted into a ledger of required and forbidden concepts, a prompted cascade realizes a sentence, a deterministic validator accepts it only if the ledger is satisfied, and a template built from the user's own labels replaces it otherwise.
+The system adds a four-locale symbol board, trained next-word predictors and zero-shot voice synthesis. We contribute:
+\begin{itemize}
+\item the gated realization pipeline and its acceptance rule (\S\ref{sec:system}), with an API that carries polarity and intent explicitly;
+\item a frozen, paired evaluation with baselines, an independent scorer and a failure analysis (\S\ref{sec:eval}), and the fixtures and scorer for reuse;
+\item trained English and Hindi predictors, evaluated on held-out conversations, and the end-to-end system with its demonstration walkthrough (Figures~\ref{fig:arch} and~\ref{fig:ui}).
+\end{itemize}

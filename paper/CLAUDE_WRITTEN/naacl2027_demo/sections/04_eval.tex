@@ -1,0 +1,47 @@
+\section{Evaluation}
+\label{sec:eval}
+
+\paragraph{Protocol.}
+We froze \NScen{} scenarios before scoring any output: per language (English, Hindi, Gujarati, Marathi) 46 selections from the board vocabulary, namely a food request (10), a refusal (\emph{No}+food; 10), a feeling (8), a negated feeling (8), an action and object (6), and \emph{Help} or \emph{Call} with a person (4), with gold polarity and act fixed by the grid; eight Hinglish scenarios form an exploratory block.
+Each scenario is sent as the web client builds it (\emph{client}) and with explicit \texttt{intent} and \texttt{negation} fields (\emph{structured}). We compare a literal join of the labels; the backend template alone; the same Qwen model with one unconstrained prompt (no ledger, examples, verifier or gate); the cascade output before the gate, taken from the same response as the deployed output so that gate and fallback are isolated on identical candidates; and the deployed output of the live \texttt{/generate} endpoint.
+A scenario \emph{succeeds} if the output keeps every selected concept, has the gold polarity and act, adds no unselected concept, and is a first-person sentence in the target script.
+A lexical scorer written independently of the validator applies these rules (Appendix~\ref{app:scorer}); its Indic lexicon is not native-reviewed.
+Nine scenarios whose few-shot prompt reproduces a prompt example are excluded, leaving \NPrimAll{} (\NPrimEN{}, \NPrimHI{}, \NPrimGU{}, \NPrimMR{}).
+Differences are paired by scenario with 95\% bootstrap intervals (10,000 resamples). Runs used one GTX 1650 (4\,GB); English and code-mixed outputs are single samples because LLM-1 samples.
+
+\input{generated/tab_results}
+
+\paragraph{Results.}
+Table~\ref{tab:results} reports the primary set.
+Before the gate, the cascade keeps \KeptPctPre{} of required concepts and succeeds on \SuccPctPre{} of scenarios; with gate and fallback the same requests keep \KeptDepU{} (\KeptPctDepU{}; 95\% lower bound \CPallConcept{}) and succeed on \SuccPctDepU{}, a paired gain of \PDPEN{} in English, \PDPHI{} in Hindi, \PDPGU{} in Gujarati and \PDPMR{} in Marathi.
+Polarity errors fall from \PolErrPre{} to \PolErrDepU{} (upper bound \CPzeroPol{}); with two events before the gate we make no significance claim.
+Unconstrained prompting succeeds on \SuccPctNaive{}; the deployed pipeline gains \PDNEN{}, \PDNHI{}, \PDNGU{} and \PDNMR{} over it.
+Structured payloads raise success to \SuccPctDepS{} (\PSUEN{}, \PSUHI{}, \PSUGU{}, \PSUMR{}).
+On the eight Hinglish scenarios it succeeds on \CMSuccDepU{} (client) and \CMSuccDepS{} (structured), against \CMSuccNaive{} unconstrained.
+
+A template alone is a strong baseline: under the structured payload it succeeds on \SuccTmplS{}, ahead of the deployed pipeline in every language (deployed minus template: \PSTEN{}, \PSTHI{}, \PSTGU{}, \PSTMR{}).
+The gate accepts \GateAccS{} cascade outputs, of which \GateAccOkS{} (\GateAccPctS{}) are correct, while the \GateFbS{} fallbacks are correct in \GateFbPctS{}; under the client payload the figures are \GateAccOkU{}/\GateAccU{} (\GateAccPctU{}) and \GateFbOkU{}/\GateFbU{} (\GateFbPctU{}).
+The gate is thus a safeguard on concepts and polarity, not a measured gain in sentence quality over a template; fluency was not scored.
+
+\paragraph{Failure analysis.}
+Accepted outputs fail in three ways.
+(i)~\emph{Perspective and added content}: ``The user requested milk.'' and ``The user is tired of waiting for their meal and wants to go out to eat.'' pass because every selected concept is present and no listed word appears (Appendix, Figure~\ref{fig:failure}).
+(ii)~\emph{Wrong act}: Indic feelings are realized as wants (\hi{मुझे गुस्सा चाहिए।}, ``I want anger''), because the client sends \textsc{request} for \UIFeelReq{} of its 32 feeling selections and the validator's feeling test is an English pattern; \ActWrongDepU{} deployed outputs have the wrong act under the client payload and \ActWrongDepS{} under the structured one.
+(iii)~\emph{Template defects}: client intent \textsc{negation} reaches the template's default branch (``I want No Pizza.''), and Indic negated feelings become negated wants (\hi{मला नाही आनंदी हवे आहे}).
+Independently of the model, the client's substring rule marks \UIFalseNeg{} of \UISingle{} single-symbol selections as negated (\emph{Nose}; two Gujarati labels).
+
+\input{generated/tab_pred}
+
+\paragraph{Prediction.}
+Table~\ref{tab:pred} scores next-word prediction on AAC-user utterances of held-out source conversations; baselines share the training sources and tokenization.
+The infinity-gram model exceeds unigram and bigram baselines in both languages and a backoff trigram by \PredDENOneTri{} hit@1 in English and \PredDHIOneTri{} in Hindi (hit@5: \PredDENFiveTri{}, \PredDHIFiveTri{}).
+The trained HMMs are weaker on AAC contexts: the Gutenberg HMM reaches \GutHitOne{}\% hit@1 (domain mismatch with literary text), the Hindi HMM retrained on the training sources \HiHmmHitOne{}\%.
+Gujarati contexts return English words and Marathi contexts Hindi function words, so neither has a predictor.
+The refiner of Appendix~\ref{app:refiner} reproduces from its raw predictions at \RefAModelPct{} exact match (\RefFModelPct{} with fluency pre-adaptation) on group-disjoint template payloads, where the rules reach \RefARulesPct{} by construction.
+
+\paragraph{Runtime and reliability.}
+Accepted requests took a median of \LatMedAccEN{}, \LatMedAccHI{}, \LatMedAccGU{} and \LatMedAccMR{}\,s (English, Hindi, Gujarati, Marathi) and requests rejected twice \LatFbMin{}--\LatFbMax{}\,s (\NUniqueReq{} unique requests; synthesis excluded, placeholder mode); LLM-3 dominates stage time (\StageLlmThree{}\,s against \StageLlmOne{}\,s for LLM-1).
+From a cold start the server was ready in \OffReady{}\,s and the first request took \OffFirstEn{}\,s.
+With weights cached, Hugging Face offline mode and a guard refusing non-loopback connections, generation and prediction completed; the only outbound attempt was the optional Google Input Tools fallback.
+When two model copies shared the 4\,GB GPU, a Hindi request raised CUDA out-of-memory twice and the server returned the template, so the pipeline degrades to a valid sentence.
+The web client loads React, Babel and Tailwind from CDNs and renders nothing when they are unreachable.

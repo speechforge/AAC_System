@@ -1,0 +1,25 @@
+{
+  "pdf_pages": 9,
+  "main_content_ends_page": 6,
+  "appendix_start": 8,
+  "appendix_pages": 2,
+  "fonts_embedded": true,
+  "font_count": 13,
+  "indic_strings_checked": 51,
+  "indic_strings_missing": [],
+  "three_water_strings_exact": true,
+  "null_characters": 0,
+  "archived_claims_matched": 20,
+  "archived_claims_total": 20,
+  "build_log": {
+    "overfull_boxes": 1,
+    "missing_glyphs": 0,
+    "undefined_references": 0,
+    "tex_errors": 0
+  },
+  "source_style_unchanged": true,
+  "pdf_sha256": "a6bbbbfd6525671562fdb888347dd3c09b9d4e80367ae9b60dad848ec262ec7d",
+  "included_tex_files": 19,
+  "final_pdf": "Indic_AAC_Studio_NAACL2027_Demo_v3_review.pdf",
+  "visual_note": "One 2.19-point internal vertical balance warning; no visible overflow. All pages rendered and inspected."
+}

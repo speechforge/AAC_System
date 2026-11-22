@@ -1,0 +1,8 @@
+\begin{abstract}
+Users of symbol-based augmentative and alternative communication (AAC) produce telegraphic selections that a language model can expand into sentences, but the expansion may drop a selected concept, invert polarity, or add content the user did not choose.
+We present \sys{}, a web system for English, Hindi, Gujarati and Marathi that expands symbol selections with a prompted Qwen2.5-0.5B cascade, accepts the output only if a deterministic validator confirms the selected concepts, polarity and intent, and otherwise returns a template built from the user's own labels.
+Trained next-word predictors and zero-shot IndicF5 speech complete the system.
+On \NPrimAll{} frozen, paired scenarios in four languages, the gate raises the cascade's concept retention from \KeptPctPre{} to \KeptPctDepU{} and its scenario-level success from \SuccPctPre{} to \SuccPctDepU{}, against \SuccPctNaive{} for an unconstrained prompt; explicit polarity and intent fields raise success to \SuccPctDepS{}.
+A template-only baseline reaches \SuccPctTmplS{} under those fields, and a failure analysis identifies the defects that limit the cascade.
+The system, fixtures and scorer accompany the submission.
+\end{abstract}

@@ -1,0 +1,164 @@
+{
+ "a": {
+  "canvas_label": {
+   "x": 34,
+   "y": 154.25,
+   "width": 114.828125,
+   "height": 16.5
+  },
+  "chips": {
+   "x": 174.421875,
+   "y": 263.5,
+   "width": 298.578125,
+   "height": 28
+  },
+  "shelf": {
+   "x": 47,
+   "y": 456,
+   "width": 236.65625,
+   "height": 16.5
+  },
+  "polish_btn": {
+   "x": 145.40625,
+   "y": 386,
+   "width": 181.40625,
+   "height": 40
+  },
+  "output_card": {
+   "x": 16,
+   "y": 583.5,
+   "width": 488,
+   "height": 183
+  },
+  "output_text": {
+   "x": 34,
+   "y": 672.5,
+   "width": 452,
+   "height": 28
+  },
+  "tabs_bar": {
+   "x": 90.75,
+   "y": 943,
+   "width": 69.828125,
+   "height": 24.5
+  },
+  "page_scroll_y": 0,
+  "page_height": 1681,
+  "selected_card": {
+   "x": 33,
+   "y": 1008.5,
+   "width": 221,
+   "height": 110
+  },
+  "selected_label": "Water",
+  "text": "\"I want Water.\""
+ },
+ "b": {
+  "canvas_label": {
+   "x": 34,
+   "y": 154.25,
+   "width": 114.828125,
+   "height": 16.5
+  },
+  "chips": {
+   "x": 257.640625,
+   "y": 253,
+   "width": 215.359375,
+   "height": 28
+  },
+  "shelf": {
+   "x": 47,
+   "y": 473,
+   "width": 236.65625,
+   "height": 16.5
+  },
+  "polish_btn": {
+   "x": 145.40625,
+   "y": 403,
+   "width": 181.40625,
+   "height": 40
+  },
+  "output_card": {
+   "x": 16,
+   "y": 600.5,
+   "width": 488,
+   "height": 183
+  },
+  "output_text": {
+   "x": 34,
+   "y": 689.5,
+   "width": 452,
+   "height": 28
+  },
+  "tabs_bar": {
+   "x": 90.75,
+   "y": 960,
+   "width": 69.828125,
+   "height": 24.5
+  },
+  "page_scroll_y": 0,
+  "page_height": 1698,
+  "selected_card": {
+   "x": 33,
+   "y": 1025.5,
+   "width": 221,
+   "height": 110
+  },
+  "selected_label": "પાણી",
+  "text": "\"મને પાણી ના જોઈએ છે.\""
+ },
+ "c": {
+  "canvas_label": {
+   "x": 34,
+   "y": 154.25,
+   "width": 114.828125,
+   "height": 16.5
+  },
+  "chips": {
+   "x": 167.53125,
+   "y": 263.5,
+   "width": 305.46875,
+   "height": 28
+  },
+  "shelf": {
+   "x": 47,
+   "y": 456,
+   "width": 236.65625,
+   "height": 16.5
+  },
+  "polish_btn": {
+   "x": 145.40625,
+   "y": 388,
+   "width": 181.40625,
+   "height": 40
+  },
+  "output_card": {
+   "x": 16,
+   "y": 583.5,
+   "width": 488,
+   "height": 211
+  },
+  "output_text": {
+   "x": 34,
+   "y": 672.5,
+   "width": 452,
+   "height": 56
+  },
+  "tabs_bar": {
+   "x": 90.75,
+   "y": 971,
+   "width": 69.828125,
+   "height": 24.5
+  },
+  "page_scroll_y": 0,
+  "page_height": 1587,
+  "selected_card": {
+   "x": 266,
+   "y": 1158.5,
+   "width": 221,
+   "height": 110
+  },
+  "selected_label": "Tired",
+  "text": "\"The user is tired of waiting for their meal and wants to go out.\""
+ }
+}

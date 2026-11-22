@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+ & \multicolumn{3}{c}{English} & \multicolumn{3}{c}{Hindi} \\
+\cmidrule(lr){2-4}\cmidrule(l){5-7}
+Model & @1 & @5 & MRR & @1 & @5 & MRR \\
+\midrule
+Unigram frequency & 3.6 & 11.6 & 0.069 & 6.4 & 14.5 & 0.099 \\
+Bigram, backoff & 13.6 & 29.5 & 0.204 & 24.0 & 43.1 & 0.320 \\
+Trigram, backoff & 16.0 & 32.8 & 0.234 & 25.9 & 44.0 & 0.334 \\
+Gutenberg HMM & 6.7 & 15.5 & 0.105 & -- & -- & -- \\
+Hindi AAC HMM & -- & -- & -- & 24.5 & 41.9 & 0.315 \\
+\midrule
+\rowcolor{rowtint}\textbf{$\infty$-gram (deployed)} & \textbf{17.2} & \textbf{33.4} & \textbf{0.240} & \textbf{27.0} & \textbf{44.1} & \textbf{0.343} \\
+\bottomrule
+\end{tabular}
+\caption{Next-word prediction on AAC-user turns of synthetic dialogues (LLM-generated English, machine-translated Hindi): 60 of the 300 source conversations per language are held out (240 train), giving 2,220 English and 2,437 Hindi contexts; hit rates (@1, @5) in \%; MRR: mean reciprocal rank over the top 10. Text differences are computed from counts. Held-out sources share 18 of 392 English and 28 of 384 Hindi distinct utterances with training; \PredOOVEN{} (EN) and \PredOOVHI{} (HI) of targets are out of vocabulary and count as misses. Gujarati and Marathi are not evaluated: the 34-language collection of \citet{vertanen2026multilingual} has neither, and we know of no other AAC corpus for them.}
+\label{tab:pred}
+\end{table}

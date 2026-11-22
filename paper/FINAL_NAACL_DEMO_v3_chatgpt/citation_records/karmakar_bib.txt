@@ -1,0 +1,15 @@
+@inproceedings{karmakar-sinha-2024-aiding,
+    title = "Aiding Non-Verbal Communication: A Bidirectional Language Agnostic Framework for Automating Text to {AAC} Generation",
+    author = "Karmakar, Piyali  and
+      Sinha, Manjira",
+    editor = "Lalitha Devi, Sobha  and
+      Arora, Karunesh",
+    booktitle = "Proceedings of the 21st International Conference on Natural Language Processing ({ICON})",
+    month = dec,
+    year = "2024",
+    address = "AU-KBC Research Centre, Chennai, India",
+    publisher = "NLP Association of India (NLPAI)",
+    url = "https://aclanthology.org/2024.icon-1.37/",
+    pages = "324--331"
+}
+

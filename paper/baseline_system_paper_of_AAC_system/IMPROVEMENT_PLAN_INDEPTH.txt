@@ -1,0 +1,237 @@
+====================================================================================================
+ IN-DEPTH IMPROVEMENT PLAN - KSR (next-word prediction), PERPLEXITY, TOP-K HIT RATE, LATENCY, FIDELITY
+ Indic AAC System (English / Hindi / Marathi / Gujarati)             Written 2026-11-19
+====================================================================================================
+ Arrows: KSR ↑ higher is better | top-k hit ↑ higher is better | perplexity ↓ lower is better
+         latency ↓ lower is better | fidelity (gate accepts, entity/negation kept) ↑ higher is better
+ Labels: [MEASURED] = we ran it and it is in results/ ; [HYPOTHESIS] = expectation to be tested, NOT a result.
+ Interpretation note: "altnext" in the request was read as "KSR / next-word prediction quality".
+
+--------------------------------------------------------------------------------------------------
+ PART 0.  WHAT "SCIENTIFIC" MEANS IN THIS PLAN (rules every experiment below must follow)
+--------------------------------------------------------------------------------------------------
+ R1  One change at a time, against a named control (the shipped system), same data, same candidate pool.
+ R2  Every knob (weights, caps, epochs, thresholds) is tuned on DEV only; TEST is touched once per final system.
+ R3  Report effect size AND uncertainty: paired bootstrap 95% CI over test sentences (done in exp_final.py) and,
+     next, 5 conversation-level cross-validation folds (so sentences of one dialogue never sit in both train and test).
+ R4  Pre-register the success threshold before running (Part 6). A result that misses it is reported as a negative result.
+ R5  When many variants are compared, correct for multiple comparisons (Holm) or say that the comparison is exploratory.
+ R6  Separate "simulated" from "human" evidence. Simulated KSR assumes the user always notices a correct suggestion and
+     the word is always selectable; real users do not (Part 4, W8). Never claim real-user benefit from simulation alone.
+ R7  Keep MT-derived data (Marathi, Gujarati) separate from native data in every table; never pool them.
+ R8  Log seeds, library versions, data hashes, commit id; release scripts so every number can be regenerated.
+
+--------------------------------------------------------------------------------------------------
+ PART 1.  WHERE WE STAND [MEASURED]  (test sets, avg of AAC-user + caregiver)
+--------------------------------------------------------------------------------------------------
+ English  : shipped ∞-gram KSR 56.3 ↑ | top-5 33.4% ↑ | top-10 42.8% ↑ | latency 0.045 ms ↓ | char-ppl (word model, indicative) 3.35 ↓
+            improved CPU stack KSR 56.8 | adapted OPT-125m KSR 61.9, top-5 47.4%  (100+100 sentence subsample, GPU)
+            same-subsample reference table: char 12-gram ppl 4.93 | OPT-125m 2.65 | OPT-350m 2.52 | OPT-125m adapted 2.07 | ∞-gram 3.57
+ Hindi    : shipped KSR 56.7 -> improved 57.9 | top-5 45.5% -> 48.0%
+ Marathi  : shipped KSR 48.7 -> improved 49.4 | top-5 28.9% -> 30.0%      (data = machine translation)
+ Gujarati : shipped KSR 53.0 -> improved 54.3 | top-5 39.1% -> 41.9%      (data = machine translation)
+ Fidelity : realiser+gate 99% act/entity/negation vs 34% for literal word list; 13/13 ambiguous selections -> asks the user.
+ Concept predictor (69-concept board): hit@1 11.8%, hit@5 20.2%, hit@10 44.9% (English), covers only 13.8% of words.
+
+--------------------------------------------------------------------------------------------------
+ PART 2.  DIAGNOSIS - WHY THE NUMBERS ARE WHERE THEY ARE (each cause has a test)
+--------------------------------------------------------------------------------------------------
+ D1  CEILING FROM OOV.  The shared candidate pool is the top-300 train-vocabulary words matching the typed prefix, so any
+     word not in the training vocabulary can never be suggested. English test OOV = 7.1% (AAC) / 4.1% (caregiver) [MEASURED].
+     Consequence: hit rates and KSR have a hard ceiling we have never computed, and part of our "error" is unfixable by a
+     better ranker. TEST: compute the oracle KSR (perfect ranker over the same pool) per language. If oracle KSR is only a few
+     points above 56, ranking work has little room and vocabulary coverage (W2-c) is the real lever; if it is 80+, ranking matters.
+ D2  TINY, SYNTHETIC TRAINING DATA.  2,659 English training sentences (GPT-generated dialogues). Evidence data matters:
+     OPT-125m pretrained 58.0 -> adapted 62.6 KSR, ppl 2.65 -> 2.07 [MEASURED]. A model that learns more from 2.6k sentences is
+     data-starved, not capacity-starved. Risk: generated dialogue is more regular than real AAC text, so all absolute numbers
+     are probably optimistic (the baseline paper also saw large gains from in-domain data).
+ D3  OUR ∞-GRAM HAS NO ADVANTAGE FROM DEPTH.  Capping context at 2-3 words ties or beats unlimited context in all four languages
+     [MEASURED]. Reason: with 2.6k sentences, long matched suffixes are seen 1-2 times, so their probabilities are noisy.
+     "Infinite" context needs far more data (or smoothing that distrusts rare long contexts, e.g. Kneser-Ney/PPM) to pay off.
+ D4  BACKOFF IS NOT A PROBABILITY MODEL.  alpha=0.4 "stupid backoff"-style mixing gives scores, not normalised probabilities, so
+     (a) perplexity is only indicative, (b) mixing with an LM needs ad-hoc renormalisation (softnorm), (c) calibration is unknown.
+ D5  PERPLEXITY IS NOT COMPARABLE TO THE BASELINE.  Our 3.35 is a word model with an open-vocabulary fallback tuned on dev; the
+     baseline's character-level number pays for every character including the end-of-word decision. Different quantities, so the
+     comparison table "∞-gram 3.57 vs OPT 2.07" only ranks systems measured the same way on the same subsample.
+ D6  SELECTED-WORD EXCLUSION WAS A DESIGN BUG.  Removing the rule gained +0.3 (en) to +1.0 (hi) KSR [MEASURED]. Lesson: engineering
+     heuristics must be ablated; we had never done it until now.
+ D7  INDIC-SPECIFIC: MORPHOLOGY + SCRIPT + MT NOISE.  Hindi/Marathi/Gujarati inflect heavily (suffixes), so exact-word prediction
+     fragments probability over many surface forms; the Qwen2.5 tokenizer splits Indic text into many byte-level pieces (poor LM
+     efficiency - to be quantified as tokens-per-word "fertility"); Marathi/Gujarati text is NLLB output (4-11% degenerate
+     sentences were removed [MEASURED]) and may contain unnatural phrasing that real users would never write.
+ D8  SIMULATED KSR OVER-ESTIMATES REAL BENEFIT.  Real use has a cost to scan the suggestion list and a miss rate; the baseline
+     paper cites this too. Our KSR is an upper bound on what users get.
+
+--------------------------------------------------------------------------------------------------
+ PART 3.  CONSTRUCTIVE CRITIQUE OF OUR OWN WORK (so reviewers do not find it first)
+--------------------------------------------------------------------------------------------------
+ C1  Single train/dev/test split, one run per condition: the CIs we have cover sentence sampling only, not split variance.
+ C2  The strongest English system (adapted OPT-125m) was measured on a 100-sentence-per-set subsample; the full-set claim is
+     not yet made. Weight tuning for the hybrid used only 30-60 dev sentences (high variance).
+ C3  The headline comparison to the baseline paper re-implements its search and uses our data; their data, models and exact
+     numbers are not available, so "we beat/lose to the baseline" must be worded as "under our protocol".
+ C4  Marathi/Gujarati are MT of English; Hindi mirrors English batches. The three languages are therefore not independent
+     evidence for cross-lingual claims; they test engineering robustness, not linguistic generality.
+ C5  The generation/gate evaluation uses 131+13 constructed selections written by us; no external raters, no inter-rater agreement.
+ C6  We have no human study: no MOS for the TTS, no AAC-user trial, no caregiver judgement of generated sentences.
+ C7  Word-level model vs character-level baseline: top-k on whole words and KSR are comparable (same simulator), perplexity is not.
+ C8  Gains of the CPU stack are real but small (+0.5 to +1.2 KSR). We should present them as a bug-fix plus tuning, not a new method.
+ C9  The best accuracy path (neural LM) trades away our headline advantage (CPU speed, 0.045 ms); the paper must state this trade-off.
+
+--------------------------------------------------------------------------------------------------
+ PART 4.  WORKSTREAMS - SOLUTIONS WITH REASONS AND EXPERIMENT DESIGN
+--------------------------------------------------------------------------------------------------
+ W1  EVALUATION VALIDITY (do first; it decides where effort should go)                     [fixes C1, C2, C7, D1, D5]
+   W1-a Oracle ceilings.  Compute for each language: oracle-pool KSR (perfect ranking of pool) and oracle-vocabulary KSR.
+        Reason: tells us how much of the remaining gap is ranking vs coverage.  Output: ceiling table; decision rule: if
+        (oracle - current) < 10 points, deprioritise ranking work in that language.
+   W1-b Proper character perplexity.  Turn every system into a true character-level distribution: p(next char | history) via
+        prefix-sum of word probabilities consistent with the typed prefix, with an explicit end-of-word event and an OOV spelling
+        model (our char 12-gram).  Report bits-per-character ↓ for ∞-gram, char n-gram, OPT variants on the SAME full test set.
+        Reason: the baseline's metric; removes D5 and lets the English table be compared like for like.
+        Check: probabilities must sum to 1 over the alphabet (unit test), as the baseline's own sanity test ("yeste").
+   W1-c 5-fold conversation-level CV (hash by conversation) for all CPU systems; paired bootstrap per fold; report mean ± SD.
+        Reason: gives split variance (C1). GPU systems: 3 folds, because each adaptation run takes ~minutes.
+   W1-d Full-test evaluation for the neural LM (not 100-sentence subsample): needs candidate-score caching + batching; run overnight
+        when the shared GPU is free. Reason: closes C2.
+   W1-e Holm-corrected comparison across the final 4-5 systems; effect sizes (Cohen's d on per-sentence KSR) beside p-values.
+
+ W2  RAISE KSR (next-word prediction)                                                   [target ≥ +3 pts CPU, ≥ +7 pts with LM]
+   W2-a Expected-savings re-ranking.  Rank candidates by p(w | ctx, prefix) × (len(w) − k + 1) (keystrokes saved if chosen) instead
+        of p alone.  Reason: KSR rewards long words; ranking by probability alone ignores that a correct 9-letter word saves more
+        than a correct 2-letter word.  Cost: zero (a multiply).  Risk: lowers top-1 hit while raising KSR - report both.
+        Control: current ranking.  Metric: KSR ↑ and top-k ↑ (expect a trade-off; that is the finding).
+   W2-b Prefix-conditioned renormalisation.  Currently probabilities are normalised over the pool; condition on the typed prefix
+        correctly (p(w)/Σ over words matching prefix) for ALL mixed systems. Reason: mixing un-normalised scores biases the weight.
+   W2-c Vocabulary coverage (fixes D1).  Add (i) a large general frequency list per language (e.g. wordfreq / Hindi-Marathi-Gujarati
+        corpora) as a low-weight backoff vocabulary, (ii) generated completions from the char 12-gram for words outside the pool.
+        Reason: 7.1% OOV caps the hit rate.  Control: pool restricted to train vocab.  Watch: bigger pool lowers precision; tune
+        pool size N and backoff weight on dev.  Metric: KSR ↑, OOV-word hit rate ↑ (new metric).
+   W2-d Neural re-ranker, efficient.  (i) LoRA/full adaptation of OPT-125m for 1-3 epochs with early stopping on dev perplexity;
+        (ii) knowledge distillation of the adapted OPT into a small n-gram/NN so the benefit survives without a GPU; (iii) int8
+        ONNX on CPU.  Reason: adaptation is the only large gain we measured (+6.6 KSR); distillation/quantisation attacks its cost.
+        Success: ≥ half of the +6.6 gain retained at ≤ 20 ms CPU latency per prediction.  Controls: pretrained vs adapted, size 125m vs 350m.
+   W2-e More in-domain text.  Add real/AAC-like text (public dialogue sets, user-contributed AAC phrases with consent) and
+        paraphrase augmentation; learning-curve experiment (25/50/100% of train) to show whether data or model is the bottleneck.
+        Reason: D2.  The learning curve is the cheapest, most informative experiment: if KSR is still rising at 100%, collect data.
+   W2-f Personalisation (step 7, refine).  Current recency cache gave +0.2/+0.15 (en/hi), none for mr/gu. Test an online-updated
+        user n-gram with decay, and simulate a user with a fixed phrase repertoire (the real AAC use pattern: repeated phrases).
+        Reason: AAC text is highly repetitive per user; the synthetic test set is not, so simulation underestimates this effect.
+
+ W3  LOWER PERPLEXITY ↓
+   W3-a Replace "stupid backoff" by a normalised smoothing: interpolated Kneser-Ney (or PPM-C for the ∞ context).  Reason: D3/D4;
+        KN discounting is the standard fix for sparse long contexts, gives true probabilities, and is the right base for mixing.
+   W3-b Calibrated interpolation: ∞-gram/KN + char n-gram + (optionally) neural LM with weights fitted by EM on dev (not grid).
+        Reason: EM maximises dev likelihood directly, the quantity perplexity measures.
+   W3-c Adapt the neural LM longer with dev-based early stopping; try temperature scaling.  Metric: dev/test bits per char ↓.
+   W3-d Sentence-boundary modelling: explicit start/end tokens and context reset between turns.  Reason: AAC turns are short;
+        wrongly carrying context across turns hurts the first words, which also hurts KSR.
+   W3-e Report perplexity only via W1-b (true char-level). Anything else is labelled "word-level, not comparable".
+
+ W4  RAISE TOP-K HIT RATE (top-1/3/5/10, before typing and after a prefix)
+   W4-a Learning-to-rank over features: ∞-gram score, char-LM score, neural LM score, unigram frequency, recency cache, word length,
+        position in sentence, matched-context length.  Train a small logistic-regression / gradient-boosted ranker on DEV with
+        listwise loss, apply once to TEST.  Reason: our fixed-weight mixes ignore that feature reliability varies (e.g. long
+        context reliable only when matched often).  Control: best single feature; guard against leakage (train on dev only).
+   W4-b Diversity-aware list.  Avoid showing several inflections of one stem when the top-5 slots are scarce (MMR re-ranking), tested
+        on Hindi/Marathi/Gujarati where inflection is dense.  Reason: five forms of one stem waste four slots.
+   W4-c Context beyond the sentence: previous turn (caregiver question) as extra context for the AAC user's reply.  Reason: replies
+        are strongly conditioned on the question (the dataset is dialogue); our model sees only the current sentence.  Metric: top-k
+        ↑ at empty prefix (where context helps most).
+   W4-d Report hit-rate by prefix length k=0,1,2,3 and by word frequency band so we know where gains occur (rare words vs function words).
+
+ W5  INDIC LANGUAGES (Hindi / Marathi / Gujarati)
+   W5-a Native test sets.  Collect (even 200-300 sentences each) native, human-written test utterances with Indian AAC/caregiver
+        raters; evaluate the current system on them.  Reason: removes C4; if KSR drops a lot on native text, MT data was flattering us.
+   W5-b MT-noise audit: back-translate 100 random sentences per language, compute chrF vs the English source, and have two native
+        speakers rate fluency 1-5 (agreement by Cohen's kappa).  Reason: quantifies D7 instead of asserting it.
+   W5-c Morphology-aware prediction: stem/suffix factorisation or a character-level mix with higher weight; test on dev; success if
+        KSR ↑ ≥ 1.5 points over improved CPU stack in at least two languages.
+   W5-d Tokenizer fertility (tokens per word) for Qwen/OPT vs Indic models (e.g. IndicBERT/IndicBART/MuRIL-class tokenizers). Reason:
+        a tokenizer that needs 5+ tokens per Hindi word wastes LM capacity; pick the base model by measured fertility, not by habit.
+   W5-e Adapt a multilingual or Indic LM (small) on our Indic data, same protocol as English; compare KSR/top-k/bits-per-char.
+
+ W6  LATENCY ↓ AND DEPLOYMENT
+   W6-a Measure on an idle machine, report median and p95 over ≥1000 queries and cold-start; current numbers are noisy because the
+        GPU is shared.   W6-b Budget: a suggestion list must update < 50 ms after a keystroke; CPU stack passes (0.05 ms); neural path
+        must be shown to pass with distillation/int8 or be offered as an optional "high accuracy" mode only.
+   W6-c Per-language engines in the app (step 4): the shipped engine routes gu to a generic root and hi/mr to one Devanagari root;
+        separate engines remove cross-language leakage. Check with an ablation (shared vs per-language) before shipping.
+
+ W7  GENERATION FIDELITY ↑ (the layer that differentiates us from the baseline)
+   W7-a Enlarge the fidelity test to ≥500 selections per language with an independent annotator; report agreement.
+   W7-b Run the Qwen2.5-0.5B 3-stage cascade (never evaluated live) against the realiser+gate on the same items; measure accept rate,
+        entity/negation preservation, hallucinated additions, latency.  Reason: the paper's novelty claim depends on this comparison.
+   W7-c Adversarial set: negations, multiple entities, ambiguous referents, code-mixed text; measure gate false-accept rate
+        (the dangerous error) separately from false-reject rate (annoying but safe).
+   W7-d Human rating of 100 generated sentences per language by caregivers (clarity, same meaning, would-say-this, 5-pt).
+
+ W8  HUMAN EVIDENCE (needed before any real-user claim)                                                  [fixes C6, D8]
+   W8-a Within-subject user study: same participants use shipped vs improved predictor (counterbalanced order), measure typing speed
+        (wpm), actual keystroke savings, errors, NASA-TLX workload, SUS usability. Sample-size by power analysis for the expected
+        paired effect (pilot with 5 participants to estimate variance).
+   W8-b Caregiver/AAC-user feedback sessions for the generated sentences and the ask-before-guessing behaviour.
+   W8-c TTS naturalness: run the redesigned MOS portal (already reworded to "overall speech naturalness", noise ignored); ≥ 20
+        raters per language, report MOS ± 95% CI, rater-reliability, and anchor stimuli (natural speech, degraded speech) to detect
+        careless raters.
+   W8-d Ethics: consent, data minimisation, no real user text in repos; IRB/ethics approval if AAC users are recruited.
+
+ W9  REPRODUCIBILITY AND REPORTING
+   Seeds, versions, data hashes and commit id written to every results JSON; single script `run_all.sh` regenerates all tables;
+   negative results (e.g. ∞-gram depth, hybrid noise) kept in the paper as findings; limitations section lists C1-C9.
+
+--------------------------------------------------------------------------------------------------
+ PART 5.  PRIORITISED ORDER (cheap + informative first)
+--------------------------------------------------------------------------------------------------
+  #   Item                                  Metric          Cost   Why now
+  1   W1-a oracle ceilings                  KSR ↑ ceiling   hours  decides every later priority
+  2   W2-a expected-savings re-rank         KSR ↑           hours  zero-cost, mechanistic, testable today
+  3   W2-e learning curve                   KSR ↑           hours  tells whether to collect data or change model
+  4   W1-b true char perplexity             ppl ↓           1 day  makes the English table valid vs baseline
+  5   W3-a KN/PPM smoothing + W3-b EM mix   ppl ↓, KSR ↑    1-2d   fixes D3/D4, needed by W4-a
+  6   W4-a learning-to-rank                 top-k ↑, KSR ↑  1-2d   uses features already computed
+  7   W2-c vocabulary coverage              KSR ↑, hit ↑    2d     attacks the OOV ceiling
+  8   W1-c/W1-d CV + full-set neural eval   CIs             overnight  makes the headline claims defensible
+  9   W2-d distillation / int8              latency ↓       1wk    keeps neural gain without a GPU
+ 10   W4-c previous-turn context            top-k ↑         1d     dialogue structure
+ 11   W5-a/b native test sets + MT audit    all Indic       2-3wk  external validity for hi/mr/gu
+ 12   W5-c/d/e Indic morphology + models    KSR ↑ (Indic)   1-2wk  after audit shows what is wrong
+ 13   W7 fidelity at scale + cascade        fidelity ↑      1-2wk  supports the novelty claim
+ 14   W8 human studies                      real KSR, MOS   weeks  required for any user-benefit claim
+ 15   W6-c / step 4 app changes             latency, hygiene days  only after the ablations above justify them
+
+--------------------------------------------------------------------------------------------------
+ PART 6.  PRE-REGISTERED SUCCESS CRITERIA AND DECISION RULES
+--------------------------------------------------------------------------------------------------
+  KSR ↑ (CPU path)        English ≥ +2.0 over shipped (56.3); Hindi/Marathi/Gujarati ≥ +2.0; each with paired-CI lower bound > 0.
+                          Currently +0.5/+1.2/+0.65/+1.2: criterion NOT yet met -> W2-a, W2-c, W3-a, W4-a must close it or we report the limit.
+  KSR ↑ (neural path)     English full-test KSR ≥ 61 with CI over 3 folds excluding the CPU stack. (Subsample result: 61.9.)
+  top-5 ↑                 English ≥ 38% on CPU path (now 34.8%); ≥ 47% on neural path (now 47.4% subsample).
+  perplexity ↓            true char-level bits/char for ∞-gram/KN ≤ char 12-gram on dev and test, and neural ≤ 0.8 × char 12-gram
+                          (subsample ratio now 2.07/4.93 = 0.42, but different units, to be re-measured under W1-b).
+  latency ↓               CPU path p95 < 5 ms; neural path p95 < 50 ms after distillation/int8, else labelled optional.
+  fidelity ↑              gate false-accept rate < 1% on the 500-item adversarial set; ambiguity abstention ≥ 95%.
+  Human                   user-study: improved predictor does not reduce wpm and raises actual keystroke savings (paired test, p < 0.05
+                          after power analysis); TTS MOS ≥ 3.5 with 95% CI.
+  Decision rules          - A technique that fails its criterion on dev is not run on test.
+                          - A gain below its own CI is reported as "no evidence of improvement".
+                          - If oracle ceiling shows < 10 points of ranking headroom in a language, stop ranking work there.
+                          - Never ship a change that raises KSR but lowers top-1 hit by > 3 points without user-study support.
+
+--------------------------------------------------------------------------------------------------
+ PART 7.  RISKS AND HOW WE GUARD AGAINST THEM
+--------------------------------------------------------------------------------------------------
+  Over-fitting to dev (many knobs, small dev):   nested selection on CV folds; report dev vs test gap; keep grids small.
+  Data leakage (same dialogue in train/test):    conversation-hash split already used; assert no overlap in a unit test.
+  Synthetic-data optimism:                       native test sets (W5-a) and the learning curve (W2-e) expose it.
+  GPU contention producing noisy timings:        time on an idle machine, repeat, report median/p95; never mix timing runs.
+  Claim inflation:                               every claim in the paper links to a results JSON; [HYPOTHESIS] items are not quoted as results.
+  Ethical/privacy:                               user text stays local; consent for any real AAC data; MOS raters anonymous.
+
+--------------------------------------------------------------------------------------------------
+ PART 8.  WHAT IS ALREADY DONE vs NEXT
+--------------------------------------------------------------------------------------------------
+  Done [MEASURED]: step 1 (drop exclusion), step 5 (context cap), step 2 (char hybrid), step 3 (neural re-rank, English subsample),
+                   step 7 (recency cache), paired-bootstrap CIs on the sentence level (see IMPROVEMENT_PLAN.txt, round 2).
+  Next (in order): items 1-4 of Part 5 (oracle ceilings, expected-savings re-rank, learning curve, true char perplexity).
+  Application to the shipped app (steps 1/4/5) is intentionally postponed until items 1-6 show which changes are worth shipping.

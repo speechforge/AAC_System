@@ -1,0 +1,16 @@
+{"id": "en-H11-01|user=FEELING", "act_chosen": "FEELING", "outcome": "sentence_template", "route": "template_after_rejection", "text": "I feel bad.", "wall_s": 3.21, "error": null}
+{"id": "en-H11-01|user=REQUEST", "act_chosen": "REQUEST", "outcome": "literal_preview", "route": "no_template_frame", "text": "Bad", "wall_s": 3.0, "error": null}
+{"id": "hi-H11-01|user=FEELING", "act_chosen": "FEELING", "outcome": "literal_preview", "route": "template_rejected_by_gate", "text": "खराब", "wall_s": 3.95, "error": null}
+{"id": "hi-H11-01|user=REQUEST", "act_chosen": "REQUEST", "outcome": "sentence_model", "route": "model_first", "text": "मुझे खराब चाहिए।", "wall_s": 1.94, "error": null}
+{"id": "gu-H11-01|user=FEELING", "act_chosen": "FEELING", "outcome": "sentence_model", "route": "model_first", "text": "હું ખરાબ છું.", "wall_s": 1.74, "error": null}
+{"id": "gu-H11-01|user=REQUEST", "act_chosen": "REQUEST", "outcome": "sentence_model", "route": "model_first", "text": "મને ખરાબ જોઈએ છે.", "wall_s": 1.79, "error": null}
+{"id": "mr-H11-01|user=FEELING", "act_chosen": "FEELING", "outcome": "sentence_template", "route": "template_after_rejection", "text": "मला वाईट वाटते.", "wall_s": 3.28, "error": null}
+{"id": "mr-H11-01|user=REQUEST", "act_chosen": "REQUEST", "outcome": "sentence_model", "route": "model_first", "text": "मला वाईट हवे आहे.", "wall_s": 1.68, "error": null}
+{"id": "en-H11-02|user=FEELING", "act_chosen": "FEELING", "outcome": "literal_preview", "route": "no_template_frame", "text": "Heart", "wall_s": 2.94, "error": null}
+{"id": "en-H11-02|user=REQUEST", "act_chosen": "REQUEST", "outcome": "literal_preview", "route": "no_template_frame", "text": "Heart", "wall_s": 2.44, "error": null}
+{"id": "hi-H11-02|user=FEELING", "act_chosen": "FEELING", "outcome": "literal_preview", "route": "no_template_frame", "text": "दिल", "wall_s": 3.66, "error": null}
+{"id": "hi-H11-02|user=REQUEST", "act_chosen": "REQUEST", "outcome": "sentence_model", "route": "model_first", "text": "मुझे दिल चाहिए।", "wall_s": 1.91, "error": null}
+{"id": "gu-H11-02|user=FEELING", "act_chosen": "FEELING", "outcome": "sentence_model", "route": "model_first", "text": "હૃદય હું કહું.", "wall_s": 1.78, "error": null}
+{"id": "gu-H11-02|user=REQUEST", "act_chosen": "REQUEST", "outcome": "sentence_model", "route": "model_first", "text": "મને હૃદય જોઈએ છે.", "wall_s": 1.79, "error": null}
+{"id": "mr-H11-02|user=FEELING", "act_chosen": "FEELING", "outcome": "literal_preview", "route": "no_template_frame", "text": "हृदय", "wall_s": 3.28, "error": null}
+{"id": "mr-H11-02|user=REQUEST", "act_chosen": "REQUEST", "outcome": "sentence_model", "route": "model_first", "text": "मला हृदय हवे आहे.", "wall_s": 1.69, "error": null}

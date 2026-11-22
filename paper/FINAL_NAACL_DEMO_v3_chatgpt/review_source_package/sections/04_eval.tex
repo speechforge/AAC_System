@@ -1,0 +1,95 @@
+\section{Evaluation and Analysis}
+\label{sec:eval}
+We first evaluate the archived policy on actual browser-built inputs, then use explicit gold fields to diagnose input interpretation.
+The paired comparison measures the combined effect of the gate, retry, and fallback policy, not a gate in isolation.
+We subsequently audit the scorer and report repairs only as a regression on the same grid.
+
+\subsection{Protocol and Scoring}
+The archived grid contains 184 monolingual scenarios: 46 selections in each of four languages.
+Each language has ten requests, ten refusals, eight feelings, eight negated feelings, six action--object selections, and four help or call selections with a person.
+Nine prompt-overlapping scenarios are excluded before the primary analysis, leaving 175: 46 English, 45 Hindi, 42 Gujarati, and 42 Marathi.
+Eight Hinglish scenarios are exploratory and excluded from the primary counts.
+The original text-generation run used one NVIDIA GTX 1650 with 4\,GB memory.
+
+The systems are a literal label join, an unconstrained single-prompt Qwen diagnostic, the recorded cascade candidate before the gate, the archived returned output, and the archived template baseline.
+The single prompt has no ledger, examples, verifier, or gate; its \Naive{} success is a diagnostic for that prompt, not a comparison with all one-pass prompting strategies.
+For the policy comparison, pre-gate and returned outputs share the recorded response, holding the incoming selection fixed.
+The \emph{browser} condition uses inferred act and polarity; the \emph{gold-field} condition supplies both explicitly and is a controlled diagnostic rather than a measured user choice.
+
+Under archived \emph{scorer v1}, success requires every selected concept, the gold polarity and act, no detected added concept, and an on-task sentence in the target script.
+Its lexical tests approximate these properties; they do not measure naturalness or certify meaning.
+Concept retention counts required instances over 215, whereas success and error counts use 175 scenarios.
+Errors overlap.
+An off-task output is a model refusal to perform the task, third-person narration, an empty or overlong response, or inappropriate script leakage.
+A valid user refusal such as \emph{``I do not want water''} is an intended message, not an off-task refusal.
+We report 95\% paired percentile bootstrap intervals from 10,000 resamples of the 46 underlying message groups, keeping their language variants together.
+
+\input{generated/tab_results}
+
+\subsection{Actual Browser Inputs and Gold-Field Diagnosis}
+The archived policy improves browser-input success from \WebCascade{} to \WebPolicy{}, a gain of 18.3 percentage points (95\% CI 11.9--25.2), but remains 12.0 points below the template baseline (CI $-17.9$ to $-6.4$).
+This comparison includes browser interpretation.
+The policy retains 215/215 required concept instances, compared with 175/215 before the gate, and has zero scored polarity errors.
+Nevertheless, it has 54 wrong-act outputs and four added-content errors: preserving selected words alone does not preserve the complete message.
+
+Explicit gold act and polarity fields raise policy success to \GoldPolicy{}, compared with \GoldCascade{} before the gate and \GoldTemplate{} for the template.
+The policy gain over the cascade is 34.9 points (CI 26.7--43.4), while its deficit to the template is 20.0 points (CI $-26.4$ to $-14.0$).
+Wrong-act outputs fall from 54 to 17 when gold fields replace browser inference.
+The policy still has three added-content errors, and 37/108 accepted model outputs fail the full scorer; six of 67 template fallbacks also fail it.
+Acceptance thus measures satisfaction of the implemented checks, not success under every scoring criterion.
+
+\subsection{What the Audit Changes}
+The interface diagnostic concerns 32 \emph{single-symbol feeling selections}, eight symbols across four locales, before prompt exclusions; it is not a count of the 175 scenarios.
+The archived browser labels 27/32 as requests.
+For example, a feeling can become an unwanted desire: \lang{Hindi} \bad{\hi{मुझे गुस्सा चाहिए।}} (\emph{``I want anger''}).
+The same representational problem affects \lang{Gujarati} \gu{ગુસ્સો} and \lang{Marathi} \hi{रागात}: a feeling label needs a state construction rather than an object-request frame.
+These two labels illustrate the board vocabulary, not new measured outputs.
+After exclusion, 30 feeling scenarios remain in the primary grid.
+The archived substring rule also falsely negates three of 276 single-symbol selections, including English \emph{Nose} and Gujarati \gu{નાક}.
+
+The scorer audit separates system failures from lexical gaps.
+All eight gold-field template failures are Gujarati negated feelings: the templates use \gu{નથી}, but scorer v1 does not recognize that construction as a feeling act.
+The audit also classifies two accepted-model failures and six fallback failures as scorer gaps.
+The other 35 accepted-model failures comprise 12 negated wants, nine third-person reports, ten structurally ill-formed outputs, and four additions; these are diagnostic classifications without native-speaker adjudication.
+Consequently, the original 167/175 template score should not be interpreted as eight verified meaning errors.
+
+The repairs address each layer explicitly.
+Canonical symbols replace negation substring matching; act and polarity are separate; multilingual act and perspective cues strengthen the gate; and templates include negated feeling constructions such as \lang{Hindi} \hi{मैं खुश नहीं हूँ।}, \lang{Gujarati} \gu{હું ખુશ નથી.}, and \lang{Marathi} \hi{मी आनंदी नाही.}
+These recorded regression outputs share the gloss \emph{``I am not happy.''}
+Figure~\ref{fig:workflow} shows their decision phases alongside English, and Appendix~\ref{app:cases} samples the remaining scenario families.
+
+\subsection{Repair Regression and Evidence Boundary}
+With \emph{scorer v2}, which repairs lexical gaps and adds script, perspective, and act checks, the saved archived outputs score 95/175 on browser inputs and 138/175 with gold fields.
+The repaired hybrid and repaired template each reach 175/175 on the same primary grid, while the repaired ungated first candidate reaches 88/175.
+The hybrid's 49.7-point advantage over its ungated candidate has a paired group-bootstrap CI of 42.3--57.1 points.
+These runs used one NVIDIA TITAN Xp with 12\,GB memory and English seed 11; Indic decoding is greedy.
+The repaired browser and gold fields normalize to identical message representations on this grid.
+Because the grid informed the repairs, these are \emph{regression results}, not evidence of generalization or a hybrid advantage over templates.
+Scorer-v1 and scorer-v2 scores must not be mixed to estimate a repair effect.
+
+A separate 120-scenario evaluation and a blinded template--hybrid rating packet were prepared.
+Their gold annotations still await independent native-speaker confirmation, and no human ratings have been returned; we therefore report neither their automatic success rates nor a preference result.
+Human judgments must evaluate meaning before phrasing.
+
+\input{generated/tab_pred}
+
+\subsection{Next-Word Prediction}
+Prediction uses a separate split of AAC dialogues: 240 training and 60 held-out source conversations per language for English and Hindi.
+The test set supplies 2,220 English and 2,437 Hindi next-word contexts from AAC-user utterances.
+All count-based baselines share the training partition.
+Table~\ref{tab:pred} distinguishes the unigram baseline from the deployed suffix trie and marks the unmeasured languages.
+
+The suffix trie obtains 381 correct top-one predictions versus 356 for trigram backoff in English, and 659 versus 630 in Hindi.
+The count-derived gains are 1.126 and 1.190 percentage points, respectively, rather than differences between rounded table values (95\% conversation-bootstrap CIs 0.505--1.766 and 0.463--1.922).
+Despite disjoint source conversations, 18/392 English and 28/384 Hindi test utterances recur in training.
+Removing contexts from repeated utterances leaves gains of 0.968 points in English and 1.020 in Hindi.
+Out-of-vocabulary targets, 167 English and 133 Hindi, remain misses.
+No Gujarati or Marathi prediction result is inferred from the realization experiments.
+
+\subsection{Playback and Installation Checks}
+On the GTX 1650, 32 browser trials covered four languages, four selections, and two repeats, with one cold and 31 warm trials.
+Click to the first audio-element playback event had median 9.9\,s and p95 20.8\,s.
+The language medians were 12.4\,s (English), 15.3\,s (Hindi), 7.9\,s (Gujarati), and 10.7\,s (Marathi).
+Every trial played a placeholder tone, so these are \emph{playback-path timings}, not click-to-first-audible-speech measurements.
+A fresh CPU environment served example and clarification requests using cached Qwen weights; a first-time weight download, clean GPU installation, and real Indic synthesis were not tested.
+Model execution is local to the backend, but the browser still depends on externally served interface libraries, so the complete demo is not verified as offline.

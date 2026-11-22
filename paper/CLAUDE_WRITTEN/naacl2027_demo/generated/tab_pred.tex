@@ -1,0 +1,20 @@
+\begin{table}[H]\centering\scriptsize\setlength{\tabcolsep}{2.4pt}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+ & \multicolumn{3}{c}{English} & \multicolumn{3}{c}{Hindi} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+Model & hit@1 & hit@5 & MRR & hit@1 & hit@5 & MRR \\
+\midrule
+Unigram frequency & 3.6 & 11.6 & 0.069 & 6.4 & 14.5 & 0.099 \\
+Bigram, backoff & 13.6 & 29.5 & 0.204 & 24.1 & 43.1 & 0.320 \\
+Trigram, backoff & 16.0 & 32.8 & 0.234 & 25.9 & 44.0 & 0.334 \\
+Gutenberg HMM$^{\ast}$ & 6.7 & 15.5 & 0.105 & -- & -- & -- \\
+Hindi AAC HMM$^{\ast}$ & -- & -- & -- & 24.5 & 41.9 & 0.315 \\
+HMM-1, 4-gram & n/a$^{\dagger}$ & n/a & n/a & -- & -- & -- \\
+\midrule
+\textbf{Infinity-gram} & 17.2 & 33.4 & 0.240 & 27.0 & 44.1 & 0.343 \\
+\bottomrule
+\end{tabular}
+\caption{Held-out next-word prediction (hit@$k$ in \%, MRR@10) on AAC-user utterances of 60 held-out source conversations per language (2220 English and 2437 Hindi contexts). Training and test sources are disjoint. $^{\ast}$Trained HMM scored with the deployed Markov rule; the Hindi HMM is retrained on the training sources with the project's script (the shipped file saw all sources). $^{\dagger}$Git LFS object not available during evaluation.}
+\label{tab:pred}
+\end{table}

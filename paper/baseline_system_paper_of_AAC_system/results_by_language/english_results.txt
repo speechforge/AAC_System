@@ -1,0 +1,54 @@
+==============================================================================================================
+ ENGLISH RESULTS - Indic AAC System (all experiments for this language)
+==============================================================================================================
+ Arrows: KSR ↑ higher is better | top-k hit ↑ higher is better | perplexity ↓ lower is better | latency ↓ lower is better
+
+ Data: real English AAC dataset (GPT-generated dialogues)
+ Train sentences 2659 | dev 335 | test AAC-user 403 + caregiver 402
+ Test OOV rate vs train vocabulary: AAC 7.1%, caregiver 4.1%
+
+ 1. NEXT-WORD PREDICTION (full test sets)
+
+  System                          | KSR AAC ↑ | KSR Care ↑ | KSR all ↑ | top-1% ↑ | top-5% ↑ | top-10% ↑
+  --------------------------------+-----------+------------+-----------+----------+----------+----------
+  frequency-only (floor)          | 47.6      | 51.1       | 49.6      | 3.4      | 13.4     | 19.5     
+  char 12-gram (n-gram reference) | 53.2      | 58.4       | 56.2      | 17.1     | 33.4     | 41.5     
+  OURS: ∞-gram (shipped)          | 53.7      | 58.9       | 56.6      | 17.2     | 34.0     | 42.8     
+  OURS: ∞-gram capped at 2 words  | 54.0      | 59.1       | 56.9      | 17.4     | 34.4     | 43.4     
+
+ Per-character perplexity ↓ (all test): char 12-gram 4.70 | ∞-gram open-vocab 3.35 (word model; indicative only)
+ Latency ↓: ∞-gram 0.045 ms per top-10 prediction (CPU); char 12-gram 0.028 ms/char
+
+ 2. ABLATION - selected-word exclusion and backoff (KSR ↑, AAC / Care)
+
+  Variant                                     | KSR AAC ↑ | KSR Care ↑
+  --------------------------------------------+-----------+-----------
+  shipped (exclude selected words, alpha=0.4) | 53.70     | 58.88     
+  no exclusion, alpha=0.1                     | 54.10     | 59.17     
+  no exclusion, alpha=0.2                     | 54.10     | 59.17     
+  no exclusion, alpha=0.4                     | 54.10     | 59.16     
+  no exclusion, alpha=0.7                     | 54.10     | 59.14     
+
+ 3. SENTENCE GENERATION & FIDELITY (131 determinate + 13 ambiguous selections)
+
+  System              | gate accepts ↑ | act correct ↑ | entity kept ↑  | negation kept ↑ | no additions ↑ | ambiguous: asked ↑
+  --------------------+----------------+---------------+----------------+-----------------+----------------+-------------------
+  ours: realiser+gate | 130/131 (99%)  | 130/131 (99%) | 130/131 (99%)  | 130/131 (99%)   | 130/131 (99%)  | 13/13             
+  literal word list   | 45/131 (34%)   | 45/131 (34%)  | 131/131 (100%) | 131/131 (100%)  | 131/131 (100%) | 0/13              
+
+ 4. CONCEPT-LEVEL PREDICTOR (board symbols)
+  words mapped to the 69-concept board: 13.8% | events 272 | hit@1 11.8% | hit@5 20.2% | hit@10 44.9%
+
+ 5. COMPARISON WITH THE BASELINE'S METHODS (same 80+80 test subsample; KSR on 40+40)
+
+  System                                         | perplexity ↓ | KSR avg ↑ | top-5 hit % ↑
+  -----------------------------------------------+--------------+-----------+--------------
+  char 12-gram (baseline-type n-gram)            | 4.93         | 55.1      | 29.8         
+  OPT-125m pretrained                            | 2.65         | 58.0      | 36.4         
+  OPT-350m pretrained                            | 2.52         | 58.9      | 36.9         
+  OPT-125m adapted on our data  <- BEST accuracy | 2.07         | 62.6      | 44.9         
+  OURS: ∞-gram                                   | 3.57         | 55.9      | 30.5         
+
+ Verdict: the adapted OPT-125m is the most accurate; ours is the fastest (CPU, ~0.045 ms) and slightly better than the baseline-type n-gram.
+
+ See ../../RESULTS_vs_baseline.txt for setup, caveats and the full cross-language comparison.

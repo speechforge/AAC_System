@@ -1,0 +1,142 @@
+⚡
+Indic AAC Studio
+🇬🇧 English
+🇮🇳 हिन्दी (Hindi)
+🟡 ગુજરાતી (Gujarati)
+🟠 मराठी (Marathi)
+Sign in
+📌
+My Words
+🚨 QUICK EXPRESS
+🆘
+Help Me!
+💧
+Water
+🚻
+Bathroom
+🤕
+I Hurt
+🍎
+Food
+✨
+Thank You
+❤️
+Love
+SENTENCE CANVAS
+1 word
+Speaking: "I want Water."
+TOP WORDS:
+👍
+Yes
+🙅
+No
+🤲
+Want
+🆘
+Help
+➕
+More
+💧
+Water
+✕
+Delete Last
+🔀
+Un-Jumble
+Speak
+AI Polish & Speak
+⚡ NEXT WORD PREDICTIONS (∞-GRAM)
+Context: 1 words
+🙏
+please
+24%
+💬
+today
+11%
+💬
+or
+5%
+💬
+would
+5%
+💬
+maybe
+5%
+💬
+and
+5%
+💬
+are
+5%
+Natural Realization
+Accuracy: 100%
+🎙️ IndicF5 Voice
+Copy
+Replay Voice
+"I want Water."
+Intent Context: The user is requesting Water.
+⭐ UNIVERSAL CORE WORDS
+Always Accessible
+👍
+Yes
+🙅
+No
+🤲
+Want
+🆘
+Help
+➕
+More
+🛑
+Stop
+👤
+I / Me
+👉
+You
+✨
+Good
+⚠️
+Bad
+⭐
+Core Words
+⚡
+Actions
+🍎
+Food & Drink
+😊
+Feelings
+👤
+People
+🏠
+Places
+🫁
+Health & Body
+💬
+Social
+🆘
+Urgent
+🔍
+5,000+ Emojis
+Compact
+Standard
+Large ♿
+💧
+Water
+🍎
+Food
+🥛
+Milk
+🍚
+Rice
+🍞
+Bread/Roti
+🍌
+Fruit
+🫖
+Tea
+🧃
+Juice
+🍪
+Biscuit
+🍕
+Pizza
+Indic AAC Studio · Standard Multilingual AAC Architecture (React 18)

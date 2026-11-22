@@ -1,0 +1,442 @@
+{
+  "schema": "paper-skill/citation-lock-v1",
+  "entries": {
+    "cai2024speakfaster": {
+      "key": "cai2024speakfaster",
+      "identifiers": {
+        "doi": "10.1038/s41467-024-53873-3"
+      },
+      "checked_at": "2026-11-12T14:31:53+00:00",
+      "supports": [
+        {
+          "sentence": "SpeakFaster expands abbreviated text for eye-gaze typists with ALS.",
+          "relation": "direct"
+        }
+      ],
+      "secondary": [
+        {
+          "source": "openalex",
+          "url": "https://openalex.org/W4403980719",
+          "agrees": true,
+          "reasons": []
+        },
+        {
+          "source": "semantic-scholar",
+          "url": "https://www.semanticscholar.org/paper/57d26bd31ae2ff96488650be23e5beb36a4f8398",
+          "agrees": true,
+          "reasons": []
+        }
+      ],
+      "primary": {
+        "source": "crossref",
+        "url": "https://doi.org/10.1038/s41467-024-53873-3",
+        "title": "Using large language models to accelerate communication for eye gaze typing users with ALS",
+        "authors": [
+          "Cai, Shanqing",
+          "Venugopalan, Subhashini",
+          "Seaver, Katie",
+          "Xiao, Xiang",
+          "Tomanek, Katrin",
+          "Jalasutram, Sri",
+          "Morris, Meredith Ringel",
+          "Kane, Shaun",
+          "Narayanan, Ajit",
+          "MacDonald, Robert L.",
+          "Kornman, Emily",
+          "Vance, Daniel",
+          "Casey, Blair",
+          "Gleason, Steve M.",
+          "Nelson, Philip Q.",
+          "Brenner, Michael P."
+        ],
+        "year": 2024,
+        "venue": "Nature Communications",
+        "doi": "10.1038/s41467-024-53873-3",
+        "arxiv": ""
+      },
+      "abstract": "Abstract Accelerating text input in augmentative and alternative communication (AAC) is a long-standing area of research with bearings on the quality of life in individuals with profound motor impairments. Recent advances in large language models (LLMs) pose opportunities for re-thinking strategies for enhanced text entry in AAC. In this paper, we present SpeakFaster, consisting of an LLM-powered user interface for text entry in a highly-abbreviated form, saving 57% more motor actions than traditional predictive keyboards in offline simulation. A pilot study on a mobile device with 19 non-AAC participants demonstrated motor savings in line with simulation and relatively small changes in typing speed. Lab and field testing on two eye-gaze AAC users with amyotrophic lateral sclerosis demonstrated text-entry rates 29–60% above baselines, due to significant saving of expensive keystrokes based on LLM predictions. These findings form a foundation for further exploration of LLM-assisted text entry in AAC and other user interfaces.",
+      "status": "verified",
+      "claim_status": "ok",
+      "bib_sha256": "4904f6e621e46c7f9a45c17d5879bb251f4b0021cd9ae121233617e5d89d8c53"
+    },
+    "francis2025static": {
+      "key": "francis2025static",
+      "identifiers": {
+        "doi": "10.21437/interspeech.2025-2815"
+      },
+      "checked_at": "2026-11-12T14:31:57+00:00",
+      "supports": [
+        {
+          "sentence": "Francis et al. add generated symbols and zero-shot voice cloning to a symbol board.",
+          "relation": "direct"
+        }
+      ],
+      "secondary": [
+        {
+          "source": "openalex",
+          "url": "https://openalex.org/W4415432742",
+          "agrees": true,
+          "reasons": []
+        },
+        {
+          "source": "semantic-scholar",
+          "url": "https://www.semanticscholar.org/paper/2a406f5d36485e911840c76fc4717af9a36a3b03",
+          "agrees": true,
+          "reasons": []
+        }
+      ],
+      "primary": {
+        "source": "crossref",
+        "url": "https://doi.org/10.21437/interspeech.2025-2815",
+        "title": "From Static to Dynamic: Enhancing AAC with Generative Imagery and Zero-Shot TTS",
+        "authors": [
+          "Francis, Juliana",
+          "Gustafsson, Joakim",
+          "Székely, Éva"
+        ],
+        "year": 2025,
+        "venue": "Interspeech 2025",
+        "doi": "10.21437/interspeech.2025-2815",
+        "arxiv": ""
+      },
+      "abstract": "This paper presents an Augmentative and Alternative Communication (AAC) approach for minimally verbal children with Autism Spectrum Disorder. Traditional AAC systems use fixed symbol sets and pre-defined Text-to-Speech (TTS) voices, this proposed method leverages text-to-image generation and zero-shot TTS to expand expressive capabilities. Users can create visual symbols for concepts and interests, enabling richer communication. Further, zero-shot TTS allows users to upload or record personalized voices, enabling users to have individualized output. By minimizing reliance on static symbols and voices, this approach aims to increase communicative agency, personal relevance, and social validity, areas often neglected in traditional interventions. Future research will explore long-term effects on communicative skills, user satisfaction, social engagement, and adaptability across various cultural and linguistic settings, aiming to develop more dynamic and personalized AAC solutions.",
+      "status": "verified",
+      "claim_status": "ok",
+      "bib_sha256": "af0fd2653a58e0f27cfe784e9060e92325a70c0ec22c3f178b5c7f53634a8b98"
+    },
+    "vertanen2026multilingual": {
+      "key": "vertanen2026multilingual",
+      "identifiers": {
+        "acl": "2026.mrl-1.31"
+      },
+      "checked_at": "2026-11-12T14:32:01+00:00",
+      "supports": [
+        {
+          "sentence": "Vertanen contributes multilingual AAC text collections.",
+          "relation": "direct"
+        }
+      ],
+      "secondary": [
+        {
+          "source": "openalex",
+          "url": "https://openalex.org/W7224214941",
+          "agrees": true,
+          "reasons": []
+        },
+        {
+          "source": "semantic-scholar",
+          "url": "https://www.semanticscholar.org/paper/0e245b4a8ed3ff7fdfafa7968cffa4ef1470e333",
+          "agrees": true,
+          "reasons": []
+        }
+      ],
+      "primary": {
+        "source": "acl-anthology",
+        "url": "https://aclanthology.org/2026.mrl-1.31/",
+        "title": "Multilingual Datasets for Augmentative and Alternative Communication",
+        "authors": [
+          "Vertanen, Keith"
+        ],
+        "year": 2026,
+        "venue": "Proceedings of the 6th Workshop on Multilingual Representation Learning (MRL 2026)",
+        "doi": "10.18653/2026.mrl-1.31",
+        "arxiv": ""
+      },
+      "abstract": "There is a lack of text resources for building predictive Augmentative and Alternative (AAC) interfaces in many languages.We share a compilation of four multilingual datasets in hopes of improving the situation.We started with four English datasets designed to match the conversational-style text AAC users may want to produce in person-to-person conversations.Next, we used a large language model (LLM) to correct errors and augment the original English data.Finally, we used Google's translation LLM to convert the datasets' 9,154 individual communications and 37,486 dialogue turns into 33 other languages.",
+      "status": "verified",
+      "claim_status": "ok",
+      "bib_sha256": "744b5b624de5f7e88e63e75faef13ca5aa329cb71044b02eff73936ed9273bdb"
+    },
+    "chen2025f5tts": {
+      "key": "chen2025f5tts",
+      "identifiers": {
+        "acl": "2025.acl-long.313"
+      },
+      "checked_at": "2026-11-12T14:32:04+00:00",
+      "supports": [
+        {
+          "sentence": "IndicF5 is a flow-matching model of the F5-TTS family.",
+          "relation": "background"
+        }
+      ],
+      "secondary": [
+        {
+          "source": "openalex",
+          "url": "https://openalex.org/W4412945617",
+          "agrees": true,
+          "reasons": []
+        }
+      ],
+      "primary": {
+        "source": "acl-anthology",
+        "url": "https://aclanthology.org/2025.acl-long.313/",
+        "title": "F5-TTS: A Fairytaler that Fakes Fluent and Faithful Speech with Flow Matching",
+        "authors": [
+          "Chen, Yushen",
+          "Niu, Zhikang",
+          "Ma, Ziyang",
+          "Deng, Keqi",
+          "Wang, Chunhui",
+          "Zhao, Jian",
+          "Yu, Kai",
+          "Chen, Xie"
+        ],
+        "year": 2025,
+        "venue": "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+        "doi": "10.18653/v1/2025.acl-long.313",
+        "arxiv": ""
+      },
+      "abstract": "This paper introduces F5-TTS, a fully nonautoregressive text-to-speech system based on flow matching with Diffusion Transformer (DiT).Without requiring complex designs such as duration model, text encoder, and phoneme alignment, the text input is simply padded with filler tokens to the same length as input speech, and then the denoising is performed for speech generation, which was originally proved feasible by E2 TTS.However, the original design of E2 TTS makes it hard to follow due to its slow convergence and low robustness.To address these issues, we first model the input with ConvNeXt to refine the text representation, making it easy to align with the speech.We further propose an inference-time Sway Sampling strategy, which significantly improves our model's performance and efficiency.This sampling strategy for flow step can be easily applied to existing flow matching based models without retraining.Our design allows faster training and achieves an inference RTF of 0.15, which is greatly improved compared to state-of-the-art diffusion-based TTS models.Trained on a public 100K hours multilingual dataset, our F5-TTS exhibits highly natural and expressive zero-shot ability, seamless code-switching capability, and speed control efficiency.We have released all codes and checkpoints to promote community development, at https://SWivid.github.io/F5-TTS/.",
+      "status": "verified",
+      "claim_status": "ok",
+      "bib_sha256": "1ba0c4f205a463e083201b0cf77ec2eee976d8efba9a3d1b430bd4e9d1405c9c"
+    },
+    "siuzdak2023vocos": {
+      "key": "siuzdak2023vocos",
+      "identifiers": {
+        "arxiv": "2306.00814"
+      },
+      "checked_at": "2026-11-12T14:32:06+00:00",
+      "supports": [
+        {
+          "sentence": "The returned sentence is synthesized with a 24 kHz Vocos vocoder.",
+          "relation": "software"
+        }
+      ],
+      "secondary": [
+        {
+          "source": "openalex",
+          "url": "https://openalex.org/W4379259581",
+          "agrees": true,
+          "reasons": []
+        }
+      ],
+      "primary": {
+        "source": "arxiv",
+        "url": "https://arxiv.org/abs/2306.00814",
+        "title": "Vocos: Closing the gap between time-domain and Fourier-based neural vocoders for high-quality audio synthesis",
+        "authors": [
+          "Siuzdak, Hubert"
+        ],
+        "year": 2023,
+        "venue": "arXiv",
+        "doi": "",
+        "arxiv": "2306.00814"
+      },
+      "abstract": "Recent advancements in neural vocoding are predominantly driven by Generative Adversarial Networks (GANs) operating in the time-domain. While effective, this approach neglects the inductive bias offered by time-frequency representations, resulting in reduntant and computionally-intensive upsampling operations. Fourier-based time-frequency representation is an appealing alternative, aligning more accurately with human auditory perception, and benefitting from well-established fast algorithms for its computation. Nevertheless, direct reconstruction of complex-valued spectrograms has been historically problematic, primarily due to phase recovery issues. This study seeks to close this gap by presenting Vocos, a new model that directly generates Fourier spectral coefficients. Vocos not only matches the state-of-the-art in audio quality, as demonstrated in our evaluations, but it also substantially improves computational efficiency, achieving an order of magnitude increase in speed compared to prevailing time-domain neural vocoding approaches. The source code and model weights have been open-sourced at https://github.com/gemelo-ai/vocos.",
+      "status": "verified",
+      "claim_status": "ok",
+      "bib_sha256": "5c2b878adf5924d8142598cba430db6d478772781f9348d75049648c5e2eeec7"
+    },
+    "liu2024infinigram": {
+      "key": "liu2024infinigram",
+      "identifiers": {
+        "arxiv": "2401.17377"
+      },
+      "checked_at": "2026-11-12T14:32:16+00:00",
+      "supports": [
+        {
+          "sentence": "Next-word suggestions come from an unbounded-order suffix trie in the spirit of infini-gram.",
+          "relation": "background"
+        }
+      ],
+      "secondary": [
+        {
+          "source": "openalex",
+          "url": "https://openalex.org/W4391462055",
+          "agrees": true,
+          "reasons": []
+        },
+        {
+          "source": "semantic-scholar",
+          "url": "https://www.semanticscholar.org/paper/1c143a753d4eb82da5526132149f6e4ed5271b63",
+          "agrees": true,
+          "reasons": []
+        }
+      ],
+      "primary": {
+        "source": "arxiv",
+        "url": "https://arxiv.org/abs/2401.17377",
+        "title": "Infini-gram: Scaling Unbounded n-gram Language Models to a Trillion Tokens",
+        "authors": [
+          "Liu, Jiacheng",
+          "Min, Sewon",
+          "Zettlemoyer, Luke",
+          "Choi, Yejin",
+          "Hajishirzi, Hannaneh"
+        ],
+        "year": 2024,
+        "venue": "arXiv",
+        "doi": "",
+        "arxiv": "2401.17377"
+      },
+      "abstract": "Are $n$-gram language models still relevant in this era of neural large language models (LLMs)? Our answer is yes, and we showcase their values in both text analysis and improving neural LLMs. This was done by modernizing $n$-gram LMs in two aspects. First, we train them at the same data scale as neural LLMs -- 5 trillion tokens. This is the largest $n$-gram LM ever built. Second, existing $n$-gram LMs use small $n$ which hinders their performance; we instead allow $n$ to be arbitrarily large, by introducing a new $\\infty$-gram LM with backoff. Instead of pre-computing $n$-gram count tables (which would be very expensive), we develop an engine named infini-gram -- powered by suffix arrays -- that can compute $\\infty$-gram (as well as $n$-gram with arbitrary $n$) probabilities with millisecond-level latency. The $\\infty$-gram framework and infini-gram engine enable us to conduct many novel and interesting analyses of human-written and machine-generated text: we find that the $\\infty$-gram LM has fairly high accuracy for next-token prediction (47%), and can complement neural LLMs to greatly reduce their perplexity. When analyzing machine-generated text, we also observe irregularities in the machine--$\\infty$-gram agreement level with respect to the suffix length, which indicates deficiencies in neural LLM pretraining and the positional embeddings of Transformers.",
+      "status": "verified",
+      "claim_status": "ok",
+      "bib_sha256": "04d8369540edf194a8fb26853ae554d90733311897c19f0c08fe086192ed3654"
+    },
+    "qwen2025qwen25": {
+      "key": "qwen2025qwen25",
+      "identifiers": {
+        "arxiv": "2412.15115"
+      },
+      "checked_at": "2026-11-12T14:32:27+00:00",
+      "supports": [
+        {
+          "sentence": "Three prompted stages share one frozen Qwen2.5-0.5B-Instruct.",
+          "relation": "software"
+        }
+      ],
+      "secondary": [
+        {
+          "source": "openalex",
+          "url": "https://openalex.org/W4405655184",
+          "agrees": true,
+          "reasons": []
+        },
+        {
+          "source": "semantic-scholar",
+          "url": "https://www.semanticscholar.org/paper/88aa6b1f37d1fd8e0a40499ce9bb87873f03aaa8",
+          "agrees": false,
+          "reasons": [
+            "first author differs: Qwen vs Yang, Qwen An"
+          ]
+        }
+      ],
+      "primary": {
+        "source": "arxiv",
+        "url": "https://arxiv.org/abs/2412.15115",
+        "title": "Qwen2.5 Technical Report",
+        "authors": [
+          "Qwen",
+          ":",
+          "Yang, An",
+          "Yang, Baosong",
+          "Zhang, Beichen",
+          "Hui, Binyuan",
+          "Zheng, Bo",
+          "Yu, Bowen",
+          "Li, Chengyuan",
+          "Liu, Dayiheng",
+          "Huang, Fei",
+          "Wei, Haoran",
+          "Lin, Huan",
+          "Yang, Jian",
+          "Tu, Jianhong",
+          "Zhang, Jianwei",
+          "Yang, Jianxin",
+          "Yang, Jiaxi",
+          "Zhou, Jingren",
+          "Lin, Junyang",
+          "Dang, Kai",
+          "Lu, Keming",
+          "Bao, Keqin",
+          "Yang, Kexin",
+          "Yu, Le",
+          "Li, Mei",
+          "Xue, Mingfeng",
+          "Zhang, Pei",
+          "Zhu, Qin",
+          "Men, Rui",
+          "Lin, Runji",
+          "Li, Tianhao",
+          "Tang, Tianyi",
+          "Xia, Tingyu",
+          "Ren, Xingzhang",
+          "Ren, Xuancheng",
+          "Fan, Yang",
+          "Su, Yang",
+          "Zhang, Yichang",
+          "Wan, Yu",
+          "Liu, Yuqiong",
+          "Cui, Zeyu",
+          "Zhang, Zhenru",
+          "Qiu, Zihan"
+        ],
+        "year": 2024,
+        "venue": "arXiv",
+        "doi": "",
+        "arxiv": "2412.15115"
+      },
+      "abstract": "In this report, we introduce Qwen2.5, a comprehensive series of large language models (LLMs) designed to meet diverse needs. Compared to previous iterations, Qwen 2.5 has been significantly improved during both the pre-training and post-training stages. In terms of pre-training, we have scaled the high-quality pre-training datasets from the previous 7 trillion tokens to 18 trillion tokens. This provides a strong foundation for common sense, expert knowledge, and reasoning capabilities. In terms of post-training, we implement intricate supervised finetuning with over 1 million samples, as well as multistage reinforcement learning. Post-training techniques enhance human preference, and notably improve long text generation, structural data analysis, and instruction following. To handle diverse and varied use cases effectively, we present Qwen2.5 LLM series in rich sizes. Open-weight offerings include base and instruction-tuned models, with quantized versions available. In addition, for hosted solutions, the proprietary models currently include two mixture-of-experts (MoE) variants: Qwen2.5-Turbo and Qwen2.5-Plus, both available from Alibaba Cloud Model Studio. Qwen2.5 has demonstrated top-tier performance on a wide range of benchmarks evaluating language understanding, reasoning, mathematics, coding, human preference alignment, etc. Specifically, the open-weight flagship Qwen2.5-72B-Instruct outperforms a number of open and proprietary models and demonstrates competitive perform",
+      "status": "conflict",
+      "note": "A second source disagrees; resolve against the publisher/proceedings page before citing."
+    },
+    "mccoy1998compansion": {
+      "key": "mccoy1998compansion",
+      "identifiers": {
+        "doi": "10.1017/S1351324998001843"
+      },
+      "checked_at": "2026-11-12T14:32:33+00:00",
+      "supports": [
+        {
+          "sentence": "Compansion expanded telegraphic AAC input into well-formed sentences with syntactic and semantic rules.",
+          "relation": "direct"
+        }
+      ],
+      "secondary": [
+        {
+          "source": "openalex",
+          "url": "https://openalex.org/W2138990244",
+          "agrees": true,
+          "reasons": []
+        },
+        {
+          "source": "semantic-scholar",
+          "url": "https://www.semanticscholar.org/paper/afc75b39aee479b6eea3c054892960e4cc33cf79",
+          "agrees": true,
+          "reasons": []
+        }
+      ],
+      "primary": {
+        "source": "crossref",
+        "url": "https://doi.org/10.1017/S1351324998001843",
+        "title": "Compansion: From research prototype to practical integration",
+        "authors": [
+          "MCCOY, KATHLEEN F.",
+          "PENNINGTON, CHRISTOPHER A.",
+          "LUBEROFF BADMAN, ARLENE"
+        ],
+        "year": 1998,
+        "venue": "Natural Language Engineering",
+        "doi": "10.1017/S1351324998001843",
+        "arxiv": ""
+      },
+      "abstract": "Augmentative and Alternative Communication (AAC) is the field of study concerned with providing devices and techniques to augment the communicative ability of a person whose disability makes it difficult to speak or otherwise communicate in an understandable fashion. For several years, we have been applying natural language processing techniques to the field of AAC to develop intelligent communication aids that attempt to provide linguistically correct output while increasing communication rate. Previous effort has resulted in a research prototype called Compansion that expands telegraphic input. In this paper we describe that research prototype and introduce the Intelligent Parser Generator (IPG). IPG is intended to be a practical embodiment of the research prototype aimed at a group of users who have cognitive impairments that affect their linguistic ability. We describe both the theoretical underpinnings of Compansion and the practical considerations in developing a usable system for this population of users.",
+      "status": "verified",
+      "claim_status": "ok",
+      "bib_sha256": "9e0e3d5de320dfb16b63553665f8d25bcc51c894f8935d2e65557e3266089430"
+    },
+    "karmakar-sinha-2024-aiding": {
+      "key": "karmakar-sinha-2024-aiding",
+      "identifiers": {
+        "acl": "2024.icon-1.37"
+      },
+      "checked_at": "2026-11-12T14:32:36+00:00",
+      "supports": [
+        {
+          "sentence": "Karmakar and Sinha propose a language-agnostic mapping between text and AAC symbols.",
+          "relation": "direct"
+        }
+      ],
+      "secondary": [],
+      "primary": {
+        "source": "acl-anthology",
+        "url": "https://aclanthology.org/2024.icon-1.37/",
+        "title": "Aiding Non-Verbal Communication: A Bidirectional Language Agnostic Framework for Automating Text to AAC Generation",
+        "authors": [
+          "Karmakar, Piyali",
+          "Sinha, Manjira"
+        ],
+        "year": 2024,
+        "venue": "Proceedings of the 21st International Conference on Natural Language Processing (ICON)",
+        "doi": "",
+        "arxiv": ""
+      },
+      "abstract": "",
+      "status": "single-source",
+      "note": "Only one index resolved this work; retry later or add another identifier.",
+      "bib_sha256": "712dba8a3bff68cff0ff24f0052df4a56b596c0a2822e138994b38cf0ba12bf6"
+    }
+  }
+}

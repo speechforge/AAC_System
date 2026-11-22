@@ -1,0 +1,27 @@
+\begin{table*}[t]
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}L{5.8cm}ccccc@{}}
+\toprule
+System / condition & English & Hindi & Gujarati & Marathi & Pooled \\
+\midrule
+\multicolumn{6}{@{}l}{\textit{A. Archived web client; scorer v1}}\\
+Unconstrained Qwen (diagnostic) & 2/46 & 1/45 & 4/42 & 1/42 & 8/175 \\
+Cascade before checking & 3/46 & 24/45 & 20/42 & 18/42 & 65/175 \\
+Gate + retry + fallback & 22/46 & 31/45 & 21/42 & 23/42 & 97/175 \\
+Matched template baseline & 33/46 & 31/45 & 27/42 & 27/42 & 118/175 \\
+\midrule
+\multicolumn{6}{@{}l}{\textit{B. Archived explicit gold act and polarity; scorer v1}}\\
+Cascade before checking & 5/46 & 26/45 & 16/42 & 24/42 & 71/175 \\
+Gate + retry + fallback & 33/46 & 41/45 & 26/42 & 32/42 & 132/175 \\
+Matched template baseline & 46/46 & 45/45 & 34/42 & 42/42 & 167/175 \\
+\midrule
+\multicolumn{6}{@{}l}{\textit{C. Revised browser path; scorer v2; regression only}}\\
+Revised cascade before checking & 6/46 & 29/45 & 27/42 & 26/42 & 88/175 \\
+Revised gate + retry + checked fallback & 46/46 & 45/45 & 42/42 & 42/42 & 175/175 \\
+Repaired template baseline & 46/46 & 45/45 & 42/42 & 42/42 & 175/175 \\
+\bottomrule
+\end{tabular}
+\caption{Scenario success as counts over the same 175 selections. Panels A and B reproduce the archived lexical scorer; panel C is a scorer-v2 regression comparison on scenarios that informed the repairs. Scores across scorers are not directly comparable. English is a language reference; Hindi, Gujarati, and Marathi evaluate language extensions. The template is the method baseline in every language.}
+\label{tab:results}
+\end{table*}

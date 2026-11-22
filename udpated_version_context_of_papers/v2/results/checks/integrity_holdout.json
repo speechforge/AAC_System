@@ -1,0 +1,139 @@
+{
+ "rows": 4608,
+ "duplicate_keys": 0,
+ "rows_with_unknown_scenario": 0,
+ "determinate_coverage_by_system_mode (n_scored, n_determinate)": {
+  "archived_deployed|gold": [
+   112,
+   112
+  ],
+  "archived_deployed|orig": [
+   112,
+   112
+  ],
+  "archived_llm1_stage|gold": [
+   112,
+   112
+  ],
+  "archived_llm1_stage|orig": [
+   112,
+   112
+  ],
+  "cascade_ungated_first|gold": [
+   112,
+   112
+  ],
+  "cascade_ungated_first|orig": [
+   112,
+   112
+  ],
+  "cascade_ungated_last|gold": [
+   112,
+   112
+  ],
+  "cascade_ungated_last|orig": [
+   112,
+   112
+  ],
+  "gate_only_v1|gold": [
+   112,
+   112
+  ],
+  "gate_only_v1|orig": [
+   112,
+   112
+  ],
+  "onepass|gold": [
+   112,
+   112
+  ],
+  "onepass|rev": [
+   112,
+   112
+  ],
+  "revised_cascade_first|cross": [
+   112,
+   112
+  ],
+  "revised_cascade_first|gold": [
+   112,
+   112
+  ],
+  "revised_cascade_first|rev": [
+   112,
+   112
+  ],
+  "revised_cascade_last|cross": [
+   112,
+   112
+  ],
+  "revised_cascade_last|gold": [
+   112,
+   112
+  ],
+  "revised_cascade_last|rev": [
+   112,
+   112
+  ],
+  "revised_hybrid|cross": [
+   112,
+   112
+  ],
+  "revised_hybrid|gold": [
+   112,
+   112
+  ],
+  "revised_hybrid|rev": [
+   112,
+   112
+  ],
+  "revised_llm1_stage|cross": [
+   112,
+   112
+  ],
+  "revised_llm1_stage|gold": [
+   112,
+   112
+  ],
+  "revised_llm1_stage|rev": [
+   112,
+   112
+  ],
+  "template_archived|gold": [
+   112,
+   112
+  ],
+  "template_archived|orig": [
+   112,
+   112
+  ],
+  "template_archived|rev": [
+   112,
+   112
+  ],
+  "template_revised|gold": [
+   112,
+   112
+  ],
+  "template_revised|rev": [
+   112,
+   112
+  ]
+ },
+ "systems_not_covering_all_determinate_scenarios": [],
+ "tables_whose_language_counts_do_not_sum": [],
+ "scorer_versions": [
+  "scorer-v2"
+ ],
+ "model_revision_in_freeze": "7ae557604adf67be50417f59c2c2f167def9a775",
+ "freeze_check": "FREEZE OK",
+ "fixture_checks_dev_violations": [],
+ "fixture_checks_legacy_violations": [],
+ "fixture_checks_holdout_violations": [],
+ "command_exit_codes": {
+  "gate_probes": 0,
+  "rescore_archived": 0,
+  "fixture_checks": 0
+ },
+ "failures": []
+}

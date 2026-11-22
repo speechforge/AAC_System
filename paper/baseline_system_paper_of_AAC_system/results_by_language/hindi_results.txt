@@ -1,0 +1,43 @@
+==============================================================================================================
+ HINDI RESULTS - Indic AAC System (all experiments for this language)
+==============================================================================================================
+ Arrows: KSR ↑ higher is better | top-k hit ↑ higher is better | perplexity ↓ lower is better | latency ↓ lower is better
+
+ Data: Hindi AAC dataset (per repo notes a translation of the English batches)
+ Train sentences 3897 | dev 526 | test AAC-user 507 + caregiver 520
+ Test OOV rate vs train vocabulary: AAC 4.7%, caregiver 2.5%
+
+ 1. NEXT-WORD PREDICTION (full test sets)
+
+  System                          | KSR AAC ↑ | KSR Care ↑ | KSR all ↑ | top-1% ↑ | top-5% ↑ | top-10% ↑
+  --------------------------------+-----------+------------+-----------+----------+----------+----------
+  frequency-only (floor)          | 46.7      | 46.9       | 46.8      | 6.6      | 16.0     | 24.6     
+  char 12-gram (n-gram reference) | 56.2      | 58.4       | 57.4      | 27.6     | 47.3     | 55.2     
+  OURS: ∞-gram (shipped)          | 55.7      | 57.8       | 56.8      | 27.7     | 45.9     | 52.8     
+  OURS: ∞-gram capped at 2 words  | 56.3      | 58.6       | 57.5      | 27.3     | 47.3     | 54.7     
+
+ Per-character perplexity ↓ (all test): char 12-gram 4.38 | ∞-gram open-vocab 3.16 (word model; indicative only)
+ Latency ↓: ∞-gram 0.054 ms per top-10 prediction (CPU); char 12-gram 0.050 ms/char
+
+ 2. ABLATION - selected-word exclusion and backoff (KSR ↑, AAC / Care)
+
+  Variant                                     | KSR AAC ↑ | KSR Care ↑
+  --------------------------------------------+-----------+-----------
+  shipped (exclude selected words, alpha=0.4) | 55.65     | 57.83     
+  no exclusion, alpha=0.1                     | 56.51     | 58.90     
+  no exclusion, alpha=0.2                     | 56.52     | 58.90     
+  no exclusion, alpha=0.4                     | 56.54     | 58.91     
+  no exclusion, alpha=0.7                     | 56.57     | 58.88     
+
+ 3. SENTENCE GENERATION & FIDELITY (131 determinate + 13 ambiguous selections)
+
+  System              | gate accepts ↑ | act correct ↑ | entity kept ↑  | negation kept ↑ | no additions ↑ | ambiguous: asked ↑
+  --------------------+----------------+---------------+----------------+-----------------+----------------+-------------------
+  ours: realiser+gate | 130/131 (99%)  | 130/131 (99%) | 130/131 (99%)  | 130/131 (99%)   | 130/131 (99%)  | 13/13             
+  literal word list   | 54/131 (41%)   | 54/131 (41%)  | 131/131 (100%) | 131/131 (100%)  | 131/131 (100%) | 0/13              
+
+ 4. CONCEPT-LEVEL PREDICTOR (board symbols)
+  words mapped to the 69-concept board: 11.5% | events 243 | hit@1 9.1% | hit@5 30.0% | hit@10 38.7%
+
+
+ See ../../RESULTS_vs_baseline.txt for setup, caveats and the full cross-language comparison.

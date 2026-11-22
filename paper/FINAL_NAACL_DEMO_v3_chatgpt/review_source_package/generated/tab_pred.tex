@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+ & \multicolumn{3}{c}{English reference} & \multicolumn{3}{c}{Hindi extension}\\
+\cmidrule(lr){2-4}\cmidrule(l){5-7}
+Predictor & @1 & @5 & MRR & @1 & @5 & MRR\\
+\midrule
+Unigram frequency & 3.6 & 11.6 & 0.069 & 6.4 & 14.5 & 0.099\\
+Bigram backoff & 13.6 & 29.5 & 0.204 & 24.0 & 43.1 & 0.320\\
+Trigram backoff & 16.0 & 32.8 & 0.234 & 25.9 & 44.0 & 0.334\\
+Suffix trie & 17.2 & 33.4 & 0.240 & 27.0 & 44.1 & 0.343\\
+\midrule
+\multicolumn{7}{@{}l}{\emph{Gujarati: not evaluated; Marathi: not evaluated.}}\\
+\bottomrule
+\end{tabular}
+\caption{Next-word prediction on AAC-user utterances from 60 of 300 source conversations per language (240 used for training): 2,220 English and 2,437 Hindi contexts. @1/@5 are hit rates (\%); MRR is reciprocal rank truncated at ten. All predictors use the same language-specific training split. Gujarati and Marathi realization results do not establish predictor performance.}
+\label{tab:pred}
+\end{table}

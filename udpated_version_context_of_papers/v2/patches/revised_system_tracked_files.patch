@@ -1,0 +1,1076 @@
+diff --git a/indic-generative-aac/backend/app.py b/indic-generative-aac/backend/app.py
+index 593c211..17300ba 100644
+--- a/indic-generative-aac/backend/app.py
++++ b/indic-generative-aac/backend/app.py
+@@ -17,6 +17,8 @@ from llm import IndicLLM
+ from tts import IndicTTSEngine
+ from hmm import hmm_engine
+ from semantic import SemanticValidator
++import pipeline
++import torch
+ 
+ app = FastAPI()
+ 
+@@ -35,7 +37,13 @@ validator = SemanticValidator(llm)
+ print("Initialization Complete.")
+ 
+ class AACRequest(BaseModel):
+-    intent: str
++    intent: str = "REQUEST"        # legacy field (REQUEST / STATEMENT / QUESTION / NEGATION) kept for older clients
++    # act and polarity are separate fields (repaired protocol).  `act_source`: 'client' (inferred by the browser),
++    # 'user' (explicit choice, never overridden) or omitted for legacy payloads.
++    act: str | None = None         # REQUEST | FEELING | FEELING_REQUEST | QUESTION | GREETING | UNKNOWN
++    act_source: str | None = None
++    polarity: str | None = None    # optional alias: 'negative' == negation true
++    concept_ids: list[str | None] = []   # board concept IDs aligned with `entities` (null for typed / personal words)
+     actor: str = "USER"
+     entities: list[str]
+     attributes: list[str] = []
+@@ -44,13 +52,18 @@ class AACRequest(BaseModel):
+     location: str | None = None
+     people: list[str] = []
+     actions: list[str] = []
+-    negation: bool = False
++    negation: bool | None = None
+     speaker_role: str = "USER"
+     language: str = "en"
+     code_mix: bool = False
+     generation_mode: str = "dual"  # 'single' or 'dual'
+     voice_id: str | None = None   # preset key ("indic_female"/"english_female") or a cloned custom_* voice_id
+     debug: bool = False
++    # evaluation switches (the web client never sends them)
++    policy: str = "hybrid"          # hybrid | ungated | template_only
++    seed: int | None = None         # seeds the sampling path (English / code-mixed realiser); attempt k uses seed + 1000 * k
++    reconcile_legacy: bool = True
++    skip_deterministic_retry: bool = False
+ 
+ 
+ class ContextRequest(BaseModel):
+@@ -286,117 +299,88 @@ def unjumble(req: ContextRequest):
+ def generate(req: AACRequest):
+     t0 = time.time()
+     t_sem, t_tts = 0.0, 0.0
+-    sentence = ""
+-    is_valid = False
+-    validation_data = {}
+-    ledger_data = {}
+-    candidate_llm1 = None
+-    candidate_llm2 = None
+-    llm3_decision  = {}
+-    telemetry_data = {}
+-    fallback_used  = False
+-    audio_b64      = None
+-
+-    context = {
+-        "intent":         req.intent,
+-        "actor":          req.actor,
+-        "entities":       req.entities,
+-        "attributes":     req.attributes,
+-        "relations":      req.relations,
+-        "temporal_state": req.temporal_state,
+-        "location":       req.location,
+-        "people":         req.people,
+-        "actions":        req.actions,
+-        "negation":       req.negation or (req.intent.upper() == "NEGATION") or ("NOT" in req.intent.upper()),
+-        "speaker_role":   req.speaker_role
+-    }
+-
+-    # ── Authority Hierarchy Pipeline with Bounded Retry (MAX_RETRIES = 1) ──
+-    MAX_RETRIES = 2
+-    for attempt in range(MAX_RETRIES):
++    audio_b64 = None
++    audio_kind = "none"
++    ctx = pipeline.normalize_request(req.model_dump(), reconcile=req.reconcile_legacy)
++    lang = req.language
++    live_attempts = []
++
++    def get_attempt(k):
++        """Generate the k-th candidate (LLM-1 -> LLM-2 -> LLM-3); seeds the sampling path when requested."""
++        if req.seed is not None:
++            torch.manual_seed(req.seed + 1000 * k)
++            if torch.cuda.is_available():
++                torch.cuda.manual_seed_all(req.seed + 1000 * k)
+         try:
+-            # Stages 1, 2, 3: LLM-1 Realizer -> LLM-2 Refiner -> LLM-3 Verifier
+-            gen, structured_ctx, ledger, c_llm1, c_llm2, decision, telem = llm.generate_sentence(
+-                context, language=req.language, code_mix=req.code_mix, mode=req.generation_mode
+-            )
+-            ledger_data    = ledger
+-            candidate_llm1 = c_llm1
+-            candidate_llm2 = c_llm2
+-            llm3_decision  = decision
+-            telemetry_data = telem
+-
+-            print(f"[PIPELINE Attempt {attempt+1}] "
+-                  f"LLM-1={c_llm1!r} | LLM-2={c_llm2!r} | LLM-3={decision.get('decision')} | Output={gen!r}")
+-
+-            # ── Stage 4: Hard Semantic Validator ────────────────────
+-            t_sem_start = time.time()
+-            valid, val_data = validator.validate(context, ledger, gen, req.language)
+-            t_sem += (time.time() - t_sem_start)
+-
+-            print(f"[HARD VALIDATOR Attempt {attempt+1}] Valid={valid} Score={val_data.get('semantic_score')} Data={val_data}")
+-
+-            if valid:
+-                sentence = gen
+-                is_valid = True
+-                validation_data = val_data
+-                break
+-            else:
+-                sentence = gen
+-                validation_data = val_data
+-
++            gen, sctx, ledger, c1, c2, decision, telem = llm.generate_sentence(ctx, language=lang, code_mix=req.code_mix, mode=req.generation_mode)
++            at = dict(text=gen, llm1=c1, llm2=c2, llm3_text=decision.get("final_text"), llm3_decision=decision.get("decision"),
++                      edit_type=decision.get("edit_type"), latency=telem.get("latencies", {}).get("pipeline_llm_total"), ledger=ledger, telemetry=telem)
++        except Exception as e:                                # technical failure of a stage: recorded, never hidden
++            print(f"[PIPELINE ERROR] attempt {k + 1}: {e}")
++            traceback.print_exc()
++            at = dict(text=None, error=repr(e), latency=None)
++        live_attempts.append(at)
++        return at
++
++    res = pipeline.decide(ctx, lang, get_attempt, validator, llm, policy=req.policy, skip_deterministic_retry=req.skip_deterministic_retry)
++    sentence = res.get("text") or ""
++    outcome = res["outcome"]
++    last = live_attempts[-1] if live_attempts else {}
++    telemetry_data = last.get("telemetry", {}) if isinstance(last, dict) else {}
++    ledger_data = last.get("ledger", {}) if isinstance(last, dict) else {}
++
++    # ── Speech: only a complete sentence is spoken; clarification and literal previews wait for the user ──
++    speak_ok = outcome in ("sentence_model", "sentence_template", "sentence_ungated")
++    if speak_ok:
++        try:
++            t_tts_start = time.time()
++            audio_data, sr = tts.generate_speech(sentence, lang=req.language, code_mix=req.code_mix, speaker_name=(req.voice_id or "female"))
++            t_tts = time.time() - t_tts_start
++            audio_kind = getattr(tts, "last_audio_kind", "none")
++            byte_io = io.BytesIO()
++            scipy.io.wavfile.write(byte_io, sr, audio_data)
++            audio_b64 = base64.b64encode(byte_io.getvalue()).decode("utf-8")
+         except Exception as e:
+-            print(f"[PIPELINE ERROR] Attempt {attempt+1}: {e}")
++            print(f"[TTS ERROR] {e}")
+             traceback.print_exc()
+-
+-    # ── Stage 5: Deterministic Fallback Strategy ────────────────────
+-    # If all LLM refinement fails, use safe deterministic realization based directly on user concepts
+-    if not is_valid:
+-        print("[FALLBACK TRIGGERED] Applying zero-hallucination deterministic fallback.")
+-        fallback_sentence = llm.generate_deterministic_fallback(context, language=req.language, code_mix=req.code_mix)
+-        fallback_valid, fallback_val_data = validator.validate(context, ledger_data, fallback_sentence, req.language)
+-        
+-        sentence = fallback_sentence
+-        is_valid = True  # Safe fallback directly realizes user selections, always valid for speech
+-        validation_data = fallback_val_data
+-        fallback_used = True
+-        llm3_decision["fallback_applied"] = True
+-        llm3_decision["edit_type"] = "deterministic_fallback"
+-
+-    # ── Stage 6: Speech Synthesis ───────────────────────────────────
+-    try:
+-        t_tts_start = time.time()
+-        audio_data, sr = tts.generate_speech(
+-            sentence, lang=req.language, code_mix=req.code_mix, speaker_name=(req.voice_id or "female")
+-        )
+-        t_tts = time.time() - t_tts_start
+-        byte_io = io.BytesIO()
+-        scipy.io.wavfile.write(byte_io, sr, audio_data)
+-        audio_b64 = base64.b64encode(byte_io.getvalue()).decode("utf-8")
+-    except Exception as e:
+-        print(f"[TTS ERROR] {e}")
+-        traceback.print_exc()
+-        audio_b64 = None
++            audio_b64 = None
+ 
+     t_total = time.time() - t0
+     telemetry_latencies = telemetry_data.get("latencies", {})
+     tokens = telemetry_data.get("tokens", {"total_in": 0, "total_out": 0})
+-
+-    caregiver_ctx = llm.parse_and_repair_context(context, sentence, language=req.language)
++    caregiver_ctx = llm.parse_and_repair_context(ctx, sentence, language=req.language) if outcome != "clarification" else None
++    n_att = len(res["attempts"])
++    sem_score = (res["attempts"][-1].get("score") if res["attempts"] else None)
++    if outcome in ("sentence_template",):
++        sem_score = 1.0 if res.get("validated") else 0.0
+ 
+     return {
+         "text":            sentence,
++        "outcome":         outcome,                      # sentence_model | sentence_template | clarification | literal_preview | failure | sentence_ungated
++        "route":           res.get("route"),
++        "act":             res.get("act"),
++        "negation":        res.get("negation"),
++        "act_source":      res.get("act_source"),
++        "clarification":   ({"options": res.get("options", []), "literal": res.get("literal")} if outcome == "clarification" else None),
++        "literal_preview": (res.get("literal") if outcome == "literal_preview" else None),
+         "mode":            req.generation_mode,
+-        "semantic_score":  validation_data.get("semantic_score", 0.0),
+-        "validated":       is_valid,
+-        "semantic_valid":  is_valid,
+-        "fallback_used":   fallback_used,
+-        "validation_data": validation_data,
++        "semantic_score":  sem_score,
++        "validated":       bool(res.get("validated")),
++        "semantic_valid":  bool(res.get("validated")),
++        "fallback_used":   outcome in ("sentence_template", "literal_preview"),
++        "gate":            {"version": res.get("gate_version"), "attempts": [
++                               {k2: v2 for k2, v2 in at.items() if k2 in ("k", "text", "accepted", "reasons", "latency", "error")} for at in res["attempts"]],
++                            "template_status": res.get("template_status"), "template_gate": res.get("template_gate"),
++                            "rejected_template_text": res.get("rejected_template_text")},
++        "validation_data": {"violations_detected": [x for at in res["attempts"] for x in at.get("reasons", [])] if outcome not in ("sentence_model",) else []},
+         "ledger":          ledger_data,
+-        "candidate_llm1":  candidate_llm1,
+-        "candidate_llm2":  candidate_llm2,
+-        "llm3_decision":   llm3_decision,
++        "candidate_llm1":  last.get("llm1") if isinstance(last, dict) else None,
++        "candidate_llm2":  last.get("llm2") if isinstance(last, dict) else None,
++        "llm3_decision":   {"decision": last.get("llm3_decision"), "final_text": last.get("llm3_text"), "edit_type": last.get("edit_type"),
++                            "fallback_applied": outcome in ("sentence_template", "literal_preview")} if isinstance(last, dict) else {},
+         "caregiver_context": caregiver_ctx,
+         "audio_b64":       audio_b64,
++        "audio_kind":      audio_kind,                   # 'indicf5' | 'placeholder_tone' | 'none'
+         "metrics": {
+             "t_llm1":  telemetry_latencies.get("llm1", 0.0),
+             "t_llm2":  telemetry_latencies.get("llm2", 0.0),
+@@ -404,6 +388,7 @@ def generate(req: AACRequest):
+             "t_sem":   round(t_sem, 2),
+             "t_tts":   round(t_tts, 2),
+             "t_total": round(t_total, 2),
++            "n_attempts": n_att,
+             "tokens_in":  tokens.get("total_in", 0),
+             "tokens_out": tokens.get("total_out", 0)
+         }
+diff --git a/indic-generative-aac/backend/llm.py b/indic-generative-aac/backend/llm.py
+index 4d24ec9..d8ffb4b 100644
+--- a/indic-generative-aac/backend/llm.py
++++ b/indic-generative-aac/backend/llm.py
+@@ -5,6 +5,9 @@ import re
+ import time
+ import os
+ 
++import templates as _templates
++import aac_lexicon as _lex
++
+ # ─────────────────────────────────────────────────────────────
+ #  LLM-3: THE FINAL CONTEXT-LEVEL SEMANTIC VERIFIER & MINIMAL REFINER
+ #  Authority Hierarchy:
+@@ -103,7 +106,9 @@ class IndicLLM:
+             "temporal_state": context.get("temporal_state", None),
+             "location": context.get("location", None),
+             "people": context.get("people", []),
+-            "code_mixing": code_mix
++            "code_mixing": code_mix,
++            "act": context.get("act"),
++            "concept_ids": context.get("concept_ids", []),
+         }
+ 
+     def build_concept_ledger(self, structured_context):
+@@ -118,6 +123,9 @@ class IndicLLM:
+         ]
+ 
+         intent = structured_context.get("intent", "")
++        act = (structured_context.get("act") or "").upper()
++        if act in ("FEELING", "FEELING_REQUEST"):
++            intent = "FEELING" if act == "FEELING" else intent       # the act is a state of the speaker; polarity is a separate field
+         if intent:
+             required.append(f"INTENT:{intent.upper()}")
+ 
+@@ -215,7 +223,8 @@ class IndicLLM:
+                     ("Input Sequence: मुझे चाहिए + प्यास + पानी", "मुझे प्यास लगी है, मुझे पानी चाहिए।"),
+                     ("Input Sequence: मुझे चाहिए + बीमार + दवा", "मैं बीमार हूँ, मुझे दवा चाहिए।"),
+                     ("Input Sequence: मुझे चाहिए + पानी", "मुझे पानी चाहिए।"),
+-                    ("Input Sequence: क्या मुझे मिल सकता है + शिक्षक + मदद", "शिक्षक, क्या आप मेरी मदद कर सकते हैं?")
++                    ("Input Sequence: क्या मुझे मिल सकता है + शिक्षक + मदद", "शिक्षक, क्या आप मेरी मदद कर सकते हैं?"),
++                    ("Input Sequence: मैं कह रहा हूँ + नहीं + चिंतित", "मैं चिंतित नहीं हूँ।")
+                 ]
+             },
+             "gu": {
+@@ -235,6 +244,7 @@ class IndicLLM:
+                     ("ઈનપુટ ક્રમ: હું કહું છું + દુખાવો", "મને દુખાવો થાય છે."),
+                     ("ઈનપુટ ક્રમ: શું મને મળી શકે + ડૉક્ટર", "મને ડૉક્ટર મળી શકે?"),
+                     ("ઈનપુટ ક્રમ: શું મને મળી શકે + મદદ", "શું તમે મને મદદ કરી શકો?"),
++                    ("ઈનપુટ ક્રમ: હું કહું છું + નથી + ચિંતિત", "હું ચિંતિત નથી."),
+                 ]
+             },
+             "mr": {
+@@ -254,6 +264,7 @@ class IndicLLM:
+                     ("इनपुट क्रम: मी सांगत आहे + वेदना", "मला वेदना होत आहेत."),
+                     ("इनपुट क्रम: मला मिळू शकेल का + डॉक्टर", "मला डॉक्टर मिळू शकेल का?"),
+                     ("इनपुट क्रम: मला मिळू शकेल का + मदत", "तुम्ही मला मदत करू शकता का?"),
++                    ("इनपुट क्रम: मी सांगत आहे + नाही + चिंतित", "मी चिंतित नाही."),
+                 ]
+             }
+         }
+@@ -263,18 +274,28 @@ class IndicLLM:
+             intent = aac_context.get("intent", "REQUEST").upper()
+             negation = bool(aac_context.get("negation", False))
+             entities = aac_context.get("entities", [])
++            act = (aac_context.get("act") or "").upper()
+ 
+             if language == "hi":
+                 intent_prefix = "नहीं चाहिए" if negation else ("मुझे चाहिए" if intent in ["REQUEST", "WANT"] else ("मैं कह रहा हूँ" if intent in ["STATEMENT", "FEEL"] else "क्या मुझे मिल सकता है"))
+-                seq_parts = [intent_prefix] + entities if entities else [intent_prefix, "यह"]
++                if negation and act == "FEELING":                      # negated state, not a negated want
++                    seq_parts = ["मैं कह रहा हूँ", "नहीं"] + entities
++                else:
++                    seq_parts = [intent_prefix] + entities if entities else [intent_prefix, "यह"]
+                 q = f"Input Sequence: {' + '.join(seq_parts)}"
+             elif language == "gu":
+                 intent_prefix = "નથી જોઈતું" if negation else ("મને જોઈએ છે" if intent in ["REQUEST", "WANT"] else ("હું કહું છું" if intent in ["STATEMENT", "FEEL"] else "શું મને મળી શકે"))
+-                seq_parts = [intent_prefix] + entities if entities else [intent_prefix, "આ"]
++                if negation and act == "FEELING":
++                    seq_parts = ["હું કહું છું", "નથી"] + entities
++                else:
++                    seq_parts = [intent_prefix] + entities if entities else [intent_prefix, "આ"]
+                 q = f"ઈનપુટ ક્રમ: {' + '.join(seq_parts)}"
+             elif language == "mr":
+                 intent_prefix = "नको आहे" if negation else ("मला हवे आहे" if intent in ["REQUEST", "WANT"] else ("मी सांगत आहे" if intent in ["STATEMENT", "FEEL"] else "मला मिळू शकेल का"))
+-                seq_parts = [intent_prefix] + entities if entities else [intent_prefix, "हे"]
++                if negation and act == "FEELING":
++                    seq_parts = ["मी सांगत आहे", "नाही"] + entities
++                else:
++                    seq_parts = [intent_prefix] + entities if entities else [intent_prefix, "हे"]
+                 q = f"इनपुट क्रम: {' + '.join(seq_parts)}"
+ 
+             msgs = [{"role": "system", "content": cfg["system"]}]
+@@ -444,62 +465,35 @@ class IndicLLM:
+         decision_data["final_text"] = final_sentence
+         return final_sentence, decision_data, metrics
+ 
+-    # ─── DETERMINISTIC FALLBACK REALIZER ─────────────────────
+-    def generate_deterministic_fallback(self, context, language="en", code_mix=False):
+-        """
+-        Zero-hallucination safe deterministic fallback based directly on user selection.
+-        Invoked if all LLM stages / retries fail semantic validation.
+-        """
+-        intent = context.get("intent", "WANT").upper()
+-        negation = bool(context.get("negation", False))
+-        entities = context.get("entities", [])
+-        ent_str = " ".join(entities) if entities else "this"
+-
+-        lang_code = language.lower()
++    # ─── DETERMINISTIC FALLBACK REALIZER (compositional templates) ──────────
++    def realize_template(self, context, language="en"):
++        """Compose a sentence from the user's own concepts (templates.py).  Returns the template result dict
++        (status ok | ambiguous | unsupported); never guesses an act."""
++        items = context.get("content")
++        if items is None:
++            ents = context.get("entities", [])
++            ids = context.get("concept_ids") or [None] * len(ents)
++            items = [dict(cid=(i or None), label=e) for e, i in zip(ents, ids)]
++        else:                                           # content items carry the quantity flag; hand MORE to the template as its own symbol
++            expanded = []
++            for i in items:
++                if i.get("more"):
++                    expanded.append(dict(cid="MORE", label=""))
++                expanded.append(i)
++            items = expanded
++        act = (context.get("act") or "").upper()
++        forced = act if act and act != "UNKNOWN" else None
++        language = {"english": "en", "hindi": "hi", "gujarati": "gu", "marathi": "mr", "hinglish": "hi"}.get(str(language).lower(), language)
++        # act and polarity are separate request fields (already reconciled by the caller); the frame is derived from the items
++        res = _templates.realize([dict(cid=i.get("cid"), label=i.get("label", "")) for i in items], language, forced_act=forced,
++                                 negation=bool(context.get("negation", False)))
++        return res
+ 
+-        if "hi" in lang_code or "hindi" in lang_code:
+-            if "WANT" in intent or "REQUEST" in intent:
+-                return f"मुझे {ent_str} नहीं चाहिए।" if negation else f"मुझे {ent_str} चाहिए।"
+-            elif "FEEL" in intent or "STATEMENT" in intent:
+-                return f"मुझे {ent_str} महसूस नहीं हो रहा है।" if negation else f"मुझे {ent_str} महसूस हो रहा है।"
+-            elif "QUESTION" in intent:
+-                return f"क्या मुझे {ent_str} मिल सकता है?"
+-            else:
+-                return f"मुझे {ent_str} चाहिए।"
+-        elif "mr" in lang_code or "marathi" in lang_code:
+-            if "WANT" in intent or "REQUEST" in intent:
+-                return f"मला {ent_str} नको आहे." if negation else f"मला {ent_str} हवे आहे."
+-            elif "FEEL" in intent or "STATEMENT" in intent:
+-                return f"मला {ent_str} वाटत नाही." if negation else f"मला {ent_str} वाटते."
+-            elif "QUESTION" in intent:
+-                return f"मला {ent_str} मिळू शकेल का?"
+-            else:
+-                return f"मला {ent_str} हवे आहे."
+-        elif "gu" in lang_code or "gujarati" in lang_code:
+-            if "WANT" in intent or "REQUEST" in intent:
+-                return f"મને {ent_str} નથી જોઈતું." if negation else f"મને {ent_str} જોઈએ છે."
+-            elif "FEEL" in intent or "STATEMENT" in intent:
+-                return f"મને {ent_str} લાગતું નથી." if negation else f"મને {ent_str} લાગે છે."
+-            elif "QUESTION" in intent:
+-                return f"મને {ent_str} મળી શકે?"
+-            else:
+-                return f"મને {ent_str} જોઈએ છે."
+-        else: # Default: English
+-            emotions = ["happy", "sad", "sick", "tired", "angry", "cold", "hot", "well"]
+-            is_emotion = any(e in ent_str.lower() for e in emotions)
+-
+-            if "WANT" in intent or "REQUEST" in intent:
+-                return f"I don't want {ent_str}." if negation else f"I want {ent_str}."
+-            elif "FEEL" in intent or "STATEMENT" in intent:
+-                if negation:
+-                    return f"I do not feel {ent_str}."
+-                return f"I feel {ent_str}." if is_emotion else f"I feel like {ent_str}."
+-            elif "QUESTION" in intent:
+-                return f"Can I have {ent_str}?"
+-            elif "GREETING" in intent:
+-                return f"Hello {ent_str}."
+-            else:
+-                return f"I want {ent_str}."
++    def generate_deterministic_fallback(self, context, language="en", code_mix=False):
++        """Archived entry point (kept): returns a sentence string.  Uses the compositional templates; when no complete
++        sentence can be composed it returns the labelled literal selection rather than guessing an act."""
++        res = self.realize_template(context, language)
++        return res["text"] if res.get("status") == "ok" else res.get("literal", "")
+ 
+     # ─── AAC SEMANTIC PARSER & CONTEXT REPAIR AGENT ─────────
+     def parse_and_repair_context(self, context, natural_sentence, language="hi"):
+diff --git a/indic-generative-aac/backend/semantic.py b/indic-generative-aac/backend/semantic.py
+index c3ceba1..36c2c9e 100644
+--- a/indic-generative-aac/backend/semantic.py
++++ b/indic-generative-aac/backend/semantic.py
+@@ -1,127 +1,177 @@
+-import json
+-import re
+-
+-class SemanticValidator:
+-    def __init__(self, llm):
+-        self.llm = llm
++"""Deterministic semantic gate (repaired).  A heuristic, not a proof of meaning preservation.
+ 
+-    def validate(self, context, ledger, generated_sentence, language="en"):
+-        """
+-        Hard Semantic Validator acting as the final authoritative gatekeeper.
+-        Applies strict deterministic verification and LLM-assisted scoring.
+-        """
+-        gen_lower = generated_sentence.lower().strip()
+-        data = {
+-            "intent_match": True,
+-            "entity_match": True,
+-            "negation_match": True,
+-            "temporal_match": True,
+-            "unsupported_additions": False,
+-            "violations_detected": []
+-        }
++Checks (each yields a reason code; the gate accepts only when none fires):
++  script_language     output is in the target script (no Latin leakage in Indic output)
++  off_task            refusals, translations, quotes of the symbol label, tool talk
++  speaker_perspective third-person reports ("the user ...", he/she/they, locale pronouns); implicit first person is valid
++  missing_concept     a selected concept (board ID, else typed word) is absent (locale forms, inflections, token boundaries)
++  added_concept       a board concept or distractor that was not selected appears (substitution = missing + added)
++  added_reason_time   unrequested reason, time or venue words
++  negation_missing / negation_spurious / negation_scope
++                      polarity must match; the negator must sit in the clause of the selected concept (right word in the
++                      wrong clause is rejected)
++  act_wrong / act_missing
++                      request marker for REQUEST, state marker without request marker for FEELING, both for FEELING_REQUEST,
++                      question marker for QUESTION (locale rules in aac_lexicon.py)
++  too_long            more than 25 tokens
++`validate(context, ledger, text, language)` keeps the signature of the archived validator.
++"""
++import re
+ 
+-        # ── 1. Deterministic Negation Match ─────────────────────────
+-        negation_words = {
+-            "not", "no", "n't", "don't", "doesn't", "didn't", "never",
+-            "नहीं", "ना", "नको", "नाही", "નથી", "ના", "નહીં"
+-        }
+-        tokens = set(re.findall(r"[^\s।.,?!;:]+", gen_lower))
+-        has_negation = bool(tokens & negation_words)
+-        req_negation = bool(context.get("negation", False))
++import aac_lexicon as L
+ 
+-        if req_negation and not has_negation:
+-            data["negation_match"] = False
+-            data["violations_detected"].append("missing_required_negation")
+-        elif not req_negation and has_negation:
+-            data["negation_match"] = False
+-            data["violations_detected"].append("unsupported_negation_added")
+ 
+-        # ── 2. Deterministic Entity Match ───────────────────────────
+-        missing_entities = []
+-        for ent in context.get("entities", []):
+-            clean_ent = ent.strip('!?. ')
+-            parts = [p.strip().lower() for p in re.split(r'[/,]', clean_ent) if p.strip()]
+-            matched = False
+-            for p in parts:
+-                if (p in gen_lower or 
+-                    p.rstrip('s') in gen_lower or 
+-                    (p + 's') in gen_lower):
+-                    matched = True
+-                    break
+-                # Indic matra/oblique case inflections (e.g. खाना -> खाने में, रोटा -> रोटी/रोटे)
+-                if len(p) >= 2:
+-                    if p.endswith('ा') and (p[:-1] + 'े' in gen_lower or p[:-1] in gen_lower):
+-                        matched = True
+-                        break
+-                    if p.endswith('े') and (p[:-1] + 'ा' in gen_lower or p[:-1] in gen_lower):
+-                        matched = True
+-                        break
+-                    stem = p[:-1] if p[-1] in 'ाेीूो' else p
+-                    if len(stem) >= 2 and stem in gen_lower:
+-                        matched = True
+-                        break
+-            if not matched:
+-                missing_entities.append(ent)
++class SemanticValidator:
++    VERSION = "gate-v2"
+ 
+-        if missing_entities:
+-            data["entity_match"] = False
+-            data["missing_entities"] = missing_entities
+-            data["violations_detected"].append(f"missing_entities: {missing_entities}")
++    def __init__(self, llm=None):
++        self.llm = llm
+ 
+-        # ── 3. Deterministic Forbidden Concepts & Additions ─────────
+-        forbidden_found = []
+-        for f in ledger.get("forbidden", []):
+-            if f and len(f) > 2:
+-                if re.search(rf'\b{re.escape(f.lower())}\b', gen_lower):
+-                    forbidden_found.append(f)
++    # ------------------------------------------------------------------
++    def _content(self, context, language):
++        items = context.get("content")
++        if items is None:
++            ents = context.get("entities", [])
++            ids = context.get("concept_ids") or [None] * len(ents)
++            a = L.analyze_selection([dict(cid=(i or None), label=e) for e, i in zip(ents, ids)], language)
++            items = a["content"]
++        return items
+ 
+-        if forbidden_found:
+-            data["unsupported_additions"] = True
+-            data["forbidden_detected"] = forbidden_found
+-            data["violations_detected"].append(f"forbidden_concepts: {forbidden_found}")
++    def validate(self, context, ledger, generated_sentence, language="en"):
++        lang = language if language in L.LANGS else "en"
++        text = generated_sentence or ""
++        raw_lower = text.lower().strip()
++        t = L.canon(text)
++        toks = t.split()
++        act = (context.get("act") or "REQUEST").upper()
++        neg = bool(context.get("negation", False))
++        code_mix = bool(context.get("code_mix", False))
++        content = self._content(context, lang)
++        v = []                                   # violation codes
+ 
+-        # ── 4. Deterministic Temporal State Check ───────────────────
+-        temporal_words = [
+-            "today", "tomorrow", "yesterday", "morning", "night", "evening",
+-            "tonight", "breakfast", "lunch", "dinner", "later", "now"
+-        ]
+-        if not context.get("temporal_state"):
+-            for tw in temporal_words:
+-                if re.search(rf'\b{re.escape(tw)}\b', gen_lower):
+-                    data["temporal_match"] = False
+-                    data["violations_detected"].append(f"unsupported_temporal: {tw}")
+-                    data["unsupported_additions"] = True
++        # script / language ------------------------------------------------
++        lat, dev, guj = L.script_of(text)
++        letters = max(1, lat + dev + guj)
++        custom_latin = sum(ch.isascii() and ch.isalpha() for it in content if it.get("cid") is None for ch in it.get("label", ""))
++        if not t:
++            v.append("empty")
++        elif not code_mix:
++            if lang == "en":
++                if lat / letters < 0.8:
++                    v.append("script_language")
++            else:
++                want = guj if lang == "gu" else dev
++                if want == 0 or max(0, lat - custom_latin) / letters > 0.3:
++                    v.append("script_language")
++        # off-task / meta ----------------------------------------------------
++        if re.search(L.META_RX, raw_lower) or re.search(r"[\"“”]", text):
++            v.append("off_task")
++        if len(toks) > 25:
++            v.append("too_long")
++        # speaker perspective ------------------------------------------------
++        if not code_mix and re.search(L.THIRD_PERSON[lang], t):
++            v.append("speaker_perspective")
+ 
+-        # ── 5. Deterministic Intent Check ───────────────────────────
+-        intent = context.get("intent", "").upper()
+-        if "FEEL" in intent or "STATEMENT" in intent:
+-            # If candidate expresses pure WANT ("I want ...") without feeling, flag mismatch
+-            if re.search(r'\bi want\b', gen_lower) and not re.search(r'\b(feel|feeling)\b', gen_lower):
+-                data["intent_match"] = False
+-                data["violations_detected"].append("intent_mismatch: WANT substituted for FEELING")
+-        elif "QUESTION" in intent:
+-            if not ("?" in generated_sentence or any(w in gen_lower for w in ["can", "could", "may", "where", "what", "how", "क्या", "का", "શું"])):
+-                data["intent_match"] = False
+-                data["violations_detected"].append("intent_mismatch: missing question structure")
++        # concepts -------------------------------------------------------------
++        selected_forms, sel_ids = [], set()
++        missing, present_sel = [], []
++        for it in content:
++            cid = it.get("cid")
++            if cid:
++                sel_ids.add(cid)
++                forms = L.concept_forms(cid, lang) + (L.concept_forms(cid, "en") if code_mix else [])
++                selected_forms += [f.lstrip("=") for f in forms]
++                ok = L.concept_present(cid, lang, t, toks) or (code_mix and L.concept_present(cid, "en", t, toks))
++            else:
++                selected_forms.append(L.canon(it["label"]))
++                ok = L.label_present(it["label"], lang, t, toks)
++            (present_sel if ok else missing).append(cid or it["label"])
++            if it.get("more"):
++                more_rx = {"en": r"\bmore\b", "hi": r"(?<!\S)और(?!\S)", "gu": r"(વધુ|વધારે|ફરીથી)", "mr": r"(आणखी|अजून|जास्त)"}[lang]
++                if not re.search(more_rx, t):
++                    missing.append("MORE")
++        sel_cids = {it.get("cid") for it in content}
++        if lang == "hi" and {"EAT", "FOOD"} <= sel_cids and "EAT" not in missing and "FOOD" not in missing:
++            # Hindi 'khana' names both the food and the verb 'eat': one occurrence cannot carry both selected concepts
++            if (t.count("खाना") + t.count("खाने")) < 2 and not re.search("खाऊं|खाता|खाती|खाया", t):
++                missing.append("EAT")
++        if missing:
++            v.append("missing_concept:" + ",".join(missing))
+ 
+-        # ── 6. Score Calculation ────────────────────────────────────
+-        score = 0.0
+-        score += 0.3 if data["intent_match"] else 0.0
+-        score += 0.3 if data["entity_match"] else 0.0
+-        score += 0.2 if data["negation_match"] else 0.0
+-        score += 0.2 if data["temporal_match"] else 0.0
++        added = []
++        for cid in L.BOARD:
++            if cid in sel_ids or cid in L.NOT_CONTENT:
++                continue
++            for f in L.concept_forms(cid, lang):
++                if L._form_hits(f, t, toks, lang):
++                    fb = f.lstrip("=")
++                    if any((fb in sf) or (sf in fb) for sf in selected_forms if sf):
++                        continue
++                    added.append(cid)
++                    break
++        for f in L.EXTRA_DISTRACTORS[lang]:
++            fc = L.canon(f)
++            if L._form_hits(fc, t, toks, lang) and not any((fc in sf) or (sf in fc) for sf in selected_forms if sf):
++                added.append(f)
++        if added:
++            v.append("added_concept:" + ",".join(sorted(set(added))))
++        rt = re.search(L.REASON_TIME_RX[lang], t) if not code_mix else None
++        if rt and not any(rt.group(0) in sf for sf in selected_forms if sf):
++            v.append("added_reason_time:" + rt.group(0))
+ 
+-        if data["unsupported_additions"]:
+-            score = max(0.0, score - 0.4)
++        # polarity and negation scope ------------------------------------------
++        cls = L.clauses(text, lang)
++        has_neg = any(L.has_negator(c, lang) for c in cls)
++        if neg and not has_neg:
++            v.append("negation_missing")
++        elif (not neg) and has_neg:
++            v.append("negation_spurious")
++        elif neg and has_neg:
++            # every clause that carries a selected concept must carry the negator (list items joined by 'and' share one clause)
++            for c in cls:
++                ctoks = c.split()
++                carries = any((it.get("cid") and L.concept_present(it["cid"], lang, c, ctoks)) or
++                              (it.get("cid") is None and L.label_present(it["label"], lang, c, ctoks)) for it in content)
++                if carries and not L.has_negator(c, lang):
++                    v.append("negation_scope")
++                    break
+ 
+-        data["semantic_score"] = round(score, 2)
++        # communicative act ------------------------------------------------------
++        feel_wanted = False
++        for c in cls:
++            ctoks = c.split()
++            if any(it.get("cid") in L.FEELINGS and L.concept_present(it["cid"], lang, c, ctoks) for it in content) and re.search(L.REQUEST_RX[lang], c):
++                feel_wanted = True                                # "I want tired": a feeling governed by a request marker
++        req = bool(re.search(L.REQUEST_RX[lang], t))
++        state = bool(re.search(L.STATE_RX[lang], t))
++        if act == "REQUEST":
++            if not req:
++                v.append("act_wrong" if state else "act_missing")
++        elif act == "FEELING":
++            if req:
++                v.append("act_wrong")
++            elif not state:
++                v.append("act_missing")
++        elif act == "FEELING_REQUEST":
++            if feel_wanted:
++                v.append("act_wrong")
++            elif not (req and state):
++                v.append("act_wrong" if (req != state) else "act_missing")
++        elif act == "QUESTION":
++            if not re.search(L.QUESTION_RX[lang], text.lower()):
++                v.append("act_missing")
+ 
+-        # ── Hard Gate Criteria ──────────────────────────────────────
+-        is_valid = (
+-            data["intent_match"] and
+-            data["entity_match"] and
+-            data["negation_match"] and
+-            not data["unsupported_additions"]
++        # ------------------------------------------------------------------------
++        hard = [x for x in v]
++        score = max(0.0, 1.0 - 0.25 * len(hard))
++        data = dict(
++            gate_version=self.VERSION,
++            intent_match=not any(x.startswith("act_") for x in v),
++            entity_match=not any(x.startswith("missing_concept") for x in v),
++            negation_match=not any(x.startswith("negation") for x in v),
++            temporal_match=not any(x.startswith("added_reason_time") for x in v),
++            unsupported_additions=any(x.startswith(("added_", "off_task", "speaker")) for x in v),
++            violations_detected=v,
++            semantic_score=round(score, 2),
+         )
+-
+-        return is_valid, data
++        return (len(hard) == 0), data
+diff --git a/indic-generative-aac/backend/tts.py b/indic-generative-aac/backend/tts.py
+index d34aab8..0f3a041 100644
+--- a/indic-generative-aac/backend/tts.py
++++ b/indic-generative-aac/backend/tts.py
+@@ -50,6 +50,7 @@ class IndicF5Engine:
+         self.prompts = {}
+         self.custom_voice_meta = {}  # voice_id -> {"label": str, "created_at": float}
+         self.sample_rate = 24000
++        self.last_audio_kind = "none"      # 'indicf5' (real synthesis) | 'placeholder_tone' (mock) | 'none'
+ 
+         # Locating prompt audio references
+         prompt_candidates = [
+@@ -258,6 +259,7 @@ class IndicF5Engine:
+                         audio_arr = audio_arr / max_val
+                     audio_arr = (audio_arr * 32767).astype(np.int16)
+ 
++                self.last_audio_kind = "indicf5"
+                 return audio_arr, sr
+ 
+             except Exception as e:
+@@ -265,7 +267,8 @@ class IndicF5Engine:
+                 import traceback
+                 traceback.print_exc()
+ 
+-        # Fallback tone generation (440Hz sine wave)
++        # Fallback tone generation (440Hz sine wave): a PLACEHOLDER, not speech
++        self.last_audio_kind = "placeholder_tone"
+         print(f"[IndicF5 Fallback] Generating mock audio for text: {cleaned_text}")
+         sr = self.sample_rate
+         t = np.linspace(0, 1.2, int(sr * 1.2), False)
+diff --git a/indic-generative-aac/frontend/index.html b/indic-generative-aac/frontend/index.html
+index 8172dce..0d5d50f 100644
+--- a/indic-generative-aac/frontend/index.html
++++ b/indic-generative-aac/frontend/index.html
+@@ -497,6 +497,95 @@
+       ]
+     };
+ 
++    // ─── MESSAGE ANALYSIS (act and polarity are separate fields; stable concept IDs) ─────────────
++    // JavaScript port of backend/aac_lexicon.py analyze_selection.  Concept IDs are the board's own `k` values; typed,
++    // predicted and "My Words" entries have no ID and are matched only as WHOLE tokens (so "Nose" is not a negation).
++    const CONCEPT_CAT = {};
++    const LABEL_INDEX = {};
++    Object.keys(SYMBOL_DATABASE).forEach(cat => (SYMBOL_DATABASE[cat] || []).forEach(it => {
++      CONCEPT_CAT[it.k] = cat;
++      ['en', 'hi', 'gu', 'mr'].forEach(lg => {
++        const lab = (it.labels[lg] || '').toLowerCase().replace(/[.,!?;:।"'()]/g, '').trim();
++        if (lab) { (LABEL_INDEX[lab] = LABEL_INDEX[lab] || []).push({ k: it.k, lg }); }
++      });
++    }));
++    const FEELING_IDS = ['HAPPY', 'SAD', 'ANGRY', 'TIRED', 'SICK', 'SCARED', 'LOVE', 'EXCITED', 'PAIN'];
++    const NEGATOR_TOKENS = ['no', 'not', 'नहीं', 'नही', 'ना', 'ના', 'नाही', 'नको'];
++    const GREETING_IDS = ['NAMASTE', 'THANKS', 'BYE'];
++    const normLabel = (x) => (x || '').toLowerCase().replace(/[.,!?;:।"'()]/g, '').replace(/\s+/g, ' ').trim();
++    function resolveTypedLabel(label, lang) {
++      const hits = LABEL_INDEX[normLabel(label)];
++      if (!hits || !hits.length) return null;
++      const own = hits.filter(h => h.lg === lang);
++      const cands = (own.length ? own : hits).map(h => h.k).filter((v, i, a) => a.indexOf(v) === i);
++      if (cands.length === 1) return cands[0];
++      const objs = cands.filter(c => CONCEPT_CAT[c] === 'food'); const acts = cands.filter(c => CONCEPT_CAT[c] === 'actions');
++      return objs.length ? objs[0] : cands[0];
++    }
++    function analyzeSelection(items, lang, forcedAct) {
++      let negN = 0, more = false, explicitWant = false; const content = []; const kept = [];
++      const resolved = items.map(it => it.cid || resolveTypedLabel(it.label, lang) || null);
++      resolved.forEach((cid, i) => {
++        const label = items[i].label;
++        if (!cid && NEGATOR_TOKENS.indexOf(normLabel(label)) >= 0) { cid = 'NO'; }
++        if (cid === 'NO') { negN += 1; return; }
++        if (cid === 'WANT') { explicitWant = true; return; }
++        if (cid === 'PLEASE' || cid === 'YES' || cid === 'ME') return;
++        kept.push({ cid: cid || null, label: label });
++        if (cid === 'MORE') { more = true; return; }
++        content.push({ cid: cid, label: label, cat: cid ? CONCEPT_CAT[cid] : 'custom', more: false });
++      });
++      if (more) { const f = content.find(c => c.cat === 'food' || c.cid === 'MEDICINE'); if (f) f.more = true; }
++      const negation = negN % 2 === 1; let amb = negN > 1;
++      const isF = (c) => FEELING_IDS.indexOf(c.cid) >= 0 || ((forcedAct === 'FEELING' || forcedAct === 'FEELING_REQUEST') && (c.cid === 'GOOD' || c.cid === 'BAD'));
++      let feel = content.filter(isF);
++      let objs = content.filter(c => c.cat === 'food' || c.cid === 'MEDICINE');
++      const acts = content.filter(c => c.cat === 'actions');
++      let ppl = content.filter(c => c.cat === 'people');
++      const help_ = content.filter(c => c.cid === 'HELP' || c.cid === 'HELP_EMERGENCY');
++      let custom = content.filter(c => !c.cid);
++      if (explicitWant && !feel.length && !acts.length && !help_.length && !objs.length && (ppl.length || custom.length)) { objs = ppl.concat(custom); ppl = []; custom = []; }
++      const known = feel.concat(objs, acts, ppl, help_, custom);
++      const other = content.filter(c => known.indexOf(c) < 0);
++      let act = 'UNKNOWN', frame = null;
++      if (amb || !content.length) { amb = true; }
++      else if (other.length) {
++        amb = content.length === 1;
++        if (content.length === 1 && GREETING_IDS.indexOf(content[0].cid) >= 0) { act = 'GREETING'; amb = false; }
++        else if (content.length === 2 && content.some(c => GREETING_IDS.indexOf(c.cid) >= 0)) { act = 'GREETING'; }
++        else if (acts.some(c => c.cid === 'GO')) { act = 'REQUEST'; }
++      }
++      else if (feel.length) {
++        if (feel.length > 1) { act = 'UNKNOWN'; amb = true; }
++        else if (content.length === 1) { act = 'FEELING'; frame = 'feeling'; }
++        else if (negation) { act = 'UNKNOWN'; amb = true; }
++        else { act = 'FEELING_REQUEST'; frame = 'feeling_request'; }
++      }
++      else if (help_.length) { act = 'REQUEST'; frame = 'help'; }
++      else if (acts.length) { act = 'REQUEST'; frame = 'action'; }
++      else if (objs.length) { act = 'REQUEST'; frame = 'object'; }
++      else { amb = true; }
++      if (forcedAct) { act = forcedAct; amb = false; }
++      return { act: act, negation: negation, ambiguous: amb || act === 'UNKNOWN', frame: frame, content: content, kept: kept };
++    }
++    const AAC_STR = {
++      clarifyQ: { en: 'What do you want to say?', hi: 'आप क्या कहना चाहते हैं?', gu: 'તમે શું કહેવા માંગો છો?', mr: 'तुम्हाला काय म्हणायचे आहे?' },
++      optRequest: { en: 'I want something', hi: 'मुझे कुछ चाहिए', gu: 'મને કંઈક જોઈએ છે', mr: 'मला काहीतरी हवे आहे' },
++      optFeeling: { en: 'I feel something', hi: 'मुझे कुछ महसूस हो रहा है', gu: 'મને કંઈક લાગે છે', mr: 'मला काहीतरी वाटते आहे' },
++      literalChip: { en: 'Literal preview — no safe sentence', hi: 'शब्दशः पूर्वावलोकन — सुरक्षित वाक्य नहीं', gu: 'શાબ્દિક પૂર્વાવલોકન — સલામત વાક્ય નથી', mr: 'शब्दशः पूर्वावलोकन — सुरक्षित वाक्य नाही' },
++      speakLiteral: { en: 'Speak literal words', hi: 'शब्द बोलें', gu: 'શબ્દો બોલો', mr: 'शब्द बोला' },
++      failChip: { en: 'Could not compose a sentence', hi: 'वाक्य नहीं बन सका', gu: 'વાક્ય બનાવી શકાયું નથી', mr: 'वाक्य तयार करता आले नाही' },
++      templateChip: { en: 'Checked template sentence', hi: 'जाँचा हुआ टेम्पलेट वाक्य', gu: 'ચકાસેલું ટેમ્પ્લેટ વાક્ય', mr: 'तपासलेले टेम्प्लेट वाक्य' },
++      modelChip: { en: 'Model sentence, passed all checks', hi: 'मॉडल वाक्य, सभी जाँच पास', gu: 'મોડેલ વાક્ય, બધી ચકાસણી પાસ', mr: 'मॉडेल वाक्य, सर्व तपासण्या पास' },
++      placeholder: { en: 'Placeholder tone (no voice model)', hi: 'प्लेसहोल्डर ध्वनि (आवाज़ मॉडल नहीं)', gu: 'પ્લેસહોલ્ડર ધ્વનિ (અવાજ મોડેલ નથી)', mr: 'प्लेसहोल्डर ध्वनी (आवाज मॉडेल नाही)' },
++      msgType: { en: 'Message type', hi: 'संदेश का प्रकार', gu: 'સંદેશનો પ્રકાર', mr: 'संदेशाचा प्रकार' },
++      typeAuto: { en: 'Auto', hi: 'स्वतः', gu: 'આપોઆપ', mr: 'आपोआप' },
++      typeRequest: { en: 'Request', hi: 'माँग', gu: 'માંગ', mr: 'मागणी' },
++      typeFeeling: { en: 'Feeling', hi: 'भावना', gu: 'લાગણી', mr: 'भावना' },
++      typeQuestion: { en: 'Question', hi: 'प्रश्न', gu: 'પ્રશ્ન', mr: 'प्रश्न' },
++    };
++    const sstr = (key, lang) => (AAC_STR[key] && (AAC_STR[key][lang] || AAC_STR[key].en)) || key;
++
+     // ─── TOP 5 HIGH-PEAKED WORDS PER LANGUAGE ───────────────────
+     const TOP_5_HIGH_PEAKED_WORDS = {
+       en: [
+@@ -709,6 +798,8 @@
+       const [isPredicting, setIsPredicting] = useState(false);
+       const [isGenerating, setIsGenerating] = useState(false);
+       const [generatedResult, setGeneratedResult] = useState(null);
++      const [userAct, setUserAct] = useState('auto');
++      const lastRequestRef = React.useRef(null);
+       const [lastAudioB64, setLastAudioB64] = useState(null);
+ 
+       // Preferences & Accessibility
+@@ -1123,7 +1214,9 @@
+           label: wordLabel,
+           emoji: emoji,
+           image: item.image || null,
+-          isCustom: !!item.isCustom
++          isCustom: !!item.isCustom,
++          // stable board concept ID (null for typed, predicted, emoji-search and "My Words" entries)
++          cid: (!item.isCustom && item.k && CONCEPT_CAT[item.k]) ? item.k : null
+         };
+ 
+         setTokens(prev => [...prev, newToken]);
+@@ -1321,27 +1414,36 @@
+       }, [tokens, showToast]);
+ 
+       // ─── AI GENERATION (FastAPI Backend) ───────────────────────
+-      const handleGenerateSentence = useCallback(async () => {
++      const handleGenerateSentence = useCallback(async (overrideAct) => {
++        if (typeof overrideAct !== 'string') overrideAct = null;
+         if (tokens.length === 0 && !inputText.trim()) {
+           showToast('Please select or type at least one word!', 'warning');
+           return;
+         }
+ 
+         const entitiesList = tokens.map(t => t.label);
+-        if (inputText.trim()) entitiesList.push(inputText.trim());
+-
+-        // Infer intent naturally from selected concepts
+-        const fullStr = entitiesList.join(' ').toLowerCase();
+-        let inferredIntent = 'REQUEST';
+-        let isNegated = false;
+-        if (fullStr.includes('no') || fullStr.includes('not') || fullStr.includes('नहीं') || fullStr.includes('ના') || fullStr.includes('नाही')) {
+-          inferredIntent = 'NEGATION';
+-          isNegated = true;
+-        } else if (fullStr.includes('?') || fullStr.includes('what') || fullStr.includes('how') || fullStr.includes('क्या') || fullStr.includes('શું') || fullStr.includes('काय')) {
+-          inferredIntent = 'QUESTION';
+-        } else if (fullStr.includes('happy') || fullStr.includes('sad') || fullStr.includes('love') || fullStr.includes('खुश') || fullStr.includes('उदास')) {
+-          inferredIntent = 'STATEMENT';
+-        }
++        const idsList = tokens.map(t => t.cid || null);
++        if (inputText.trim()) { entitiesList.push(inputText.trim()); idsList.push(null); }
++
++        // Act and polarity are separate fields: symbols are analysed by concept ID (typed words only as whole tokens).
++        const forced = overrideAct || (userAct !== 'auto' ? userAct : null);
++        const items = entitiesList.map((label, i) => ({ label: label, cid: idsList[i] }));
++        const an = analyzeSelection(items, language, forced);
++        const kept = an.kept;
++        const reqBody = {
++          intent: ({ REQUEST: 'REQUEST', FEELING: 'STATEMENT', FEELING_REQUEST: 'REQUEST', QUESTION: 'QUESTION', GREETING: 'STATEMENT', UNKNOWN: 'REQUEST' })[an.act] || 'REQUEST',
++          act: an.act,
++          act_source: forced ? 'user' : 'client',
++          negation: an.negation,
++          entities: kept.length ? kept.map(c => c.label) : entitiesList,
++          concept_ids: kept.length ? kept.map(c => c.cid) : idsList,
++          language: language,
++          code_mix: false,
++          generation_mode: generationMode,
++          voice_id: activeVoiceId
++        };
++        lastRequestRef.current = reqBody;
++        window.__lastGenerateRequest = reqBody;
+ 
+         setIsGenerating(true);
+         setGeneratedResult(null);
+@@ -1351,15 +1453,7 @@
+           const res = await fetch('/generate', {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+-            body: JSON.stringify({
+-              intent: inferredIntent,
+-              negation: isNegated,
+-              entities: entitiesList,
+-              language: language,
+-              code_mix: false,
+-              generation_mode: generationMode,
+-              voice_id: activeVoiceId
+-            })
++            body: JSON.stringify(reqBody)
+           });
+ 
+           if (!res.ok) throw new Error(`HTTP ${res.status}`);
+@@ -1367,36 +1461,32 @@
+           const data = await res.json();
+           setGeneratedResult(data);
+ 
+-          // ─── Feature 3: F5-TTS Pipeline — prefer the natural synthesized
+-          // voice returned by the backend; fall back to the browser's Web
+-          // Speech voice only if no backend audio was produced.
+-          if (data.audio_b64) {
+-            setLastAudioB64(data.audio_b64);
+-            const played = playBackendAudio(data.audio_b64, data.text);
+-            if (!played && data.text) speak(data.text, language);
+-          } else if (data.text) {
+-            speak(data.text, language);
++          // Only a complete sentence is spoken automatically.  A clarification or a literal preview waits for the user.
++          const isSentence = data.outcome ? (data.outcome.indexOf('sentence') === 0) : true;
++          if (isSentence) {
++            if (data.audio_b64) {
++              setLastAudioB64(data.audio_b64);
++              const played = playBackendAudio(data.audio_b64, data.text);
++              if (!played && data.text) speak(data.text, language);
++            } else if (data.text) {
++              speak(data.text, language);
++            }
+           }
+         } catch (err) {
+-          // Zero-Hallucination Fallback realization
+-          const prefix = {
+-            en: isNegated ? 'I do not want' : inferredIntent === 'QUESTION' ? 'May I have' : 'I would like',
+-            hi: isNegated ? 'मुझे नहीं चाहिए' : 'मुझे चाहिए',
+-            gu: isNegated ? 'મને નથી જોઈતું' : 'મને જોઈએ છે',
+-            mr: isNegated ? 'मला नको आहे' : 'मला हवे आहे'
+-          };
+-          const fallbackText = `${prefix[language] || prefix.en} ${entitiesList.join(' ')}.`;
++          // Server unreachable: show the selection as a labelled literal preview (no guessed act, nothing spoken).
+           setGeneratedResult({
+-            text: fallbackText,
++            text: entitiesList.join(' '),
++            outcome: 'literal_preview',
++            route: 'client_offline',
++            literal_preview: entitiesList.join(' '),
+             fallback_used: true,
+-            semantic_score: 1.0,
+-            metrics: { t_total: 0.05 }
++            metrics: { t_total: 0.0 }
+           });
+-          speak(fallbackText, language);
++          showToast('Server unreachable — showing the selected words only.', 'warning');
+         } finally {
+           setIsGenerating(false);
+         }
+-      }, [tokens, inputText, language, generationMode, activeVoiceId, speak, playBackendAudio, showToast]);
++      }, [tokens, inputText, language, generationMode, activeVoiceId, userAct, speak, playBackendAudio, showToast]);
+ 
+       // Replay the last generated sentence — prefers the real IndicF5 audio.
+       const handleReplayVoice = useCallback(() => {
+@@ -2071,6 +2161,22 @@
+                     <span>Speak</span>
+                   </button>
+ 
++                  <label className="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 dark:text-slate-300">
++                    <span>{sstr('msgType', language)}</span>
++                    <select
++                      id="message-type-select"
++                      value={userAct}
++                      onChange={(e) => setUserAct(e.target.value)}
++                      className="px-2 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-xs font-bold cursor-pointer"
++                      title="Message type: leave on Auto to let the app decide; choose one to override"
++                    >
++                      <option value="auto">{sstr('typeAuto', language)}</option>
++                      <option value="REQUEST">{sstr('typeRequest', language)}</option>
++                      <option value="FEELING">{sstr('typeFeeling', language)}</option>
++                      <option value="QUESTION">{sstr('typeQuestion', language)}</option>
++                    </select>
++                  </label>
++
+                   <button
+                     onClick={handleGenerateSentence}
+                     disabled={isGenerating || (tokens.length === 0 && !inputText)}
+@@ -2136,22 +2242,39 @@
+             </div>
+ 
+             {/* ─── AI OUTPUT CARD (When Generated) ─── */}
+-            {generatedResult && (
++            {generatedResult && generatedResult.outcome === 'clarification' && (
++              <div id="result-clarification" className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-amber-500/50 p-4 shadow-sm flex flex-col gap-2.5 animate-fade-in">
++                <div className="text-sm font-black text-amber-800 dark:text-amber-300">{sstr('clarifyQ', language)}</div>
++                <div className="text-lg font-extrabold text-slate-900 dark:text-white">"{(generatedResult.clarification && generatedResult.clarification.literal) || tokens.map(t => t.label).join(' ')}"</div>
++                <div className="flex items-center gap-2 flex-wrap">
++                  <button id="clarify-request" onClick={() => handleGenerateSentence('REQUEST')} className="tap-ripple spring-press px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-extrabold shadow-xs cursor-pointer">{sstr('optRequest', language)}</button>
++                  <button id="clarify-feeling" onClick={() => handleGenerateSentence('FEELING')} className="tap-ripple spring-press px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-extrabold shadow-xs cursor-pointer">{sstr('optFeeling', language)}</button>
++                </div>
++              </div>
++            )}
++            {generatedResult && generatedResult.outcome === 'literal_preview' && (
++              <div id="result-literal" className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-slate-400/60 p-4 shadow-sm flex flex-col gap-2.5 animate-fade-in">
++                <span className="self-start px-2.5 py-0.5 rounded-full text-[10px] font-black bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-200">{sstr('literalChip', language)}</span>
++                <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">"{generatedResult.text}"</div>
++                <div className="flex items-center gap-2">
++                  <button id="speak-literal" onClick={() => speak(generatedResult.text, language)} className="tap-ripple spring-press flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-700 text-white text-xs font-bold shadow-xs cursor-pointer"><Icons.Volume /><span>{sstr('speakLiteral', language)}</span></button>
++                </div>
++              </div>
++            )}
++            {generatedResult && generatedResult.outcome === 'failure' && (
++              <div id="result-failure" className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-rose-500/50 p-4 shadow-sm animate-fade-in text-sm font-black text-rose-700">{sstr('failChip', language)}</div>
++            )}
++            {generatedResult && generatedResult.outcome !== 'clarification' && generatedResult.outcome !== 'literal_preview' && generatedResult.outcome !== 'failure' && (
+               <div className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-emerald-500/40 p-4 shadow-sm flex flex-col gap-2.5 animate-fade-in">
+                 <div className="flex items-center justify-between flex-wrap gap-2">
+-                  <div className="flex items-center gap-2">
++                  <div className="flex items-center gap-2 flex-wrap">
+                     <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 flex items-center gap-1">
+                       <Icons.Check />
+-                      <span>Natural Realization</span>
++                      <span>{generatedResult.outcome === 'sentence_template' ? sstr('templateChip', language) : sstr('modelChip', language)}</span>
+                     </span>
+-                    {generatedResult.semantic_score && (
+-                      <span className="text-xs font-semibold text-slate-500">
+-                        Accuracy: {(generatedResult.semantic_score * 100).toFixed(0)}%
+-                      </span>
+-                    )}
+                     {lastAudioB64 && (
+                       <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 px-2 py-0.5 rounded-full border border-indigo-200 dark:border-indigo-800">
+-                        🎙️ IndicF5 Voice
++                        {generatedResult.audio_kind === 'indicf5' ? '🎙️ IndicF5 Voice' : ('🔔 ' + sstr('placeholder', language))}
+                       </span>
+                     )}
+                   </div>
+@@ -2186,7 +2309,7 @@
+                   </div>
+                 </div>
+ 
+-                <div className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
++                <div id="result-sentence" className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+                   "{generatedResult.text}"
+                 </div>
+ 

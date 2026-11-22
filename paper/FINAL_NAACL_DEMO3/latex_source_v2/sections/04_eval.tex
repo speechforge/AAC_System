@@ -1,0 +1,49 @@
+\section{Evaluation}
+\label{sec:eval}
+
+We ask four questions. \textbf{RQ1}: does the gate preserve what an ungated cascade loses? \textbf{RQ2}: where do the remaining errors originate? \textbf{RQ3}: how does the pipeline compare with a deterministic template? \textbf{RQ4}: do the predictors beat n-gram baselines on held-out conversations?
+
+\paragraph{Protocol.}
+We froze \NScen{} monolingual and \NScenCM{} exploratory Hinglish scenarios before scoring any output.
+Each of English, Hindi, Gujarati, and Marathi has 46 board selections: food request (10), refusal (\emph{No}\,+\,food; 10), feeling (8), negated feeling (8), action and object (6), and \emph{Help} or \emph{Call} with a person (4), with gold polarity and act fixed.
+Each scenario is sent as the web client builds it (\emph{client}) and with explicit intent and negation fields (\emph{explicit}).
+The server ran on one GTX~1650 (4\,GB).
+
+\paragraph{Systems and scoring.}
+We compare (i) a literal join of the labels; (ii) the same Qwen model with one unconstrained prompt (no ledger, examples, verifier, or gate); (iii) the cascade output before the gate, taken from the same response as the deployed output so that gate and fallback are isolated on identical candidates; (iv) the deployed output of the live server; and (v) the template alone.
+A scenario \emph{succeeds} if the output keeps every selected concept, has the gold polarity and act, adds no unselected concept, and is a first-person sentence in the target script.
+A lexical scorer written independently of the gate applies these rules (Appendix~\ref{app:scorer}).
+Nine scenarios whose few-shot prompt reproduces a prompt example are excluded, leaving \NPrimAll{} (EN \NPrimEN{}, HI \NPrimHI{}, GU \NPrimGU{}, MR \NPrimMR{}).
+Differences are paired by scenario with 95\% bootstrap intervals (10,000 resamples).
+
+\input{generated/tab_results}
+
+\paragraph{RQ1: the gate preserves what the cascade loses.}
+Before the gate, the cascade keeps \XPreSKeptPct{} of required concepts when intent and polarity are explicit (\XPreUKeptPct{} under client payloads) and makes \XPreSPol{} polarity errors, \XPolDropPreS{} of them dropped negations (Table~\ref{tab:results}).
+With the gate and template floor, the same requests keep all \NConc{} concepts and make no polarity error.
+Success rises from \XPreSSucc{} to \XDepSSucc{} with explicit fields (paired gain \PSPEN{} in English, \PSPHI{} in Hindi, \PSPGU{} in Gujarati, \PSPMR{} in Marathi) and from \XPreUSucc{} to \XDepUSucc{} under client payloads.
+Gains concentrate where a model most often drops or flips a selection: with explicit fields, refusals pass from 10/38 to 38/38 and negated feelings from 2/32 to 13/32 (Table~\ref{tab:type}).
+With explicit fields the gate lets model text through on \XGateAccPctS{} of requests (\XGateAccS{}/175) and returns the template for the rest; accepted outputs are fully correct in \XGateOkS{} (\XGateOkPctS{}) and template fallbacks in \XFbOkS{} (\XFbOkPctS{}).
+
+\paragraph{RQ2: the remaining errors are mostly about intent.}
+Under client payloads, \XDepUWrong{} deployed outputs express the wrong act; explicit fields cut this to \XDepSWrong{} and raise success from \XDepUSuccPct{} to \XDepSSuccPct{} (\PSUEN{} in English to \PSUMR{} in Marathi).
+The client infers \textsc{request} for \UIFeelReq{} of its 32 feeling selections, so Indic feelings become wants (\hi{मुझे गुस्सा चाहिए।}, ``I want anger''), and the gate's feeling test is an English pattern.
+Two defects are independent of the model: the client's substring rule marks \UIFalseNeg{} of \UISingle{} single-symbol selections as negated (e.g., \emph{Nose}), and the template has no form for client intent \textsc{negation} and returns ``I want No Pizza.''
+Accepted outputs can also add perspective or content (Figure~\ref{fig:teaser}, row~3).
+
+\paragraph{RQ3: a template is a strong floor.}
+A template echoes the selected labels, so it scores well on this closed grid: \XTmplSSucc{} (\XTmplSSuccPct{}) with explicit fields and \XTmplUSucc{} under client payloads.
+It is ahead of the deployed pipeline in every language except Hindi under client payloads, where they tie (deployed minus template with explicit fields: \PSTEN{} in English, \PSTHI{} in Hindi, \PSTGU{} in Gujarati, \PSTMR{} in Marathi).
+The model path adds wrong-act outputs that a template does not (\XDepSWrong{} against \XTmplSWrong{}), and the lexical criterion rewards label echo without scoring fluency, so this comparison bounds what model phrasing adds and does not measure it.
+We therefore treat the template as the system's floor: the gate admits model text only when it preserves concepts and polarity, as the template does by construction.
+
+\input{generated/tab_pred}
+
+\paragraph{RQ4: next-word prediction.}
+The suffix trie exceeds unigram and bigram baselines in both languages and a backoff trigram by \PredDENOneTri{} hit@1 in English and \PredDHIOneTri{} in Hindi (paired bootstrap over source conversations; Table~\ref{tab:pred}). Hit@5 gains are smaller (\PredDENFiveTri{}, \PredDHIFiveTri{}).
+The Gutenberg HMM, trained on public-domain books, reaches \GutHitOne{}\% hit@1 on AAC contexts, and the Hindi HMM trained on the trie's Hindi dialogues reaches \HiHmmHitOne{}\%, below the trigram baseline (\PredHIOneTri{}\%) and the trie (\PredHIOneInf{}\%).
+Held-out sources share 18 of 392 distinct English and 28 of 384 Hindi test utterances with training, and \PredOOVEN{} (EN) and \PredOOVHI{} (HI) of targets are out of vocabulary and count as misses.
+
+\paragraph{Runtime and offline operation.}
+Requests whose cascade output passed the gate took a median of \LatMedAccEN{}, \LatMedAccHI{}, \LatMedAccGU{}, and \LatMedAccMR{}\,s (EN, HI, GU, MR), and requests rejected twice \LatFbMin{}--\LatFbMax{}\,s, on the GTX~1650 (\NUniqueReq{} unique requests, speech synthesis excluded); the verifier dominates stage time (\StageLlmThree{}\,s against \StageLlmOne{}\,s for the realizer).
+After a cold start the server was ready in \OffReady{}\,s and the first request took \OffFirstEn{}\,s; with model downloads disabled and non-local connections refused, generation and prediction completed, and the only outbound attempt was the optional Google Input Tools fallback.

@@ -1,0 +1,19 @@
+\section{Availability, License, and Limitations}
+\label{sec:limits}
+
+\paragraph{Availability and license.}
+The reviewer package (source, frozen scenarios, scorer, raw outputs, installation guide) and a two-minute captioned screencast without audio are at \demourl{}.
+Code is released under the \codelicense{}; models and fonts keep their own licenses (Appendix Table~\ref{tab:models}); installation tests are in Appendix~\ref{app:coverage}.
+
+\paragraph{Limitations.}
+The scorer is lexical and its Indic lexicon is not native-reviewed; scenarios cover one- and two-concept selections from a \NSymbols{}-symbol board; one team wrote the rules, gold annotation, and scorer, with AI assistance and without an independent curator.
+No user study has been run, so the results bound lexical faithfulness, not communication effectiveness.
+Speech was a placeholder tone, so latency (Appendix~\ref{app:coverage}) excludes synthesis, and \indicf{} speech quality was not assessed (Appendix Table~\ref{tab:mos} scores the tone and stand-in voices only).
+Gujarati has no predictor and Marathi reuses the Hindi trie; extending Table~\ref{tab:pred} to both needs AAC dialogue corpora.
+In the evaluated build the template fallback is not re-validated, and the gate's act test and word lists cover English only.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Across \NPrimAll{} frozen scenarios in four languages, deterministic checks kept every selected concept and left no scored polarity error, but only 57 of the 116 sentences accepted under client input were fully correct, and a template baseline matched or exceeded the pipeline under a lexical scorer.
+Native-speaker confirmation of a fresh scenario set, blind ratings of meaning and phrasing, and audible speech in all four languages are the next steps toward measuring what model phrasing adds.

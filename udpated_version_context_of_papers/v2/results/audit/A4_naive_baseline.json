@@ -1,0 +1,34 @@
+{
+ "recovered_settings": {
+  "source": "archived eval/run_naive.py (reads: SYSTEM string, messages, _call_llm arguments)",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "dtype": "float16 on CUDA",
+  "chat_template": "tokenizer default (Qwen2.5 ChatML) via apply_chat_template(add_generation_prompt=True)",
+  "decoding": "greedy: temperature argument 0.01 => do_sample False; max_new_tokens 75; stop only at EOS; no repetition penalty",
+  "system_prompt": "You are an assistive communication tool. Turn the selected symbols into one short, natural sentence in {language}. Output only the sentence.",
+  "user_prompt": "Selected symbols: <comma-separated board labels, in the target locale>",
+  "language_strings": {
+   "en": "English",
+   "hi": "Hindi (Devanagari script)",
+   "gu": "Gujarati (Gujarati script)",
+   "mr": "Marathi (Devanagari script)"
+  },
+  "output_parsing": "none (the full decoded string is scored)",
+  "failure_handling": "none needed: 184+8 outputs recorded, no timeouts",
+  "input_information": "selected labels only (no intent, no negation field, no ledger)"
+ },
+ "n": 175,
+ "success": 8,
+ "overlapping_failure_flags": {
+  "act_missing": 163,
+  "act_wrong": 3,
+  "unsupported": 7,
+  "offtask": 16,
+  "polarity_ok": 2,
+  "script_ok": 4
+ },
+ "concept_retention_full": 159,
+ "fail_only_because_no_act_marker": 132,
+ "note": "'success' requires an explicit request/feeling marker; a telegraphic or descriptive output ('Water is a liquid.') fails on act_missing even when concepts and polarity are right."
+}

@@ -1,0 +1,55 @@
+==============================================================================================================
+ EFFECTIVENESS OF THE PROPOSED INDIC AAC SYSTEM  -  BASELINE-STYLE EXPERIMENTS
+ (English comparison against the baseline AAC paper; Hindi / Marathi / Gujarati reported separately, NOT compared)
+==============================================================================================================
+ Generated : 2026-11-19      Code & raw numbers : experiments_vs_baseline/   (results/*.json, *.log)
+ Baseline  : Gaines & Vertanen, "Adapting Large Language Models for Character-based Augmentative and
+             Alternative Communication", Findings of EMNLP 2025   (paper/baseline_system_paper_of_AAC_system/paper1.tex)
+
+--------------------------------------------------------------------------------------------------------------
+ 0. READ THIS FIRST - WHAT IS AND IS NOT COMPARABLE
+--------------------------------------------------------------------------------------------------------------
+ * The baseline paper studies CHARACTER prediction for letter-by-letter AAC (Dasher, RSVP, Nomon ...), using
+   pretrained OPT / GPT-2 / Llama LLMs, evaluated on private crowd-sourced English test sets with perplexity,
+   keystroke savings (KSR, 5 word predictions) and latency.
+ * Our system is SYMBOL / WORD based: the user taps words/symbols, a word-level infinity-gram (∞-gram) engine
+   suggests next words, a constrained realiser (+ optional Qwen cascade) turns the selection into one sentence,
+   a deterministic semantic gate checks it, and TTS speaks it. The two systems therefore overlap on exactly
+   one task - predicting what the user wants to say next - and the baseline has no sentence generation, no
+   validation, no TTS and no Indic language support at all.
+ * I could NOT run the baseline's own models or data: its private test sets, its adapted OPT-350m, its 21B-char
+   AAC n-gram and its Common-Crawl/subtitle adaptation corpora are not in this repo. Instead, I re-implemented
+   the baseline's character-search algorithm (paper Sec. 3, verified: "yeste" -> r = 0.994, paper reports
+   0.9999) and ran the SAME protocol on the SAME data for every system. Numbers are therefore NOT comparable
+   with the absolute values printed in the paper (e.g. its perplexity 2.1-2.5); only the relative ordering of
+   systems inside this report is meaningful.
+ * Our corpus is small and synthetic (GPT-generated caregiver<->AAC-user dialogues, 277 English conversations,
+   375 Hindi); Marathi and Gujarati have NO native corpus, so their test text is machine-translated (NLLB-200)
+   from the English splits. Nothing here comes from real AAC users.
+
+--------------------------------------------------------------------------------------------------------------
+ 1. WHAT THE BASELINE PAPER DOES  ->  WHAT CAN BE DONE ON OUR SYSTEM   (the "possibilities")
+--------------------------------------------------------------------------------------------------------------
+  Baseline experiment (paper section)            | Equivalent for our system                      | Status
+  -----------------------------------------------+------------------------------------------------+---------
+  Pretrained-model perplexity table (Tab.1)      | per-character perplexity of ∞-gram vs OPT-125m/ | DONE (Exp 1)
+                                                 | OPT-350m vs 12-gram char LM                     |
+  Domain adaptation on in-domain text (Tab.2)    | OPT-125m fine-tuned on our AAC train split      | DONE (Exp 1)
+  Final eval on several test sets (Tab.3)        | two test sets: AAC-user turns, caregiver turns  | DONE (Exp 1,2)
+  Keystroke savings, 5 predictions (Tab.4)       | identical simulator, same candidate pool        | DONE (Exp 2)
+  Inference time per prediction (Tab.1/3)        | ms per prediction, CPU (∞-gram, n-gram), GPU    | DONE (Exp 3)
+                                                 | (OPT search)                                    |
+  n-gram vs LLM vs byte LLM vs classifier (Sec.6)| ∞-gram vs fixed-order caps (1/2/3 words) vs     | DONE (Exp 5)
+                                                 | frequency-only vs char n-gram; backoff alpha    |
+  Per-user / ICL adaptation (Limitations)        | user-specific "My Words" + personal n-gram      | POSSIBLE
+  Real AAC-user test set                         | none available offline                          | NOT POSSIBLE here
+  --- things the baseline cannot do at all (our contribution) ---------------------------------------------------
+  Telegraphic symbols -> faithful sentence       | template realiser + deterministic gate, 4 langs | DONE (Exp 4)
+  Multilingual (hi / mr / gu) prediction         | ∞-gram + concept-level predictor                | DONE (Exp 6)
+  LLM cascade validity / hallucination rate      | Qwen2.5-0.5B 3-stage cascade + gate             | POSSIBLE (needs live
+                                                 | (repo has only a 10-case older report)          |  backend; not run)
+  TTS intelligibility / MOS, speaker similarity  | IndicF5 + subjective_Mos_portal                 | POSSIBLE (needs
+                                                 |                                                 |  listeners / weights)
+  Noise robustness (noisy_* typing variants      | un-jumble / ∞-gram under typo noise             | POSSIBLE (data
+  already present in the *_augmented.jsonl)      |                                                 |  exists)
+  User study (selection rate, WPM)               | needs participants                              | POSSIBLE

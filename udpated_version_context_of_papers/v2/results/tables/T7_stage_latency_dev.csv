@@ -1,0 +1,9 @@
+generator,lang,attempt,n,median_s,p95_s,note
+G1,en,0,20,6.08,6.68,latency of the original uncached GPU call (GTX 1650)
+G1,en,1,18,0.78,5.83,latency of the original uncached GPU call (GTX 1650)
+G1,gu,0,20,7.61,8.23,latency of the original uncached GPU call (GTX 1650)
+G1,gu,1,14,0.0,0.0,latency of the original uncached GPU call (GTX 1650)
+G1,hi,0,20,9.73,10.93,latency of the original uncached GPU call (GTX 1650)
+G1,hi,1,14,0.0,0.0,latency of the original uncached GPU call (GTX 1650)
+G1,mr,0,20,6.9,7.79,latency of the original uncached GPU call (GTX 1650)
+G1,mr,1,13,0.0,0.0,latency of the original uncached GPU call (GTX 1650)

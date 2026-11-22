@@ -1,0 +1,73 @@
+\section{System Design}
+\label{sec:system}
+Figure~\ref{fig:arch} shows the repaired workflow.
+We distinguish it from the \emph{archived policy}, whose recorded comparison and failures establish why the repairs were needed.
+Both use a prompted language model and a deterministic acceptance rule; the repairs change how the message is represented, checked, and returned.
+
+\begin{figure*}[t]
+\centering
+\input{figures/architecture}
+\caption{The repaired concept-gated workflow. The act and polarity are separate from the selected concepts. Only checked model or template sentences reach the speech route; ambiguity asks for a user choice, and unsupported realizations remain labelled literal previews. Speech routing is integrated, but the audited build produced placeholder tones.}
+\label{fig:arch}
+\end{figure*}
+
+\subsection{Selection and Message Representation}
+The board contains 69 symbols in nine categories, with English, Hindi, Gujarati, and Marathi labels.
+The user selects a language, taps symbols onto a sentence canvas, and can add personal words.
+Next-word suggestions, quick phrases, and display controls support the interaction.
+Literal \emph{Speak} uses browser speech synthesis; \emph{AI Polish \& Speak} requests a realized sentence.
+Figure~\ref{fig:ui} shows the repaired interface's fallback and clarification states.
+
+\begin{figure}[t]
+\centering
+\input{figures/ui_states}
+\caption{Revised interface states transcribed from recorded captures, with text enlarged for readability. The fallback is labelled, and clarification requests a message type. Complete screenshots are included with the sources. These states do not establish speech quality.}
+\label{fig:ui}
+\end{figure}
+
+The archived browser inferred act and polarity from label substrings.
+This conflated a feeling with a request and could detect a negator inside an unrelated word.
+The repair uses canonical board concepts, treats negation as a separate property, and offers an explicit message-type choice.
+A user-selected act takes precedence; an unresolved selection prompts clarification rather than a confident sentence.
+The ledger supplies the concepts, polarity, act, and speaker perspective to generation and checking.
+
+\subsection{Candidate Realization and Acceptance}
+Three prompted stages share one frozen \emph{\qwen{}} model \citep{qwen05card}: a realizer proposes a sentence, a refiner removes unsupported material, and a verifier proposes a verdict and minimal rewrite.
+The Indic realizer uses 12 Hindi, nine Gujarati, and nine Marathi examples with greedy decoding; English uses a ledger prompt and temperature 0.1.
+The refiner is skipped for Indic-script candidates.
+The verifier's verdict is advisory: it never substitutes for the deterministic acceptance rule.
+Qwen is used as released rather than fine-tuned.
+
+Let $E$ be the selected concepts, $a$ the act, $\nu$ the intended polarity, and $y$ a candidate.
+The repaired gate accepts a candidate when
+\begin{equation}
+\begin{split}
+A(y)={}&C(E,y)\wedge P(\nu,y)\wedge I(a,y)\\
+&\wedge S(y)\wedge U(E,y)\wedge T(y).
+\end{split}
+\label{eq:gate}
+\end{equation}
+Here $C$ checks each concept using language-specific lexical forms and inflection stems; $P$ checks negation and its supported scope; $I$ checks act cues; $S$ rejects third-person narration; $U$ rejects detected unselected concepts, times, and reasons; and $T$ checks the target script and off-task patterns.
+These are finite lexical and pattern tests, not a proof of semantic equivalence.
+The archived gate had weaker act checks, chiefly English patterns, and a short forbidden-word list; its limitations are measured separately in Section~\ref{sec:eval}.
+
+One rejected candidate permits a second cascade attempt.
+English sampling can change that candidate; greedy Indic retries may repeat it.
+After rejection, the repaired policy composes a locale-specific template for requests, refusals, feelings, negated feelings, actions, or person-directed calls and help.
+Unlike the archived policy, it checks this template before returning it.
+An unsupported frame or rejected template yields a literal preview, while unresolved act ambiguity yields clarification.
+Neither outcome is presented as a verified sentence or automatically sent to the speech route.
+
+\subsection{Prediction and Speech Coverage}
+An unbounded-order suffix trie supplies next-word suggestions, inspired by infini-gram \citep{liu2024infinigram}.
+Our count-based suffix trie combines suffix matches with backoff 0.4; it differs from the original suffix-array engine.
+At start-up it indexes 15,505 English and Hindi AAC dialogue sentences.
+Hidden Markov models (HMMs) support optional prediction and word reordering, but the audited demo lacks the two large optional checkpoints.
+Prediction coverage therefore differs from sentence-realization coverage: Gujarati has no independently evaluated predictor, and Marathi reuses the Hindi trie.
+
+The server integrates \emph{IndicF5} \citep{ai4bharat2025indicf5}, with \emph{Vocos} \citep{siuzdak2023vocos} for waveform synthesis, and a reference recording with its transcript for voice conditioning.
+The routing chooses an English reference for English and an Indic reference for Hindi, Gujarati, and Marathi.
+The IndicF5 model card names all three Indic languages; it does not list English among its 11 supported languages.
+Browser fallback requests the target locale, with Hindi or English fallbacks for missing Gujarati or Marathi voices.
+In the audited build, no IndicF5 checkpoint was installed and headless Chrome exposed no browser voices, so all measured server playback was a labelled placeholder tone.
+This verifies routing and playback events, not spoken-language coverage.

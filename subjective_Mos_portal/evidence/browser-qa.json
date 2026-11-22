@@ -1,0 +1,140 @@
+{
+  "database": "isolated .state/qa-data; not production",
+  "synthetic_participant": true,
+  "ratings": [
+    {
+      "clip": "en-03",
+      "language": "en",
+      "score": 5,
+      "native_audio": true
+    },
+    {
+      "clip": "gu-04",
+      "language": "gu",
+      "score": 3,
+      "native_audio": true
+    },
+    {
+      "clip": "en-01",
+      "language": "en",
+      "score": 5,
+      "native_audio": true
+    },
+    {
+      "clip": "hi-03",
+      "language": "hi",
+      "score": 4,
+      "native_audio": true
+    },
+    {
+      "clip": "en-04",
+      "language": "en",
+      "score": 5,
+      "native_audio": true
+    },
+    {
+      "clip": "hi-04",
+      "language": "hi",
+      "score": 4,
+      "native_audio": true
+    },
+    {
+      "clip": "mr-05",
+      "language": "mr",
+      "score": 2,
+      "native_audio": true
+    },
+    {
+      "clip": "gu-03",
+      "language": "gu",
+      "score": 3,
+      "native_audio": true
+    },
+    {
+      "clip": "gu-02",
+      "language": "gu",
+      "score": 3,
+      "native_audio": true
+    },
+    {
+      "clip": "en-02",
+      "language": "en",
+      "score": 5,
+      "native_audio": true
+    },
+    {
+      "clip": "mr-02",
+      "language": "mr",
+      "score": 2,
+      "native_audio": true
+    },
+    {
+      "clip": "mr-03",
+      "language": "mr",
+      "score": 2,
+      "native_audio": true
+    },
+    {
+      "clip": "hi-02",
+      "language": "hi",
+      "score": 4,
+      "native_audio": true
+    },
+    {
+      "clip": "en-05",
+      "language": "en",
+      "score": 5,
+      "native_audio": true
+    },
+    {
+      "clip": "gu-05",
+      "language": "gu",
+      "score": 3,
+      "native_audio": true
+    },
+    {
+      "clip": "hi-01",
+      "language": "hi",
+      "score": 4,
+      "native_audio": true
+    },
+    {
+      "clip": "mr-04",
+      "language": "mr",
+      "score": 2,
+      "native_audio": true
+    },
+    {
+      "clip": "mr-01",
+      "language": "mr",
+      "score": 2,
+      "native_audio": true
+    },
+    {
+      "clip": "hi-05",
+      "language": "hi",
+      "score": 4,
+      "native_audio": true
+    },
+    {
+      "clip": "gu-01",
+      "language": "gu",
+      "score": 3,
+      "native_audio": true
+    }
+  ],
+  "complete": true,
+  "per_language": {
+    "en": 5,
+    "gu": 3,
+    "hi": 4,
+    "mr": 2
+  },
+  "overall": 3.5,
+  "resume_after_reload": true,
+  "admin_auth": true,
+  "exclusion": true,
+  "csv_schema": true,
+  "mobile_width": 390,
+  "page_errors": []
+}

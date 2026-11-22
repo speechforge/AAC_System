@@ -1,0 +1,20 @@
+\begin{tikzpicture}[font=\small,>=Latex,
+ box/.style={draw=exampleblue!65,rounded corners=2pt,align=center,text width=3.05cm,minimum height=1.0cm,inner sep=5pt},
+ node distance=8mm and 6mm]
+\node[box,fill=panelgray] (select) {Symbol selection\\Act + polarity};
+\node[box,right=of select] (ledger) {Concept ledger\\Required / unselected};
+\node[box,right=of ledger] (model) {Prompted cascade\\Propose / refine / verify};
+\node[box,right=of model,fill=exampleblue!7] (gate) {Deterministic gate\\Concept + act + polarity};
+\node[box,below=of gate,fill=examplegreen!6] (output) {Checked sentence\\Speech route};
+\node[box,below=of model] (template) {Reject / retry\\Then check template};
+\node[box,below=of ledger] (preview) {Unsupported frame\\Literal preview};
+\node[box,below=of select] (clarify) {Ambiguous act\\Ask user to choose};
+\draw[->,thick] (select)--(ledger);
+\draw[->,thick] (ledger)--(model);
+\draw[->,thick] (model)--(gate);
+\draw[->,thick] (gate)--node[right,font=\footnotesize]{accept}(output);
+\draw[->,thick] (gate.south west)--(template.north east);
+\draw[->,thick] (template)--node[above,font=\footnotesize]{pass}(output);
+\draw[->,thick] (template)--(preview);
+\draw[->,thick] (select)--(clarify);
+\end{tikzpicture}

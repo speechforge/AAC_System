@@ -1,0 +1,85 @@
+% Build with XeLaTeX (Indic scripts): xelatex main && bibtex main && xelatex main && xelatex main
+% Overleaf: Menu > Compiler > XeLaTeX.  acl.sty and acl_natbib.bst are the unmodified official ACL style files.
+\documentclass[11pt]{article}
+
+% `preprint' is the official ACL option that shows author names and affiliations (the demo track is single-blind).
+\usepackage[preprint]{acl}
+\usepackage{microtype}
+\usepackage[english,bidi=default]{babel}
+\babelfont{rm}{TeXGyreTermesX}
+\usepackage{fontspec}
+% Noto Sans Devanagari / Gujarati are bundled in fonts/ (SIL OFL 1.1), so the build needs no system fonts for Indic text.
+\newfontfamily\hifont[Path=fonts/,Extension=.ttf,UprightFont=NotoSansDevanagari-Regular,BoldFont=NotoSansDevanagari-Bold,Script=Devanagari]{NotoSansDevanagari}
+\newfontfamily\gufont[Path=fonts/,Extension=.ttf,UprightFont=NotoSansGujarati-Regular,BoldFont=NotoSansGujarati-Bold,Script=Gujarati]{NotoSansGujarati}
+\newcommand{\hi}[1]{{\hifont #1}}   % Hindi and Marathi (Devanagari)
+\newcommand{\gu}[1]{{\gufont #1}}   % Gujarati
+
+\usepackage{booktabs,graphicx,amsmath,array,multirow,xcolor,enumitem,float}
+\setlist{nosep,leftmargin=*}
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{5}\setcounter{dbltopnumber}{3}
+\renewcommand{\topfraction}{0.9}\renewcommand{\bottomfraction}{0.8}\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.75}\renewcommand{\dblfloatpagefraction}{0.75}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\newcommand{\sys}{Indic AAC Studio}
+\newcommand{\nstated}{\textit{n.s.}}
+\newcommand{\cn}[1]{\raisebox{.15ex}{\textcircled{\scriptsize #1}}}   % numbered callout used in Figure 2
+% Release location of the reviewer package (source, fixtures, scorer, raw outputs, screencast): AUTHORS MUST SET THIS to a public (or anonymized) URL before submission.
+\newcommand{\demourl}{\url{https://github.com/speechforge/AAC_System}}
+% Code license named in the Availability section: AUTHORS MUST CONFIRM and add the matching license file to the release.
+\newcommand{\codelicense}{Apache License 2.0}
+% Required concept instances in the primary set: the denominator of the Kept column of Table 2.
+\newcommand{\NConc}{215}
+
+% Every number in the text is regenerated from the evaluation result files; only two caption/label strings of the generated tables were edited by hand in v2 (no number was changed).
+\input{generated/numbers}
+\input{generated/extra}
+
+\title{Indic AAC Studio: Concept-Gated Symbol-to-Speech Generation\\
+for English, Hindi, Gujarati, and Marathi}
+
+% Three authors: ACL's \And separates authors in a row and \AND starts a new row. The title box is enlarged (a multiple of the line height, as the official template allows) so that the two rows fit.
+\setlength\titlebox{13\baselineskip}
+\author{Ravindrakumar M. Purohit \\
+  Speech Research Lab \\
+  Dhirubhai Ambani University (DA-IICT) \\
+  Gandhinagar, India
+  \And
+  Jaydeep Parmar \\
+  Pandit Deendayal Energy \\
+  University (PDEU) \\
+  Gandhinagar, India
+  \AND
+  Hemant A. Patil \\
+  Speech Research Lab, Dhirubhai Ambani University (DA-IICT), Gandhinagar, India}
+
+\begin{document}
+\maketitle
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/teaser.pdf}
+\caption{Three recorded requests from the frozen evaluation. The gate rejects a cascade output that replaces a selected concept (row~1) or inverts polarity (row~2, explicit negation field) and speaks a template built from the user's labels; it accepts a fluent third-person sentence that adds content (row~3, a miss). Marathi glosses are given in quotation marks.}
+\label{fig:teaser}
+\end{figure*}
+
+
+\input{sections/00_abstract}
+\input{sections/01_intro}
+\input{sections/02_related}
+\input{sections/03_system}
+\input{sections/04_eval}
+\input{sections/05_limits}
+
+\section*{Ethics Statement}
+\input{sections/06_ethics}
+
+\section*{Acknowledgements}
+\input{sections/06_ack}
+
+\bibliography{references}
+
+\clearpage
+\appendix
+\input{sections/07_appendix}
+
+\end{document}

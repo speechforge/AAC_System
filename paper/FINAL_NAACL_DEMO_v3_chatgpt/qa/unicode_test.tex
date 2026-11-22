@@ -1,0 +1,11 @@
+\documentclass{article}
+\usepackage{fontspec}
+\newfontfamily\dev[Path=fonts/,Script=Devanagari]{NotoSansDevanagari-Regular.ttf}
+\newfontfamily\guj[Path=fonts/,Script=Gujarati]{NotoSansGujarati-Regular.ttf}
+\newcommand{\actual}[2]{\special{pdf:content /Span << /ActualText <FEFF#1> >> BDC}#2\special{pdf:content EMC}}
+\begin{document}
+Normal English remains searchable.\par
+Hindi: \actual{092E0941091D09470020092A093E092809400020091A093E0939093F090F0964}{{\dev मुझे पानी चाहिए।}}\par
+Gujarati: \actual{0AAE0AA80AC700200AAA0ABE0AA30AC000200A9C0ACB0A880A8F00200A9B0AC7002E}{{\guj મને પાણી જોઈએ છે.}}\par
+Marathi: \actual{092E0932093E0020092A093E0923094000200939093509470020090609390947002E}{{\dev मला पाणी हवे आहे.}}\par
+\end{document}

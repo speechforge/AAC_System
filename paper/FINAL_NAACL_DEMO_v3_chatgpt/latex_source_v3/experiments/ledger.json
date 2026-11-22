@@ -1,0 +1,16 @@
+{
+  "experiments": [
+    {
+      "id": "native_gold_validation",
+      "status": "pending_external_review"
+    },
+    {
+      "id": "human_template_hybrid_ratings",
+      "status": "pending_external_review"
+    },
+    {
+      "id": "real_speech_per_locale",
+      "status": "missing_checkpoint_or_browser_voice"
+    }
+  ]
+}

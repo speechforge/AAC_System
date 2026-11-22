@@ -1,0 +1,9 @@
+\begin{tikzpicture}[font=\small,>=Latex,
+ box/.style={draw=exampleblue!55,rounded corners=2pt,align=left,text width=6.65cm,inner sep=6pt},
+ node distance=5mm]
+\node[box,fill=panelgray] (a) {\textbf{Selection and message}\quad Water + request\\Concept: water; polarity: positive; speaker: user};
+\node[box,below=of a] (b) {\textbf{A fluent candidate can add content}\\I want water \bad{tomorrow}.\quad\emph{[added: time]}};
+\node[box,below=of b,fill=exampleblue!5] (c) {\textbf{Check, then choose a route}\\Model sentence $\rightarrow$ gate $\rightarrow$ checked template\\\good{I want water.}\quad or clarification / literal preview};
+\draw[->,thick] (a)--(b);
+\draw[->,thick] (b)--(c);
+\end{tikzpicture}

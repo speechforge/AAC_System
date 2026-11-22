@@ -1,0 +1,251 @@
+{
+  "scope": "archived v1 and regression v2 only; no holdout performance",
+  "table2_counts": {
+    "naive_qwen|ui": [
+      [
+        2,
+        46
+      ],
+      [
+        1,
+        45
+      ],
+      [
+        4,
+        42
+      ],
+      [
+        1,
+        42
+      ],
+      [
+        8,
+        175
+      ]
+    ],
+    "llm3_pre|ui": [
+      [
+        3,
+        46
+      ],
+      [
+        24,
+        45
+      ],
+      [
+        20,
+        42
+      ],
+      [
+        18,
+        42
+      ],
+      [
+        65,
+        175
+      ]
+    ],
+    "deployed|ui": [
+      [
+        22,
+        46
+      ],
+      [
+        31,
+        45
+      ],
+      [
+        21,
+        42
+      ],
+      [
+        23,
+        42
+      ],
+      [
+        97,
+        175
+      ]
+    ],
+    "template_only|ui": [
+      [
+        33,
+        46
+      ],
+      [
+        31,
+        45
+      ],
+      [
+        27,
+        42
+      ],
+      [
+        27,
+        42
+      ],
+      [
+        118,
+        175
+      ]
+    ],
+    "llm3_pre|st": [
+      [
+        5,
+        46
+      ],
+      [
+        26,
+        45
+      ],
+      [
+        16,
+        42
+      ],
+      [
+        24,
+        42
+      ],
+      [
+        71,
+        175
+      ]
+    ],
+    "deployed|st": [
+      [
+        33,
+        46
+      ],
+      [
+        41,
+        45
+      ],
+      [
+        26,
+        42
+      ],
+      [
+        32,
+        42
+      ],
+      [
+        132,
+        175
+      ]
+    ],
+    "template_only|st": [
+      [
+        46,
+        46
+      ],
+      [
+        45,
+        45
+      ],
+      [
+        34,
+        42
+      ],
+      [
+        42,
+        42
+      ],
+      [
+        167,
+        175
+      ]
+    ],
+    "revised_cascade_first|rev": [
+      [
+        6,
+        46
+      ],
+      [
+        29,
+        45
+      ],
+      [
+        27,
+        42
+      ],
+      [
+        26,
+        42
+      ],
+      [
+        88,
+        175
+      ]
+    ],
+    "revised_hybrid|rev": [
+      [
+        46,
+        46
+      ],
+      [
+        45,
+        45
+      ],
+      [
+        42,
+        42
+      ],
+      [
+        42,
+        42
+      ],
+      [
+        175,
+        175
+      ]
+    ],
+    "template_revised|rev": [
+      [
+        46,
+        46
+      ],
+      [
+        45,
+        45
+      ],
+      [
+        42,
+        42
+      ],
+      [
+        42,
+        42
+      ],
+      [
+        175,
+        175
+      ]
+    ]
+  },
+  "sources": [
+    {
+      "path": "paper/CLAUDE_WRITTEN/naacl2027_demo/eval/results/scored.csv",
+      "sha256": "d10d0052f9f4211a595aa71b01ab9f0b39d4f49edc08222786c14a73ee50e501"
+    },
+    {
+      "path": "paper/CLAUDE_WRITTEN/naacl2027_demo/eval/results/prediction.json",
+      "sha256": "a4eb6c31f596b946ed5e89e2bf270c0dfb9772d9d2f8ae2ed3905bdfcc1f8ed3"
+    },
+    {
+      "path": "paper/CLAUDE_WRITTEN/naacl2027_demo/eval/results/hmm_eval.json",
+      "sha256": "fc9313ec319268b2363d01447ce43fc7319e7b62592776e60f7e0d672bd6e4bc"
+    },
+    {
+      "path": "udpated_version_context_of_papers/v2/results/scored/legacy_scored.csv",
+      "sha256": "7d56c759412a26057d0a70abb863cc249895e4c67292ddcf0a044837f75312f6"
+    },
+    {
+      "path": "udpated_version_context_of_papers/v2/results/streams/legacy_remote_g1rev_shard0of1.jsonl",
+      "sha256": "1338fee6aefd04110e41688baf210a2d35d4a658732beee53c996567f079c87c"
+    },
+    {
+      "path": "udpated_version_context_of_papers/v2/fixtures/legacy/scenarios.jsonl",
+      "sha256": "d42a6b41d427763f1bee6763abc662c72ae1a40a73ddc8a9f21a7508969946db"
+    }
+  ]
+}

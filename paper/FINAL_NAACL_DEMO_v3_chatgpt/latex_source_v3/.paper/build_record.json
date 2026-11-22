@@ -1,0 +1,6 @@
+{
+  "checked_at": "2026-11-13T12:55:49+00:00",
+  "main": "main.tex",
+  "status": "tex-unavailable",
+  "note": "No LaTeX installation found. Compile on Overleaf or install TeX Live; static checks still run."
+}

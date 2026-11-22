@@ -1,0 +1,20 @@
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}L{1.3cm}L{2.1cm}L{4.0cm}L{2.8cm}L{3.9cm}@{}}
+\toprule
+Language & 1. Selection & 2. First candidate & 3. Check / route & 4. Returned text \\
+\midrule
+\multicolumn{5}{@{}l}{\textbf{A. Water request (positive polarity)}}\\
+English\newline\textit{reference} & Water & I need \bad{food}.\newline\bad{[added: food; water missing]} & Reject: concept mismatch; checked template & \kept{I want water.} \\
+Hindi\newline\textit{extension} & \hi{पानी} & \good{\hi{मुझे पानी चाहिए।}} & Pass; model text & \kept{\hi{मुझे पानी चाहिए।}} \\
+Gujarati\newline\textit{extension} & \gu{પાણી} & \good{\gu{મને પાણી જોઈએ છે.}} & Pass; model text & \kept{\gu{મને પાણી જોઈએ છે.}} \\
+Marathi\newline\textit{extension} & \hi{पाणी} & \good{\hi{मला पाणी हवे आहे.}} & Pass; model text & \kept{\hi{मला पाणी हवे आहे.}} \\
+\midrule
+\multicolumn{5}{@{}l}{\textbf{B. Pizza refusal (negative polarity)}}\\
+English\newline\textit{reference} & No + Pizza & I cannot \bad{eat out} because I am .\newline\bad{[added: action/reason; pizza missing]} & Reject: concept mismatch; checked template & \kept{I do not want pizza.} \\
+Hindi\newline\textit{extension} & \hi{नहीं + पिज़्ज़ा} & \good{\hi{पिज़्ज़ा, मुझे चाहिए।}} & Reject: negation missing; checked template & \kept{\hi{मुझे पिज़्ज़ा नहीं चाहिए।}} \\
+Gujarati\newline\textit{extension} & \gu{ના + પિઝા} & \good{\gu{મને પિઝા નથી જોઈતું.}} & Pass; model text & \kept{\gu{મને પિઝા નથી જોઈતું.}} \\
+Marathi\newline\textit{extension} & \hi{नाही + पिझ्झा} & \good{\hi{मला पिझ्झा हवे आहे.}} & Reject: negation missing; checked template & \kept{\hi{मला पिझ्झा नको आहे.}} \\
+\bottomrule
+\end{tabular}
+\endgroup

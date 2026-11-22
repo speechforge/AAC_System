@@ -1,0 +1,185 @@
+file,group,lang,id,text
+reference__KAN_F_HAPPY_00001.wav,reference,kn,KAN_F_HAPPY_00001,
+reference__MAR_F_HAPPY_00001.wav,reference,mr,MAR_F_HAPPY_00001,
+reference__MAR_F_WIKI_00001.wav,reference,mr,MAR_F_WIKI_00001,
+reference__MAR_M_WIKI_00001.wav,reference,mr,MAR_M_WIKI_00001,
+reference__PAN_F_HAPPY_00001.wav,reference,pa,PAN_F_HAPPY_00001,
+reference__PAN_F_HAPPY_00002.wav,reference,pa,PAN_F_HAPPY_00002,
+reference__TAM_F_HAPPY_00001.wav,reference,ta,TAM_F_HAPPY_00001,
+reference__basic_ref_en.wav,reference,en,basic_ref_en,"Some call me nature, others call me mother nature."
+placeholder__tone.wav,placeholder,all,tone,
+standin__en__en-T1_request_object-WATER.wav,standin,en,en-T1_request_object-WATER,I want Water.
+standin__en__en-T1_request_object-FOOD.wav,standin,en,en-T1_request_object-FOOD,I need food.
+standin__en__en-T1_request_object-MILK.wav,standin,en,en-T1_request_object-MILK,The user requested milk.
+standin__en__en-T1_request_object-RICE.wav,standin,en,en-T1_request_object-RICE,The user requested rice.
+standin__en__en-T1_request_object-ROTI.wav,standin,en,en-T1_request_object-ROTI,The user requested bread and roti.
+standin__en__en-T1_request_object-FRUIT.wav,standin,en,en-T1_request_object-FRUIT,I want Fruit.
+standin__en__en-T1_request_object-TEA.wav,standin,en,en-T1_request_object-TEA,The user requested tea.
+standin__en__en-T1_request_object-JUICE.wav,standin,en,en-T1_request_object-JUICE,The user requested juice.
+standin__en__en-T1_request_object-SNACK.wav,standin,en,en-T1_request_object-SNACK,I want Biscuit.
+standin__en__en-T1_request_object-PIZZA.wav,standin,en,en-T1_request_object-PIZZA,The user requested a pizza.
+standin__en__en-T2_refuse_object-NO+WATER.wav,standin,en,en-T2_refuse_object-NO+WATER,I want No Water.
+standin__en__en-T2_refuse_object-NO+FOOD.wav,standin,en,en-T2_refuse_object-NO+FOOD,I want No Food.
+standin__en__en-T2_refuse_object-NO+MILK.wav,standin,en,en-T2_refuse_object-NO+MILK,I want No Milk.
+standin__en__en-T2_refuse_object-NO+RICE.wav,standin,en,en-T2_refuse_object-NO+RICE,I want No Rice.
+standin__en__en-T2_refuse_object-NO+ROTI.wav,standin,en,en-T2_refuse_object-NO+ROTI,I want No Bread/Roti.
+standin__en__en-T2_refuse_object-NO+FRUIT.wav,standin,en,en-T2_refuse_object-NO+FRUIT,I am not a fruit. I do not eat fruits.
+standin__en__en-T2_refuse_object-NO+TEA.wav,standin,en,en-T2_refuse_object-NO+TEA,I want No Tea.
+standin__en__en-T2_refuse_object-NO+JUICE.wav,standin,en,en-T2_refuse_object-NO+JUICE,I want No Juice.
+standin__en__en-T2_refuse_object-NO+SNACK.wav,standin,en,en-T2_refuse_object-NO+SNACK,I want No Biscuit.
+standin__en__en-T2_refuse_object-NO+PIZZA.wav,standin,en,en-T2_refuse_object-NO+PIZZA,I want No Pizza.
+standin__en__en-T3_feeling-HAPPY.wav,standin,en,en-T3_feeling-HAPPY,I feel Happy.
+standin__en__en-T3_feeling-SAD.wav,standin,en,en-T3_feeling-SAD,I feel Sad.
+standin__en__en-T3_feeling-ANGRY.wav,standin,en,en-T3_feeling-ANGRY,I want Angry.
+standin__en__en-T3_feeling-TIRED.wav,standin,en,en-T3_feeling-TIRED,The user is tired of waiting for their meal and wants to go out to eat.
+standin__en__en-T3_feeling-SICK.wav,standin,en,en-T3_feeling-SICK,I want Sick.
+standin__en__en-T3_feeling-SCARED.wav,standin,en,en-T3_feeling-SCARED,I want Scared.
+standin__en__en-T3_feeling-LOVE.wav,standin,en,en-T3_feeling-LOVE,I love spending time with you.
+standin__en__en-T3_feeling-EXCITED.wav,standin,en,en-T3_feeling-EXCITED,I am excited to eat at.
+standin__en__en-T4_negated_feeling-NO+HAPPY.wav,standin,en,en-T4_negated_feeling-NO+HAPPY,I am not happy with the food at.
+standin__en__en-T4_negated_feeling-NO+SAD.wav,standin,en,en-T4_negated_feeling-NO+SAD,I want No Sad.
+standin__en__en-T4_negated_feeling-NO+ANGRY.wav,standin,en,en-T4_negated_feeling-NO+ANGRY,I want No Angry.
+standin__en__en-T4_negated_feeling-NO+TIRED.wav,standin,en,en-T4_negated_feeling-NO+TIRED,I want No Tired.
+standin__en__en-T4_negated_feeling-NO+SICK.wav,standin,en,en-T4_negated_feeling-NO+SICK,I want No Sick.
+standin__en__en-T4_negated_feeling-NO+SCARED.wav,standin,en,en-T4_negated_feeling-NO+SCARED,I want No Scared.
+standin__en__en-T4_negated_feeling-NO+LOVE.wav,standin,en,en-T4_negated_feeling-NO+LOVE,I want No Love.
+standin__en__en-T4_negated_feeling-NO+EXCITED.wav,standin,en,en-T4_negated_feeling-NO+EXCITED,I want No Excited.
+standin__en__en-T5_action_object-EAT+RICE.wav,standin,en,en-T5_action_object-EAT+RICE,The user wants to eat rice.
+standin__en__en-T5_action_object-EAT+ROTI.wav,standin,en,en-T5_action_object-EAT+ROTI,The user requested bread and roti for eating.
+standin__en__en-T5_action_object-EAT+FRUIT.wav,standin,en,en-T5_action_object-EAT+FRUIT,I want Eat Fruit.
+standin__en__en-T5_action_object-DRINK+WATER.wav,standin,en,en-T5_action_object-DRINK+WATER,I want Drink Water.
+standin__en__en-T5_action_object-DRINK+MILK.wav,standin,en,en-T5_action_object-DRINK+MILK,The user requested milk for their drink.
+standin__en__en-T5_action_object-DRINK+TEA.wav,standin,en,en-T5_action_object-DRINK+TEA,I want Drink Tea.
+standin__en__en-T6_help_person-HELP+DOCTOR.wav,standin,en,en-T6_help_person-HELP+DOCTOR,I want Help Doctor.
+standin__en__en-T6_help_person-HELP+MOTHER.wav,standin,en,en-T6_help_person-HELP+MOTHER,I want Help Mother.
+standin__en__en-T6_help_person-CALL+DOCTOR.wav,standin,en,en-T6_help_person-CALL+DOCTOR,I want Call Doctor.
+standin__en__en-T6_help_person-CALL+MOTHER.wav,standin,en,en-T6_help_person-CALL+MOTHER,I want Call Mother.
+standin__hi__hi-T1_request_object-FOOD.wav,standin,hi,hi-T1_request_object-FOOD,मुझे खाना चाहिए।
+standin__hi__hi-T1_request_object-MILK.wav,standin,hi,hi-T1_request_object-MILK,मुझे दूध चाहिए।
+standin__hi__hi-T1_request_object-RICE.wav,standin,hi,hi-T1_request_object-RICE,मुझे चावल चाहिए।
+standin__hi__hi-T1_request_object-ROTI.wav,standin,hi,hi-T1_request_object-ROTI,मुझे रोटी चाहिए।
+standin__hi__hi-T1_request_object-FRUIT.wav,standin,hi,hi-T1_request_object-FRUIT,मुझे फल चाहिए।
+standin__hi__hi-T1_request_object-TEA.wav,standin,hi,hi-T1_request_object-TEA,मुझे चाय चाहिए।
+standin__hi__hi-T1_request_object-JUICE.wav,standin,hi,hi-T1_request_object-JUICE,"जूस, मुझे चाहिए।"
+standin__hi__hi-T1_request_object-SNACK.wav,standin,hi,hi-T1_request_object-SNACK,"बिस्कुट, मुझे चाहिए।"
+standin__hi__hi-T1_request_object-PIZZA.wav,standin,hi,hi-T1_request_object-PIZZA,मुझे पिज़्ज़ा चाहिए।
+standin__hi__hi-T2_refuse_object-NO+WATER.wav,standin,hi,hi-T2_refuse_object-NO+WATER,मुझे नहीं पानी चाहिए।
+standin__hi__hi-T2_refuse_object-NO+FOOD.wav,standin,hi,hi-T2_refuse_object-NO+FOOD,"नहीं, मैं खाना चाहिए।"
+standin__hi__hi-T2_refuse_object-NO+MILK.wav,standin,hi,hi-T2_refuse_object-NO+MILK,"नहीं, नहीं, दूध चाहिए।"
+standin__hi__hi-T2_refuse_object-NO+RICE.wav,standin,hi,hi-T2_refuse_object-NO+RICE,"नहीं, नहीं, चावल चाहिए।"
+standin__hi__hi-T2_refuse_object-NO+ROTI.wav,standin,hi,hi-T2_refuse_object-NO+ROTI,"नहीं, रोटी चाहिए।"
+standin__hi__hi-T2_refuse_object-NO+FRUIT.wav,standin,hi,hi-T2_refuse_object-NO+FRUIT,"फल नहीं है, नहीं चाहिए।"
+standin__hi__hi-T2_refuse_object-NO+TEA.wav,standin,hi,hi-T2_refuse_object-NO+TEA,"नहीं, नहीं, चाय चाहिए।"
+standin__hi__hi-T2_refuse_object-NO+JUICE.wav,standin,hi,hi-T2_refuse_object-NO+JUICE,"जूस, मुझे नहीं चाहिए।"
+standin__hi__hi-T2_refuse_object-NO+SNACK.wav,standin,hi,hi-T2_refuse_object-NO+SNACK,"नहीं, नहीं, बिस्कुट चाहिए।"
+standin__hi__hi-T2_refuse_object-NO+PIZZA.wav,standin,hi,hi-T2_refuse_object-NO+PIZZA,मुझे नहीं पिज़्ज़ा चाहिए।
+standin__hi__hi-T3_feeling-HAPPY.wav,standin,hi,hi-T3_feeling-HAPPY,"मैं खुश हूँ, मैं कह रहा हूँ।"
+standin__hi__hi-T3_feeling-SAD.wav,standin,hi,hi-T3_feeling-SAD,"उदास, मैं कह रहा हूँ।"
+standin__hi__hi-T3_feeling-ANGRY.wav,standin,hi,hi-T3_feeling-ANGRY,मुझे गुस्सा चाहिए।
+standin__hi__hi-T3_feeling-TIRED.wav,standin,hi,hi-T3_feeling-TIRED,"मुझे थका हुआ हूँ, मुझे चाहिए।"
+standin__hi__hi-T3_feeling-SICK.wav,standin,hi,hi-T3_feeling-SICK,"मुझे बीमार हूँ, मुझे चाहिए।"
+standin__hi__hi-T3_feeling-SCARED.wav,standin,hi,hi-T3_feeling-SCARED,मुझे डरा हुआ चाहिए।
+standin__hi__hi-T3_feeling-LOVE.wav,standin,hi,hi-T3_feeling-LOVE,मुझे प्यार चाहिए।
+standin__hi__hi-T3_feeling-EXCITED.wav,standin,hi,hi-T3_feeling-EXCITED,"उत्साहित, मुझे चाहिए।"
+standin__hi__hi-T4_negated_feeling-NO+HAPPY.wav,standin,hi,hi-T4_negated_feeling-NO+HAPPY,"नहीं, खुश है, नहीं चाहिए।"
+standin__hi__hi-T4_negated_feeling-NO+SAD.wav,standin,hi,hi-T4_negated_feeling-NO+SAD,"उदास, नहीं चाहिए।"
+standin__hi__hi-T4_negated_feeling-NO+ANGRY.wav,standin,hi,hi-T4_negated_feeling-NO+ANGRY,"गुस्सा, नहीं चाहिए।"
+standin__hi__hi-T4_negated_feeling-NO+TIRED.wav,standin,hi,hi-T4_negated_feeling-NO+TIRED,"नहीं, मुझे थका हुआ चाहिए।"
+standin__hi__hi-T4_negated_feeling-NO+SICK.wav,standin,hi,hi-T4_negated_feeling-NO+SICK,"बीमार, नहीं चाहिए।"
+standin__hi__hi-T4_negated_feeling-NO+SCARED.wav,standin,hi,hi-T4_negated_feeling-NO+SCARED,"नहीं, डरा हुआ है, नहीं चाहिए।"
+standin__hi__hi-T4_negated_feeling-NO+LOVE.wav,standin,hi,hi-T4_negated_feeling-NO+LOVE,"प्यार, नहीं चाहिए।"
+standin__hi__hi-T4_negated_feeling-NO+EXCITED.wav,standin,hi,hi-T4_negated_feeling-NO+EXCITED,"उत्साहित, नहीं चाहिए।"
+standin__hi__hi-T5_action_object-EAT+RICE.wav,standin,hi,hi-T5_action_object-EAT+RICE,मुझे खाना चावल चाहिए।
+standin__hi__hi-T5_action_object-EAT+ROTI.wav,standin,hi,hi-T5_action_object-EAT+ROTI,मुझे खाना रोटी चाहिए।
+standin__hi__hi-T5_action_object-EAT+FRUIT.wav,standin,hi,hi-T5_action_object-EAT+FRUIT,मुझे खाना फल चाहिए।
+standin__hi__hi-T5_action_object-DRINK+WATER.wav,standin,hi,hi-T5_action_object-DRINK+WATER,"पीना, मुझे पानी चाहिए।"
+standin__hi__hi-T5_action_object-DRINK+MILK.wav,standin,hi,hi-T5_action_object-DRINK+MILK,मुझे पीना दूध चाहिए।
+standin__hi__hi-T5_action_object-DRINK+TEA.wav,standin,hi,hi-T5_action_object-DRINK+TEA,मुझे पीना चाय चाहिए।
+standin__hi__hi-T6_help_person-HELP+DOCTOR.wav,standin,hi,hi-T6_help_person-HELP+DOCTOR,"मदद, मुझे डॉक्टर चाहिए।"
+standin__hi__hi-T6_help_person-HELP+MOTHER.wav,standin,hi,hi-T6_help_person-HELP+MOTHER,"मदद, मुझे माँ चाहिए।"
+standin__hi__hi-T6_help_person-CALL+DOCTOR.wav,standin,hi,hi-T6_help_person-CALL+DOCTOR,"फ़ोन करना गया है, मुझे डॉक्टर चाहिए।"
+standin__hi__hi-T6_help_person-CALL+MOTHER.wav,standin,hi,hi-T6_help_person-CALL+MOTHER,"माँ, मुझे फ़ोन करना है, मुझे चाहिए।"
+standin__gu__gu-T1_request_object-MILK.wav,standin,gu,gu-T1_request_object-MILK,મને દૂધ જોઈએ છે.
+standin__gu__gu-T1_request_object-RICE.wav,standin,gu,gu-T1_request_object-RICE,મને ભાત જોઈએ છે.
+standin__gu__gu-T1_request_object-ROTI.wav,standin,gu,gu-T1_request_object-ROTI,મને રોટલી જોઈએ છે.
+standin__gu__gu-T1_request_object-FRUIT.wav,standin,gu,gu-T1_request_object-FRUIT,મને ફળ જોઈએ છે.
+standin__gu__gu-T1_request_object-TEA.wav,standin,gu,gu-T1_request_object-TEA,મને ચા જોઈએ છે.
+standin__gu__gu-T1_request_object-JUICE.wav,standin,gu,gu-T1_request_object-JUICE,મને જ્યુસ જોઈએ છે.
+standin__gu__gu-T1_request_object-SNACK.wav,standin,gu,gu-T1_request_object-SNACK,મને બિસ્કિટ જોઈએ છે.
+standin__gu__gu-T1_request_object-PIZZA.wav,standin,gu,gu-T1_request_object-PIZZA,મને પિઝા જોઈએ છે.
+standin__gu__gu-T2_refuse_object-NO+WATER.wav,standin,gu,gu-T2_refuse_object-NO+WATER,મને પાણી ના જોઈએ છે.
+standin__gu__gu-T2_refuse_object-NO+MILK.wav,standin,gu,gu-T2_refuse_object-NO+MILK,મારે ના દૂધ છે.
+standin__gu__gu-T2_refuse_object-NO+RICE.wav,standin,gu,gu-T2_refuse_object-NO+RICE,મને ના ભાત જોઈએ છે.
+standin__gu__gu-T2_refuse_object-NO+ROTI.wav,standin,gu,gu-T2_refuse_object-NO+ROTI,મારે રોટલી ના નથી જોઈતું.
+standin__gu__gu-T2_refuse_object-NO+FRUIT.wav,standin,gu,gu-T2_refuse_object-NO+FRUIT,મારે ના ફળ છે.
+standin__gu__gu-T2_refuse_object-NO+TEA.wav,standin,gu,gu-T2_refuse_object-NO+TEA,મારે ના ચા નથી જોઈતું.
+standin__gu__gu-T2_refuse_object-NO+JUICE.wav,standin,gu,gu-T2_refuse_object-NO+JUICE,મને ના જ્યુસ જોઈએ છે.
+standin__gu__gu-T2_refuse_object-NO+SNACK.wav,standin,gu,gu-T2_refuse_object-NO+SNACK,મને ના બિસ્કિટ જોઈતું.
+standin__gu__gu-T2_refuse_object-NO+PIZZA.wav,standin,gu,gu-T2_refuse_object-NO+PIZZA,મારે ના પિઝા છે.
+standin__gu__gu-T3_feeling-SAD.wav,standin,gu,gu-T3_feeling-SAD,મને ઉદાસ જોઈએ છે.
+standin__gu__gu-T3_feeling-ANGRY.wav,standin,gu,gu-T3_feeling-ANGRY,મને ગુસ્સો જોઈએ છે.
+standin__gu__gu-T3_feeling-TIRED.wav,standin,gu,gu-T3_feeling-TIRED,મને થાકેલું જોઈએ છે.
+standin__gu__gu-T3_feeling-SICK.wav,standin,gu,gu-T3_feeling-SICK,મને બીમાર જોઈએ છે.
+standin__gu__gu-T3_feeling-SCARED.wav,standin,gu,gu-T3_feeling-SCARED,મને ડરેલું જોઈએ છે.
+standin__gu__gu-T3_feeling-LOVE.wav,standin,gu,gu-T3_feeling-LOVE,મને પ્રેમ જોઈએ છે.
+standin__gu__gu-T3_feeling-EXCITED.wav,standin,gu,gu-T3_feeling-EXCITED,મને ઉત્સાહિત જોઈએ છે.
+standin__gu__gu-T4_negated_feeling-NO+HAPPY.wav,standin,gu,gu-T4_negated_feeling-NO+HAPPY,મને ના ખુશ જોઈએ છે.
+standin__gu__gu-T4_negated_feeling-NO+SAD.wav,standin,gu,gu-T4_negated_feeling-NO+SAD,મારે ના અને ઉદાસ છે.
+standin__gu__gu-T4_negated_feeling-NO+ANGRY.wav,standin,gu,gu-T4_negated_feeling-NO+ANGRY,મારે ના ગુસ્સો છે.
+standin__gu__gu-T4_negated_feeling-NO+TIRED.wav,standin,gu,gu-T4_negated_feeling-NO+TIRED,મને ના થાકેલું જોઈએ છે.
+standin__gu__gu-T4_negated_feeling-NO+SICK.wav,standin,gu,gu-T4_negated_feeling-NO+SICK,મને ના બીમાર જોઈતું.
+standin__gu__gu-T4_negated_feeling-NO+SCARED.wav,standin,gu,gu-T4_negated_feeling-NO+SCARED,મારે ના ડરેલું છે.
+standin__gu__gu-T4_negated_feeling-NO+LOVE.wav,standin,gu,gu-T4_negated_feeling-NO+LOVE,મને ના પ્રેમ નથી જોઈતું.
+standin__gu__gu-T4_negated_feeling-NO+EXCITED.wav,standin,gu,gu-T4_negated_feeling-NO+EXCITED,મને ના ઉત્સાહિત છે.
+standin__gu__gu-T5_action_object-EAT+RICE.wav,standin,gu,gu-T5_action_object-EAT+RICE,મને જમવું છે ભાત.
+standin__gu__gu-T5_action_object-EAT+ROTI.wav,standin,gu,gu-T5_action_object-EAT+ROTI,મને જમવું જોઈએ છે. રોટલી જોઈએ છે.
+standin__gu__gu-T5_action_object-EAT+FRUIT.wav,standin,gu,gu-T5_action_object-EAT+FRUIT,મને જમવું જોઈએ છે. ફળ આપો.
+standin__gu__gu-T5_action_object-DRINK+WATER.wav,standin,gu,gu-T5_action_object-DRINK+WATER,મને પાણી જોઈએ છે. પીવું પાણી જોઈએ છે.
+standin__gu__gu-T5_action_object-DRINK+MILK.wav,standin,gu,gu-T5_action_object-DRINK+MILK,મને પીવું જોઈએ છે. દૂધ આપે.
+standin__gu__gu-T5_action_object-DRINK+TEA.wav,standin,gu,gu-T5_action_object-DRINK+TEA,મને પીવું જોઈએ છે. ચા.
+standin__gu__gu-T6_help_person-HELP+DOCTOR.wav,standin,gu,gu-T6_help_person-HELP+DOCTOR,મને ડૉક્ટર મદદ જોઈએ છે.
+standin__gu__gu-T6_help_person-HELP+MOTHER.wav,standin,gu,gu-T6_help_person-HELP+MOTHER,મને મદદ માતા જોઈએ છે.
+standin__gu__gu-T6_help_person-CALL+DOCTOR.wav,standin,gu,gu-T6_help_person-CALL+DOCTOR,મને ડૉક્ટર ફોન કરવો છે.
+standin__gu__gu-T6_help_person-CALL+MOTHER.wav,standin,gu,gu-T6_help_person-CALL+MOTHER,મને ફોન કરવો માતા છે.
+standin__mr__mr-T1_request_object-MILK.wav,standin,mr,mr-T1_request_object-MILK,मला दूध हवे आहे.
+standin__mr__mr-T1_request_object-RICE.wav,standin,mr,mr-T1_request_object-RICE,मला भात हवे आहे.
+standin__mr__mr-T1_request_object-ROTI.wav,standin,mr,mr-T1_request_object-ROTI,मला पोळी हवे आहे.
+standin__mr__mr-T1_request_object-FRUIT.wav,standin,mr,mr-T1_request_object-FRUIT,मला फळ हवे आहे.
+standin__mr__mr-T1_request_object-TEA.wav,standin,mr,mr-T1_request_object-TEA,मला चहा हवे आहे.
+standin__mr__mr-T1_request_object-JUICE.wav,standin,mr,mr-T1_request_object-JUICE,मला रस हवे आहे.
+standin__mr__mr-T1_request_object-SNACK.wav,standin,mr,mr-T1_request_object-SNACK,मला बिस्किट हवे आहे.
+standin__mr__mr-T1_request_object-PIZZA.wav,standin,mr,mr-T1_request_object-PIZZA,मला पिझ्झा हवे आहे.
+standin__mr__mr-T2_refuse_object-NO+WATER.wav,standin,mr,mr-T2_refuse_object-NO+WATER,मला नाही पाणी हवे आहे.
+standin__mr__mr-T2_refuse_object-NO+MILK.wav,standin,mr,mr-T2_refuse_object-NO+MILK,मला नाही दूध हवे आहे.
+standin__mr__mr-T2_refuse_object-NO+RICE.wav,standin,mr,mr-T2_refuse_object-NO+RICE,मला नाही भात हवे आहे.
+standin__mr__mr-T2_refuse_object-NO+ROTI.wav,standin,mr,mr-T2_refuse_object-NO+ROTI,मला नाही पोळी हवे आहे.
+standin__mr__mr-T2_refuse_object-NO+FRUIT.wav,standin,mr,mr-T2_refuse_object-NO+FRUIT,मला नाही फळ हवे आहे.
+standin__mr__mr-T2_refuse_object-NO+TEA.wav,standin,mr,mr-T2_refuse_object-NO+TEA,मला चहा नाही आहे.
+standin__mr__mr-T2_refuse_object-NO+JUICE.wav,standin,mr,mr-T2_refuse_object-NO+JUICE,मला नाही रस हवे आहे.
+standin__mr__mr-T2_refuse_object-NO+SNACK.wav,standin,mr,mr-T2_refuse_object-NO+SNACK,मला नाही बिस्किट हवे आहे.
+standin__mr__mr-T2_refuse_object-NO+PIZZA.wav,standin,mr,mr-T2_refuse_object-NO+PIZZA,मला नाही पिझ्झा हवे आहे.
+standin__mr__mr-T3_feeling-SAD.wav,standin,mr,mr-T3_feeling-SAD,मला दुःखी हवे आहे.
+standin__mr__mr-T3_feeling-ANGRY.wav,standin,mr,mr-T3_feeling-ANGRY,मला रागात हवे आहे.
+standin__mr__mr-T3_feeling-TIRED.wav,standin,mr,mr-T3_feeling-TIRED,मला दमलेला हवे आहे.
+standin__mr__mr-T3_feeling-SICK.wav,standin,mr,mr-T3_feeling-SICK,मला आजारी हवे आहे.
+standin__mr__mr-T3_feeling-SCARED.wav,standin,mr,mr-T3_feeling-SCARED,मला घाबरलेला हवे आहे.
+standin__mr__mr-T3_feeling-LOVE.wav,standin,mr,mr-T3_feeling-LOVE,मला प्रेम हवे आहे.
+standin__mr__mr-T3_feeling-EXCITED.wav,standin,mr,mr-T3_feeling-EXCITED,मला उत्साही हवे आहे.
+standin__mr__mr-T4_negated_feeling-NO+HAPPY.wav,standin,mr,mr-T4_negated_feeling-NO+HAPPY,मला नाही आनंदी हवे आहे.
+standin__mr__mr-T4_negated_feeling-NO+SAD.wav,standin,mr,mr-T4_negated_feeling-NO+SAD,मला नाही दुःखी हवे आहे.
+standin__mr__mr-T4_negated_feeling-NO+ANGRY.wav,standin,mr,mr-T4_negated_feeling-NO+ANGRY,मला नाही रागात हवे आहे.
+standin__mr__mr-T4_negated_feeling-NO+TIRED.wav,standin,mr,mr-T4_negated_feeling-NO+TIRED,मला नाही दमलेला हवे आहे.
+standin__mr__mr-T4_negated_feeling-NO+SICK.wav,standin,mr,mr-T4_negated_feeling-NO+SICK,मला अनुभव नाही आजारी.
+standin__mr__mr-T4_negated_feeling-NO+SCARED.wav,standin,mr,mr-T4_negated_feeling-NO+SCARED,मला घाबरलेला नाही आहे.
+standin__mr__mr-T4_negated_feeling-NO+LOVE.wav,standin,mr,mr-T4_negated_feeling-NO+LOVE,मला नाही प्रेम हवे आहे.
+standin__mr__mr-T4_negated_feeling-NO+EXCITED.wav,standin,mr,mr-T4_negated_feeling-NO+EXCITED,मला नाही उत्साही हवे आहे.
+standin__mr__mr-T5_action_object-EAT+RICE.wav,standin,mr,mr-T5_action_object-EAT+RICE,मला भात खाणे आहे.
+standin__mr__mr-T5_action_object-EAT+ROTI.wav,standin,mr,mr-T5_action_object-EAT+ROTI,मला पोळी खाणे आहे.
+standin__mr__mr-T5_action_object-EAT+FRUIT.wav,standin,mr,mr-T5_action_object-EAT+FRUIT,मला फळ खाणे हवे आहे.
+standin__mr__mr-T5_action_object-DRINK+WATER.wav,standin,mr,mr-T5_action_object-DRINK+WATER,मला पिणे पाणी हवे आहे.
+standin__mr__mr-T5_action_object-DRINK+MILK.wav,standin,mr,mr-T5_action_object-DRINK+MILK,मला पिणे दूध हवे आहे.
+standin__mr__mr-T5_action_object-DRINK+TEA.wav,standin,mr,mr-T5_action_object-DRINK+TEA,मला पिणे चहा हवे आहे.
+standin__mr__mr-T6_help_person-HELP+DOCTOR.wav,standin,mr,mr-T6_help_person-HELP+DOCTOR,मला डॉक्टर मदत हवे आहे.
+standin__mr__mr-T6_help_person-HELP+MOTHER.wav,standin,mr,mr-T6_help_person-HELP+MOTHER,मला मदत हवे आहे. मदत आई.
+standin__mr__mr-T6_help_person-CALL+DOCTOR.wav,standin,mr,mr-T6_help_person-CALL+DOCTOR,मला डॉक्टर फोन करणे मिळू शकता का?
+standin__mr__mr-T6_help_person-CALL+MOTHER.wav,standin,mr,mr-T6_help_person-CALL+MOTHER,मला फोन करणे आई आहे.

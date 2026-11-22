@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+ & \multicolumn{3}{c}{English} & \multicolumn{3}{c}{Hindi} \\
+\cmidrule(lr){2-4}\cmidrule(l){5-7}
+Model & @1 & @5 & MRR & @1 & @5 & MRR \\
+\midrule
+Unigram frequency & 3.6 & 11.6 & 0.069 & 6.4 & 14.5 & 0.099 \\
+Bigram, backoff & 13.6 & 29.5 & 0.204 & 24.1 & 43.1 & 0.320 \\
+Trigram, backoff & 16.0 & 32.8 & 0.234 & 25.9 & 44.0 & 0.334 \\
+Gutenberg HMM & 6.7 & 15.5 & 0.105 & -- & -- & -- \\
+Hindi AAC HMM & -- & -- & -- & 24.5 & 41.9 & 0.315 \\
+\midrule
+\textbf{$\infty$-gram (deployed)} & \textbf{17.2} & \textbf{33.4} & \textbf{0.240} & \textbf{27.0} & \textbf{44.1} & \textbf{0.343} \\
+\bottomrule
+\end{tabular}
+\caption{Next-word prediction on AAC-user utterances of 60 held-out source conversations per language (2,220 English and 2,437 Hindi contexts); hit rates in \%, MRR@10. Training and test sources are disjoint; the n-gram baselines, the trie, and the Hindi HMM share the training split, and the Gutenberg HMM is trained on public-domain books.}
+\label{tab:pred}
+\end{table}

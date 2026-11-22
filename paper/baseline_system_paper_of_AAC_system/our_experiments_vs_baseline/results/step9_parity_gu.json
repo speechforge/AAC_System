@@ -1,0 +1,16 @@
+{
+ "gu": {
+  "E (no COV)": {
+   "app_module_ksr": 54.24923807167532,
+   "experiment_ksr": 54.24923807167532,
+   "abs_diff": 0.0,
+   "seconds": 36
+  },
+  "E+COV": {
+   "app_module_ksr": 55.60195544803952,
+   "experiment_ksr": 55.60195544803952,
+   "abs_diff": 0.0,
+   "seconds": 56
+  }
+ }
+}

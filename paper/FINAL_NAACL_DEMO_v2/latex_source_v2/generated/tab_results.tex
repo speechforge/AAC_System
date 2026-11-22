@@ -1,0 +1,25 @@
+\begin{table*}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.2pt}
+\begin{tabular}{@{}l ccccc @{\hspace{6pt}} c ccccc@{}}
+\toprule
+ & \multicolumn{5}{c}{Scenario success (n/N)} & \multicolumn{6}{c}{Pooled diagnostics (counts)} \\
+\cmidrule(lr){2-6}\cmidrule(l){7-12}
+System & EN & HI & GU & MR & All & Kept$\uparrow$ & Pol.$\downarrow$ & \shortstack{Wrong\\act$\downarrow$} & \shortstack{No\\act$\downarrow$} & Added$\downarrow$ & \shortstack{Off-\\task$\downarrow$} \\
+\midrule
+\multicolumn{12}{@{}l}{\emph{Payload built by the web client (intent and negation inferred from labels)}}\\
+Literal join & 0/46 & 0/45 & 0/42 & 0/42 & 0/175 & 215/215 & 0 & 0 & 175 & 0 & 0 \\
+Unconstrained Qwen & 2/46 & 1/45 & 4/42 & 1/42 & 8/175 & 199/215 & 2 & 3 & 163 & 7 & 16 \\
+Cascade before gate & 3/46 & 24/45 & 20/42 & 18/42 & 65/175 & 175/215 & 2 & 54 & 33 & 25 & 19 \\
+\textbf{\sys{} (deployed)} & \textbf{22/46} & \textbf{31/45} & \textbf{21/42} & \textbf{23/42} & \textbf{97/175} & \textbf{215/215} & \textbf{0} & \textbf{54} & \textbf{21} & \textbf{4} & \textbf{10} \\
+Template floor & 33/46 & 31/45 & 27/42 & 27/42 & 118/175 & 215/215 & 0 & 57 & 0 & 0 & 0 \\
+\midrule
+\multicolumn{12}{@{}l}{\emph{Payload with explicit intent and negation fields}}\\
+Cascade before gate & 5/46 & 26/45 & 16/42 & 24/42 & 71/175 & 185/215 & 36 & 30 & 44 & 21 & 17 \\
+\textbf{\sys{} (deployed)} & \textbf{33/46} & \textbf{41/45} & \textbf{26/42} & \textbf{32/42} & \textbf{132/175} & \textbf{215/215} & \textbf{0} & \textbf{17} & \textbf{24} & \textbf{3} & \textbf{9} \\
+Template floor & 46/46 & 45/45 & 34/42 & 42/42 & 167/175 & 215/215 & 0 & 0 & 8 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{Primary set (175 scenarios; EN 46, HI 45, GU 42, MR 42). Success requires every selected concept, the gold polarity and act, no added concept, and an on-task first-person sentence in the target script. Kept: required concept instances present (of 215). Pol., Wrong act, No act, Added, Off-task: scenarios (of 175) with that error; one output can have several. The literal join carries no act marker by construction.}
+\label{tab:results}
+\end{table*}

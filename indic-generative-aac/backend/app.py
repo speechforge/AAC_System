@@ -16,6 +16,9 @@ from pydantic import BaseModel
 from llm import IndicLLM
 from tts import IndicTTSEngine
 from hmm import hmm_engine
+import predictor_v2
+import threading
+threading.Thread(target=lambda: [predictor_v2.get_model(l) for l in predictor_v2.LANGS], daemon=True).start()   # warm the models (~1 s each)
 from semantic import SemanticValidator
 from aac_lexicon import BOARD, resolve_label
 import concept_predict
@@ -83,6 +86,7 @@ class ContextRequest(BaseModel):
     current_words: list[str] = []
     language: str = "hi"
     intent: str = "REQUEST"
+    prefix: str = ""      # optional letters already typed for the word being entered (enables completion + OOV fallback)
 
 
 class UnjumbleRequest(ContextRequest):
@@ -296,10 +300,18 @@ def predict_next(req: ContextRequest, request: Request):
     # 1) Concept grammar: reacts to every selected word, identical in all four languages.
     context_preds = concept_predict.predict(words, lang, top_k=10)
     # 2) Statistical model (infinity-gram / Markov), localised and script-filtered.
-    try:
-        preds = hmm_engine.predict_next(words, language=lang, top_k=10)
-    except Exception:
-        preds = []
+    preds = []
+    if os.environ.get("AAC_PREDICTOR", "v2") != "legacy":      # v2 = per-language model + char-12-gram mix + OOV completion (predictor_v2.py)
+        try:
+            preds = predictor_v2.predict(words, lang, prefix=req.prefix, top_k=10)
+        except Exception:
+            traceback.print_exc()
+            preds = []
+    if not preds:                                              # language without v2 data, or v2 failed: legacy predictor
+        try:
+            preds = hmm_engine.predict_next(words, language=lang, top_k=10)
+        except Exception:
+            preds = []
     stat, seen_stat = [], set()
     native = r"[A-Za-z]" if lang == "en" else (r"[\u0a80-\u0aff]" if lang == "gu" else r"[\u0900-\u097f]")
     foreign = r"[\u0900-\u0aff]" if lang == "en" else r"[A-Za-z]"
@@ -325,6 +337,8 @@ def predict_next(req: ContextRequest, request: Request):
             pass
     selected, used = [], set()
     def push(item):
+        if req.prefix and not item["word"].startswith(req.prefix.strip()):
+            return                                       # a typed prefix narrows every source, not only the statistical one
         if item["word"] not in used and item["word"] not in {w.strip() for w in words}:
             used.add(item["word"]); selected.append(item)
     if words:

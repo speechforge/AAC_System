@@ -1,0 +1,9 @@
+{
+  "account_id": "cf2efb63d75541d07f664caeaec1c0da",
+  "worker_name": "aac-mos-portal",
+  "routing_namespace_id": "014bb3eb11a44310afb659357908f380",
+  "public_url": "https://aac-mos-portal.indic-aac-speech-study-2026.workers.dev",
+  "compatibility_date": "2026-11-17",
+  "data_location": "local .data/portal.sqlite3; participant data is not in KV",
+  "connector": "supervised local cloudflared; public front door stays stable"
+}

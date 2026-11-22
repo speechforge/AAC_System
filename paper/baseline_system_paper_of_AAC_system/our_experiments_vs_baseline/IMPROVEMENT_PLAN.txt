@@ -1,0 +1,161 @@
+==============================================================================================================
+ IMPROVEMENT PLAN - HOW TO MAKE THE INDIC AAC SYSTEM PERFORM BETTER, AND HOW EACH STEP IS MEASURED
+==============================================================================================================
+ Written 2026-11-19, from the measured results in RESULTS_vs_baseline.txt. Metrics: KSR ↑ (keystroke savings, higher is
+ better), top-k hit ↑, perplexity ↓ (lower is better), latency ↓. Every step is judged with the SAME protocol and splits.
+
+--------------------------------------------------------------------------------------------------------------
+ 1. WHERE WE STAND (the gaps the plan has to close)
+--------------------------------------------------------------------------------------------------------------
+  G1  English accuracy: ∞-gram KSR 55.9 vs in-domain-adapted OPT-125m 62.6 (-6.7 points); top-5 30.5 vs 44.9.   [accuracy gap]
+  G2  The shipped "never re-suggest a selected word" rule costs 0.3-1.1 KSR points in every language.            [free fix]
+  G3  Unlimited context depth gives nothing on 7-word sentences (a 2-word cap ties or wins).                    [design]
+  G4  Marathi (48.9) and Gujarati (53.3) are weakest; their test text is machine translated and Marathi OOV is
+      11.7%. In the app Marathi reuses the Hindi trie and Gujarati has no statistical model of its own.         [coverage]
+  G5  Data is tiny (2.5-3.9 k training sentences) and synthetic; no real AAC-user text.                          [data]
+  G6  The generation layer is only measured on a closed 69-concept board; the Qwen LLM cascade has no current
+      measurement (the repo has one old 10-case run: 90% valid, 4/10 fell back to templates).                   [evidence]
+  G7  The word-to-concept coverage of the board is only 6-14% of dataset words.                                 [coverage]
+
+--------------------------------------------------------------------------------------------------------------
+ 2. THE PLAN (ordered cheap -> costly; each step has a measurable success test)
+--------------------------------------------------------------------------------------------------------------
+ STEP 1  Remove the selected-word exclusion in the predictor            targets G2       effort: minutes
+         How: make `exclude_selected` an option in infinity_gram.predict_next (keep the UI default only for symbol grids).
+         Success test: KSR ↑ in all 4 languages vs shipped. Expected +0.3 to +1.1.
+ STEP 2  Hybrid ∞-gram + char 12-gram (CPU only, no new model)          targets G1,G4    effort: hours
+         How: mix the two word distributions over the candidate pool, weight tuned on dev. Char model gives OOV/morphology
+         robustness, which helps most on the high-OOV Marathi and Gujarati.
+         Success test: KSR ↑ and top-10 ↑ over step 1 in every language; latency stays < 1 ms.
+ STEP 3  Small adapted LM as a re-ranker of ∞-gram candidates (English first)    targets G1  effort: 1 day
+         How: fine-tune OPT-125m-class model on the train split (1 epoch was best), re-rank only the top-N candidates the
+         ∞-gram proposes, mix probabilities. Runs on GPU or quantised CPU; falls back to ∞-gram if unavailable.
+         Success test: close at least half of the 6.7-point KSR gap to the adapted OPT, at a fraction of its cost.
+ STEP 4  Per-language ∞-gram engines in the app (Marathi, Gujarati)     targets G4        effort: 1 day
+         How: one trie per language (mr and gu currently share the Hindi / English root); add a language-id for gu.
+         Success test: mr/gu predictions come from a mr/gu model; KSR ↑ vs the concept-only predictor.
+ STEP 5  Fix the context policy: cap at 2-3 words, keep unlimited only as back-off   targets G3   effort: minutes
+         Success test: KSR ≥ shipped in all languages (already shown on the existing data).
+ STEP 6  More and better data                                           targets G5,G4,G7  effort: days
+         6a collect a small NATIVE Marathi and Gujarati test set (200+ sentences each, native speakers);
+         6b add public conversational corpora per language for the LM (e.g. DailyDialog-style English; IndicCorp / IndicTrans
+            data for hi/mr/gu), classify them for AAC-likeness as the baseline paper does (its Sec. 5.3-5.4);
+         6c enlarge the symbol board beyond 69 concepts (core words per language) to raise concept coverage.
+         Success test: KSR on the native test set; OOV rate < 5%.
+ STEP 7  Personalisation (the baseline's own "future work")             targets G5        effort: days
+         How: adapt the trie online with the user's My-Words / accepted sentences; measure on a held-out user stream.
+         Success test: KSR ↑ over the static model after N sessions.
+ STEP 8  Evaluate the generation layer end to end                       targets G6        effort: days
+         8a run the live-backend cascade on the 144-selection suite and the 10-case suite (validity, fallback rate, latency);
+         8b add free-form (non-board) selections and noisy-typing variants (the *_augmented.jsonl have noisy_* fields);
+         8c TTS naturalness via the MOS portal (instructions already revised to "overall speech naturalness");
+         8d a small user study (selection rate, words/min, preference).
+         Success test: validity ≥ 95% with fallback ≤ 20% on free-form input; MOS reported per language with CI.
+ STEP 9  Statistical rigour for every comparison                        all gaps         effort: hours
+         How: repeat over 5 random conversation splits, report mean ± 95% bootstrap CI, paired test on KSR.
+         Success test: every claim in the paper has a CI; differences < CI are called ties.
+
+--------------------------------------------------------------------------------------------------------------
+ 3. WHAT TO CLAIM IN THE PAPER (given the current numbers)
+--------------------------------------------------------------------------------------------------------------
+  * Do claim: CPU-only speed (~0.05 ms), sentence-generation fidelity (97-99%, abstains on ambiguity), four-language coverage.
+  * Do NOT claim: better next-word accuracy than LLMs (it is not), or a benefit from "infinite" context (not shown).
+  * After Step 3, a hybrid claim ("LM re-ranking recovers X of the gap at Y ms") is available if the numbers support it.
+
+--------------------------------------------------------------------------------------------------------------
+ 4. EXECUTION LOG  (what has actually been run)
+--------------------------------------------------------------------------------------------------------------
+
+ EXECUTED 2026-11-19 (results/improve_cpu_en_hi_mr_gu.json, results/improve_gpu_en.json; code exp_improve.py).
+ Same protocol as the main experiments; KSR = average of AAC-user and caregiver test sets. KSR ↑ higher is better.
+
+ Steps 1 and 2 - full test sets, CPU:
+
+  Language | shipped KSR ↑ | Step 1: no exclusion | Step 2: + char 12-gram hybrid | char 12-gram alone | ∞-gram weight in mix
+  ---------+---------------+----------------------+-------------------------------+--------------------+---------------------
+  English  | 56.29         | 56.63 (+0.34)        | 56.53 (+0.25)                 | 55.82              | 0.8                 
+  Hindi    | 56.74         | 57.73 (+0.98)        | 57.76 (+1.02)                 | 57.33              | 0.6                 
+  Marathi  | 48.73         | 49.20 (+0.46)        | 49.34 (+0.60)                 | 48.86              | 0.6                 
+  Gujarati | 53.04         | 53.75 (+0.71)        | 54.21 (+1.17)                 | 54.00              | 0.8                 
+
+ Step 1 RESULT: improves KSR in all four languages (+0.3 to +1.0). CONFIRMED - recommended.
+ Step 2 RESULT: the hybrid adds only +0.0 to +0.5 over Step 1 (English -0.1, Hindi +0.0, Marathi +0.1, Gujarati +0.5). That is inside the noise
+   of these test sets, so the hybrid is NOT justified by this data; its benefit may show up with more training data. Not recommended yet.
+
+ Step 3 - English, GPU, 40+40 sentence subsample (adapted OPT-125m retrained for 1 epoch; mixing weight tuned on only 30 dev sentences):
+
+  System                                         | KSR avg ↑ | top-5 hit % ↑ (AAC / Care)
+  -----------------------------------------------+-----------+---------------------------
+  shipped infinity-gram                          | 55.86     | 28.8 / 32.2               
+  step1: no selected-word exclusion              | 56.17     | 30.0 / 32.2               
+  adapted OPT-125m alone                         | 63.00     | 42.8 / 49.7               
+  step3: infinity-gram + adapted OPT-125m hybrid | 62.82     | 43.6 / 49.2               
+
+ Step 3 RESULT: the hybrid reaches KSR 62.8, +7.0 over the shipped ∞-gram and level with the adapted OPT alone (63.0). The tuned weight put only 20% on the
+   ∞-gram, i.e. the LM is doing the work. So the accuracy gap CAN be closed, but only by running the LM (GPU or quantised CPU); the ∞-gram's
+   remaining roles are the instant CPU fallback, an interpretable shelf and candidate proposal. Treat as an optional 'accuracy mode', not a replacement.
+
+ Step 5 (evidence already in RESULTS_vs_baseline.txt, Sec. 5): a 2-word context cap ties or beats unlimited depth in all four languages.
+
+ NOT YET DONE (need code changes in the app, new data, participants or live services):
+   Step 4 per-language engines in the app | Step 6 more/native data | Step 7 personalisation | Step 8 live LLM cascade, TTS MOS, user study | Step 9 CIs over 5 splits
+ I did NOT modify the shipped application code; Steps 1, 4, 5 are ready to apply on request (small changes in indic-generative-aac/backend/infinity_gram.py and hmm.py).
+
+--------------------------------------------------------------------------------------------------------------
+ 5. RECOMMENDED NEXT ACTIONS (in order)
+--------------------------------------------------------------------------------------------------------------
+  1. Apply Step 1 + Step 5 to the app (exclude_selected off for the word shelf; cap context at 3 words with unlimited back-off).  [safe, measured]
+  2. Run Step 9 (5 splits, CIs) so Steps 1/2 can be called significant or tied.
+  3. Run Step 8a (live cascade evaluation) - it is the largest missing piece of evidence for the paper.
+  4. Collect the native Marathi/Gujarati test sets (Step 6a) - the mr/gu numbers are currently machine-translation based.
+  5. Decide on the optional LM re-ranker (Step 3) after weighing GPU/CPU cost against a ~+7 KSR gain.
+====================================================================================================
+EXECUTION ROUND 2 - combined improvement stack, full test sets (code: our_experiments_vs_baseline/exp_final.py, exp_final_gpu.py)
+====================================================================================================
+KSR = keystroke savings % (↑ higher is better); top-5 = % of next words in the 5 suggestions before typing (↑). All knobs tuned on DEV only.
+Gain CI = paired bootstrap 95% interval (percentage points) of KSR(system) - KSR(shipped) over test sentences; CI above 0 = real gain.
+
+CPU stack (ms-level, no GPU), FULL test sets, avg of AAC-user + caregiver sets:
+
+English  tuned: {'step1+5 ctx_cap,alpha': [3, 0.2], 'step2 mix_weight_infgram': 0.85, 'step7 personalisation lambda': 0.2}
+  A shipped infinity-gram                                    KSR  56.29  top5  33.4  gain CI aac/care - 
+  B step1: no exclusion                                      KSR  56.63  top5  34.1  gain CI aac/care [0.22, 0.56] [0.13, 0.44]
+  C step1+5: no exclusion + tuned context cap/backoff        KSR  56.63  top5  34.1  gain CI aac/care [0.22, 0.56] [0.13, 0.46]
+  D step1+5+2: + char12 hybrid                               KSR  56.51  top5  34.3  gain CI aac/care [0.03, 0.57] [-0.11, 0.4]
+  E step1+5+2+7: + personalisation (recency cache)           KSR  56.82  top5  34.8  gain CI aac/care [0.43, 1.01] [0.08, 0.6]
+
+Hindi  tuned: {'step1+5 ctx_cap,alpha': [4, 0.2], 'step2 mix_weight_infgram': 0.7, 'step7 personalisation lambda': 0.1}
+  A shipped infinity-gram                                    KSR  56.74  top5  45.5  gain CI aac/care - 
+  B step1: no exclusion                                      KSR  57.73  top5  47.8  gain CI aac/care [0.67, 1.13] [0.84, 1.32]
+  C step1+5: no exclusion + tuned context cap/backoff        KSR  57.71  top5  47.7  gain CI aac/care [0.63, 1.09] [0.84, 1.32]
+  D step1+5+2: + char12 hybrid                               KSR  57.80  top5  48.1  gain CI aac/care [0.63, 1.28] [0.86, 1.49]
+  E step1+5+2+7: + personalisation (recency cache)           KSR  57.94  top5  48.0  gain CI aac/care [0.76, 1.38] [1.0, 1.62]
+
+Marathi  tuned: {'step1+5 ctx_cap,alpha': [2, 0.2], 'step2 mix_weight_infgram': 0.7, 'step7 personalisation lambda': 0.0}
+  A shipped infinity-gram                                    KSR  48.73  top5  28.9  gain CI aac/care - 
+  B step1: no exclusion                                      KSR  49.20  top5  29.9  gain CI aac/care [0.19, 0.54] [0.39, 0.77]
+  C step1+5: no exclusion + tuned context cap/backoff        KSR  49.20  top5  29.9  gain CI aac/care [0.21, 0.57] [0.35, 0.74]
+  D step1+5+2: + char12 hybrid                               KSR  49.38  top5  30.0  gain CI aac/care [-0.02, 0.74] [0.56, 1.39]
+  E step1+5+2+7: + personalisation (recency cache)           KSR  49.38  top5  30.0  gain CI aac/care [-0.02, 0.74] [0.56, 1.39]
+
+Gujarati  tuned: {'step1+5 ctx_cap,alpha': [2, 0.6], 'step2 mix_weight_infgram': 0.7, 'step7 personalisation lambda': 0.0}
+  A shipped infinity-gram                                    KSR  53.04  top5  39.1  gain CI aac/care - 
+  B step1: no exclusion                                      KSR  53.75  top5  41.2  gain CI aac/care [0.4, 0.86] [0.61, 0.97]
+  C step1+5: no exclusion + tuned context cap/backoff        KSR  53.74  top5  41.1  gain CI aac/care [0.37, 0.84] [0.62, 1.0]
+  D step1+5+2: + char12 hybrid                               KSR  54.25  top5  41.9  gain CI aac/care [0.82, 1.61] [0.89, 1.51]
+  E step1+5+2+7: + personalisation (recency cache)           KSR  54.25  top5  41.9  gain CI aac/care [0.82, 1.61] [0.89, 1.51]
+
+English with adapted OPT-125m re-ranker (GPU, 100+100 test sentences, weight on CPU stack 0.1 tuned on 60 dev sentences):
+  A shipped infinity-gram                            KSR  55.23  top5  33.6  gain CI - 
+  E' improved CPU stack (step1+5+2)                  KSR  55.48  top5  34.6  gain CI [-0.23, 0.84] [-0.3, 0.71]
+  adapted OPT-125m alone                             KSR  61.88  top5  47.4  gain CI [5.73, 8.42] [4.87, 7.32]
+  F step1+5+2+3: CPU stack + adapted OPT-125m        KSR  61.80  top5  47.8  gain CI [5.66, 8.34] [4.82, 7.18]
+
+VERDICT (is it better than the current state? yes, in every language; size differs):
+  * CPU stack vs shipped (KSR ↑): English +0.5, Hindi +1.2, Marathi +0.65, Gujarati +1.2 points. CIs exclude 0 for Hindi/Gujarati (both sets), English AAC set, Marathi caregiver set;
+    the plain step-1 change alone already captures most of it. These are real but modest gains and keep the 0.05 ms CPU speed.
+  * Personalisation (step 7) adds +0.2 English/+0.15 Hindi on top (tuned lambda 0 for mr/gu, i.e. no help on the MT data).
+  * Adapted OPT-125m (step 3) is the only large gain: +6.6 KSR and +14 top-5 points over shipped in English (CI far above 0). The ∞-gram/char mix adds nothing on top (61.8 vs 61.9),
+    so the honest claim is: ship the LM as an optional accuracy mode (needs GPU, ~100x slower); the CPU stack is the default.
+  * Not achieved: any improvement for Hindi/Marathi/Gujarati from an LM (step 3 only run for English); mr/gu data are machine translated so gains there are indicative.
+  * Still open: steps 4 (apply to app), 6 (native data), 8 (live cascade/TTS MOS/user study). Application of steps 1/5/2 to the shipped backend is a small edit - waiting for your go-ahead.

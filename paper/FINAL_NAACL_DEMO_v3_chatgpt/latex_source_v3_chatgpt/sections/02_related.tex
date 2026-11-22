@@ -1,0 +1,29 @@
+\section{Related Work}
+\label{sec:related}
+\emph{Compansion} expands telegraphic AAC input with syntactic and semantic rules \citep{mccoy1998compansion}.
+\citet{karmakar-sinha-2024-aiding} study bidirectional text--symbol communication, including symbol-to-text generation and Bengali translation.
+These works establish that expansion and Indic-language AAC are prior capabilities; the question here is how candidate acceptance and fallback affect preservation of a particular selection.
+
+Other model-assisted AAC systems address different input conditions.
+\emph{SpeakFaster} expands abbreviated text for eye-gaze typing \citep{cai2024speakfaster}, whereas \emph{ConnecTone} predicts context-dependent text and provides style-adaptive speech \citep{francis2024connectone}.
+Jellow Basic already documents sentence construction and support for Hindi, Gujarati, and Marathi.\footnote{\url{https://www.jellow.org/jellow-basic.php} (Last Accessed Date: November 13\textsuperscript{th}, 2026). Integrated Basic edition; its language list has no version number.}
+Table~\ref{tab:related} distinguishes these documented capabilities from the acceptance policy studied here; a missing description is not evidence that a product lacks a feature.
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}L{1.8cm}L{2.45cm}L{2.75cm}@{}}
+\toprule
+System & Input / realization & Relevance to this study \\
+\midrule
+Compansion & telegraphic text; rule expansion & grammatical expansion predates LLMs \\
+Karmakar \& Sinha & text and symbols; bilingual resources & Bengali symbol-to-text work \\
+Jellow Basic & symbols; expressive buttons, pre-made sentences & HI, GU, MR documented \\
+SpeakFaster & abbreviations; LLM expansion & eye-gaze text entry \\
+ConnecTone & context; generative suggestions & conversational text and speech \\
+\sys{} & symbols; model or checked template & explicit concept, polarity, act policy \\
+\bottomrule
+\end{tabular}
+\caption{Task positioning from the cited primary sources. HI, GU, and MR denote Hindi, Gujarati, and Marathi. These are descriptions, not a product benchmark.}
+\label{tab:related}
+\end{table}

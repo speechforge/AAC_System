@@ -1,0 +1,34 @@
+{
+ "lang": "mr",
+ "n_native_train": 30000,
+ "n_native_dev": 600,
+ "n_native_test": 1500,
+ "n_aac_train": 2541,
+ "ppl": {
+  "pretrained": {
+   "aac_test": 10.438131922667333,
+   "native_test": 7.811887084285343
+  },
+  "AAC-only (existing adapter)": {
+   "aac_test": 2.910022360020689,
+   "native_test": 5.420563229649721
+  },
+  "native-only (stage 1)": {
+   "aac_test": 4.148363630761558,
+   "native_test": 3.752144796147084
+  },
+  "native -> AAC (stage 2)": {
+   "aac_test": 2.81031334613862,
+   "native_test": 4.748485480665749
+  }
+ },
+ "stage1": {
+  "best_step": 1872,
+  "native_dev_ppl": 3.620705557223955,
+  "seconds": 512.0890028476715
+ },
+ "stage2": {
+  "best_epoch": 2,
+  "aac_dev_ppl": 2.918964788245212
+ }
+}

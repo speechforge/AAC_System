@@ -1,0 +1,26 @@
+comparison,A,B,lang,n_items,n_groups,diff_pp,lo,hi,n_a_only_wins,n_b_only_wins
+"gate effect, gold fields",revised_hybrid|gold,revised_cascade_first|gold,en,20,20,90.0,75.0,100.0,18,0
+"gate effect, gold fields",revised_hybrid|gold,revised_cascade_first|gold,hi,20,20,80.0,60.0,95.0,16,0
+"gate effect, gold fields",revised_hybrid|gold,revised_cascade_first|gold,gu,20,20,55.0,35.0,75.0,11,0
+"gate effect, gold fields",revised_hybrid|gold,revised_cascade_first|gold,mr,20,20,55.0,35.0,75.0,11,0
+"gate effect, gold fields",revised_hybrid|gold,revised_cascade_first|gold,ALL,80,20,70.0,58.75,81.25,56,0
+revised hybrid vs repaired template alone (gold),revised_hybrid|gold,template_revised|gold,en,20,20,0.0,0.0,0.0,0,0
+revised hybrid vs repaired template alone (gold),revised_hybrid|gold,template_revised|gold,hi,20,20,0.0,0.0,0.0,0,0
+revised hybrid vs repaired template alone (gold),revised_hybrid|gold,template_revised|gold,gu,20,20,0.0,0.0,0.0,0,0
+revised hybrid vs repaired template alone (gold),revised_hybrid|gold,template_revised|gold,mr,20,20,0.0,0.0,0.0,0,0
+revised hybrid vs repaired template alone (gold),revised_hybrid|gold,template_revised|gold,ALL,80,20,0.0,0.0,0.0,0,0
+repaired template (revised client) vs archived template (original client),template_revised|rev,template_archived|orig,en,20,20,25.0,5.0,45.0,5,0
+repaired template (revised client) vs archived template (original client),template_revised|rev,template_archived|orig,hi,20,20,25.0,5.0,45.0,5,0
+repaired template (revised client) vs archived template (original client),template_revised|rev,template_archived|orig,gu,20,20,30.0,10.0,50.0,6,0
+repaired template (revised client) vs archived template (original client),template_revised|rev,template_archived|orig,mr,20,20,30.0,10.0,50.0,6,0
+repaired template (revised client) vs archived template (original client),template_revised|rev,template_archived|orig,ALL,80,20,27.5,10.0,47.5,22,0
+repaired template vs archived template (gold fields),template_revised|gold,template_archived|gold,en,20,20,10.0,0.0,25.0,2,0
+repaired template vs archived template (gold fields),template_revised|gold,template_archived|gold,hi,20,20,10.0,0.0,25.0,2,0
+repaired template vs archived template (gold fields),template_revised|gold,template_archived|gold,gu,20,20,10.0,0.0,25.0,2,0
+repaired template vs archived template (gold fields),template_revised|gold,template_archived|gold,mr,20,20,10.0,0.0,25.0,2,0
+repaired template vs archived template (gold fields),template_revised|gold,template_archived|gold,ALL,80,20,10.0,0.0,25.0,8,0
+interface effect on the template,template_revised|rev,template_revised|gold,en,20,20,0.0,0.0,0.0,0,0
+interface effect on the template,template_revised|rev,template_revised|gold,hi,20,20,0.0,0.0,0.0,0,0
+interface effect on the template,template_revised|rev,template_revised|gold,gu,20,20,0.0,0.0,0.0,0,0
+interface effect on the template,template_revised|rev,template_revised|gold,mr,20,20,0.0,0.0,0.0,0,0
+interface effect on the template,template_revised|rev,template_revised|gold,ALL,80,20,0.0,0.0,0.0,0,0

@@ -1,0 +1,41 @@
+\section{Four-Language Interaction Traces}
+\label{app:trace}
+Figure~\ref{fig:workflow} follows the same two selections through all four phases in English and each Indic extension.
+English is a language reference, not a competing system: every row uses the revised hybrid, the same model, and the same decision policy.
+All candidate and returned strings are recorded regression outputs; green or blue text marks retained examples, and red marks a labelled unsupported addition.
+Missing negation or a missing concept is stated explicitly because absent words cannot be highlighted.
+
+
+
+\section{Representative Test Cases and Scorer Scope}
+\label{app:scorer}
+Table~\ref{tab:cases} samples every family in the six-family archived evaluation rather than listing every item.
+The complete recorded scenario grid remains the denominator for reported results.
+These cases additionally expose model acceptance, rejected candidates, checked fallbacks, and a limitation of lexical evaluation.
+The corresponding phase-wise selections and outputs in Figure~\ref{fig:workflow} are a qualitative comparison, not evidence that one language performs better than another.
+
+\input{generated/tab_cases}
+
+The archived scorer defines off-task behavior through refusal-to-answer patterns, third-person narration, empty output, length over 25 whitespace tokens, and Latin leakage in an Indic target.
+It can confuse a missing pattern with an error, as the Gujarati negated-feeling audit demonstrates.
+The revised scorer broadens lexical forms and separates perspective, polarity, act, and additional concepts.
+It is still not a native-speaker assessor, and scorer-v1 and scorer-v2 success totals must not be merged.
+
+\section{Reproduction and Language Coverage}
+\label{app:models}
+The prompted model is \model{}, revision 7ae557604adf67be50417f59c2c2f167def9a775.
+It is used as released, without task-specific fine-tuning, with 16-bit floating-point inference on GPU.
+Archived generation ran on a GTX~1650 (4\,GB); revised regression generation ran on a TITAN~Xp (12\,GB) with PyTorch 2.11.0 and Transformers 5.14.1.
+English regression sampling uses seed 11; the three Indic paths are greedy.
+The complete saved stream, rather than a selectively regenerated candidate, is replayed for each paired policy comparison.
+
+The predictor split has 240 training and 60 test source conversations per evaluated language (300 in total; no separate validation split).
+Each target is a next word from an AAC-user utterance; source-conversation bootstrap intervals keep its contexts together.
+HMM baselines in Table~\ref{tab:pred} are separate prediction components, not the sentence realizer.
+Gujarati and Marathi text-generation coverage therefore does not imply evaluated next-word prediction or verified speech coverage.
+
+Clarification is tested separately from sentence success.
+In the recorded user-choice probe, the user selects an act for an ambiguous word before the system continues; the act choice can still lead to a lexical match with the wrong sense.
+For example, a Gujarati feeling interpretation of an ambiguous label yields \gu{હું ખરાબ છું.}, which can mean \emph{“I am bad”} rather than feeling unwell.
+The gate's lexical match does not settle that distinction.
+An unavailable server yields a labelled literal preview; no candidate is invented to fill that failure.

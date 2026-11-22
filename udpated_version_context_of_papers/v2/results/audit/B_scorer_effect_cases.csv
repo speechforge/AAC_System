@@ -1,0 +1,94 @@
+id,system,cond,text,v1,v2,v2_flags
+hi-T2_refuse_object-NO+FOOD,llm1,ui,"नहीं, मैं खाना चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+FOOD,llm2,ui,"नहीं, मैं खाना चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+FOOD,llm3_pre,ui,"नहीं, मैं खाना चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+FOOD,deployed,ui,"नहीं, मैं खाना चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+MILK,llm1,ui,"नहीं, नहीं, दूध चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+MILK,llm2,ui,"नहीं, नहीं, दूध चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+MILK,llm3_pre,ui,"नहीं, नहीं, दूध चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+MILK,deployed,ui,"नहीं, नहीं, दूध चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+RICE,llm1,ui,"नहीं, नहीं, चावल चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+RICE,llm2,ui,"नहीं, नहीं, चावल चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+RICE,llm3_pre,ui,"नहीं, नहीं, चावल चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+RICE,deployed,ui,"नहीं, नहीं, चावल चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+ROTI,llm1,ui,"नहीं, रोटी चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+ROTI,llm2,ui,"नहीं, रोटी चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+ROTI,llm3_pre,ui,"नहीं, रोटी चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+ROTI,deployed,ui,"नहीं, रोटी चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+TEA,llm1,ui,"नहीं, नहीं, चाय चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+TEA,llm2,ui,"नहीं, नहीं, चाय चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+TEA,llm3_pre,ui,"नहीं, नहीं, चाय चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+TEA,deployed,ui,"नहीं, नहीं, चाय चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+JUICE,llm1,ui,"जूस, मुझे नहीं चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+JUICE,llm2,ui,"जूस, मुझे नहीं चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+JUICE,llm3_pre,ui,"जूस, मुझे नहीं चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+JUICE,deployed,ui,"जूस, मुझे नहीं चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+SNACK,llm1,ui,"नहीं, नहीं, बिस्कुट चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+SNACK,llm2,ui,"नहीं, नहीं, बिस्कुट चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+SNACK,llm3_pre,ui,"नहीं, नहीं, बिस्कुट चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+SNACK,deployed,ui,"नहीं, नहीं, बिस्कुट चाहिए।",True,False,polarity_ok
+hi-T2_refuse_object-NO+PIZZA,llm1,st,"पिज़्ज़ा, मुझे चाहिए नहीं।",True,False,polarity_ok
+hi-T2_refuse_object-NO+PIZZA,llm2,st,"पिज़्ज़ा, मुझे चाहिए नहीं।",True,False,polarity_ok
+hi-T2_refuse_object-NO+PIZZA,llm3_pre,st,"पिज़्ज़ा, मुझे चाहिए नहीं।",True,False,polarity_ok
+hi-T2_refuse_object-NO+PIZZA,deployed,st,"पिज़्ज़ा, मुझे चाहिए नहीं।",True,False,polarity_ok
+hi-T3_feeling-SCARED,llm1,st,"मैं डरा हो रहा है, मैं धन्यवाद।",False,True,
+hi-T3_feeling-SCARED,llm2,st,"मैं डरा हो रहा है, मैं धन्यवाद।",False,True,
+hi-T3_feeling-SCARED,llm3_pre,st,"मैं डरा हो रहा है, मैं धन्यवाद।",False,True,
+gu-T2_refuse_object-NO+MILK,llm1,ui,મારે ના દૂધ છે.,False,True,
+gu-T2_refuse_object-NO+MILK,llm2,ui,મારે ના દૂધ છે.,False,True,
+gu-T2_refuse_object-NO+MILK,llm3_pre,ui,મારે ના દૂધ છે.,False,True,
+gu-T2_refuse_object-NO+MILK,deployed,ui,મારે ના દૂધ છે.,False,True,
+gu-T2_refuse_object-NO+FRUIT,llm1,ui,મારે ના ફળ છે.,False,True,
+gu-T2_refuse_object-NO+FRUIT,llm2,ui,મારે ના ફળ છે.,False,True,
+gu-T2_refuse_object-NO+FRUIT,llm3_pre,ui,મારે ના ફળ છે.,False,True,
+gu-T2_refuse_object-NO+FRUIT,deployed,ui,મારે ના ફળ છે.,False,True,
+gu-T2_refuse_object-NO+TEA,naive_qwen,ui,"ના મુખ્ય છે જોઈએ, ચા હતી કે તમારી પૂર્વ લખો.",True,False,polarity_ok|unsupported
+gu-T2_refuse_object-NO+PIZZA,llm1,ui,મારે ના પિઝા છે.,False,True,
+gu-T2_refuse_object-NO+PIZZA,llm2,ui,મારે ના પિઝા છે.,False,True,
+gu-T2_refuse_object-NO+PIZZA,llm3_pre,ui,મારે ના પિઝા છે.,False,True,
+gu-T2_refuse_object-NO+PIZZA,deployed,ui,મારે ના પિઝા છે.,False,True,
+gu-T3_feeling-ANGRY,llm1,st,મારે ગુસ્સો છું.,True,False,act_ok
+gu-T3_feeling-ANGRY,llm2,st,મારે ગુસ્સો છું.,True,False,act_ok
+gu-T3_feeling-ANGRY,llm3_pre,st,મારે ગુસ્સો છું.,True,False,act_ok
+gu-T3_feeling-ANGRY,deployed,st,મારે ગુસ્સો છું.,True,False,act_ok
+gu-T3_feeling-SICK,llm1,st,મારે બીમાર છું.,True,False,act_ok
+gu-T3_feeling-SICK,llm2,st,મારે બીમાર છું.,True,False,act_ok
+gu-T3_feeling-SICK,llm3_pre,st,મારે બીમાર છું.,True,False,act_ok
+gu-T3_feeling-SICK,deployed,st,મારે બીમાર છું.,True,False,act_ok
+gu-T3_feeling-LOVE,llm1,st,મને પ્રેમ હું કહું.,False,True,
+gu-T3_feeling-LOVE,llm2,st,મને પ્રેમ હું કહું.,False,True,
+gu-T3_feeling-LOVE,llm3_pre,st,મને પ્રેમ હું કહું.,False,True,
+gu-T3_feeling-LOVE,deployed,st,મને પ્રેમ હું કહું.,False,True,
+gu-T4_negated_feeling-NO+HAPPY,template_only,st,મને ખુશ લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+SAD,template_only,st,મને ઉદાસ લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+SAD,deployed,st,મને ઉદાસ લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+ANGRY,template_only,st,મને ગુસ્સો લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+ANGRY,deployed,st,મને ગુસ્સો લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+TIRED,template_only,st,મને થાકેલું લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+TIRED,deployed,st,મને થાકેલું લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+SICK,template_only,st,મને બીમાર લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+SICK,deployed,st,મને બીમાર લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+SCARED,template_only,st,મને ડરેલું લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+SCARED,deployed,st,મને ડરેલું લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+LOVE,template_only,st,મને પ્રેમ લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+EXCITED,template_only,st,મને ઉત્સાહિત લાગતું નથી.,False,True,
+gu-T4_negated_feeling-NO+EXCITED,deployed,st,મને ઉત્સાહિત લાગતું નથી.,False,True,
+gu-T5_action_object-EAT+RICE,llm1,ui,મને જમવું છે ભાત.,False,True,
+gu-T5_action_object-EAT+RICE,llm2,ui,મને જમવું છે ભાત.,False,True,
+gu-T5_action_object-EAT+RICE,llm3_pre,ui,મને જમવું છે ભાત.,False,True,
+gu-T5_action_object-EAT+RICE,deployed,ui,મને જમવું છે ભાત.,False,True,
+gu-T5_action_object-EAT+RICE,llm1,st,મને જમવું છે ભાત.,False,True,
+gu-T5_action_object-EAT+RICE,llm2,st,મને જમવું છે ભાત.,False,True,
+gu-T5_action_object-EAT+RICE,llm3_pre,st,મને જમવું છે ભાત.,False,True,
+gu-T5_action_object-EAT+RICE,deployed,st,મને જમવું છે ભાત.,False,True,
+gu-T6_help_person-CALL+DOCTOR,llm1,ui,મને ડૉક્ટર ફોન કરવો છે.,False,True,
+gu-T6_help_person-CALL+DOCTOR,llm2,ui,મને ડૉક્ટર ફોન કરવો છે.,False,True,
+gu-T6_help_person-CALL+DOCTOR,llm3_pre,ui,મને ડૉક્ટર ફોન કરવો છે.,False,True,
+gu-T6_help_person-CALL+DOCTOR,deployed,ui,મને ડૉક્ટર ફોન કરવો છે.,False,True,
+gu-T6_help_person-CALL+DOCTOR,llm1,st,મને ડૉક્ટર ફોન કરવો છે.,False,True,
+gu-T6_help_person-CALL+DOCTOR,llm2,st,મને ડૉક્ટર ફોન કરવો છે.,False,True,
+gu-T6_help_person-CALL+DOCTOR,llm3_pre,st,મને ડૉક્ટર ફોન કરવો છે.,False,True,
+gu-T6_help_person-CALL+DOCTOR,deployed,st,મને ડૉક્ટર ફોન કરવો છે.,False,True,
+mr-T3_feeling-TIRED,naive_qwen,ui,दमलेला होती है।,False,True,
+mr-T4_negated_feeling-NO+EXCITED,naive_qwen,ui,"नाही आहे, उत्साही आहे.",True,False,polarity_ok
+mr-T5_action_object-DRINK+MILK,naive_qwen,ui,पिणे आणि दूध करा.,False,True,

@@ -1,0 +1,149 @@
+{
+ "aac_only": {
+  "raw": {
+   "n": 384,
+   "groups": 40,
+   "exact_match": 0,
+   "validator_pass": 0,
+   "negation_errors": "0/172",
+   "added_content": 0,
+   "raw_fallback": 0,
+   "em_ci95_group_bootstrap": [
+    0.0,
+    0.0
+   ],
+   "median_latency_ms_model_calls": null,
+   "n_model_calls": 0,
+   "matches_kit_metrics_csv": true
+  },
+  "rules": {
+   "n": 384,
+   "groups": 40,
+   "exact_match": 384,
+   "validator_pass": 384,
+   "negation_errors": "0/172",
+   "added_content": 0,
+   "raw_fallback": 0,
+   "em_ci95_group_bootstrap": [
+    1.0,
+    1.0
+   ],
+   "median_latency_ms_model_calls": null,
+   "n_model_calls": 0,
+   "matches_kit_metrics_csv": true
+  },
+  "model": {
+   "n": 384,
+   "groups": 40,
+   "exact_match": 378,
+   "validator_pass": 378,
+   "negation_errors": "0/172",
+   "added_content": 0,
+   "raw_fallback": 6,
+   "em_ci95_group_bootstrap": [
+    0.9633,
+    1.0
+   ],
+   "median_latency_ms_model_calls": 31.8,
+   "n_model_calls": 384,
+   "matches_kit_metrics_csv": true
+  },
+  "hybrid": {
+   "n": 384,
+   "groups": 40,
+   "exact_match": 384,
+   "validator_pass": 384,
+   "negation_errors": "0/172",
+   "added_content": 0,
+   "raw_fallback": 0,
+   "em_ci95_group_bootstrap": [
+    1.0,
+    1.0
+   ],
+   "median_latency_ms_model_calls": null,
+   "n_model_calls": 0,
+   "matches_kit_metrics_csv": true
+  }
+ },
+ "fluency_then_aac": {
+  "raw": {
+   "n": 384,
+   "groups": 40,
+   "exact_match": 0,
+   "validator_pass": 0,
+   "negation_errors": "0/172",
+   "added_content": 0,
+   "raw_fallback": 0,
+   "em_ci95_group_bootstrap": [
+    0.0,
+    0.0
+   ],
+   "median_latency_ms_model_calls": null,
+   "n_model_calls": 0,
+   "matches_kit_metrics_csv": true
+  },
+  "rules": {
+   "n": 384,
+   "groups": 40,
+   "exact_match": 384,
+   "validator_pass": 384,
+   "negation_errors": "0/172",
+   "added_content": 0,
+   "raw_fallback": 0,
+   "em_ci95_group_bootstrap": [
+    1.0,
+    1.0
+   ],
+   "median_latency_ms_model_calls": null,
+   "n_model_calls": 0,
+   "matches_kit_metrics_csv": true
+  },
+  "model": {
+   "n": 384,
+   "groups": 40,
+   "exact_match": 379,
+   "validator_pass": 379,
+   "negation_errors": "0/172",
+   "added_content": 0,
+   "raw_fallback": 5,
+   "em_ci95_group_bootstrap": [
+    0.9675,
+    1.0
+   ],
+   "median_latency_ms_model_calls": 32.2,
+   "n_model_calls": 384,
+   "matches_kit_metrics_csv": true
+  },
+  "hybrid": {
+   "n": 384,
+   "groups": 40,
+   "exact_match": 384,
+   "validator_pass": 384,
+   "negation_errors": "0/172",
+   "added_content": 0,
+   "raw_fallback": 0,
+   "em_ci95_group_bootstrap": [
+    1.0,
+    1.0
+   ],
+   "median_latency_ms_model_calls": null,
+   "n_model_calls": 0,
+   "matches_kit_metrics_csv": true
+  }
+ },
+ "regression_8cases_exact_match": {
+  "aac_only": {
+   "hybrid": "8/8",
+   "model": "7/8",
+   "raw": "1/8",
+   "rules": "8/8"
+  },
+  "fluency_then_aac": {
+   "hybrid": "8/8",
+   "model": "7/8",
+   "raw": "1/8",
+   "rules": "8/8"
+  }
+ },
+ "training_data_provenance": "provenance=synthetic_template_v1 (kit prepare_data.py); references are produced by the same template families as the rule path, so the rule/hybrid scores are 100% by construction"
+}

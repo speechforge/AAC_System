@@ -1,0 +1,76 @@
+{
+  "checked_at": "2026-11-13T12:55:49+00:00",
+  "gates": [
+    {
+      "gate": "No unresolved markers",
+      "ok": false,
+      "detail": "6 marker(s); first: figures/ui_states.tex:5: \\emph{Placeholder tone (no voice model)}};",
+      "kind": "fail"
+    },
+    {
+      "gate": "Citations verified (two sources + claim support)",
+      "ok": false,
+      "detail": "cited keys: 9 | bib entries: 9 | verified in lock: 7",
+      "kind": "fail"
+    },
+    {
+      "gate": "Prose: no coding terms or hollow openers",
+      "ok": false,
+      "detail": "24 file(s): 8 high, 5 medium, 17 low",
+      "kind": "fail"
+    },
+    {
+      "gate": "Figures, labels, and inputs resolve",
+      "ok": true,
+      "detail": "0 problem(s)",
+      "kind": "fail"
+    },
+    {
+      "gate": "Novelty thread runs through every section",
+      "ok": true,
+      "detail": "all sections carry the novelty",
+      "kind": "warn"
+    },
+    {
+      "gate": "Every claim has evidence",
+      "ok": true,
+      "detail": "12 supported, 0 bounded",
+      "kind": "fail"
+    },
+    {
+      "gate": "No experiment left pending",
+      "ok": false,
+      "detail": "native_gold_validation, human_template_hybrid_ratings, real_speech_per_locale",
+      "kind": "warn"
+    },
+    {
+      "gate": "Credit and license statements present",
+      "ok": false,
+      "detail": "credit MISSING, license ok",
+      "kind": "fail"
+    },
+    {
+      "gate": "Project identity free of venue names",
+      "ok": true,
+      "detail": "Indic AAC Studio",
+      "kind": "fail"
+    },
+    {
+      "gate": "Venue requirements and checklist",
+      "ok": false,
+      "detail": "venue=acl ok=2 fail=12 blocking_fail=5 confirm=8 na=1  (see submission_checklist.md)",
+      "kind": "fail"
+    },
+    {
+      "gate": "LaTeX build",
+      "ok": false,
+      "detail": "tex-unavailable - No LaTeX installation found. Compile on Overleaf or install TeX Live; static checks still run.",
+      "kind": "warn"
+    }
+  ],
+  "claims": {
+    "supported": 12,
+    "partial": 0,
+    "open": 0
+  }
+}

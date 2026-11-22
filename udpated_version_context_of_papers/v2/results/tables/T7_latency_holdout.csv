@@ -1,0 +1,41 @@
+method,hardware,lang,route,n,median_s,p95_s,note
+"revised hybrid, live HTTP /generate",PC TITAN Xp,en,all,90,2.944,3.631,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,en,template_after_rejection,75,2.957,3.633,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,en,clarification,6,0.001,0.001,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,hi,all,30,3.883,4.362,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,hi,model_first,10,2.002,2.25,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,hi,template_after_rejection,17,4.021,4.393,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,hi,clarification,2,0.001,0.001,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,gu,all,30,3.423,3.833,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,gu,model_first,12,1.842,1.951,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,gu,template_after_rejection,14,3.697,3.9,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,gu,clarification,2,0.001,0.001,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,mr,all,30,2.21,3.544,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,mr,model_first,13,1.699,1.747,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,mr,template_after_rejection,13,3.449,3.544,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,mr,clarification,2,0.001,0.001,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,ALL,all,180,2.966,4.085,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,ALL,model_first,35,1.812,2.146,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,ALL,template_after_rejection,119,3.261,4.117,
+"revised hybrid, live HTTP /generate",PC TITAN Xp,ALL,clarification,12,0.001,0.001,
+"revised hybrid, click to first playback (browser)",local GTX 1650,en,all,7,12.357,12.43,
+"revised hybrid, click to first playback (browser)",local GTX 1650,hi,all,8,15.263,21.54,
+"revised hybrid, click to first playback (browser)",local GTX 1650,gu,all,8,7.899,8.482,
+"revised hybrid, click to first playback (browser)",local GTX 1650,mr,all,8,10.701,15.198,
+"revised hybrid, click to first playback (browser)",local GTX 1650,ALL,all,31,9.949,20.769,
+"revised cascade, first attempt (LLM-1+2+3, no gate) (original uncached GPU calls only: cached repeats excluded where latency is 0)",PC TITAN Xp,en,stage sum,172,0.984,7.097,measured while five jobs shared the PC GPU: inflated; use the live HTTP rows for the latency cost
+"revised cascade, first attempt (LLM-1+2+3, no gate) (original uncached GPU calls only: cached repeats excluded where latency is 0)",PC TITAN Xp,hi,stage sum,61,7.271,8.82,measured while five jobs shared the PC GPU: inflated; use the live HTTP rows for the latency cost
+"revised cascade, first attempt (LLM-1+2+3, no gate) (original uncached GPU calls only: cached repeats excluded where latency is 0)",PC TITAN Xp,gu,stage sum,59,6.938,8.487,measured while five jobs shared the PC GPU: inflated; use the live HTTP rows for the latency cost
+"revised cascade, first attempt (LLM-1+2+3, no gate) (original uncached GPU calls only: cached repeats excluded where latency is 0)",PC TITAN Xp,mr,stage sum,59,6.362,7.548,measured while five jobs shared the PC GPU: inflated; use the live HTTP rows for the latency cost
+"revised cascade, first attempt (LLM-1+2+3, no gate) (original uncached GPU calls only: cached repeats excluded where latency is 0)",PC TITAN Xp,ALL,stage sum,351,6.142,8.36,measured while five jobs shared the PC GPU: inflated; use the live HTTP rows for the latency cost
+"archived cascade, first attempt (original uncached GPU calls only: cached repeats excluded where latency is 0)",PC TITAN Xp,en,stage sum,180,0.956,6.971,measured while five jobs shared the PC GPU: inflated; use the live HTTP rows for the latency cost
+"archived cascade, first attempt (original uncached GPU calls only: cached repeats excluded where latency is 0)",PC TITAN Xp,hi,stage sum,60,7.222,8.628,measured while five jobs shared the PC GPU: inflated; use the live HTTP rows for the latency cost
+"archived cascade, first attempt (original uncached GPU calls only: cached repeats excluded where latency is 0)",PC TITAN Xp,gu,stage sum,60,6.761,8.893,measured while five jobs shared the PC GPU: inflated; use the live HTTP rows for the latency cost
+"archived cascade, first attempt (original uncached GPU calls only: cached repeats excluded where latency is 0)",PC TITAN Xp,mr,stage sum,60,6.194,7.802,measured while five jobs shared the PC GPU: inflated; use the live HTTP rows for the latency cost
+"archived cascade, first attempt (original uncached GPU calls only: cached repeats excluded where latency is 0)",PC TITAN Xp,ALL,stage sum,360,5.913,8.318,measured while five jobs shared the PC GPU: inflated; use the live HTTP rows for the latency cost
+matched one-pass prompt (single call),PC TITAN Xp,en,single call,90,0.968,1.527,
+matched one-pass prompt (single call),PC TITAN Xp,hi,single call,30,0.713,2.447,
+matched one-pass prompt (single call),PC TITAN Xp,gu,single call,30,3.037,3.552,
+matched one-pass prompt (single call),PC TITAN Xp,mr,single call,30,0.73,1.714,
+matched one-pass prompt (single call),PC TITAN Xp,ALL,single call,360,0.927,3.449,
+repaired template alone (normalise + compose + gate),CPU (local),ALL,no model,120,0.401,0.508,median_s / p95_s columns hold MILLISECONDS for this row
