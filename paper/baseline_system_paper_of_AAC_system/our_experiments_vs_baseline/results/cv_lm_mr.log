@@ -1,0 +1,13 @@
+/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/exp_cv_lm.py:56: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  LORA_ON[0] = True; opt = torch.optim.AdamW(params, lr=2e-4, weight_decay=0.0); scaler = torch.cuda.amp.GradScaler()
+[∞-gram Engine] Initialized in 614.0ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+mr 0 {'A': 47.67, 'A_top5': 27.0, 'E+COV': 51.11, 'E+COV_top5': 29.05, 'I': 52.95, 'I_top5': 29.9, 'n_test': 181} elapsed 255 s
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+mr 1 {'A': 48.06, 'A_top5': 24.5, 'E+COV': 51.61, 'E+COV_top5': 25.84, 'I': 53.58, 'I_top5': 28.34, 'n_test': 181} elapsed 491 s
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+mr 2 {'A': 51.25, 'A_top5': 29.21, 'E+COV': 53.97, 'E+COV_top5': 31.57, 'I': 55.38, 'I_top5': 34.42, 'n_test': 181} elapsed 738 s
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+mr 3 {'A': 47.96, 'A_top5': 27.13, 'E+COV': 51.99, 'E+COV_top5': 30.41, 'I': 53.84, 'I_top5': 33.15, 'n_test': 181} elapsed 996 s
+[∞-gram Engine] Initialized in 0.5ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+mr 4 {'A': 48.95, 'A_top5': 27.93, 'E+COV': 53.01, 'E+COV_top5': 29.98, 'I': 54.7, 'I_top5': 31.94, 'n_test': 181} elapsed 1260 s

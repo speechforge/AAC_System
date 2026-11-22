@@ -1,0 +1,7 @@
+[∞-gram Engine] Initialized in 436.4ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+hi shipped (exclude selected words, alpha=0.4) {'aac': 55.65, 'care': 57.83}
+hi no exclusion, alpha=0.1 {'aac': 56.51, 'care': 58.9}
+hi no exclusion, alpha=0.2 {'aac': 56.52, 'care': 58.9}
+hi no exclusion, alpha=0.4 {'aac': 56.54, 'care': 58.91}
+hi no exclusion, alpha=0.7 {'aac': 56.57, 'care': 58.88}

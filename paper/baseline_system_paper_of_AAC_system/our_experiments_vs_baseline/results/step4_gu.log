@@ -1,0 +1,21 @@
+[∞-gram Engine] Initialized in 390.6ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.3ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+dev gamma 0 51.92
+dev gamma 0.5 51.55
+dev gamma 1.0 51.32
+dev gamma 1.5 50.93
+dev gamma 2.0 50.39
+dev COV M=5 53.34
+gu A shipped infinity-gram 53.04 39.1 69 s
+gu E improved CPU stack 54.25 41.9 88 s
+gu E+ES gamma=0 54.25 41.9 96 s
+gu E+COV (+5 char-LM completions) 55.6 41.9 114 s
+gu E+ES+COV 55.6 41.9 122 s
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+LC 0.25 {'A': 45.79497026509424, 'E': 46.623433304927104}
+[∞-gram Engine] Initialized in 0.3ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+LC 0.5 {'A': 49.57287571817357, 'E': 50.5928049775041}
+[∞-gram Engine] Initialized in 0.3ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+LC 0.75 {'A': 51.87703219066992, 'E': 53.02713619411533}
+[∞-gram Engine] Initialized in 0.5ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+LC 1.0 {'A': 53.03993090872437, 'E': 54.24923807167532}

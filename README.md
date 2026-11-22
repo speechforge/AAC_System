@@ -1,3 +1,28 @@
+# Indic AAC Studio — 22 November 2026 version (paper-ready repository)
+
+**Branch:** `November_22_2026` (builds on the 16 November snapshot below).
+
+| What | Where |
+|---|---|
+| Paper (latest, proof-read LaTeX + PDF) | `paper/FINAL_NAACL_DEMO_v3/after_the_proof_reading_final_version/` (`latex_source_final/`, `Indic_AAC_Studio_NAACL2027_Demo_v3_final.pdf`) |
+| Earlier paper drafts | `paper/FINAL_NAACL_DEMO_v1..v3*`, `paper/CLAUDE_WRITTEN`, `paper/CHATGPT_WRITTEN` |
+| Baseline paper (Gaines & Vertanen) and our comparison | `paper/baseline_system_paper_of_AAC_system/` |
+| **Running experiment log (every step, every number)** | `paper/baseline_system_paper_of_AAC_system/20_nov_changes.md` |
+| Frozen baseline results (never edited) | `paper/baseline_system_paper_of_AAC_system/Results_10/` |
+| New experiment code, raw results (`.json` + `.log`), LoRA adapters | `paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/` (`results/`) |
+| Improved CPU predictor shipped in the backend | `indic-generative-aac/backend/predictor_v2.py` (+ `test_predictor_v2.py`, `predictor_data/`) |
+| Listening-test (MOS) portal | `subjective_Mos_portal/` (admin password is NOT in the repo) |
+
+Headline results (full test sets, KSR %, higher is better; details and 95% CIs in `20_nov_changes.md`):
+English 56.3 → 57.5, Hindi 56.7 → 58.3, Marathi 48.7 → 51.9, Gujarati 53.0 → 55.6 for the CPU-only predictor; with the adapted
+BLOOM-560m re-ranker our English KSR (62.65) ties the baseline's adapted OPT-125m (62.64) on the baseline's own sample.
+5-fold cross-validation: 20/20 folds positive. Marathi/Gujarati data are machine-translated (indicative only).
+
+Reproduce: `cd paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline && python exp_final.py <lang>` (see the script headers and the log).
+`data_native/*_native_train.txt` (large) is not stored; rebuild with `python prep_native.py`.
+
+---
+
 # Indic AAC Studio — final snapshot, 16 November 2026
 
 This branch preserves the working AAC website accepted on 16 November 2026: the existing ivory-and-violet GUI, separate welcome/login pages, sentence canvas, real speech playback, and the backend-only Un-Jumble repair.

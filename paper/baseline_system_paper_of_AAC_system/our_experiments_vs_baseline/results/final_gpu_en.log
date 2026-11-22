@@ -1,0 +1,11 @@
+[∞-gram Engine] Initialized in 670.0ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+dev w 0.0 58.67
+dev w 0.1 58.98
+dev w 0.2 58.82
+dev w 0.3 58.39
+dev w 0.5 58.27
+A shipped infinity-gram 55.23
+E' improved CPU stack (step1+5+2) 55.48
+adapted OPT-125m alone 61.88
+F step1+5+2+3: CPU stack + adapted OPT-125m 61.8

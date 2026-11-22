@@ -74,3 +74,9 @@ AI4Bharat-Indic-TTS/checkpoint
 # Added 2026-11-22: secrets and large regenerable data
 .webui_secret_key
 paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/data_native/*_native_train.txt
+
+# 2026-11-22: experiment evidence IS part of the paper repo - keep result logs and the small LoRA adapters
+!paper/baseline_system_paper_of_AAC_system/**/*.log
+!paper/baseline_system_paper_of_AAC_system/**/*.pt
+!experiments_vs_baseline/**/*.log
+!paper/CHATGPT_WRITTEN/*.zip

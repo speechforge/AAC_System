@@ -1,0 +1,9 @@
+[∞-gram Engine] Initialized in 573.8ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+dev w 0.2 60.78
+dev w 0.4 60.46
+dev w 0.6 60.38
+shipped infinity-gram 55.86
+step1: no selected-word exclusion 56.17
+adapted OPT-125m alone 63.0
+step3: infinity-gram + adapted OPT-125m hybrid 62.82

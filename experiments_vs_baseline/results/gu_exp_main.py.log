@@ -1,0 +1,11 @@
+[∞-gram Engine] Initialized in 505.2ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+Traceback (most recent call last):
+  File "/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/experiments_vs_baseline/exp_main.py", line 29, in <module>
+    pc, n = char_ppl(lp_chr, v); pi, _ = char_ppl(lp_inf, v)
+  File "/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/experiments_vs_baseline/lib.py", line 74, in char_ppl
+    nll -= model_logp_fn(s); n += len(s)
+  File "/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/experiments_vs_baseline/lib.py", line 182, in logp
+    lp += math.log((1 - eps) * pv + eps * pc)
+ValueError: math domain error
+ERROR conda.cli.main_run:execute(149): `conda run python exp_main.py gu` failed. (See above for error)

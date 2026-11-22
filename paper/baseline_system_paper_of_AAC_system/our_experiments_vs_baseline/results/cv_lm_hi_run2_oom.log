@@ -1,0 +1,21 @@
+/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/exp_cv_lm.py:56: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  LORA_ON[0] = True; opt = torch.optim.AdamW(params, lr=2e-4, weight_decay=0.0); scaler = torch.cuda.amp.GradScaler()
+[∞-gram Engine] Initialized in 640.8ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+hi 0 {'A': 51.46, 'A_top5': 36.66, 'E+COV': 53.58, 'E+COV_top5': 39.57, 'I': 55.45, 'I_top5': 41.54, 'n_test': 273} elapsed 592 s
+Traceback (most recent call last):
+  File "/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/exp_cv_lm.py", line 61, in <module>
+    x, a = enc_batch(d[j:j+4]); lg = m(input_ids=x, attention_mask=a).logits[:, :-1].float()
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/transformers/models/bloom/modeling_bloom.py", line 1000, in forward
+    lm_logits = self.lm_head(hidden_states)
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 125, in forward
+    return F.linear(input, self.weight, self.bias)
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 354.00 MiB. GPU 0 has a total capacity of 11.89 GiB of which 78.06 MiB is free. Process 3136905 has 3.73 GiB memory in use. Process 3211229 has 1.97 GiB memory in use. Process 3367017 has 3.23 GiB memory in use. Including non-PyTorch memory, this process has 2.60 GiB memory in use. Of the allocated memory 2.34 GiB is allocated by PyTorch, and 80.56 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

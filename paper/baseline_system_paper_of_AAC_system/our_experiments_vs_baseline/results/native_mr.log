@@ -1,0 +1,16 @@
+pretrained {'aac_test': 10.438131922667333, 'native_test': 7.811887084285343}
+AAC-only (existing adapter) {'aac_test': 2.910022360020689, 'native_test': 5.420563229649721}
+  step 1875/7500 native-dev char-ppl 3.658  elapsed 528s
+  step 3750/7500 native-dev char-ppl 3.584  elapsed 1027s
+  step 5625/7500 native-dev char-ppl 3.546  elapsed 1523s
+  step 7500/7500 native-dev char-ppl 3.513  elapsed 2022s
+native-only (stage 1) {'aac_test': 3.8960893660296656, 'native_test': 3.6103493566629714}
+stage2 epoch 1 AAC dev char-ppl 2.922
+stage2 epoch 2 AAC dev char-ppl 2.873
+stage2 epoch 3 AAC dev char-ppl 2.929
+native -> AAC (stage 2) {'aac_test': 2.7621572632405544, 'native_test': 4.28336624854959}
+[∞-gram Engine] Initialized in 621.6ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+mr AAC-only KSR 53.48 top5 32.7 2630 s
+mr native-only KSR 52.29 top5 30.5 3067 s
+mr native -> AAC KSR 53.8 top5 32.9 3495 s

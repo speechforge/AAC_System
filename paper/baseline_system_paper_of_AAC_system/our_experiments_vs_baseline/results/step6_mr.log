@@ -1,0 +1,9 @@
+[∞-gram Engine] Initialized in 723.9ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+train rows (197361, 9) pos 5782
+C 0.01 held-out logloss 0.0869
+C 0.1 held-out logloss 0.0868
+C 1.0 held-out logloss 0.0868
+mr A shipped infinity-gram 48.73 28.9 30 s
+mr E+COV (CPU) 51.86 30.0 70 s
+mr L = E+COV + learned re-ranker (top-30) 52.13 30.3 89 s

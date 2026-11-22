@@ -1,0 +1,7 @@
+[∞-gram Engine] Initialized in 387.8ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.3ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+hi A shipped infinity-gram 56.74
+hi B step1: no exclusion 57.73
+hi C step1+5: no exclusion + tuned context cap/backoff 57.71
+hi D step1+5+2: + char12 hybrid 57.8
+hi E step1+5+2+7: + personalisation (recency cache) 57.94

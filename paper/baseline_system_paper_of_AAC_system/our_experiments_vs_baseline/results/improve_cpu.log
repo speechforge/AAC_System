@@ -1,0 +1,21 @@
+[∞-gram Engine] Initialized in 575.3ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+en shipped infinity-gram 56.29
+en step1: no selected-word exclusion 56.63
+en char 12-gram 55.82
+en step2: infinity-gram + char 12-gram hybrid 56.53
+[∞-gram Engine] Initialized in 0.5ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+hi shipped infinity-gram 56.74
+hi step1: no selected-word exclusion 57.73
+hi char 12-gram 57.33
+hi step2: infinity-gram + char 12-gram hybrid 57.76
+[∞-gram Engine] Initialized in 0.9ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+mr shipped infinity-gram 48.73
+mr step1: no selected-word exclusion 49.2
+mr char 12-gram 48.86
+mr step2: infinity-gram + char 12-gram hybrid 49.34
+[∞-gram Engine] Initialized in 0.5ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+gu shipped infinity-gram 53.04
+gu step1: no selected-word exclusion 53.75
+gu char 12-gram 54.0
+gu step2: infinity-gram + char 12-gram hybrid 54.21

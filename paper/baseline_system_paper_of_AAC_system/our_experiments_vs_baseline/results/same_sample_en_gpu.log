@@ -1,0 +1,5 @@
+[∞-gram Engine] Initialized in 462.6ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.3ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+ppl {'aac': 2.2707521227691463, 'care': 1.9810992799515805, 'all': 2.12098689184221}
+I = E+COV top-50 + adapted BLOOM-560m {'aac': 60.1, 'care': 65.2}
+I = E+COV top-10 + adapted BLOOM-560m {'aac': 57.2, 'care': 61.85}

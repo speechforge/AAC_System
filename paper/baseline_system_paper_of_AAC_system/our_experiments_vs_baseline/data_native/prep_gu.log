@@ -1,0 +1,3 @@
+gu sangraha_verified {'items_read': 30000, 'sentences_kept': 352463} 86 s
+gu indiccorp_v2 {'items_read': 400000, 'sentences_kept': 236534} 119 s
+{'lang': 'gu', 'sources': {'sangraha_verified': {'items_read': 30000, 'sentences_kept': 352463}, 'indiccorp_v2': {'items_read': 400000, 'sentences_kept': 236534}}, 'after_split_dedupe': 588997, 'unique': 579146, 'overlap_with_aac_dev_test_removed': 6, 'sizes': {'train': 556120, 'dev': 11517, 'test': 11503}, 'seconds': 120.31954336166382, 'note': 'web/news text, NOT conversational AAC; first items of each stream (not a random sample of the corpus)'}

@@ -1,0 +1,6 @@
+lora layers 96 trainable 6291456
+[∞-gram Engine] Initialized in 557.6ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.6ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+hi A shipped infinity-gram 56.74 45.5 22 s
+hi E+COV (CPU only) 58.28 48.1 30 s
+hi I_K20 = E+COV top-20 + adapted BLOOM (w_cpu=0.1) 60.57 51.5 598 s

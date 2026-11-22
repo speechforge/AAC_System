@@ -1,0 +1,14 @@
+lora layers 96 trainable 6291456
+/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/exp_step5.py:92: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  LORA_ON[0] = True; opt = torch.optim.AdamW(params, lr=2e-4, weight_decay=0.0); scaler = torch.cuda.amp.GradScaler(); best = (1e9, None, 0)
+epoch 1 dev char-ppl 2.572
+epoch 2 dev char-ppl 2.5
+epoch 3 dev char-ppl 2.496
+[∞-gram Engine] Initialized in 788.0ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.6ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+dev 0.1 57.75
+dev 0.3 57.65
+hi A shipped infinity-gram 56.74 45.5 24 s
+hi E improved CPU stack 57.8 48.1 21 s
+hi E+COV (CPU only) 58.28 48.1 16 s
+hi I = E+COV top-50 + adapted BLOOM (w_cpu=0.1) 60.72 51.8 1300 s

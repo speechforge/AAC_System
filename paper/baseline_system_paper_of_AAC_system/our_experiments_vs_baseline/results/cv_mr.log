@@ -1,0 +1,11 @@
+[∞-gram Engine] Initialized in 375.7ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.3ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+mr 0 {'A': 47.5, 'E': 48.31, 'E+COV': 51.3} 78 s
+[∞-gram Engine] Initialized in 0.3ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+mr 1 {'A': 48.41, 'E': 49.29, 'E+COV': 51.78} 153 s
+[∞-gram Engine] Initialized in 0.3ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+mr 2 {'A': 51.8, 'E': 52.52, 'E+COV': 54.64} 232 s
+[∞-gram Engine] Initialized in 0.3ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+mr 3 {'A': 48.76, 'E': 49.46, 'E+COV': 51.84} 307 s
+[∞-gram Engine] Initialized in 0.3ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+mr 4 {'A': 49.55, 'E': 50.33, 'E+COV': 52.66} 378 s

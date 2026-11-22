@@ -1,0 +1,11 @@
+pretrained {'aac_test': 10.438131922667333, 'native_test': 7.811887084285343}
+AAC-only (existing adapter) {'aac_test': 2.910022360020689, 'native_test': 5.420563229649721}
+  step 468/1875 native-dev char-ppl 3.817  elapsed 155s
+  step 936/1875 native-dev char-ppl 3.732  elapsed 282s
+  step 1404/1875 native-dev char-ppl 3.665  elapsed 410s
+  step 1872/1875 native-dev char-ppl 3.621  elapsed 538s
+native-only (stage 1) {'aac_test': 4.148363630761558, 'native_test': 3.752144796147084}
+stage2 epoch 1 AAC dev char-ppl 2.995
+stage2 epoch 2 AAC dev char-ppl 2.919
+stage2 epoch 3 AAC dev char-ppl 3.007
+native -> AAC (stage 2) {'aac_test': 2.81031334613862, 'native_test': 4.748485480665749}

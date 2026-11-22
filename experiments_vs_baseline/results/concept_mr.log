@@ -1,0 +1,1 @@
+mr {'n_test_sentences': 745, 'sentences_with_2plus_concepts': 41, 'next_concept_events': 44, 'word_to_concept_coverage_pct': 5.997552019583844, 'hit_pct': {1: 4.545454545454546, 3: 9.090909090909092, 5: 20.454545454545453, 10: 38.63636363636363}}

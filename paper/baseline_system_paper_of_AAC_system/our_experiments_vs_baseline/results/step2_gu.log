@@ -1,0 +1,20 @@
+lora layers 96 trainable 6291456
+ppl pretrained {'char12': 4.994501467280478, 'bloom_pretrained': 13.84838673504676}
+/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/exp_step2.py:65: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  LORA_ON[0] = True; opt = torch.optim.AdamW(params, lr=2e-4, weight_decay=0.0); scaler = torch.cuda.amp.GradScaler()
+epoch 1 dev char-ppl 3.265 53 s
+epoch 2 dev char-ppl 3.113 102 s
+epoch 3 dev char-ppl 3.064 150 s
+ppl {'char12': 4.994501467280478, 'bloom_pretrained': 13.84838673504676, 'bloom_adapted': 2.9485297596136815, 'bloom_adapted_dev': 3.063550640774982}
+[∞-gram Engine] Initialized in 561.7ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+dev w_cpu 0.0 52.23
+dev w_cpu 0.1 52.44
+dev w_cpu 0.2 52.37
+dev w_cpu 0.3 52.33
+dev w_cpu 0.5 52.37
+gu A shipped infinity-gram 54.11 40.9 1009 s
+gu E improved CPU stack (no personalisation) 55.21 43.6 1015 s
+gu BLOOM-560m pretrained (zero-shot) 46.25 26.0 2900 s
+gu BLOOM-560m adapted (LoRA) 57.21 48.1 4815 s
+gu G CPU stack + adapted BLOOM 57.45 48.6 4821 s
