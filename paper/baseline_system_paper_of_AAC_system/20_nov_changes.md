@@ -2,7 +2,7 @@
 
 Single log for all work of 2026-11-20. Updated after every step. `Results_10/` (frozen 2026-11-20 snapshot of the earlier results) is **not modified**; everything new goes to `our_experiments_vs_baseline/` and the files named below.
 Arrows: KSR ↑ higher is better, top-k hit ↑, perplexity ↓ lower is better, latency ↓.
-The shipped app code (`indic-generative-aac/backend/*`) has **not** been changed.
+**CORRECTION (2026-11-22): the line that used to stand here, "the shipped app code has not been changed", was true only for the first part of this log. `indic-generative-aac/backend/app.py` was edited and `predictor_v2.py`, `test_predictor_v2.py`, `predictor_data/` were added on 2026-11-21 (see 'Step 9 (log numbering)'). Where an older section below says 'not in the app', 'NOT DONE' for plan step 4, or 'no CV for the LM path', the LATER sections win: plan step 4 is done (CPU stack only), the LM system has 5-fold CV for all 4 languages, and the final audit is in the last section 'AUDIT 2026-11-22'.**
 
 ## Index of new files
 | File | What |
@@ -443,3 +443,30 @@ On the baseline's own sample (40+40 sentences for KSR, 80+80 for perplexity; noi
 - Perplexity: adapted OPT-125m 2.07 vs adapted BLOOM 2.12 → the baseline's adapted LLM is slightly better.
 - So the honest English claim is: our best system **matches** the baseline's adapted-LLM method on KSR and does not beat it; our additional value is the CPU-only path (no GPU, ~5 ms, +1.0 KSR over the shipped system), multilingual support, sentence generation and safety checks - not a better English next-word predictor. The BLOOM/OPT difference is within noise at this sample size and was not tested on the full test set (the OPT search is too slow to run there).
 - All 9 plan steps: prediction-quality steps (1, 2, 3, 5, 7, 9) done and cross-validated; step 4 (per-language engines in the app) done for the CPU stack; steps 6 and 8 (native AAC test sets, live generation cascade, MOS, user study) remain NOT done - they need people/native data/the live backend.
+
+
+## AUDIT 2026-11-22 - state of the log, and what is still open for system performance
+Pushed as GitHub branch `November_22_2026` (commits `5302ef4`, `628c1ec`; result logs, LoRA adapters and a paper-ready README added in the second one).
+
+### A. Log hygiene (found while auditing; fixed here)
+- The header said the app was unchanged and three older sections ("Where everything is", "STATUS OF THE 9-STEP PLAN" row 4, "Pre-registered targets" CV row) were stale. A correction was added at the top; the later sections are authoritative.
+- The "Index of new files" table at the top stops at Step 2. Files added later and where they are described: `exp_step3/4/5/6/8_k.py`, `exp_cv.py` (Steps 3-8); `predictor_v2.py`, `test_predictor_v2.py`, `exp_step9_parity.py`, `exp_step9_latency.py`, `make_comparison_table.py` ('Step 9 (log numbering)'); `exp_cv_lm.py`, `run_cv_lm.sh`, `run_cv_rest.sh` ('Step 9 RESULT'); `prep_native.py`, `exp_native_lm.py`, `run_native.sh`, `data_native/` ('Step 10'); `exp_same_sample.py`, `make_full_table.py`, `update_md_table.py` ('ALL SCORES').
+- Earlier-session scripts (`exp_main.py`, `exp_final.py`, `exp_final_gpu.py`, `exp_ablate.py`, `exp_concept.py`, `exp_improve*.py`, `exp_llm.py`, `exp_gen.py`, `prep_data.py`, `translate_nllb.py`, `charsearch.py`, `build_*.py`, `report_text.py`, `gen_lang_files.py`, `smoke_llm.py`) belong to the baseline-comparison work recorded in `RESULTS_vs_baseline.txt` and `Results_10/`, not to this log.
+- Not stored on GitHub by design: `data_native/*_native_train.txt` (104 MB / 68 MB; rebuild with `prep_native.py`), secrets, MOS admin password, release zips.
+
+### B. Open problems that limit the system (ordered by expected impact on performance)
+1. **The best system ("I") is not in the product.** The app serves only the CPU predictor_v2 (en +1.2, hi +1.5, mr +3.1, gu +2.6 KSR over legacy). The adapted-LM re-ranker (+4.0..+6.5 KSR, top-5 +6..+9) exists only as experiment code and adapters. Needs a GPU service endpoint with the CPU path as fallback.
+2. **The live UI never sends `prefix`**, so the out-of-vocabulary completion (COV, worth +0.9..+3.2 KSR) is not active for real users. One frontend change.
+3. **Top-k gap to the baseline's adapted LM (English, same sample):** top-5 41.2 vs 44.9, top-10 46.8 vs 55.6. Likely cause: the LM only re-ranks the CPU top-K shortlist, so words outside it can never surface. Test: K=100/200 or full-vocabulary LM scoring; a larger or better-tokenised adapted model; full fine-tuning instead of LoRA r=16. Untested.
+4. **Indic gain below the pre-registered target** (+4.0..+5.8 vs +7). Root cause is data: Marathi/Gujarati training and test text are NLLB machine translation. Native web text lowered perplexity ~5% but KSR did not move (mr +0.3, gu tie). The Cossale Gujarati corpus request is still pending. Real AAC-style native text is the only thing that can move this.
+5. **English CPU path gains nothing** from E (CV +0.01); English improvement is entirely from the LM, so an English GPU-less user gets only the COV gain.
+6. **Latency regressed:** CPU predictor 5-6 ms per query vs 0.05-0.1 ms legacy (COV beam search); LM path 38-175 ms on the shared GPU (not an idle-GPU number). Open: cache/prune the COV search, int8 or distilled LM, measure on an idle GPU.
+7. **Evidence gaps:** Marathi/Gujarati results are indicative only (MT test sets); the same-sample comparison is small (40+40 / 80+80 sentences, differences under ~2 points are noise); Hindi has no baseline-style OPT row; CPU-only perplexity not measured; the English perplexity of the baseline is on its private data.
+8. **Not started (need people or the live backend):** native-speaker test sets, MOS listening study, user/caregiver trial, live Qwen sentence-generation cascade, larger symbol board, noisy-typing variants.
+9. **Paper text** (`paper/FINAL_NAACL_DEMO_v3/...`) predates these numbers; it does not yet contain the CV, native-text and same-sample results.
+
+### C. Recommended order
+(2) send `prefix` from the UI, then (1) serve "I" behind a switch with CPU fallback, then (3) K / full-vocabulary re-scoring test, then (6) latency work, then update the paper; (4) and (8) wait for native data and participants.
+
+### D. Housekeeping still open
+Revoke the Hugging Face token pasted in chat; delete the duplicate `experiments_vs_baseline/` and `RESULTS_vs_baseline_english_and_indic.txt` at the repo root; clean old scripts/zips at the repo root.
