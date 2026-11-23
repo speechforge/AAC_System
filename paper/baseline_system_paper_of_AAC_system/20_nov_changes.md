@@ -470,3 +470,57 @@ Pushed as GitHub branch `November_22_2026` (commits `5302ef4`, `628c1ec`; result
 
 ### D. Housekeeping still open
 Revoke the Hugging Face token pasted in chat; delete the duplicate `experiments_vs_baseline/` and `RESULTS_vs_baseline_english_and_indic.txt` at the repo root; clean old scripts/zips at the repo root.
+
+
+## Step 11 (log numbering) - AUDIT items 2 and 1 done: UI sends the typed prefix; adapted-LM re-ranker served by the backend behind a switch (2026-11-22/23)
+Request: do the first two items of the audit's recommended order, keep it simple, make sure performance improves, log everything here.
+
+### 11a. Frontend sends the typed letters (audit item 2) - DONE
+`indic-generative-aac/frontend/index.html` (only file touched on the frontend):
+- `fetchPredictions(words, typedPrefix)` now posts `prefix` (the word currently being typed in the sentence-canvas input, last fragment after space/comma) to `/predict_next`. The backend already supported `prefix` (Step 9 log numbering), so out-of-vocabulary completion (COV, +0.9..+3.2 KSR in simulation) is now reachable from the live UI.
+- Keystrokes are debounced 120 ms; a request counter (`predictSeq`) discards answers of older requests so fast typing cannot show stale suggestions.
+- While a prefix is typed and nothing matches, the list is empty instead of showing the generic starter words (they would not match the typed letters).
+- Not browser-tested by me end to end (the login-gated page; the running server on :8000 serves the file from disk, the string `typedPrefix` is present in what it serves). Needs a human look: type 2 letters in the canvas box in each language.
+
+### 11b. Adapted-LM re-ranker in the backend (audit item 1) - DONE, switchable, CPU fallback
+New/changed files in `indic-generative-aac/backend/`:
+- NEW `lm_rerank.py` (~150 lines): loads BLOOM-560m (fp16) once, wraps its linear layers with LoRA (r=16, alpha=32, same code as the experiments), keeps the four adapters on the GPU and swaps the 25 MB adapter in place when the language changes. Re-scores the top K=20 CPU candidates and mixes `0.1*CPU + 0.9*LM` (the tuned values). Per-(language, context) cache.
+- NEW `lm_adapters/{en,hi,mr,gu}.pt` (25 MB each, copied from `results/lora_*.pt`; `.gitignore` now allows them).
+- EDIT `predictor_v2.py`: `predict(..., use_lm=True)` calls `lm_rerank.rerank` and labels results `source: "model+lm"`; any LM problem -> CPU list (`source: "model"`).
+- EDIT `app.py`: start-up thread now also runs `lm_rerank.warm_up()` after the CPU models.
+- EDIT `test_predictor_v2.py`: +1 test (LM off gives CPU results; unknown language gives None). 8/8 pass.
+- Switch: `AAC_LM=auto` (default: on if CUDA + model + adapter exist) | `1` (also prints why it is off) | `0` (off). `AAC_LM_K` (default 20), `AAC_LM_W` (default 0.1). K=20 was chosen from Step 8 (about half of the K=50 gain lost is recovered at ~4x lower latency than K=50).
+
+Verification (evidence, not "it runs"):
+1. **Parity with the experiments** (`exp_step11_lm_parity.py`, results `results/step11_lm_parity_mr_gu_hi_en.json/.log`): the shipped module on the predictor trained on the train split only, full test sets, K=20, KSR avg AAC+care:
+   | Language | app module | experiment (Step 8, K=20) | LM latency p50 / p95 ms (shared GPU) |
+   |---|---|---|---|
+   | Marathi | 54.0729 | 54.0729 | 58 / 107 |
+   | Gujarati | 57.3718 | 57.3718 | 65 / 115 |
+   | Hindi | 60.5656 | 60.5656 | 58 / 97 |
+   | English | 61.365 | no K=20 experiment exists (K=50: 62.75, K=10 not run) | 57 / 93 |
+   Marathi, Gujarati and Hindi reproduce to every digit. **English parity is not verified** (no reference at K=20); the value is plausible (K=50 62.75) but English at K=20 is ~1.4 below K=50, a larger drop than in the other languages (0.2-0.5), so English may deserve K=50 (an `AAC_LM_K=50` run was not done).
+2. **Live behaviour with a free GPU** (direct calls): model + 4 adapters load in ~5 s; first query 28-71 ms, repeated query ~1 ms (cache); the ranking changes, e.g. Marathi "मला"+"आ": CPU आशा, आनंद, आज, आणखी -> LM आशा, आणखी, आश्चर्य, आज; Hindi "मुझे"+"प": पसंद moves from 2nd to 3rd, पहले enters the top 3; English "i want": 'breakfast' (CPU 4th) replaced by 'you'.
+3. **Failure test (by accident, kept as evidence)**: when the GPU was full (another user's jobs plus my own parity run, 75 MiB free) the load raised CUDA OOM; `predict()` returned the CPU list, no exception. Hardened afterwards: the half-loaded model is released and loading is retried only every 5 minutes (was 60 s).
+4. The cold first CPU call per process takes ~1.3 s (model build); the start-up warm-up thread absorbs it.
+
+Limits (be aware):
+- The **running server on :8000 (started 6 days ago) is the OLD backend**; it needs a restart to use predictor_v2 and the LM. I did not restart it (it holds ~3.7 GB of the shared GPU for speech, and the GPU has little free room; restarting is the user's decision). The old process already serves the new frontend file.
+- GPU memory: the re-ranker adds ~1.2 GB (BLOOM-560m fp16 + adapters). With speech models loaded on a 12 GB card that is shared with other users it may not fit; then the CPU predictor is used automatically.
+- Latency on the shared GPU: 28-115 ms uncached, so not "instant"; suitable for a debounced per-keystroke call, not proven on an idle GPU.
+- Expected benefit for users is the simulator gain at K=20 (mr +5.3, gu +4.3, hi +3.8, en +5 KSR vs the previous app) minus dilution by the concept board and personal words (see Step 9).
+
+### 11c. Marathi / Gujarati "robotic" speech - bottleneck analysis (NOT measured; no code changed)
+There is **no naturalness measurement of IndicF5 output for mr/gu in this repository**: `mos_eval/` scored an open stand-in voice (MMS), not IndicF5; the MOS portal has 0 ratings. What exists: a 4-sentence Whisper check (`SPEECH_QUALITY_FIX.md`): character error rate after the earlier fixes hi 0.086, mr 0.118, gu 0.211 (diagnostic, not a benchmark). Likely causes from code and audio (ranked by my judgement, each a hypothesis):
+1. One short reference clip sets pace, tone and noise (IndicF5 is a zero-shot cloner; `tts.py` config: Marathi uses MAR_F_WIKI_00001 (48 kHz, 6.0 s), Gujarati a 16 kHz FLEURS clip (6.3 s); both are single clips; gu uses speed 0.9, nfe 64, cfg 1.0).
+2. Limited Marathi/Gujarati data in the base model (Gujarati CER is 2x Hindi).
+3. Very short AAC phrases; duration is predicted from character count (a minimum duration was added earlier).
+4. No per-language text normalisation (numbers, abbreviations).
+Test plan (needs native speakers; not started): 20 sentences per language, MOS portal, compare (a) current reference, (b) a 20-30 s consented native recording, (c) normalised text. Without ratings no change can be claimed to help.
+
+### 11d. Deliverable briefing page (private Artifact, not stored in the repo)
+Architecture, who benefits (and that dysarthric users need switch/eye-gaze input, which the UI lacks), accuracy table, release blockers (F5-TTS CC-BY-NC-4.0, IndicF5 gated, no user study, no consent/privacy review, no motor-access input), UI standards list. https://claude.ai/artifact/CTZJHe5xhdZwoNXxcqdR39
+
+### 11e. State after this step
+- Done: audit items 2 and 1 (in code, tested at module level; not yet in a restarted server).
+- Open: restart the :8000 server on the new backend; browser check of typing; English at K=50; native test sets; listening study; switch scanning / dwell input; licences.

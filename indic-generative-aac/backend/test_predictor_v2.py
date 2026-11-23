@@ -35,6 +35,21 @@ def test_repeated_word_not_excluded():
 def test_unknown_language_returns_empty():
     assert P.predict([], "xx") == []
 
+
+
+def test_lm_rerank_falls_back_cleanly():
+    """With the LM switched off, predict() must give CPU results and say so; with no adapter for a language it must not crash."""
+    import lm_rerank
+    old = lm_rerank.MODE
+    try:
+        lm_rerank.MODE = "0"
+        r = P.predict(["I"], "en", top_k=5)
+        assert r and all(x["source"] == "model" for x in r)
+        assert lm_rerank.rerank("xx", [], [(1.0, "a")]) is None
+    finally:
+        lm_rerank.MODE = old
+
+
 if __name__ == "__main__":
     for n, f in list(globals().items()):
         if n.startswith("test_"):

@@ -256,7 +256,7 @@ def available(lang):
     return os.path.exists(os.path.join(DATA_DIR, f"{lang}.txt"))
 
 
-def predict(words, language, prefix="", top_k=10, emojis=None):
+def predict(words, language, prefix="", top_k=10, emojis=None, use_lm=True):
     """Ranked predictions for the next word (prefix == "") or the completion of a typed prefix.
     Returns [] when the language has no training data (caller falls back to the legacy predictor)."""
     if language not in LANGS:
@@ -266,11 +266,21 @@ def predict(words, language, prefix="", top_k=10, emojis=None):
         return []
     ctx = [w for t in words for w in words_of(t, language)]
     pre = "".join(words_of(prefix or "", language)) if prefix else ""
-    ranked = m.rank(ctx, pre)[:top_k]
+    full = m.rank(ctx, pre)
+    src = "model"
+    if use_lm and full:                                    # optional GPU re-ranking of the shortlist (lm_rerank.py)
+        try:
+            import lm_rerank
+            lm = lm_rerank.rerank(language, ctx, full)
+            if lm is not None:
+                full, src = lm, "model+lm"
+        except Exception:
+            pass                                           # any LM problem: keep the CPU ranking
+    ranked = full[:top_k]
     tot = sum(s for s, _ in ranked) or 1.0
     emojis = emojis or {}
     return [{"word": w, "prob": round(s / tot, 3), "emoji": emojis.get(w, "✨" if language != "en" else "💬"),
-             "order": 0, "order_label": "v2", "source": "model"} for s, w in ranked]
+             "order": 0, "order_label": "v2", "source": src} for s, w in ranked]
 
 
 def stats():

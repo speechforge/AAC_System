@@ -1460,9 +1460,11 @@
         speak(item.text, item.language || language);
       }, [language, speak]);
 
-      const fetchPredictions = useCallback(async (currentWords) => {
+      const predictSeq = useRef(0);   // newest request wins (typing fires many requests)
+      const fetchPredictions = useCallback(async (currentWords, typedPrefix = '') => {
         if(window.AACOffline.settings().mode==='offline'){setPredictions([]);return;}
         setIsPredicting(true);
+        const seq = ++predictSeq.current;
         try {
           const res = await fetch('/predict_next', {
             method: 'POST',
@@ -1470,13 +1472,14 @@
             body: JSON.stringify({
               current_words: currentWords,
               language: language,
-              intent: 'REQUEST'
+              intent: 'REQUEST',
+              prefix: typedPrefix      // letters already typed for the word being entered: enables completion + out-of-vocabulary fallback
             })
           });
 
           if (res.ok) {
             const data = await res.json();
-            if (currentLanguageRef.current !== language) return;
+            if (currentLanguageRef.current !== language || seq !== predictSeq.current) return;
             const native = language === 'en' ? /[A-Za-z]/ : language === 'gu' ? /[\u0a80-\u0aff]/ : /[\u0900-\u097f]/;
             const foreign = language === 'en' ? /[\u0900-\u0aff]/ : /[a-zA-Z]/;
             const suggestions = (data.suggestions || data.predictions || []).filter(p => native.test(p.word) && !foreign.test(p.word));
@@ -1516,15 +1519,19 @@
           ]
         };
 
-        if (currentLanguageRef.current !== language) return;
-        setPredictions(fallbacks[language] || fallbacks.hi);
+        if (currentLanguageRef.current !== language || seq !== predictSeq.current) return;
+        // while typing, generic starter words would not match the typed letters: show nothing instead
+        setPredictions(typedPrefix ? [] : (fallbacks[language] || fallbacks.hi));
         setIsPredicting(false);
       }, [language]);
 
       useEffect(() => {
         const words = tokens.map(t => t.label);
-        fetchPredictions(words);
-      }, [tokens, language, fetchPredictions, personalSession, frequentWords]);
+        const typed = (inputText || '').split(/[\s,]+/).pop() || '';      // the word currently being typed
+        if (!typed) { fetchPredictions(words); return; }
+        const t = setTimeout(() => fetchPredictions(words, typed), 120);  // debounce keystrokes
+        return () => clearTimeout(t);
+      }, [tokens, inputText, language, fetchPredictions, personalSession, frequentWords]);
 
       // ─── ADD TOKEN TO SENTENCE CANVAS ─────────────────────────
       const addToken = useCallback((item) => {

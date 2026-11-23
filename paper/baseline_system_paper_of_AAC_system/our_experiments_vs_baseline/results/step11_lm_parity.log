@@ -1,0 +1,4 @@
+mr {'app_module_ksr': 54.072929301354094, 'experiment_ksr': 54.072929301354094, 'K': 20, 'lm_ms_p50': 58.4416831843555, 'lm_ms_p95': 107.43212280794978, 'calls': 12746, 'seconds': 724}
+gu {'app_module_ksr': 57.3717843692443, 'experiment_ksr': 57.3717843692443, 'K': 20, 'lm_ms_p50': 64.65078983455896, 'lm_ms_p95': 115.26441713795066, 'calls': 12327, 'seconds': 769}
+hi {'app_module_ksr': 60.565595415475066, 'experiment_ksr': 60.565595415475066, 'K': 20, 'lm_ms_p50': 58.1273608841002, 'lm_ms_p95': 97.32721094042063, 'calls': 12815, 'seconds': 669}
+en {'app_module_ksr': 61.3651979123119, 'experiment_ksr': None, 'K': 20, 'lm_ms_p50': 57.22422432154417, 'lm_ms_p95': 93.12612097710371, 'calls': 11735, 'seconds': 614}

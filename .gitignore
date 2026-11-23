@@ -80,3 +80,4 @@ paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/data_nativ
 !paper/baseline_system_paper_of_AAC_system/**/*.pt
 !experiments_vs_baseline/**/*.log
 !paper/CHATGPT_WRITTEN/*.zip
+!indic-generative-aac/backend/lm_adapters/*.pt

@@ -18,7 +18,12 @@ from tts import IndicTTSEngine
 from hmm import hmm_engine
 import predictor_v2
 import threading
-threading.Thread(target=lambda: [predictor_v2.get_model(l) for l in predictor_v2.LANGS], daemon=True).start()   # warm the models (~1 s each)
+import lm_rerank
+def _warm():
+    for l in predictor_v2.LANGS:
+        predictor_v2.get_model(l)                      # CPU models (~1 s each)
+    lm_rerank.warm_up()                                # optional GPU re-ranker; silently skipped without CUDA (AAC_LM=0 turns it off)
+threading.Thread(target=_warm, daemon=True).start()
 from semantic import SemanticValidator
 from aac_lexicon import BOARD, resolve_label
 import concept_predict
