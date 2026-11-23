@@ -1,0 +1,97 @@
+{
+ "protocol": "Step 17 (review point 5): the English comparison with the baseline paper's method (Gaines & Vertanen 2025, OPT) redone with\nuncertainty. The earlier table (RESULTS_vs_baseline.txt) used 40+40 test sentences, one run, one adaptation seed, no interval.\nHere:\n  * FULL English test sets (403 AAC + 402 caregiver sentences), the same run_stream protocol as Steps 2-5 (5 suggestions,\n    1 keystroke to select), the SAME candidate pool for every system (300 most frequent words matching the typed letters +\n    5 character-model completions, predictor_v2.LangModel.candidates).\n  * OPT used as the baseline paper uses an LM for word prediction: every candidate word scored by its log-probability after\n    the sentence so far (our re-implementation; the baseline's own models and test data are not public).\n  * OPT-125m adapted on our train split with 3 seeds (0, 1, 2): mean and range across seeds, plus each seed's interval.\n  * Paired bootstrap 95 % CI over sentences (1,000 resamples, exp_final.boot_ci) of every system against ours.\n  * Speed: 5 repeated runs of 200 fresh (uncached) next-word queries per system, cuda-synchronised; per run the median and p95;\n    reported as the median over runs and the min-max range across runs. Shared GPU: other jobs run on it.\n   python exp_step17_baseline_ci.py",
+ "n_test": {
+  "aac": 403,
+  "care": 402
+ },
+ "systems": {
+  "OURS old shipped infinity-gram (CPU)": {
+   "aac": {
+    "ksr_pct": 54.882,
+    "top1": 14.048582995951417,
+    "top5": 29.352226720647774
+   },
+   "care": {
+    "ksr_pct": 59.686,
+    "top1": 19.57231957231957,
+    "top5": 37.42203742203742
+   },
+   "avg_ksr": 57.284,
+   "wall_s": 26
+  },
+  "OURS predictor_v2 (CPU)": {
+   "aac": {
+    "ksr_pct": 55.178,
+    "top1": 14.37246963562753,
+    "top5": 29.959514170040485
+   },
+   "care": {
+    "ksr_pct": 59.811,
+    "top1": 19.83961983961984,
+    "top5": 38.55063855063855
+   },
+   "avg_ksr": 57.495,
+   "wall_s": 26
+  },
+  "OURS predictor_v2 + adapted BLOOM-560m re-ranker K50 (GPU)": {
+   "aac": {
+    "ksr_pct": 60.642,
+    "top1": 21.17408906882591,
+    "top5": 38.54251012145749
+   },
+   "care": {
+    "ksr_pct": 64.897,
+    "top1": 26.522126522126523,
+    "top5": 46.48054648054648
+   },
+   "avg_ksr": 62.77,
+   "wall_s": 1375
+  },
+  "BASELINE facebook/opt-125m pretrained": {
+   "aac": {
+    "ksr_pct": 56.809,
+    "top1": 15.62753036437247,
+    "top5": 32.79352226720648
+   },
+   "care": {
+    "ksr_pct": 59.72,
+    "top1": 19.631719631719633,
+    "top5": 37.362637362637365
+   },
+   "avg_ksr": 58.264,
+   "wall_s": 1210
+  }
+ },
+ "speed_ms_per_query": {
+  "OURS predictor_v2 (CPU)": {
+   "median_over_runs": 0.778,
+   "range_of_run_medians": [
+    0.7,
+    0.804
+   ],
+   "p95_median_over_runs": 5.39,
+   "runs": 5,
+   "queries_per_run": 200
+  },
+  "OURS predictor_v2 + BLOOM re-ranker K50 (GPU)": {
+   "median_over_runs": 93.8,
+   "range_of_run_medians": [
+    92.905,
+    95.079
+   ],
+   "p95_median_over_runs": 227.882,
+   "runs": 5,
+   "queries_per_run": 200
+  },
+  "BASELINE facebook/opt-125m pretrained": {
+   "median_over_runs": 23.105,
+   "range_of_run_medians": [
+    22.802,
+    23.288
+   ],
+   "p95_median_over_runs": 248.172,
+   "runs": 5,
+   "queries_per_run": 200
+  }
+ }
+}

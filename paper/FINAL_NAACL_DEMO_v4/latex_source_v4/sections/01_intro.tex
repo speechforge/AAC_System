@@ -1,0 +1,25 @@
+\section{Introduction}
+\label{sec:intro}
+
+A person who communicates through a symbol-based AAC board composes a message by tapping pictograms, and the device voices the selected labels.
+The message is telegraphic (\emph{Water}, or \emph{No}\,+\,\emph{Pizza}), and the listener cannot see the selection, so a fluent sentence that misstates it can cause harm when the message is a request, a refusal, or a report of pain.
+For a water request, a single \emph{Water} symbol can be realized as a complete sentence in each language (authored examples), with a verb-final, experiencer-dative construction for wanting:
+
+\begin{center}
+\small\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}lll@{}}
+\lang{Hindi} & \hi{मुझे पानी चाहिए।} & \multirow{3}{*}{\gloss{I want water.}}\\
+\lang{Gujarati} & \gu{મને પાણી જોઈએ છે.} & \\
+\lang{Marathi} & \hi{मला पाणी हवे आहे.} & \\
+\end{tabular}
+\end{center}
+
+Feelings and negation use other constructions, so a literal join of labels is hard to parse.
+A language model can generalize across combinations, but the small model that fits a 4\,GB GPU in our setup, \qwen{} \citep{qwen2025qwen25}, produced a successful sentence for only \XNaiveSucc{} scenarios when prompted without constraints (Section~\ref{sec:eval}).
+Fluent output can still fail in three ways (Figure~\ref{fig:teaser}): the cascade evaluated here replaced the concept for \emph{Water}, inverted polarity for Marathi \emph{No}\,+\,\emph{Water}, and added content for \emph{Tired}.
+
+\sys{} checks each candidate sentence against the selection.
+A \emph{concept ledger} lists the concepts that must appear and those that must not, and a prompted cascade proposes a sentence.
+A deterministic \emph{gate} accepts it only if its tests of concepts, negation, and communicative act pass; otherwise the system speaks a template fallback built from the user's own labels (Figure~\ref{fig:teaser}).
+Among the closest systems (Section~\ref{sec:related}), none documents such a check for Indic symbol-to-speech, a setting relevant to symbol-board users and to the caregivers and clinicians who would configure boards.
+\qwen{} and \indicf{} are used as released; our contributions are (i) the ledger, gate, and template fallback, with an interface that can carry intent explicitly (Section~\ref{sec:system}); (ii) a four-language demo with a word predictor per language, an optional adapted re-ranker, the user's own vocabulary, and switch and dwell access (Section~\ref{sec:system}, Appendix Table~\ref{tab:models}); and (iii) a frozen, paired evaluation of \NPrimAll{} scenarios, an audit of what the gate misses, and the repair it led to (Sections~\ref{sec:eval} and~\ref{sec:repair}).

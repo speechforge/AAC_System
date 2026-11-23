@@ -1,0 +1,20 @@
+\section{Availability, License, and Limitations}
+\label{sec:limits}
+
+\paragraph{Availability and license.}
+The reviewer package (source, frozen scenarios, scorer, raw outputs, installation guide) and a two-minute captioned screencast without audio are at \demourl{}.
+Code is released under the \codelicense{}; models and fonts keep their own licenses (Appendix Table~\ref{tab:models}); installation tests are in Appendix~\ref{app:coverage}.
+
+\paragraph{Limitations.}
+The scorer is lexical and its Indic lexicon is not native-reviewed; scenarios cover one- and two-concept selections from a \NSymbols{}-symbol board; one team wrote the rules, gold annotation, and scorer, with AI assistance and without an independent curator.
+No user study has been run, so the results bound lexical faithfulness, not communication effectiveness.
+In the evaluated build speech was a placeholder tone, so its latency (Appendix~\ref{app:coverage}) excludes synthesis; current-build speech has only a pilot listening test that is not language-matched.
+Prediction is measured in single runs on synthetic English dialogues and their machine translations, not on text typed by AAC users, against our re-implementation of the baseline.
+In the evaluated build the template fallback is not re-validated, and the gate's act test and word lists cover English only.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Across \NPrimAll{} frozen scenarios in four languages, deterministic checks kept every selected concept and left no scored polarity error, but only 57 of the 116 sentences accepted under client input were fully correct, and a template baseline matched or exceeded the pipeline under a lexical scorer.
+The current build saves 57--64\% of keystrokes on held-out synthetic text, and a pilot rates its speech 3.7--4.4.
+Native-speaker confirmation of a fresh scenario set, blind ratings of meaning and phrasing, a language-matched listening test, and a study with AAC users are the next steps toward measuring what model phrasing adds.

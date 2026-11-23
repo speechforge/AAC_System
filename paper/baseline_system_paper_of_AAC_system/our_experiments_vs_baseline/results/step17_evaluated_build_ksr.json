@@ -1,0 +1,32 @@
+{
+ "en": {
+  "aac": 19.72,
+  "care": 28.277,
+  "avg": 23.998
+ },
+ "hi": {
+  "aac": 30.745,
+  "care": 35.606,
+  "avg": 33.175
+ },
+ "mr": {
+  "aac": 16.339,
+  "care": 20.286,
+  "avg": 18.312
+ },
+ "gu": {
+  "aac": 23.654,
+  "care": 29.927,
+  "avg": 26.791
+ },
+ "mr_as_deployed_hindi_trie": {
+  "aac": 0.305,
+  "care": 0.129,
+  "avg": 0.217
+ },
+ "gu_as_deployed": {
+  "avg": 0.0,
+  "note": "the evaluated build had no Gujarati predictor (paper v3 Section 3), so no keystroke is saved"
+ },
+ "note": "en, hi: the evaluated build's method (shipped infinity-gram, typed letters ignored, top 7 shown) trained on our train split; mr/gu keys above are the same method trained on their own text (what the method would do with data), *_as_deployed is what the evaluated build actually did"
+}

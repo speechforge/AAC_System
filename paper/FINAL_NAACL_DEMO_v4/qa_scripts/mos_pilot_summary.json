@@ -1,0 +1,108 @@
+{
+ "snapshot_utc": "2026-11-23T07:05Z",
+ "method": "Review point 3: aggregate, privacy-safe summary of the listening test (MOS portal) for the paper.\n\nReads subjective_Mos_portal/.data/portal.sqlite3 READ-ONLY and writes ONLY aggregates (no names, e-mails, ages or IDs):\n  mos_pilot_summary.json next to this script.\nMethod (same as the portal, subjective_Mos_portal/FINAL_CONTEXT.md): primary MOS = mean of all 1-5 ratings from COMPLETED\n(20 of 20 clips), non-excluded sessions; 95 % CI = percentile bootstrap over LISTENERS (2,000 resamples, seed 20261117),\neach resample averaging the listeners' per-language means. Reported twice: all completed listeners, and only listeners whose\nstated mother tongue is the clip's language (\"native\"). English clips: F5-TTS; Hindi/Gujarati/Marathi: IndicF5; 5 clips per\nlanguage, authored AAC sentences, synthesized 2026-11-17 by the CURRENT build's /api/tts (not the evaluated build of Section 4,\nwhose speech was a placeholder tone).",
+ "registered": 15,
+ "completed": 8,
+ "excluded": 0,
+ "mother_tongue_counts": {
+  "gujarati": 7,
+  "hindi": 5,
+  "marathi": 1,
+  "bengali": 1,
+  "tamil": 1
+ },
+ "completed_all_listeners": {
+  "en": {
+   "listeners": 8,
+   "ratings": 40,
+   "mos": 4.35,
+   "ci95_listener_bootstrap": [
+    3.75,
+    4.85
+   ],
+   "engine": [
+    "f5tts"
+   ]
+  },
+  "hi": {
+   "listeners": 8,
+   "ratings": 40,
+   "mos": 3.73,
+   "ci95_listener_bootstrap": [
+    3.1,
+    4.4
+   ],
+   "engine": [
+    "indicf5"
+   ]
+  },
+  "gu": {
+   "listeners": 8,
+   "ratings": 40,
+   "mos": 4.15,
+   "ci95_listener_bootstrap": [
+    3.48,
+    4.72
+   ],
+   "engine": [
+    "indicf5"
+   ]
+  },
+  "mr": {
+   "listeners": 8,
+   "ratings": 40,
+   "mos": 4.15,
+   "ci95_listener_bootstrap": [
+    3.52,
+    4.67
+   ],
+   "engine": [
+    "indicf5"
+   ]
+  }
+ },
+ "native_listeners_any_progress": {
+  "en": {
+   "listeners": 0,
+   "ratings": 0,
+   "mos": null,
+   "ci95_listener_bootstrap": null,
+   "engine": [
+    "f5tts"
+   ]
+  },
+  "hi": {
+   "listeners": 3,
+   "ratings": 12,
+   "mos": 3.92,
+   "ci95_listener_bootstrap": [
+    2.5,
+    4.8
+   ],
+   "engine": [
+    "indicf5"
+   ]
+  },
+  "gu": {
+   "listeners": 6,
+   "ratings": 26,
+   "mos": 4.19,
+   "ci95_listener_bootstrap": [
+    3.43,
+    4.97
+   ],
+   "engine": [
+    "indicf5"
+   ]
+  },
+  "mr": {
+   "listeners": 1,
+   "ratings": 5,
+   "mos": 4.8,
+   "ci95_listener_bootstrap": null,
+   "engine": [
+    "indicf5"
+   ]
+  }
+ }
+}

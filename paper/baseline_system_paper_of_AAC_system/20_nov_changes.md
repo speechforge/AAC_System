@@ -615,3 +615,51 @@ Reading:
 - KSR 75 is not reached (ceilings in 12a). Final: en 64.3, hi 64.3, mr 57.2, gu 60.4. Marathi/Gujarati test text is machine-translated, which lowers their numbers.
 - Personal gains are a lower bound (16b: test sentences almost never repeat; real users repeat).
 - Shipped defaults: `AAC_LM_K=50`, `LAM=0.1`, phrase confidence 0.5, 7 words shown.
+
+---
+
+## Step 17 - six review points on the paper; v4 paper source (2026-11-23)
+Full answers: `paper/FINAL_NAACL_DEMO_v4/REVIEW_RESPONSE_v4.md`. v4 source: `paper/FINAL_NAACL_DEMO_v4/latex_source_v4/` (copy of the
+proof-read v3, edited; v3 unchanged except the added bootstrap script). Not compiled here (no TeX engine; download not allowed) -> Overleaf/XeLaTeX.
+
+**Correction to Step 16d.** The "OLD app" column (KSR 5-10) is the **16-22 November** build (broken merge rule, letters not sent),
+NOT the build evaluated in the paper. The evaluated build (commit fe4e185) showed the trie's top 7 unchanged and ignored typed
+letters: `exp_step17_evaluated_build.py` -> en 24.0, hi 33.2 (method retrained on our train split), mr 0.2 (Hindi trie, as deployed),
+gu 0.0 (no predictor). The paper uses these.
+
+| Point | Verdict | Done |
+|---|---|---|
+| 1 Template beats gate | true, already disclosed | wording kept; blind native A/B rating prepared: `qa_scripts/make_ab_rating_sheets.py`, 116 pairs (en 20, hi 42, gu 31, mr 23); not run (needs raters) |
+| 2 Holdout DRAFT | correctly excluded | stays out; Section 5 now says "two native speakers per language" |
+| 3 Placeholder tone vs MOS | real build mix-up | evaluated vs current build named everywhere; MOS pilot (8 completed listeners): en 4.35, hi 3.73, gu 4.15, mr 4.15; native-only gu 4.19 (6), hi 3.92 (3), mr 1 listener; `qa_scripts/mos_pilot_summary.py` (aggregates only) |
+| 4 Bootstrap script | existed (v2/src/audit_archived.py A7) but not cited | `qa_scripts/paired_group_bootstrap.py` reproduces all 5 printed intervals exactly; method + script named in Section 4 |
+| 5 Single runs vs own OPT re-implementation | true | `exp_step17_baseline_ci.py`: full test sets, same pool, 3 seeds, paired CIs, 5 timing runs (results below) |
+| 6 UI redesign + LoRA missing | true | Section 3 "Current build", Section 4 KSR table, appendix rows; +7 target reported as missed (+6.5/+4.0/+5.8/+4.6) |
+
+### 17a. Operations done today that were not yet logged (2026-11-23)
+- 12:20 Step 16 final run finished; 16d table filled in. 12:22 the :8000 server was restarted on the new backend (`run_local.py stop/start`, PORT=8000): health ok, TTS ready, Redis ready, `/predict_next` returns 401 without sign-in (correct: the account gate protects it), `aac-access.js` served (200), GPU 6.3 GB for speech + re-ranker. Endpoint check in-process (stubbed account): new user gets 7 words + phrase in all 4 languages; after 2 sentences + 1 saved phrase "zo" offers the user's name and "please" offers "bring my blue blanket".
+- The server log repeats `[HMM Engine] Error loading hmm_hindi.pkl: invalid load key` (9 times, also in earlier runs): it is the LEGACY fallback predictor only, not used while predictor_v2 works; not fixed (out of scope), noted here.
+- Commit `3aacff6` pushed to `November_22_2026` (Steps 12-16 code, results, log, bootstrap script).
+- Paper build: no TeX engine on this machine; downloading Tectonic was refused by the permission system, so v4 is NOT compiled here. Static checks of v4: braces balanced, every macro defined, every citation in references.bib, every \ref has a label except `tab:baseline` (written by `qa_scripts/make_numbers_v4.py` when Step 17 ends).
+- Page budget (not measured): main text about +220 words vs v3 (v3 had ~2.8 spare lines); old hit@1 table moved to the appendix. Cuts listed in REVIEW_RESPONSE_v4.md if Overleaf shows an overflow.
+- Example in the response file corrected before it was shared: for Hindi *Love* the accepted MODEL sentence is the awkward one ("मैं प्यार हूँ, मैं कह रहा हूँ।") and the TEMPLATE the natural one (checked against the A/B key).
+
+### 17b. Point 5 run, partial results so far (exp_step17_baseline_ci.py, started 12:24; English, full test sets, same pool for all)
+| System | KSR AAC | KSR caregiver | avg | ms per query, median of 5 runs (range) |
+|---|---|---|---|---|
+| Evaluated build's trie (CPU) | 54.88 | 59.69 | 57.28 | - |
+| Ours predictor_v2 (CPU) | 55.18 | 59.81 | 57.50 | 0.78 (0.70-0.80); p95 5.4 |
+| Ours + adapted BLOOM-560m re-ranker K50 (GPU) | 60.64 | 64.90 | 62.77 | 93.8 (92.9-95.1); p95 228 |
+(These are the 5-suggestion baseline protocol, so they differ from Table tab:ksr, which uses what the UI shows: 7 words + phrase row.)
+Still running: OPT-125m and OPT-350m pretrained, OPT-125m adapted x 3 seeds, paired CIs. Expected end ~15:00 (shared GPU).
+
+### 17c. Point 5 run 1 crashed (CUDA out of memory) and was restarted with checkpoints (13:21)
+- Run 1 finished our 3 systems, our speed tests and OPT-125m pretrained (KSR AAC 56.81 / care 59.72 / avg 58.26; 23.1 ms per query,
+  run medians 22.8-23.3), then OOM when OPT-350m scored 128 candidates at once: the GPU had 0.48 GB free (server 6.2 GB, another
+  user's job 2.0 GB, and this process still held BLOOM + OPT-125m). Per-sentence rows were only in memory, so the CIs need a re-run.
+  Kept as `results/step17_baseline_ci_run1_oom.{log,json}`.
+- Fixes (exp_step17_baseline_ci.py): per-sentence rows checkpointed to `results/step17_rows.json` after every system (a restart skips
+  finished ones); OPT scoring batch 128 -> 32 (same scores, less memory); our GPU system now runs LAST so BLOOM never shares the GPU
+  with an OPT model; every re-ranker call is counted (`reranker_calls.fell_back_to_cpu` must be 0, otherwise the "GPU" row would
+  silently be CPU numbers).
+- Run 2 started 13:21 (PID 3600770). Expected: OPT-125m 20 min, OPT-350m ~35 min, 3 adapted seeds ~70 min, ours GPU ~25 min -> ~15:50.

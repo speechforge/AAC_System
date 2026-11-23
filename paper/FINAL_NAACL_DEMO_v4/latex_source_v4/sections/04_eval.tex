@@ -1,0 +1,65 @@
+\section{Evaluation}
+\label{sec:eval}
+
+Realization is scored on \NPrimAll{} frozen scenarios (Tables~\ref{tab:results} and~\ref{tab:analysis}), next-word prediction on held-out conversations (Table~\ref{tab:ksr}).
+
+\paragraph{Protocol.}
+We froze \NScen{} monolingual and \NScenCM{} exploratory Hinglish scenarios before scoring any output.
+Each of English, Hindi, Gujarati, and Marathi has 46 board selections in six families (Appendix Table~\ref{tab:grid}), with gold polarity and act fixed.
+Each scenario is sent as the web client builds it (\emph{client input}, the primary condition, because it is what a user's taps produce; the harness inputs equal those captured from the real page for all 184 scenarios) and with explicit intent and negation fields (\emph{explicit fields}, a controlled diagnostic of the cost of inferring intent, not a measure of user-selected intent).
+
+\paragraph{Systems and scoring.}
+We compare (i) a literal join of the labels; (ii) the same \qwen{} with one unconstrained zero-shot prompt (labels only); (iii) the ungated cascade, from the same response as the deployed output; (iv) the deployed output of the live server; and (v) the template baseline.
+A scenario \emph{succeeds} if the output keeps every selected concept, has the gold polarity and act, adds no unselected concept, and is a first-person sentence in the target script; \emph{retention} counts the \NConc{} required concept instances separately.
+A lexical scorer coded separately from the gate by the same team applies these rules (Appendix~\ref{app:scorer}); all counts here use its first version, and Section~\ref{sec:repair} reports its correction.
+Nine of the \NScen{} scenarios, which duplicate a few-shot prompt example, are excluded, leaving \NPrimAll{} (EN \NPrimEN{}, HI \NPrimHI{}, GU \NPrimGU{}, MR \NPrimMR{}).
+Differences (in percentage points, pp) are paired, with 95\% bootstrap confidence intervals (CI) over the 46 scenario groups (the four language versions of one board selection resampled together; 10,000 resamples; seed 20261113); \texttt{qa\_scripts/paired\_group\_bootstrap.py} recomputes every interval here.
+
+\input{generated/tab_results}
+\input{generated/tab_ksr}
+
+\paragraph{Effect of the gate.}
+Before the gate, the cascade kept \XPreUKeptPct{} of required concepts under client input (\XPreSKeptPct{} with explicit fields) and made \XPreUPol{} polarity errors, against \XPreSPol{} with explicit fields, whose inputs do not carry the \emph{No} label as an entity (Table~\ref{tab:results}).
+With the gate and template fallback, the same scenarios kept all \NConc{} concepts and showed no scored polarity error; the scorer, like the gate, tests for a negator and not its scope, so these counts are not a guarantee of meaning.
+Success rose from \XPreUSucc{} to \XDepUSucc{} under client input (+18.3 pp, 95\% CI 11.9 to 25.2) and from \XPreSSucc{} to \XDepSSucc{} with explicit fields (+34.9, 26.7 to 43.4).
+All 33 scenarios that the gate turned from failure into success under client input are template sentences, 20 of them English, and for Hindi, Gujarati, and Marathi alone the gain is +10.1 pp (5.2 to 16.0).
+Under client input the gate accepted \XGateAccU{} model outputs (\XGateOkU{} fully correct), admitted 59 of the 110 failing cascade outputs, and its template fallbacks succeeded in \XFbOkU{} (explicit fields: \XGateOkS{} and \XFbOkS{}; Appendix~\ref{app:scorer} audits the failures).
+The first cascade stage alone scores 63/175 and 67/175, against 65/175 and 71/175 for the full cascade.
+
+\paragraph{Remaining errors.}
+Under client input, \XDepUWrong{} deployed outputs expressed the wrong act; explicit fields cut this to \XDepSWrong{} and raised success from \XDepUSuccPct{} to \XDepSSuccPct{} (+20.0 pp, 12.0 to 28.7).
+The client infers \emph{request} for \UIFeelReq{} of its 32 single-symbol feeling selections (eight feelings in four languages, before the nine exclusions), so every language voices a feeling as a want (Table~\ref{tab:analysis}), and the gate does not catch it, because its act test uses English cues.
+Two defects are independent of the model: the client's substring rule wrongly marks \UIFalseNeg{} of 272 non-negated single-symbol selections as negated (\emph{Nose} in English and Gujarati, \emph{Bathe} in Gujarati), and the template has no form for client intent \emph{negation} (negated feeling, Appendix Table~\ref{tab:grid}).
+Accepted outputs can also add content or a third-person perspective (Figure~\ref{fig:teaser}, row~3; Appendix Figure~\ref{fig:workflow} and Tables~\ref{tab:grid} and~\ref{tab:kinds}).
+
+\begin{table*}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.4pt}\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}L{2.35cm}L{2.95cm}L{3.0cm}L{3.1cm}L{3.1cm}@{}}
+\toprule
+\rowcolor{headtint}
+Selection $\rightarrow$ intended & \lang{English} (baseline) & \lang{Hindi} & \lang{Gujarati} & \lang{Marathi} \\
+\midrule
+\emph{Angry} $\rightarrow$ \gloss{I am angry}
+ & \bad{I want} \sel{Angry.} \routet\ \failmark{W}
+ & \hi{\bad{मुझे} \sel{गुस्सा} \bad{चाहिए।}} \routem\ \failmark{W}
+ & \gu{\bad{મને} \sel{ગુસ્સો} \bad{જોઈએ છે.}} \routem\ \failmark{W}
+ & \hi{\bad{मला} \sel{रागात} \bad{हवे आहे.}} \routem\ \failmark{W} \\
+\bottomrule
+\end{tabular}
+\caption{One selection in four languages, deployed output with client input (recorded). \sel{Blue}: selected concept kept; \kept{green}: passes the scorer; \bad{red}: unwanted act or added content; \okmark{} success; \failmark{W} wrong act, \failmark{N} no act marker, \failmark{A} added content; \routem{} accepted model output, \routet{} template fallback. English is the baseline; the Indic columns are the proposed extension.}
+\label{tab:analysis}
+\end{table*}
+
+\paragraph{Template baseline.}
+A template baseline echoes the selected labels, so it scored \XTmplSSucc{} with explicit fields and \XTmplUSucc{} under client input; the deployed pipeline trailed it by 20.0 pp (95\% CI 14.0 to 26.4) and 12.0 pp (6.4 to 17.9).
+Paired by scenario, the pipeline succeeded where the template failed in 0 of 175 scenarios (explicit fields) and 1 (client input), and failed where it succeeded in 35 and 22.
+Matching the eight explicit-field template failures to their scenarios places all of them in Gujarati negated feelings.
+The template sentence \gu{મને ખુશ લાગતું નથી.} was missing from the scorer's marker list, whereas its Hindi and Marathi counterparts (\hi{मुझे खुश महसूस नहीं हो रहा है।} and \hi{मला आनंदी वाटत नाही.}) were recognized (all three: \gloss{I do not feel happy}); we read these failures as scorer gaps, but no native speaker has checked the sentences.
+The model path added wrong-act outputs that a template did not (\XDepSWrong{} against \XTmplSWrong{}), and the lexical criterion rewards label echo without scoring fluency, so the comparison cannot measure what model phrasing adds; a blind native-speaker rating of the 116 accepted model sentences that differ from their templates can, and is prepared but not run.
+
+\paragraph{Next-word prediction.}
+On the evaluated build the suffix trie exceeded a backoff trigram by \PredDENOneTri{} hit@1 in English and \PredDHIOneTri{} in Hindi (Appendix Table~\ref{tab:pred}).
+Table~\ref{tab:ksr} simulates typing each held-out sentence letter by letter and taking a shown suggestion as soon as it appears (one keystroke); the personal model learns only from sentences already typed.
+The re-ranker adds 1.9 to 4.6 points and the personal model 0.9 to 2.8 (every paired 95\% interval over sentences above zero), short of the +7-point re-ranker gain targeted before training (+\LoraGainEN{}, +\LoraGainHI{}, +\LoraGainMR{}, +\LoraGainGU{} over the evaluated trie, five suggestions).
+On English, our re-implementation of the baseline method \citep{gaines2025adapting} with adapted \opt{125m} \citep{zhang2022opt} saves \OptAdKSR{} (three seeds, \OptAdRange{}) against \OursGpuKSR{} for ours on the same candidates and sentences (Appendix Table~\ref{tab:baseline}, with intervals and speed).

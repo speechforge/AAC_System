@@ -1,0 +1,35 @@
+[∞-gram Engine] Initialized in 610.4ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+OURS old shipped infinity-gram (CPU) {'aac': {'ksr_pct': 54.882, 'top1': 14.048582995951417, 'top5': 29.352226720647774}, 'care': {'ksr_pct': 59.686, 'top1': 19.57231957231957, 'top5': 37.42203742203742}, 'avg_ksr': 57.284, 'wall_s': 26}
+OURS predictor_v2 (CPU) {'aac': {'ksr_pct': 55.178, 'top1': 14.37246963562753, 'top5': 29.959514170040485}, 'care': {'ksr_pct': 59.811, 'top1': 19.83961983961984, 'top5': 38.55063855063855}, 'avg_ksr': 57.495, 'wall_s': 26}
+OURS predictor_v2 + adapted BLOOM-560m re-ranker K50 (GPU) {'aac': {'ksr_pct': 60.642, 'top1': 21.17408906882591, 'top5': 38.54251012145749}, 'care': {'ksr_pct': 64.897, 'top1': 26.522126522126523, 'top5': 46.48054648054648}, 'avg_ksr': 62.77, 'wall_s': 1375}
+speed OURS predictor_v2 (CPU) {'median_over_runs': 0.778, 'range_of_run_medians': [0.7, 0.804], 'p95_median_over_runs': 5.39, 'runs': 5, 'queries_per_run': 200}
+speed OURS predictor_v2 + BLOOM re-ranker K50 (GPU) {'median_over_runs': 93.8, 'range_of_run_medians': [92.905, 95.079], 'p95_median_over_runs': 227.882, 'runs': 5, 'queries_per_run': 200}
+BASELINE facebook/opt-125m pretrained {'aac': {'ksr_pct': 56.809, 'top1': 15.62753036437247, 'top5': 32.79352226720648}, 'care': {'ksr_pct': 59.72, 'top1': 19.631719631719633, 'top5': 37.362637362637365}, 'avg_ksr': 58.264, 'wall_s': 1210}
+speed BASELINE facebook/opt-125m pretrained {'median_over_runs': 23.105, 'range_of_run_medians': [22.802, 23.288], 'p95_median_over_runs': 248.172, 'runs': 5, 'queries_per_run': 200}
+Traceback (most recent call last):
+  File "/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/exp_step17_baseline_ci.py", line 128, in <module>
+    evaluate(f"BASELINE {name} pretrained", lexicon_scorer(mod, tok))
+  File "/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/exp_step17_baseline_ci.py", line 35, in evaluate
+    s, p, h = run_stream(v, scorer, POOL); r[k] = dict(ksr_pct=round(s, 3), top1=h[1], top5=h[5]); per[name][k] = p
+  File "/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/exp_final.py", line 44, in run_stream
+    preds = rank(ws[:i], w[:k])[:n_pred]
+  File "/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/exp_final.py", line 34, in rank
+    sc = base_score(list(ctx), cands, prefix) if getattr(base_score, 'wants_prefix', False) else base_score(list(ctx), cands)
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/linux/Documents/AAC_System_final/Indic_AAC_System_2026/aac_system_november_11/AAC_System_merged/paper/baseline_system_paper_of_AAC_system/our_experiments_vs_baseline/exp_step17_baseline_ci.py", line 65, in score
+    lp = torch.log_softmax(mod(input_ids=ids.cuda(), attention_mask=att.cuda()).logits[:, len(base) - 1:].float(), -1)
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/transformers/models/opt/modeling_opt.py", line 1196, in forward
+    logits = self.lm_head(outputs[0]).contiguous()
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/linux/miniconda3/envs/taac_env/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 125, in forward
+    return F.linear(input, self.weight, self.bias)
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 468.00 MiB. GPU 0 has a total capacity of 11.89 GiB of which 478.12 MiB is free. Process 3211229 has 1.97 GiB memory in use. Process 3593728 has 6.16 GiB memory in use. Including non-PyTorch memory, this process has 2.99 GiB memory in use. Of the allocated memory 2.31 GiB is allocated by PyTorch, and 525.93 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

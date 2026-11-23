@@ -1,0 +1,36 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Expanding telegraphic input.}
+Compansion expanded telegraphic AAC input into well-formed sentences \citep{mccoy1998compansion}.
+Recent systems apply language models to other inputs. SpeakFaster expands abbreviated text for eye-gaze typists \citep{cai2024speakfaster}; ConnecTone suggests text from conversational context and speaks it with a style-adaptive text-to-speech (TTS) system \citep{francis2024connectone}; \citet{mohan2024composition} compose messages from typed, emoji, or spoken input in the user's own voice.
+\citet{karmakar-sinha-2024-aiding} contribute a symbol-to-text dataset, a text-to-pictogram module, and an extension to Bengali, and \citet{francis2025static} add generated symbols and zero-shot voice cloning to a symbol board.
+Constraining generated text to required content is established in lexically constrained decoding \citep{hokamp-liu-2017-lexically,post-vilar-2018-fast}.
+\sys{} starts from symbol selections, which give the model a small concept set whose omission or inversion can be checked after generation, with a safe fallback; its novelty lies in that check and its evaluation, not in the expansion itself.
+
+\paragraph{Gap.}
+Table~\ref{tab:related} compares documented capabilities, including the boards Cboard, Jellow, and Avaz (\nstated{}: not stated by the source, not absent).
+Among these sources, none documents a deterministic check of selected concepts and polarity in model-generated Indic sentences on a symbol board; we make no claim about undocumented products.
+
+\begin{table*}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.6pt}\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}L{3.6cm}L{2.5cm}L{3.5cm}L{2.7cm}L{2.4cm}@{}}
+\toprule
+\rowcolor{headtint}
+System & Input & Languages (as stated) & Sentence realization & Output check \\
+\midrule
+Compansion \citeyearpar{mccoy1998compansion} & telegraphic words & English & grammatical expansion & \nstated \\
+\citet{karmakar-sinha-2024-aiding} & symbols, text & incl.\ Bengali & symbol-to-text data & \nstated \\
+Cboard \citeyearpar{cboard} & symbols, text & 46; HI, GU, MR not named & \nstated & \nstated \\
+Jellow \citeyearpar{jellow} & symbols, keyboard & 24, incl.\ HI, GU, MR & pre-made, typed & \nstated \\
+Avaz \citeyearpar{avaz} & symbols, keyboard & regional; list \nstated & predictive text & \nstated \\
+ConnecTone \citeyearpar{francis2024connectone} & speech, text & \nstated & context suggestions & \nstated \\
+SpeakFaster \citeyearpar{cai2024speakfaster} & abbreviated text & \nstated & LLM expansion & \nstated \\
+\midrule
+\rowcolor{rowtint}\textbf{\sys{}} & symbols, text & EN, HI, GU, MR & prompted \llm{Qwen} cascade & concepts, negation (act: EN) \\
+\bottomrule
+\end{tabular}
+\caption{Documented capabilities of the closest systems, from the cited paper or the vendor page (access dates in the references). \nstated{}: not stated by the source; EN, HI, GU, MR: English, Hindi, Gujarati, Marathi.}
+\label{tab:related}
+\end{table*}

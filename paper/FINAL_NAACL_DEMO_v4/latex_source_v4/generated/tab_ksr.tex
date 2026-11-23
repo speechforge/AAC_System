@@ -1,0 +1,19 @@
+% v4: current build from results/step16_final.json (exp_step16_final.py); evaluated build from results/step17_evaluated_build_ksr.json
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3.2pt}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+ & Evaluated & \multicolumn{2}{c}{Current, CPU} & \multicolumn{2}{c}{Current, GPU re-ranker} \\
+\cmidrule(lr){3-4}\cmidrule(l){5-6}
+Language & build & new user & + personal & new user & + personal \\
+\midrule
+English  & 24.0 & 58.9 & 60.3 & 63.5 & \textbf{64.3} \\
+Hindi    & 33.2 & 59.7 & 62.5 & 61.9 & \textbf{64.3} \\
+Marathi  & 0.2 & 54.0 & 55.0 & 56.3 & \textbf{57.2} \\
+Gujarati & 0.0 & 57.0 & 58.4 & 58.9 & \textbf{60.4} \\
+\bottomrule
+\end{tabular}
+\caption{Keystroke savings (\%, higher is better) when typing held-out sentences with what the interface shows (seven words and, with \emph{personal}, the phrase row), mean of the AAC-user and caregiver test sets; the evaluated build (its method retrained on our training split) ignored typed letters, used the Hindi trie for Marathi, and had no Gujarati predictor (EN 805, HI 1,027, MR 745, GU 733 sentences). Test text is LLM-generated English and its machine translations, not text typed by AAC users; one run, paired intervals in Section~\ref{sec:eval}.}
+\label{tab:ksr}
+\end{table}

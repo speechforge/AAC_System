@@ -1,0 +1,126 @@
+% Build with XeLaTeX (Indic scripts): xelatex main && bibtex main && xelatex main && xelatex main
+% Overleaf: Menu > Compiler > XeLaTeX.  acl.sty and acl_natbib.bst are the unmodified official ACL style files.
+\PassOptionsToPackage{table}{xcolor}   % row shading in tables (acl.sty loads xcolor)
+\documentclass[11pt]{article}
+
+% `preprint' is the official ACL option that shows author names and affiliations (the demo track is single-blind).
+\usepackage[preprint]{acl}
+\usepackage{microtype}
+\usepackage[english,bidi=default]{babel}
+\babelfont{rm}[SmallCapsFeatures={Letters=SmallCaps}]{TeXGyreTermesX}
+\usepackage{fontspec}
+% Noto Sans Devanagari / Gujarati are bundled in fonts/ (SIL OFL 1.1), so the build needs no system fonts for Indic text.
+\newfontfamily\hifont[Path=fonts/,Extension=.ttf,UprightFont=NotoSansDevanagari-Regular,BoldFont=NotoSansDevanagari-Bold,Script=Devanagari]{NotoSansDevanagari}
+\newfontfamily\gufont[Path=fonts/,Extension=.ttf,UprightFont=NotoSansGujarati-Regular,BoldFont=NotoSansGujarati-Bold,Script=Gujarati]{NotoSansGujarati}
+% Native-script text is typeset upright in a locally scoped font. A PDF ActualText span keeps the source order of the Unicode string,
+% so that copying text from the PDF returns the authored word (without it, the pre-base vowel sign of Hindi 'chahie' is extracted out of order).
+% \pdfstringdef (hyperref) builds a UTF-16 PDF string; the span is emitted only under XeTeX (Overleaf: XeLaTeX; Tectonic).
+\newcommand{\aacnative}[2]{\leavevmode\begingroup
+  \ifdefined\XeTeXversion
+    \pdfstringdef\aacactual{#2}%
+    \special{pdf:literal direct /Span <</ActualText (\aacactual)>> BDC}%
+  \fi
+  {#1\upshape #2}%
+  \ifdefined\XeTeXversion\special{pdf:literal direct EMC}\fi
+  \endgroup}
+\DeclareRobustCommand{\hi}[1]{\aacnative{\hifont}{#1}}   % Hindi and Marathi (Devanagari)
+\DeclareRobustCommand{\gu}[1]{\aacnative{\gufont}{#1}}   % Gujarati
+\usepackage{booktabs,graphicx,amsmath,amssymb,array,multirow,xcolor,colortbl,enumitem,float}
+% Palette (also legible in grayscale because every colored span is accompanied by a verdict mark or a word):
+% blue = selected concept kept, green = successful sentence, red = unwanted act, added or third-person content.
+\definecolor{exblue}{HTML}{155B8A}\definecolor{exgreen}{HTML}{17674A}\definecolor{exred}{HTML}{AC252B}
+\definecolor{headtint}{HTML}{E9F0F6}\definecolor{rowtint}{HTML}{F6F8FA}
+\newcommand{\sel}[1]{\textcolor{exblue}{#1}}
+\newcommand{\kept}[1]{\textcolor{exgreen}{#1}}
+\newcommand{\bad}[1]{\textcolor{exred}{#1}}
+\newcommand{\okmark}{\textcolor{exgreen}{\ensuremath{\checkmark}}}
+\newcommand{\failmark}[1]{\textcolor{exred}{\ensuremath{\times}\textsuperscript{\scriptsize #1}}}
+\newcommand{\routem}{{\scriptsize\emph{model}}}      % route tag: accepted model output
+\newcommand{\routet}{{\scriptsize\emph{template}}}   % route tag: template floor
+\makeatletter\pdfstringdefDisableCommands{\let\sel\@firstofone\let\kept\@firstofone\let\bad\@firstofone}\makeatother
+\newcommand{\lang}[1]{\textbf{\emph{#1}}}      % language label: bold italic, apart from the upright native script
+\newcommand{\llm}[1]{\mbox{\textsc{#1}}}              % model names: small capitals at the body size
+\newcommand{\qwen}{\llm{Qwen2.5-0.5B-Instruct}}
+\newcommand{\indicf}{\llm{IndicF5}}
+\newcommand{\vocos}{\llm{Vocos}}
+\newcommand{\flant}{\llm{Flan-T5-small}}
+\newcommand{\utmos}{\llm{UTMOS22}}
+\newcommand{\nisqa}{\llm{NISQA}}
+\newcommand{\mmstts}{\llm{MMS-TTS}}
+\newcommand{\bloom}{\llm{BLOOM-560m}}
+\newcommand{\opt}[1]{\llm{OPT-#1}}
+\newcommand{\gloss}[1]{\emph{``#1''}}           % English gloss in italics
+\setlist{nosep,leftmargin=*}
+\hyphenation{Table Tables Figure Appendix Section}   % keep reference words whole
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{5}\setcounter{dbltopnumber}{3}
+\renewcommand{\topfraction}{0.9}\renewcommand{\bottomfraction}{0.8}\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.75}\renewcommand{\dblfloatpagefraction}{0.75}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\newcommand{\sys}{Indic AAC Studio}
+\newcommand{\nstated}{\textit{n.s.}}
+\newcommand{\cn}[1]{\raisebox{.15ex}{\textcircled{\scriptsize #1}}}   % numbered callout used in Figure 2
+% Release location of the reviewer package (source, fixtures, scorer, raw outputs, screencast): AUTHORS MUST SET THIS to a public (or anonymized) URL before submission.
+\newcommand{\demourl}{\url{https://github.com/speechforge/AAC_System}}
+% Code license named in the Availability section: AUTHORS MUST CONFIRM and add the matching license file to the release.
+\newcommand{\codelicense}{Apache License 2.0}
+% Required concept instances in the primary set: the denominator of the Kept column of Table 2.
+\newcommand{\NConc}{215}
+
+% generated/ holds numbers and tables produced from the frozen evaluation files; v3 relabeled and re-captioned them by hand and corrected one printed cell (Hindi bigram hit@1, 24.1 to 24.0, from 586/2437 = 24.05%).
+% Numbers typed in the sections (intervals, gate precision, repair counts, latencies) are rechecked by the scripts in after_the_proof_reading_final_version/qa_scripts.
+\input{generated/numbers}
+\input{generated/extra}
+\input{generated/mos}
+\input{generated/numbers_v4}
+\input{generated/mos_pilot}
+
+\title{Indic AAC Studio: Concept-Gated Symbol-to-Speech Generation\\
+for English, Hindi, Gujarati, and Marathi}
+
+% Three authors: ACL's \And separates authors in a row and \AND starts a new row. The title box is enlarged (a multiple of the line height, as the official template allows) so that the two rows fit.
+\setlength\titlebox{13\baselineskip}
+\author{Ravindrakumar M. Purohit \\
+  Speech Research Lab \\
+  Dhirubhai Ambani University (DA-IICT) \\
+  Gandhinagar, India
+  \And
+  Jaydeep Parmar \\
+  Pandit Deendayal Energy \\
+  University (PDEU) \\
+  Gandhinagar, India
+  \AND
+  Hemant A. Patil \\
+  Speech Research Lab, Dhirubhai Ambani University (DA-IICT), Gandhinagar, India}
+
+\begin{document}
+\maketitle
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/teaser.pdf}
+\caption{Three recorded scenarios from the frozen evaluation (rows 1 and 3: client input; row 2: explicit fields). The gate rejects a cascade output that replaces a selected concept (row~1) or inverts polarity (row~2), and the system then speaks a template fallback built from the user's labels; it accepts a fluent third-person sentence that adds content (row~3, a miss). Red: unwanted output or gate miss; green: correct gate decision; blue: selection or template fallback.}
+\label{fig:teaser}
+\end{figure*}
+
+
+\input{sections/00_abstract}
+\input{sections/01_intro}
+\input{sections/02_related}
+\input{sections/03_system}
+\input{sections/04_eval}
+\input{sections/05_repair}
+\input{sections/05_limits}
+
+\section*{Ethics Statement}
+\input{sections/06_ethics}
+
+\section*{Acknowledgements}
+\input{sections/06_ack}
+
+\bibliography{references}
+
+\clearpage
+\appendix
+\input{sections/07_appendix}
+
+\end{document}
