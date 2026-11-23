@@ -1,0 +1,159 @@
+[∞-gram Engine] Initialized in 556.5ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.3ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+skip (checkpoint) OURS old shipped infinity-gram (CPU)
+skip (checkpoint) OURS predictor_v2 (CPU)
+skip speed (checkpoint) OURS predictor_v2 (CPU)
+skip (checkpoint) BASELINE facebook/opt-125m pretrained
+skip speed (checkpoint) BASELINE facebook/opt-125m pretrained
+skip (checkpoint) BASELINE facebook/opt-350m pretrained
+skip speed (checkpoint) BASELINE facebook/opt-350m pretrained
+BASELINE facebook/opt-125m adapted on our train split, seed 0 {'aac': {'ksr_pct': 61.917, 'top1': 23.31983805668016, 'top5': 42.550607287449395}, 'care': {'ksr_pct': 66.144, 'top1': 28.215028215028216, 'top5': 50.876150876150874}, 'avg_ksr': 64.031, 'wall_s': 1214}
+speed BASELINE facebook/opt-125m adapted {'median_over_runs': 23.464, 'range_of_run_medians': [23.079, 23.667], 'p95_median_over_runs': 253.579, 'runs': 5, 'queries_per_run': 200}
+BASELINE facebook/opt-125m adapted on our train split, seed 1 {'aac': {'ksr_pct': 61.791, 'top1': 21.781376518218625, 'top5': 42.42914979757085}, 'care': {'ksr_pct': 65.877, 'top1': 27.59132759132759, 'top5': 49.56934956934957}, 'avg_ksr': 63.834, 'wall_s': 1209}
+BASELINE facebook/opt-125m adapted on our train split, seed 2 {'aac': {'ksr_pct': 61.65, 'top1': 22.06477732793522, 'top5': 41.86234817813765}, 'care': {'ksr_pct': 66.047, 'top1': 28.185328185328185, 'top5': 50.16335016335017}, 'avg_ksr': 63.849, 'wall_s': 1211}
+OURS predictor_v2 + adapted BLOOM-560m re-ranker K50 (GPU) {'aac': {'ksr_pct': 60.575, 'top1': 21.214574898785425, 'top5': 38.21862348178138}, 'care': {'ksr_pct': 64.931, 'top1': 26.73002673002673, 'top5': 46.53994653994654}, 'avg_ksr': 62.753, 'wall_s': 1218}
+re-ranker calls {'used': 11320, 'fell_back_to_cpu': 0, 'lm_status': {'mode': 'auto', 'ready': True, 'failed': None, 'k': 50, 'w_cpu': 0.1, 'adapters': ['en', 'gu', 'hi', 'mr'], 'last_ms': 166.1}}
+speed OURS predictor_v2 + BLOOM re-ranker K50 (GPU) {'median_over_runs': 75.061, 'range_of_run_medians': [73.001, 76.331], 'p95_median_over_runs': 202.19, 'runs': 5, 'queries_per_run': 200}
+{
+ "OURS predictor_v2 + adapted BLOOM-560m re-ranker K50 (GPU) minus OURS old shipped infinity-gram (CPU)": {
+  "aac": [
+   5.09,
+   6.24
+  ],
+  "care": [
+   4.77,
+   5.71
+  ]
+ },
+ "OURS predictor_v2 (CPU) minus OURS old shipped infinity-gram (CPU)": {
+  "aac": [
+   0.02,
+   0.57
+  ],
+  "care": [
+   -0.13,
+   0.39
+  ]
+ },
+ "OURS predictor_v2 + adapted BLOOM-560m re-ranker K50 (GPU) minus OURS predictor_v2 (CPU)": {
+  "aac": [
+   4.84,
+   5.93
+  ],
+  "care": [
+   4.66,
+   5.55
+  ]
+ },
+ "OURS predictor_v2 + adapted BLOOM-560m re-ranker K50 (GPU) minus BASELINE facebook/opt-125m pretrained": {
+  "aac": [
+   3.13,
+   4.4
+  ],
+  "care": [
+   4.63,
+   5.81
+  ]
+ },
+ "OURS predictor_v2 (CPU) minus BASELINE facebook/opt-125m pretrained": {
+  "aac": [
+   -2.54,
+   -0.71
+  ],
+  "care": [
+   -0.74,
+   0.98
+  ]
+ },
+ "OURS predictor_v2 + adapted BLOOM-560m re-ranker K50 (GPU) minus BASELINE facebook/opt-350m pretrained": {
+  "aac": [
+   2.3,
+   3.52
+  ],
+  "care": [
+   3.39,
+   4.45
+  ]
+ },
+ "OURS predictor_v2 (CPU) minus BASELINE facebook/opt-350m pretrained": {
+  "aac": [
+   -3.36,
+   -1.64
+  ],
+  "care": [
+   -1.95,
+   -0.39
+  ]
+ },
+ "OURS predictor_v2 + adapted BLOOM-560m re-ranker K50 (GPU) minus BASELINE facebook/opt-125m adapted on our train split, seed 0": {
+  "aac": [
+   -1.67,
+   -1.0
+  ],
+  "care": [
+   -1.49,
+   -0.94
+  ]
+ },
+ "OURS predictor_v2 (CPU) minus BASELINE facebook/opt-125m adapted on our train split, seed 0": {
+  "aac": [
+   -7.41,
+   -6.07
+  ],
+  "care": [
+   -6.88,
+   -5.75
+  ]
+ },
+ "OURS predictor_v2 + adapted BLOOM-560m re-ranker K50 (GPU) minus BASELINE facebook/opt-125m adapted on our train split, seed 1": {
+  "aac": [
+   -1.59,
+   -0.85
+  ],
+  "care": [
+   -1.26,
+   -0.63
+  ]
+ },
+ "OURS predictor_v2 (CPU) minus BASELINE facebook/opt-125m adapted on our train split, seed 1": {
+  "aac": [
+   -7.31,
+   -5.94
+  ],
+  "care": [
+   -6.61,
+   -5.48
+  ]
+ },
+ "OURS predictor_v2 + adapted BLOOM-560m re-ranker K50 (GPU) minus BASELINE facebook/opt-125m adapted on our train split, seed 2": {
+  "aac": [
+   -1.45,
+   -0.69
+  ],
+  "care": [
+   -1.45,
+   -0.8
+  ]
+ },
+ "OURS predictor_v2 (CPU) minus BASELINE facebook/opt-125m adapted on our train split, seed 2": {
+  "aac": [
+   -7.14,
+   -5.81
+  ],
+  "care": [
+   -6.8,
+   -5.63
+  ]
+ },
+ "OURS predictor_v2 (CPU) minus OURS predictor_v2 + adapted BLOOM-560m re-ranker K50 (GPU)": {
+  "aac": [
+   -5.93,
+   -4.84
+  ],
+  "care": [
+   -5.55,
+   -4.66
+  ]
+ }
+}
+done 5203 s

@@ -17,6 +17,8 @@ from lib import *
 from exp_final import run_stream, boot_ci
 import predictor_v2 as P, lm_rerank as L
 L.CACHE_MAX = 10**7
+OPT_BATCH = int(os.environ.get("OPT_BATCH", "32"))   # candidates per OPT forward pass (memory vs speed; same scores up to fp16 rounding)
+L.CHUNK = int(os.environ.get("LM_CHUNK", str(L.CHUNK)))
 lang = "en"; t_start = time.time()
 train = sents(lang, "train"); dev = sents(lang, "dev"); tests = {k: sents(lang, "test", (k,)) for k in ("aac", "care")}
 m = P.LangModel(lang, train, cov=True); e = make_engine(train, lang); pool300 = Pool(train, 300)
@@ -69,8 +71,8 @@ def lexicon_scorer(mod, tok):
     def score(ctx, cands):
         sc = cache.setdefault(tuple(ctx), {}); miss = [w for w in cands if w not in sc]
         text = " ".join(ctx); base = [tok.bos_token_id] + (tok(text, add_special_tokens=False)["input_ids"] if text else [])
-        for i in range(0, len(miss), 32):
-            ch = miss[i:i + 32]; ws = [tok((" " if ctx else "") + w, add_special_tokens=False)["input_ids"] for w in ch]
+        for i in range(0, len(miss), OPT_BATCH):
+            ch = miss[i:i + OPT_BATCH]; ws = [tok((" " if ctx else "") + w, add_special_tokens=False)["input_ids"] for w in ch]
             Lm = len(base) + max(map(len, ws)); ids = torch.full((len(ch), Lm), tok.pad_token_id); att = torch.zeros((len(ch), Lm), dtype=torch.long)
             for j, w in enumerate(ws): s_ = base + w; ids[j, :len(s_)] = torch.tensor(s_); att[j, :len(s_)] = 1
             lp = torch.log_softmax(mod(input_ids=ids.cuda(), attention_mask=att.cuda()).logits[:, len(base) - 1:].float(), -1)

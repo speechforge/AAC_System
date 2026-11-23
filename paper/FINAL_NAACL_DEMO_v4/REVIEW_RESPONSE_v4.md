@@ -105,9 +105,32 @@ on one example from the baseline paper ("yeste" -> r: 0.994 vs the paper's 0.999
 - paired bootstrap 95 % CIs (over sentences) of ours against every row;
 - speed: 5 repeated runs of 200 fresh queries per system, median and range of the run medians.
 
-RESULTS: see the table below (filled from the JSON when the run finished).
+RESULTS (`results/step17_baseline_ci.json`, finished 16:09):
 
-STEP17_RESULTS_PLACEHOLDER
+| System (English, 5 suggestions, same candidates) | KSR AAC | KSR caregiver | avg | ours(GPU) minus row, 95 % CI AAC / care | ms per query, median of 5 runs (range) |
+|---|---|---|---|---|---|
+| Evaluated build's trie (CPU) | 54.88 | 59.69 | 57.28 | +5.1..+6.2 / +4.8..+5.7 | - |
+| Ours, predictor_v2 (CPU) | 55.18 | 59.81 | 57.49 | +4.8..+5.9 / +4.7..+5.6 | **0.71** (0.68-0.77) |
+| **Ours + adapted BLOOM-560m re-ranker (GPU)** | 60.58 | 64.93 | 62.75 | - | 75.1 (73.0-76.3) |
+| OPT-125m pretrained | 56.82 | 59.73 | 58.27 | +3.1..+4.4 / +4.6..+5.8 | 23.6 (23.1-23.9) |
+| OPT-350m pretrained | 57.67 | 61.00 | 59.33 | +2.3..+3.5 / +3.4..+4.5 | 57.7 (57.3-58.5) |
+| OPT-125m adapted, seed 0 / 1 / 2 | 61.92 / 61.79 / 61.65 | 66.14 / 65.88 / 66.05 | **64.03 / 63.83 / 63.85** | -1.7..-1.0 / -1.5..-0.9 (seed 0); all seeds below 0 | 23.5 (23.1-23.7) |
+
+Checks: the re-ranker was really used in all 11,320 calls (0 fell back to CPU); the three OPT seeds agree within 0.2 KSR
+(mean 63.9, range 63.8-64.0), so seed variance is small compared with the gaps.
+
+**What this means (stated as is in v4):**
+- On English, the baseline method with an adapted OPT-125m is **better than our best system by 1.2 KSR** (63.9 vs 62.8; every
+  seed's interval excludes 0) and **faster** on the GPU (23 vs 75 ms per query). Our re-ranker does not beat the baseline's
+  adaptation on English.
+- Our system beats the pretrained OPT models (+2.3 to +5.8 pp) and the evaluated build's trie (+4.8 to +6.2 pp).
+- Our advantages are elsewhere: one system for four languages (OPT was run for English only; it is an English model), and a
+  CPU predictor that needs no GPU at 0.71 ms per query (about 33x faster than OPT on a GPU), 0.8 (OPT-125m) and
+  1.8 (OPT-350m) KSR below pretrained OPT.
+- Old claim corrected: `RESULTS_vs_baseline.txt` (40+40 sentences) had adapted OPT-125m 62.6 vs our trie 55.9; on full test
+  sets with the same candidates it is 63.9 vs 57.3. The ordering is the same; the gap is smaller.
+- Possible follow-up (not done, it changes the system): for English, use a fully fine-tuned OPT-125m as the re-ranker
+  instead of BLOOM+LoRA (+1.2 KSR, 3x faster); Indic languages would keep BLOOM.
 
 What stays a limitation (and is now written in Limitations): single training run for our adapters (5-fold CV exists for
 the LoRA system from Step 9 in `20_nov_changes.md`), synthetic / machine-translated text, re-implemented baseline.
@@ -120,7 +143,7 @@ the LoRA system from Step 9 in `20_nov_changes.md`), synthetic / machine-transla
   scanning and dwell, real IndicF5 speech. Contribution (ii) in the Introduction updated.
 - Section 4, new Table `tab:ksr` (keystroke savings, four languages, evaluated vs current build, CPU / GPU, new user /
   personal) replaces the old hit@1 table in the main text (moved to the appendix).
-- **The +7 target is reported as missed**: the re-ranker gained +6.5 (en), +4.0 (hi), +5.8 (mr), +4.6 (gu) KSR over the
+- **The +7 target is reported as missed**: the re-ranker gained +6.5 (en), +4.0 (hi), +5.8 (mr), +4.5 (gu) KSR over the
   evaluated trie (5 suggestions, `step5_<lang>.json`), all below the +7 target set in `IMPROVEMENT_PLAN_INDEPTH.txt` (W2).
 - Appendix Table `tab:models`: three new rows (current predictor, BLOOM + LoRA with its hyper-parameters and licence
   BigScience RAIL 1.0, personal model). New appendix Table `tab:baseline` (point 5).

@@ -24,6 +24,7 @@ ad = b["opt125m_adapted_across_seeds"]
 mac.update(OptSmKSR=f1(S[PRE1]["avg_ksr"]), OptLgKSR=f1(S[PRE3]["avg_ksr"]), OptAdKSR=f1(ad["mean"]),
            OptAdRange=f"{f1(ad['min'])}--{f1(ad['max'])}", OursGpuKSR=f1(S[GPU]["avg_ksr"]))
 ci0 = CI[f"{GPU} minus {AD[0]}"]                                  # seed 0 (the speed-tested adapted model)
+mac["OptAdMinusOurs"] = f1(ad["mean"] - S[GPU]["avg_ksr"])
 mac["OursGpuVsAdCI"] = f"{ci0['aac'][0]:+.1f} to {ci0['aac'][1]:+.1f} and {ci0['care'][0]:+.1f} to {ci0['care'][1]:+.1f}"
 spd = lambda n: SP[n]["median_over_runs"]
 mac.update(OursCpuMs=f"{spd(CPU):.1f}" if spd(CPU) >= 1 else f"{spd(CPU):.2f}", OursGpuMs=f"{spd('OURS predictor_v2 + BLOOM re-ranker K50 (GPU)'):.0f}",
@@ -35,9 +36,10 @@ with open(GEN / "numbers_v4.tex", "w") as fh:
 
 def row(label, name, speed_name=None, ref=GPU):
     r = S[name]; c = CI.get(f"{ref} minus {name}")
-    ci = f"{c['aac'][0]:+.1f}/{c['aac'][1]:+.1f} & {c['care'][0]:+.1f}/{c['care'][1]:+.1f}" if c else "-- & --"
+    ci = f"{c['aac'][0]:+.1f} to {c['aac'][1]:+.1f} & {c['care'][0]:+.1f} to {c['care'][1]:+.1f}" if c else "-- & --"
     sp = SP.get(speed_name or name)
-    ms = f"{sp['median_over_runs']:.2f} ({sp['range_of_run_medians'][0]:.2f}--{sp['range_of_run_medians'][1]:.2f})" if sp else "--"
+    d = 2 if sp and sp["median_over_runs"] < 10 else 1
+    ms = f"{sp['median_over_runs']:.{d}f} ({sp['range_of_run_medians'][0]:.{d}f}--{sp['range_of_run_medians'][1]:.{d}f})" if sp else "--"
     return f"{label} & {f1(r['aac']['ksr_pct'])} & {f1(r['care']['ksr_pct'])} & {ci} & {ms} \\\\\n"
 
 

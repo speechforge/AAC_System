@@ -634,7 +634,7 @@ gu 0.0 (no predictor). The paper uses these.
 | 3 Placeholder tone vs MOS | real build mix-up | evaluated vs current build named everywhere; MOS pilot (8 completed listeners): en 4.35, hi 3.73, gu 4.15, mr 4.15; native-only gu 4.19 (6), hi 3.92 (3), mr 1 listener; `qa_scripts/mos_pilot_summary.py` (aggregates only) |
 | 4 Bootstrap script | existed (v2/src/audit_archived.py A7) but not cited | `qa_scripts/paired_group_bootstrap.py` reproduces all 5 printed intervals exactly; method + script named in Section 4 |
 | 5 Single runs vs own OPT re-implementation | true | `exp_step17_baseline_ci.py`: full test sets, same pool, 3 seeds, paired CIs, 5 timing runs (results below) |
-| 6 UI redesign + LoRA missing | true | Section 3 "Current build", Section 4 KSR table, appendix rows; +7 target reported as missed (+6.5/+4.0/+5.8/+4.6) |
+| 6 UI redesign + LoRA missing | true | Section 3 "Current build", Section 4 KSR table, appendix rows; +7 target reported as missed (+6.5/+4.0/+5.8/+4.5) |
 
 ### 17a. Operations done today that were not yet logged (2026-11-23)
 - 12:20 Step 16 final run finished; 16d table filled in. 12:22 the :8000 server was restarted on the new backend (`run_local.py stop/start`, PORT=8000): health ok, TTS ready, Redis ready, `/predict_next` returns 401 without sign-in (correct: the account gate protects it), `aac-access.js` served (200), GPU 6.3 GB for speech + re-ranker. Endpoint check in-process (stubbed account): new user gets 7 words + phrase in all 4 languages; after 2 sentences + 1 saved phrase "zo" offers the user's name and "please" offers "bring my blue blanket".
@@ -663,3 +663,41 @@ Still running: OPT-125m and OPT-350m pretrained, OPT-125m adapted x 3 seeds, pai
   with an OPT model; every re-ranker call is counted (`reranker_calls.fell_back_to_cpu` must be 0, otherwise the "GPU" row would
   silently be CPU numbers).
 - Run 2 started 13:21 (PID 3600770). Expected: OPT-125m 20 min, OPT-350m ~35 min, 3 adapted seeds ~70 min, ours GPU ~25 min -> ~15:50.
+- 13:25 checkpoint commit `5c4f677` pushed to `November_22_2026` (v4 source, qa_scripts, Step 17 scripts, this log). The A/B rating key
+  `paper/FINAL_NAACL_DEMO_v4/qa_scripts/ab_rating/KEY_do_not_share.csv` is in `.gitignore` (raters must stay blind; it exists only locally).
+- 14:31 run 2 progress: our CPU systems identical to run 1 (57.284, 57.495); our CPU speed 0.71 ms (run medians 0.68-0.77).
+  OPT-125m pretrained 58.275 (run 1: 58.264; the 0.01 difference comes from the smaller scoring batch, fp16 padding numerics),
+  23.6 ms per query (23.1-23.9), took 22 min. OPT-350m running since 13:46 on a 97 %-busy shared GPU. New estimate: OPT-350m ~14:50,
+  3 adapted seeds ~16:05, our GPU system ~16:30, paper numbers + commit ~16:45.
+- 14:35 at the user's request the AAC server on :8000 was STOPPED (`run_local.py stop`; Redis keeps running, so accounts and
+  history are kept) to give the experiment more GPU: ~8.5 GB free now (other user 2.0 GB, this run 1.6 GB). Restart later with
+  `PORT=8000 PYTHONDONTWRITEBYTECODE=1 python run_local.py start` in `indic-generative-aac/backend`.
+- `exp_step17_baseline_ci.py` now takes `OPT_BATCH` (default 32) and `LM_CHUNK` (default 16). OPT-350m finishes with batch 32; then
+  the run is restarted from its checkpoint with OPT_BATCH=256, LM_CHUNK=50 for the 3 adapted seeds and our GPU system (same scores
+  up to fp16 rounding, ~0.01 KSR as seen for OPT-125m; noted so nobody mistakes it for a result difference).
+- 14:42 OPT-350m pretrained done with batch 32 (checkpointed; speed 57.7 ms per query, run medians 57.3-58.5); run restarted from the
+  checkpoint (PID 3608138) with OPT_BATCH=256, LM_CHUNK=50 for the 3 adapted seeds and our GPU system. Part-1 log kept as
+  `results/step17_baseline_ci_run2_part1.log`.
+
+### 17d. Point 5 RESULT (exp_step17_baseline_ci.py finished 16:09; `results/step17_baseline_ci.json`, rows `results/step17_rows.json`)
+English, full test sets (403 + 402 sentences), 5 suggestions, same 305-word candidate pool for every system; CI = paired bootstrap
+over sentences of "ours with re-ranker minus row"; speed = median of 5 runs x 200 fresh queries (range of run medians).
+| System | KSR AAC | KSR care | avg | ours(GPU) - row, CI AAC / care | ms/query |
+|---|---|---|---|---|---|
+| Evaluated build's trie (CPU) | 54.88 | 59.69 | 57.28 | +5.1..+6.2 / +4.8..+5.7 | - |
+| Ours predictor_v2 (CPU) | 55.18 | 59.81 | 57.49 | +4.8..+5.9 / +4.7..+5.6 | 0.71 (0.68-0.77) |
+| Ours + adapted BLOOM-560m re-ranker (GPU) | 60.58 | 64.93 | 62.75 | - | 75.1 (73.0-76.3) |
+| OPT-125m pretrained | 56.82 | 59.73 | 58.27 | +3.1..+4.4 / +4.6..+5.8 | 23.6 (23.1-23.9) |
+| OPT-350m pretrained | 57.67 | 61.00 | 59.33 | +2.3..+3.5 / +3.4..+4.5 | 57.7 (57.3-58.5) |
+| OPT-125m adapted seed 0 / 1 / 2 | 61.92/61.79/61.65 | 66.14/65.88/66.05 | 64.03/63.83/63.85 | -1.7..-1.0 / -1.5..-0.9 (seed 0) | 23.5 (23.1-23.7) |
+- Re-ranker really used: 11,320 calls, 0 CPU fallbacks. OPT seed spread 0.2 KSR (mean 63.9).
+- **Honest result: on English the baseline method with adapted OPT-125m beats our best system by 1.2 KSR (CIs exclude 0) and is
+  3x faster on GPU.** Ours beats pretrained OPT (+2.3..+5.8) and the old trie. Our advantages: four languages in one system, and a
+  CPU path (0.71 ms, no GPU) that is 0.8-1.8 KSR below pretrained OPT.
+- Correction of `RESULTS_vs_baseline.txt` (40+40 sentences): adapted OPT 62.6 vs our trie 55.9 there; full test sets, same pool:
+  63.9 vs 57.3. Same ordering, smaller gap.
+- LoRA gain over the old trie recomputed from the files: +6.5 en, +4.0 hi, +5.8 mr, **+4.5** gu (I had written 4.6 by hand; fixed).
+- Paper v4: `qa_scripts/make_numbers_v4.py` writes `generated/numbers_v4.tex` and `generated/tab_baseline.tex` (Appendix table);
+  Section 4 now says the adapted baseline is 1.2 points better and faster, and that it was run for English only.
+- Possible follow-up (NOT done; changes the system): an adapted OPT-125m as the English re-ranker instead of BLOOM+LoRA.
+- The AAC server on :8000 stays stopped (user does not need it now).

@@ -1,0 +1,9 @@
+[∞-gram Engine] Initialized in 558.5ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+OURS old shipped infinity-gram (CPU) {'aac': {'ksr_pct': 54.882, 'top1': 14.048582995951417, 'top5': 29.352226720647774}, 'care': {'ksr_pct': 59.686, 'top1': 19.57231957231957, 'top5': 37.42203742203742}, 'avg_ksr': 57.284, 'wall_s': 23}
+OURS predictor_v2 (CPU) {'aac': {'ksr_pct': 55.178, 'top1': 14.37246963562753, 'top5': 29.959514170040485}, 'care': {'ksr_pct': 59.811, 'top1': 19.83961983961984, 'top5': 38.55063855063855}, 'avg_ksr': 57.495, 'wall_s': 24}
+speed OURS predictor_v2 (CPU) {'median_over_runs': 0.711, 'range_of_run_medians': [0.677, 0.773], 'p95_median_over_runs': 5.242, 'runs': 5, 'queries_per_run': 200}
+BASELINE facebook/opt-125m pretrained {'aac': {'ksr_pct': 56.824, 'top1': 15.587044534412955, 'top5': 32.83400809716599}, 'care': {'ksr_pct': 59.726, 'top1': 19.66141966141966, 'top5': 37.362637362637365}, 'avg_ksr': 58.275, 'wall_s': 1339}
+speed BASELINE facebook/opt-125m pretrained {'median_over_runs': 23.579, 'range_of_run_medians': [23.108, 23.912], 'p95_median_over_runs': 272.191, 'runs': 5, 'queries_per_run': 200}
+BASELINE facebook/opt-350m pretrained {'aac': {'ksr_pct': 57.669, 'top1': 16.720647773279353, 'top5': 33.1578947368421}, 'care': {'ksr_pct': 61.0, 'top1': 20.997920997920996, 'top5': 39.26343926343927}, 'avg_ksr': 59.334, 'wall_s': 3192}
+speed BASELINE facebook/opt-350m pretrained {'median_over_runs': 57.703, 'range_of_run_medians': [57.311, 58.478], 'p95_median_over_runs': 679.477, 'runs': 5, 'queries_per_run': 200}
