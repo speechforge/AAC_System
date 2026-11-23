@@ -1,0 +1,15 @@
+{
+ "mr": {
+  "n7": 53.343,
+  "n8 (control: one more word)": 54.271,
+  "n7 personal lam0.1": 53.583,
+  "n7 personal lam0.2": 53.441,
+  "n7 personal lam0.3": 53.336,
+  "n7 personal lam0.5": 53.141,
+  "n7 + phrase: own sentences only": 53.343,
+  "n7 + phrase: own + training sentences": 53.411,
+  "n7 + phrase: own + training + confident extension p0.5": 53.62,
+  "n7 + phrase: own + training + confident extension p0.3": 53.628,
+  "n7 personal lam0.1 + phrase: own + training + confident extension p0.3": 53.859
+ }
+}

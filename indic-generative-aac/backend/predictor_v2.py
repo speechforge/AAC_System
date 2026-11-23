@@ -106,6 +106,90 @@ class _Node:
         self.children = {}
 
 
+def _insert(root, start, ws):
+    """Add one sentence to a suffix trie (every suffix, so the longest matching context can be found)."""
+    start[ws[0]] += 1
+    for i in range(len(ws)):
+        node = root
+        node.count += 1
+        for w in ws[i:]:
+            node = node.children.setdefault(w, _Node())
+            node.count += 1
+
+
+def _trie_dist(root, start, ctx, alpha):
+    """Infinity-gram next-word distribution: every matching context suffix, longer ones weighted more (back-off alpha)."""
+    cand = collections.defaultdict(float)
+    weight = 1.0
+    for st in range(len(ctx)):
+        node = root
+        for w in ctx[st:]:
+            node = node.children.get(w)
+            if node is None:
+                break
+        if node is not None and node.children:
+            tt = sum(c.count for c in node.children.values())
+            for w, c in node.children.items():
+                cand[w] += c.count / tt * weight
+        weight *= alpha
+    if not ctx:
+        t = sum(start.values()) or 1
+        for w, c in start.items():
+            cand[w] += c / t
+    z = sum(cand.values()) or 1.0
+    return {w: v / z for w, v in cand.items()}
+
+
+def _index(idx, ws):
+    """Sentence memory: words so far -> counts of how the sentence went on (only continuations of 2+ words)."""
+    for i in range(len(ws) - 1):
+        idx[tuple(ws[:i])][tuple(ws[i:])] += 1
+
+
+class Personal:
+    """One user's own sentences in one language (from their saved conversations and phrases): a small infinity-gram,
+    word counts and a sentence memory. Built per request from at most ~200 sentences, so it costs about a millisecond."""
+
+    def __init__(self, lang, sentences=()):
+        self.lang = lang
+        self.root, self.start, self.uni = _Node(), collections.Counter(), collections.Counter()
+        self.idx = collections.defaultdict(collections.Counter)
+        for s in sentences:
+            self.add(s)
+
+    def add(self, text):
+        ws = words_of(text, self.lang) if isinstance(text, str) else list(text)
+        if ws:
+            _insert(self.root, self.start, ws)
+            self.uni.update(ws)
+            _index(self.idx, ws)
+
+    def dist(self, ctx, prefix=""):
+        """P(next word | context, typed letters) from this user's history only (0.7 infinity-gram + 0.3 word counts)."""
+        if not self.uni:
+            return {}
+        tr = _trie_dist(self.root, self.start, ctx[-3:], 0.2)
+        T = sum(self.uni.values())
+        d = {w: 0.7 * tr.get(w, 0.0) + 0.3 * c / T for w, c in self.uni.items() if w.startswith(prefix)}
+        z = sum(d.values())
+        return {w: v / z for w, v in d.items()} if z else {}
+
+
+LAM = {"en": 0.1, "hi": 0.1, "mr": 0.1, "gu": 0.1}   # weight of the personal model (best of 0.1-0.5 on dev in all 4 languages, Step 16)
+
+
+def personalise(ranked, pm, ctx, prefix="", lam=0.1):
+    """Mix the user's own model into a ranked [(score, word)] list. New words the user has used before join the list."""
+    d = pm.dist(list(ctx), prefix) if pm is not None and lam > 0 else {}
+    if not d:
+        return ranked
+    z = sum(s for s, _ in ranked) or 1.0
+    sc = {w: (1 - lam) * s / z for s, w in ranked}
+    for w, p in d.items():
+        sc[w] = sc.get(w, 0.0) + lam * p
+    return sorted(((s, w) for w, s in sc.items()), key=lambda x: -x[0])
+
+
 def _softnorm(sc):
     m = max(sc)
     e = [math.exp(x - m) for x in sc]
@@ -123,18 +207,14 @@ class LangModel:
         self.root = _Node()
         self.uni = collections.Counter()
         self.start = collections.Counter()
+        self.idx = collections.defaultdict(collections.Counter)    # sentence memory of the training text
         for s in sentences:
             ws = s.split()
             if not ws:
                 continue
-            self.start[ws[0]] += 1
             self.uni.update(ws)
-            for i in range(len(ws)):               # all suffixes -> longest-suffix lookup
-                node = self.root
-                node.count += 1
-                for w in ws[i:]:
-                    node = node.children.setdefault(w, _Node())
-                    node.count += 1
+            _insert(self.root, self.start, ws)     # all suffixes -> longest-suffix lookup
+            _index(self.idx, ws)
         self.T = sum(self.uni.values()) or 1
         self.cm = CharNgram(12).train(sentences)
         self.ranked = [w for w, _ in self.uni.most_common()]
@@ -183,25 +263,31 @@ class LangModel:
 
     # ---- scoring ----------------------------------------------------------------------------------------------------------
     def _inf_dist(self, ctx):
-        cand = collections.defaultdict(float)
-        weight, alpha = 1.0, self.params["backoff"]
-        for st in range(len(ctx)):
-            node = self.root
-            for w in ctx[st:]:
-                node = node.children.get(w)
-                if node is None:
+        return _trie_dist(self.root, self.start, ctx, self.params["backoff"])
+
+    def phrase(self, ctx, prefix="", top=None, pm=None, use_train=True, min_p=0.5, max_extra=3):
+        """One multi-word suggestion: (1) how a sentence that began exactly like this one went on, from the user's own
+        sentences (weight 10) or the training text; else (2) the top word extended while the model is confident (>= min_p)."""
+        best, bs = None, 0.0
+        for idx, wgt in ((pm.idx if pm is not None else None, 10.0), (self.idx if use_train else None, 1.0)):
+            for rem, c in (idx.get(tuple(ctx), {}).items() if idx else ()):
+                if rem[0].startswith(prefix) and c * wgt > bs:
+                    best, bs = rem, c * wgt
+        if best:
+            return list(best)
+        if top and min_p < 1:
+            ph, cap = [top], self.params["ctx_cap"]
+            for _ in range(max_extra):
+                d = self._inf_dist((list(ctx) + ph)[-cap:])
+                if not d:
                     break
-            if node is not None and node.children:
-                tt = sum(c.count for c in node.children.values())
-                for w, c in node.children.items():
-                    cand[w] += c.count / tt * weight
-            weight *= alpha
-        if not ctx:
-            t = sum(self.start.values()) or 1
-            for w, c in self.start.items():
-                cand[w] += c / t
-        z = sum(cand.values()) or 1.0
-        return {w: v / z for w, v in cand.items()}
+                w, p = max(d.items(), key=lambda x: x[1])
+                if p < min_p:
+                    break
+                ph.append(w)
+            if len(ph) > 1:
+                return ph
+        return None
 
     def score(self, ctx, cands):
         """Probability-like score of each candidate word given the context words (sums to 1 over cands)."""
@@ -256,8 +342,23 @@ def available(lang):
     return os.path.exists(os.path.join(DATA_DIR, f"{lang}.txt"))
 
 
-def predict(words, language, prefix="", top_k=10, emojis=None, use_lm=True):
+def suggest_phrase(words, language, prefix="", top=None, personal=None):
+    """The multi-word suggestion shown above the word list (a string), or None."""
+    m = get_model(language) if language in LANGS else None
+    if m is None:
+        return None
+    ctx = [w for t in words for w in words_of(t, language)]
+    pre = "".join(words_of(prefix or "", language)) if prefix else ""
+    ph = m.phrase(ctx, pre, top=top, pm=personal, **PHRASE)
+    return " ".join(ph) if ph else None
+
+
+PHRASE = {"use_train": True, "min_p": 0.5}     # chosen on dev (Step 16)
+
+
+def predict(words, language, prefix="", top_k=10, emojis=None, use_lm=True, personal=None):
     """Ranked predictions for the next word (prefix == "") or the completion of a typed prefix.
+    personal: a Personal model of this user's own sentences (optional).
     Returns [] when the language has no training data (caller falls back to the legacy predictor)."""
     if language not in LANGS:
         return []
@@ -276,6 +377,9 @@ def predict(words, language, prefix="", top_k=10, emojis=None, use_lm=True):
                 full, src = lm, "model+lm"
         except Exception:
             pass                                           # any LM problem: keep the CPU ranking
+    if personal is not None:
+        full = personalise(full, personal, ctx, pre, LAM[language])
+        src += "+personal" if personal.uni else ""
     ranked = full[:top_k]
     tot = sum(s for s, _ in ranked) or 1.0
     emojis = emojis or {}

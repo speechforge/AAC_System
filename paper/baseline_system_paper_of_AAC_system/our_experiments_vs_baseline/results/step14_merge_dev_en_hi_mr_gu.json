@@ -1,0 +1,26 @@
+{
+ "en": {
+  "current_excludeTrue": 31.287,
+  "stat_first_excludeTrue": 56.083,
+  "stat_first_excludeFalse": 56.83,
+  "stat_only_excludeFalse": 57.5
+ },
+ "hi": {
+  "current_excludeTrue": 26.853,
+  "stat_first_excludeTrue": 57.814,
+  "stat_first_excludeFalse": 59.182,
+  "stat_only_excludeFalse": 59.873
+ },
+ "mr": {
+  "current_excludeTrue": 28.818,
+  "stat_first_excludeTrue": 51.331,
+  "stat_first_excludeFalse": 52.939,
+  "stat_only_excludeFalse": 53.343
+ },
+ "gu": {
+  "current_excludeTrue": 25.193,
+  "stat_first_excludeTrue": 52.69,
+  "stat_first_excludeFalse": 54.914,
+  "stat_only_excludeFalse": 55.412
+ }
+}

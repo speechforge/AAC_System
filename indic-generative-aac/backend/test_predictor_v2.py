@@ -50,6 +50,16 @@ def test_lm_rerank_falls_back_cleanly():
         lm_rerank.MODE = old
 
 
+def test_personal_vocabulary_and_phrase():
+    """A word only this user says (a name) is learned; a sentence they said before is offered back as a phrase."""
+    pm = P.Personal("en", ["I want to see Zorvath today", "call Zorvath now please"])
+    out = P.predict(["call"], "en", prefix="zo", top_k=7, use_lm=False, personal=pm)
+    assert "zorvath" in [x["word"] for x in out] and "personal" in out[0]["source"]   # learned word is in the 7 shown
+    assert P.suggest_phrase(["i", "want"], "en", "", personal=pm) == "to see zorvath today"
+    assert "zorvath" not in [x["word"] for x in P.predict(["call"], "en", prefix="zo", top_k=7, use_lm=False)]
+    assert P.Personal("en", []).dist(["i"]) == {}                   # empty history: no effect
+
+
 if __name__ == "__main__":
     for n, f in list(globals().items()):
         if n.startswith("test_"):

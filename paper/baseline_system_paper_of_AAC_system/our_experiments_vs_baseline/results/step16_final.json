@@ -1,0 +1,354 @@
+{
+ "en": {
+  "K": 50,
+  "OLD": {
+   "aac": 5.849,
+   "care": 8.604,
+   "avg": 7.226,
+   "phrases_used": 0,
+   "seconds": 7
+  },
+  "CPU": {
+   "aac": 56.691,
+   "care": 61.034,
+   "avg": 58.862,
+   "phrases_used": 0,
+   "seconds": 27
+  },
+  "CPU+P": {
+   "aac": 57.677,
+   "care": 62.96,
+   "avg": 60.319,
+   "phrases_used": 96,
+   "seconds": 3
+  },
+  "GPU": {
+   "aac": 61.45,
+   "care": 65.475,
+   "avg": 63.462,
+   "phrases_used": 0,
+   "seconds": 1406
+  },
+  "GPU+P": {
+   "aac": 62.102,
+   "care": 66.534,
+   "avg": 64.318,
+   "phrases_used": 106,
+   "seconds": 11
+  },
+  "gain_GPU+P_vs_OLD_95ci_pp": {
+   "aac": [
+    54.87,
+    57.6
+   ],
+   "care": [
+    56.91,
+    58.99
+   ]
+  },
+  "gain_CPU_vs_OLD_95ci_pp": {
+   "aac": [
+    49.48,
+    52.13
+   ],
+   "care": [
+    51.34,
+    53.62
+   ]
+  },
+  "gain_CPU+P_vs_CPU_95ci_pp": {
+   "aac": [
+    0.65,
+    1.32
+   ],
+   "care": [
+    1.59,
+    2.3
+   ]
+  },
+  "gain_GPU_vs_CPU_95ci_pp": {
+   "aac": [
+    4.26,
+    5.25
+   ],
+   "care": [
+    4.03,
+    4.84
+   ]
+  },
+  "gain_GPU+P_vs_GPU_95ci_pp": {
+   "aac": [
+    0.39,
+    0.93
+   ],
+   "care": [
+    0.76,
+    1.38
+   ]
+  }
+ },
+ "hi": {
+  "K": 50,
+  "OLD": {
+   "aac": 9.156,
+   "care": 10.228,
+   "avg": 9.692,
+   "phrases_used": 0,
+   "seconds": 11
+  },
+  "CPU": {
+   "aac": 58.819,
+   "care": 60.629,
+   "avg": 59.724,
+   "phrases_used": 0,
+   "seconds": 32
+  },
+  "CPU+P": {
+   "aac": 61.411,
+   "care": 63.581,
+   "avg": 62.496,
+   "phrases_used": 280,
+   "seconds": 4
+  },
+  "GPU": {
+   "aac": 61.035,
+   "care": 62.757,
+   "avg": 61.896,
+   "phrases_used": 0,
+   "seconds": 1487
+  },
+  "GPU+P": {
+   "aac": 63.348,
+   "care": 65.235,
+   "avg": 64.291,
+   "phrases_used": 319,
+   "seconds": 10
+  },
+  "gain_GPU+P_vs_OLD_95ci_pp": {
+   "aac": [
+    52.87,
+    55.43
+   ],
+   "care": [
+    53.96,
+    56.11
+   ]
+  },
+  "gain_CPU_vs_OLD_95ci_pp": {
+   "aac": [
+    48.52,
+    50.81
+   ],
+   "care": [
+    49.48,
+    51.41
+   ]
+  },
+  "gain_CPU+P_vs_CPU_95ci_pp": {
+   "aac": [
+    2.03,
+    3.16
+   ],
+   "care": [
+    2.45,
+    3.47
+   ]
+  },
+  "gain_GPU_vs_CPU_95ci_pp": {
+   "aac": [
+    1.83,
+    2.6
+   ],
+   "care": [
+    1.8,
+    2.44
+   ]
+  },
+  "gain_GPU+P_vs_GPU_95ci_pp": {
+   "aac": [
+    1.76,
+    2.88
+   ],
+   "care": [
+    2.06,
+    2.94
+   ]
+  }
+ },
+ "mr": {
+  "K": 50,
+  "OLD": {
+   "aac": 4.516,
+   "care": 5.881,
+   "avg": 5.199,
+   "phrases_used": 0,
+   "seconds": 10
+  },
+  "CPU": {
+   "aac": 51.503,
+   "care": 56.424,
+   "avg": 53.963,
+   "phrases_used": 0,
+   "seconds": 48
+  },
+  "CPU+P": {
+   "aac": 52.151,
+   "care": 57.781,
+   "avg": 54.966,
+   "phrases_used": 78,
+   "seconds": 4
+  },
+  "GPU": {
+   "aac": 53.966,
+   "care": 58.608,
+   "avg": 56.287,
+   "phrases_used": 0,
+   "seconds": 1496
+  },
+  "GPU+P": {
+   "aac": 54.554,
+   "care": 59.868,
+   "avg": 57.211,
+   "phrases_used": 80,
+   "seconds": 10
+  },
+  "gain_GPU+P_vs_OLD_95ci_pp": {
+   "aac": [
+    47.8,
+    52.13
+   ],
+   "care": [
+    52.66,
+    55.28
+   ]
+  },
+  "gain_CPU_vs_OLD_95ci_pp": {
+   "aac": [
+    44.89,
+    49.07
+   ],
+   "care": [
+    49.24,
+    51.86
+   ]
+  },
+  "gain_CPU+P_vs_CPU_95ci_pp": {
+   "aac": [
+    0.35,
+    0.97
+   ],
+   "care": [
+    0.96,
+    1.75
+   ]
+  },
+  "gain_GPU_vs_CPU_95ci_pp": {
+   "aac": [
+    1.95,
+    3.02
+   ],
+   "care": [
+    1.64,
+    2.69
+   ]
+  },
+  "gain_GPU+P_vs_GPU_95ci_pp": {
+   "aac": [
+    0.32,
+    0.85
+   ],
+   "care": [
+    0.92,
+    1.6
+   ]
+  }
+ },
+ "gu": {
+  "K": 50,
+  "OLD": {
+   "aac": 6.154,
+   "care": 8.424,
+   "avg": 7.289,
+   "phrases_used": 0,
+   "seconds": 10
+  },
+  "CPU": {
+   "aac": 55.178,
+   "care": 58.782,
+   "avg": 56.98,
+   "phrases_used": 0,
+   "seconds": 42
+  },
+  "CPU+P": {
+   "aac": 56.464,
+   "care": 60.267,
+   "avg": 58.365,
+   "phrases_used": 234,
+   "seconds": 4
+  },
+  "GPU": {
+   "aac": 57.431,
+   "care": 60.43,
+   "avg": 58.93,
+   "phrases_used": 0,
+   "seconds": 1673
+  },
+  "GPU+P": {
+   "aac": 58.709,
+   "care": 62.115,
+   "avg": 60.412,
+   "phrases_used": 284,
+   "seconds": 12
+  },
+  "gain_GPU+P_vs_OLD_95ci_pp": {
+   "aac": [
+    51.09,
+    53.94
+   ],
+   "care": [
+    52.39,
+    54.81
+   ]
+  },
+  "gain_CPU_vs_OLD_95ci_pp": {
+   "aac": [
+    47.79,
+    50.38
+   ],
+   "care": [
+    49.09,
+    51.46
+   ]
+  },
+  "gain_CPU+P_vs_CPU_95ci_pp": {
+   "aac": [
+    0.86,
+    1.71
+   ],
+   "care": [
+    1.17,
+    1.84
+   ]
+  },
+  "gain_GPU_vs_CPU_95ci_pp": {
+   "aac": [
+    1.82,
+    2.72
+   ],
+   "care": [
+    1.3,
+    1.97
+   ]
+  },
+  "gain_GPU+P_vs_GPU_95ci_pp": {
+   "aac": [
+    0.9,
+    1.66
+   ],
+   "care": [
+    1.34,
+    2.02
+   ]
+  }
+ }
+}

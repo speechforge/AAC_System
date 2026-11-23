@@ -1,0 +1,50 @@
+/* aac-standard.css - conventions used by established AAC boards (word-type colours, large targets, scanning/dwell feedback).
+   Word types follow the Modified Fitzgerald Key: verbs green, nouns orange, descriptors blue, people/pronouns yellow,
+   social words pink, negation red, urgent red. Turn the colours off with html[data-aac-colours="off"]. */
+:root{--wc-verb:#2f9e44;--wc-noun:#e8590c;--wc-desc:#1c7ed6;--wc-pron:#f2c200;--wc-social:#d6336c;--wc-neg:#c92a2a;--wc-urgent:#c92a2a;
+      --aac-hl:#ff6b00;--aac-hl-ink:#ffffff}
+.dark{--wc-verb:#51cf66;--wc-noun:#ff922b;--wc-desc:#4dabf7;--wc-pron:#ffd43b;--wc-social:#f06595;--wc-neg:#ff6b6b;--wc-urgent:#ff6b6b}
+html:not([data-aac-colours="off"]) .symbol-card[data-wc]{border-width:2px!important;border-style:solid!important}
+html:not([data-aac-colours="off"]) .symbol-card[data-wc]::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;border-radius:inherit;border-bottom-left-radius:0;border-bottom-right-radius:0;pointer-events:none}
+.symbol-card{position:relative}
+html:not([data-aac-colours="off"]) .symbol-card[data-wc="verb"]{border-color:var(--wc-verb)!important}   html:not([data-aac-colours="off"]) .symbol-card[data-wc="verb"]::before{background:var(--wc-verb)}
+html:not([data-aac-colours="off"]) .symbol-card[data-wc="noun"]{border-color:var(--wc-noun)!important}   html:not([data-aac-colours="off"]) .symbol-card[data-wc="noun"]::before{background:var(--wc-noun)}
+html:not([data-aac-colours="off"]) .symbol-card[data-wc="desc"]{border-color:var(--wc-desc)!important}   html:not([data-aac-colours="off"]) .symbol-card[data-wc="desc"]::before{background:var(--wc-desc)}
+html:not([data-aac-colours="off"]) .symbol-card[data-wc="pron"]{border-color:var(--wc-pron)!important}   html:not([data-aac-colours="off"]) .symbol-card[data-wc="pron"]::before{background:var(--wc-pron)}
+html:not([data-aac-colours="off"]) .symbol-card[data-wc="social"]{border-color:var(--wc-social)!important} html:not([data-aac-colours="off"]) .symbol-card[data-wc="social"]::before{background:var(--wc-social)}
+html:not([data-aac-colours="off"]) .symbol-card[data-wc="neg"]{border-color:var(--wc-neg)!important}     html:not([data-aac-colours="off"]) .symbol-card[data-wc="neg"]::before{background:var(--wc-neg)}
+html:not([data-aac-colours="off"]) .symbol-card[data-wc="urgent"]{border-color:var(--wc-urgent)!important} html:not([data-aac-colours="off"]) .symbol-card[data-wc="urgent"]::before{background:var(--wc-urgent)}
+
+/* Targets: at least 44 CSS px (WCAG 2.2 2.5.5); small remove buttons at least 32 px. */
+.prediction-shelf button,.category-tabs button,.composer-actions>button,.draft-actions button{min-height:44px}
+.prediction-shelf button{font-size:15px!important}
+.custom-symbol-remove,.sentence-strip button[title]{min-width:32px;min-height:32px}
+
+/* Phones in portrait: keep the suggestions visible (the layout hid them, which removed word prediction on phones). */
+@media(max-width:650px) and (orientation:portrait){
+  .reference-communicator .prediction-shelf{display:block!important;padding:2px!important}
+  .reference-communicator .prediction-shelf>div:first-child{display:none!important}
+  .reference-communicator .prediction-shelf>div:last-child{max-height:46px}
+}
+
+/* Switch scanning highlight and dwell progress. */
+.aac-scan-group{outline:4px dashed var(--aac-hl)!important;outline-offset:3px}
+.aac-scan-item{outline:5px solid var(--aac-hl)!important;outline-offset:2px;box-shadow:0 0 0 9px color-mix(in srgb,var(--aac-hl) 25%,transparent)!important;z-index:2}
+.aac-dwell{position:relative}
+.aac-dwell::after{content:"";position:absolute;left:0;bottom:0;height:5px;width:100%;background:var(--aac-hl);transform-origin:left;transform:scaleX(0);
+  animation:aac-dwell var(--aac-dwell-ms,1000ms) linear forwards;pointer-events:none;border-radius:0 0 6px 6px}
+@keyframes aac-dwell{to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.aac-dwell::after{animation-duration:var(--aac-dwell-ms,1000ms)}}
+
+/* Access panel (opened from the "Access" button). */
+.aac-access-btn{position:fixed;left:max(12px,env(safe-area-inset-left,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));z-index:60;min-height:44px;padding:8px 14px;
+  border-radius:10px;border:2px solid currentColor;background:var(--surface,#fff);color:var(--ink,#1f2937);font:600 14px/1 system-ui,sans-serif;cursor:pointer}
+.aac-access-panel{position:fixed;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(max(12px,env(safe-area-inset-bottom,0px)) + 56px);z-index:61;width:min(340px,calc(100vw - 24px));
+  padding:16px;border-radius:12px;border:1px solid var(--line-strong,#9ca3af);background:var(--surface,#fff);color:var(--ink,#1f2937);box-shadow:0 12px 32px rgb(0 0 0/.25);font:15px/1.45 system-ui,sans-serif}
+.aac-access-panel h2{font-size:16px;margin:0 0 10px}
+.aac-access-panel fieldset{border:0;padding:0;margin:0 0 12px;display:flex;flex-direction:column;gap:6px}
+.aac-access-panel legend{font-weight:600;margin-bottom:4px}
+.aac-access-panel label{display:flex;align-items:center;gap:8px;min-height:36px}
+.aac-access-panel select{min-height:36px;font:inherit}
+.aac-access-panel p{margin:8px 0 0;font-size:13px;opacity:.8}
+.dark .aac-access-btn,.dark .aac-access-panel{background:#111827;color:#f3f4f6}

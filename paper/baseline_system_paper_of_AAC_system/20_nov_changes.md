@@ -524,3 +524,94 @@ Architecture, who benefits (and that dysarthric users need switch/eye-gaze input
 ### 11e. State after this step
 - Done: audit items 2 and 1 (in code, tested at module level; not yet in a restarted server).
 - Open: restart the :8000 server on the new backend; browser check of typing; English at K=50; native test sets; listening study; switch scanning / dwell input; licences.
+
+---
+
+## Step 12 - can KSR reach 75? Ceiling analysis + dev grid for the GPU re-ranker (2026-11-23)
+Request: "KSR around 75 for all languages", system kept simple.
+
+### 12a. Ceilings (why 75 is not reachable by word prediction on this data)
+- Oracle over the candidate pool (every word predicted as soon as it is anywhere in the pool): en ~69-73, hi ~70-71, mr 61-67, gu 64-68.
+- Absolute ceiling (every word predicted with ZERO letters typed, 1 keystroke per word): en 81.3, hi 77.6, mr 82.9, gu 80.1.
+- KSR 75 would require guessing almost every word before any letter is typed. No word predictor reaches that on these test sets. Larger gains need multi-word input (Step 16) and real user history (repetition), which the test data does not contain (16b).
+
+### 12b. Dev grid: shortlist size K of the GPU re-ranker (7 words shown, no personal model)
+| dev KSR | K0 (CPU) | K20 | K50 |
+|---|---|---|---|
+| English | 57.50 | 60.31 | **61.83** |
+| Hindi | 59.87 | 61.49 | **62.04** |
+| Marathi | 53.34 | 55.32 | **55.77** |
+| Gujarati | 55.41 | 57.02 | **57.46** |
+K=50 is best in all four languages -> `AAC_LM_K` default changed 20 -> 50 in `lm_rerank.py`. Recency cache (lam 0.15, unigram+bigram) on top of the LM: 59.24 -> 59.15 (en, n5): no gain, not used.
+Logs: `results/step12_dev.log`, `step12_dev_run1_stopped.*`, `step12_dev_run2_en_mr_oom.log`.
+
+### 12c. Bug found while running: CUDA out-of-memory at K=50 (Marathi)
+BLOOM's 250k-word output layer over 50 candidates at once asked for 1.9 GiB on the shared GPU. Fix in `lm_rerank.py`: score candidates in chunks of 16 (`CHUNK`). Same numbers, bounded memory. Also `CACHE_MAX` (2000 contexts) so the server cache cannot grow without bound; experiments set it to 10^7.
+Mistake noted: `pkill -f "python exp_step12_dev.py"` also killed my own shell (the pattern is in the shell's command line). Processes are now stopped by PID only.
+
+## Step 13 - phrase suggestions inside the 7 slots (DEV, CPU) - NOT shipped
+5 words + 2 phrase slots vs 7 words: en 56.0 vs 57.5, hi 60.7 vs 59.9, mr 51.3 vs 53.3, gu 55.2 vs 55.4. Taking word slots away for phrases helps only Hindi. Replaced by the separate phrase row of Step 16. Log: `results/step13_phrase_dev_K0*.`
+
+## Step 14 - CRITICAL BUG in the app's merge rule (found by simulating what the user SEES)
+app.py showed concept-grammar words first and only every 2nd statistical word (odd ranks), and removed words already in the sentence.
+| dev KSR, CPU, 7 shown | old rule | stats first + exclusion | stats first, no exclusion (shipped) | statistics only |
+|---|---|---|---|---|
+| English | 31.29 | 56.08 | 56.83 | 57.50 |
+| Hindi | 26.85 | 57.81 | 59.18 | 59.87 |
+| Marathi | 28.82 | 51.33 | 52.94 | 53.34 |
+| Gujarati | 25.19 | 52.69 | 54.91 | 55.41 |
+The old rule cut keystroke savings roughly in half. Fixed in `app.py /predict_next`: statistical words lead, every 3rd slot goes to the concept grammar (keeps the board's grammar help visible), no exclusion; while letters are typed only the statistical model is used. Together with Step 11a (UI sends typed letters) this is the largest real improvement for users. Log: `results/step14_merge_dev*.`
+
+## Step 15 - UI made to follow AAC standards (2026-11-23)
+Compared with standard AAC apps (Proloquo2Go, TD Snap, Grid, LAMP): colour-coded word types, switch scanning, dwell, large fixed targets.
+- `frontend/aac-standard.css` (new): Modified Fitzgerald Key colours on board cards (green actions, orange things/places, blue describing, yellow people, pink social, red no/urgent; dark-mode variants; can be switched off); minimum 44 px targets (WCAG 2.2) for suggestions, categories and actions; suggestions visible again in phone portrait (they were hidden).
+- `frontend/aac-access.js` (new, no dependencies): Access panel with Tap / Switch scanning (one switch auto-scan or two switches; group -> row -> button; held switch counts once; Esc restarts) / Dwell (rest the pointer: mouse, head pointer or eye tracker; must leave before re-pressing). Settings kept per device.
+- `index.html`: suggestion pills cleaned (no "∞-order" badge or % numbers, aria-label = word); word class attribute on each card; typed letters sent (11a) and stale responses ignored.
+- Not done: no build step (in-browser Babel still compiles the page on every load); no user test of scanning/dwell with switch users.
+- A final test run `exp_step15_final.py` was started (OLD vs CPU vs GPU) and stopped after English, superseded by Step 16 FINAL which measures the same systems plus personalisation in one pass (`results/step15_final_stopped_superseded_by_step16.*`; its English OLD/CPU numbers equal Step 16's to every digit).
+
+## Step 16 - personal vocabulary + phrase row (2026-11-23)
+User request: add sentence suggestions and personal vocabulary.
+
+### 16a. What was added (kept small: ~90 lines in `predictor_v2.py`, ~20 in `app.py`, ~30 in `index.html`)
+- `predictor_v2.Personal`: built per request from the signed-in user's last 100 spoken sentences + saved phrases (already stored by `personal_service`; `recent()` got a `limit`). A small infinity-gram + word counts of THEIR sentences, mixed into the ranking with weight `LAM` = 0.1 (`personalise()`); words only this user says (names, places) join the candidates. ~1 ms per request.
+- `LangModel.phrase()` / `suggest_phrase()`: one multi-word suggestion: (1) how a sentence that began exactly like this one went on, from the user's own sentences (weight 10) or the training text; else (2) the top word extended while the model is >= 50 % sure of the next word (up to 3 extra words).
+- `app.py /predict_next` returns `"phrase"`; the UI shows it as a full-width row ("➜ ...") above the word pills; one tap adds all its words and speaks once. It is inside the suggestion area, so switch scanning reaches it.
+- Tests: `test_personal_vocabulary_and_phrase` (a name said before is offered; a sentence said before is offered back as a phrase; empty history has no effect). 9/9 pass.
+
+### 16b. Important limitation of the data
+Test sentences almost never repeat: only 2-4 % occur in training and 0-1 % repeat an earlier test sentence. Real AAC users repeat their sentences a lot, so the measured gains below are a LOWER bound of what the personal model and phrase row give a real user; the size of the real gain needs a user study.
+
+### 16c. Dev results (CPU, simulated user typing the dev set in order; history only from sentences already typed)
+| dev KSR | 7 words | 8 words (control) | 7 + personal lam0.1 | 7 + phrase row | 7 + personal + phrase row | 8 + personal + phrase |
+|---|---|---|---|---|---|---|
+| English | 57.50 | 58.14 | 58.25 | 57.78 | 58.53 | 59.37 |
+| Hindi | 59.87 | 60.43 | 60.69 | 61.24 | 62.02 | 62.64 |
+| Marathi | 53.34 | 54.27 | 53.58 | 53.62 | 53.85 | 54.75 |
+| Gujarati | 55.41 | 56.16 | 55.74 | 56.37 | 56.65 | 57.42 |
+- lam 0.1 was best of 0.1/0.2/0.3/0.5 in all languages; phrase confidence 0.5 best in 3 of 4 (0.3 in en/mr by <0.04).
+- Honest comparison: in English and Marathi the phrase row gains less than simply showing an 8th word would; in Hindi and Gujarati more. The row adds 0.3-0.9 on top of ANY number of word slots and does not take a word slot away, so it is shipped as a separate row. Showing 8 words instead of 7 is a further +0.6-0.9 (not changed: 7 keeps the shelf readable on phones; an easy future switch).
+Logs: `results/step16_dev_K0_*.json/.log`, `step16_dev2_K0_*.json/.log`.
+
+### 16d. FINAL test results (full test sets, what the user SEES: 7 words + phrase row, merged list; GPU shortlist K=50; run once)
+`exp_step16_final.py en=50 hi=50 mr=50 gu=50` -> `results/step16_final.json/.log` (2026-11-23 10:34-12:20). KSR %, mean of AAC and caregiver test sets:
+| Language | OLD app (before 11a/14) | CPU, new user | CPU + personal | GPU, new user | **GPU + personal (final system)** |
+|---|---|---|---|---|---|
+| English | 7.23 | 58.86 | 60.32 | 63.46 | **64.32** |
+| Hindi | 9.69 | 59.72 | 62.50 | 61.90 | **64.29** |
+| Marathi | 5.20 | 53.96 | 54.97 | 56.29 | **57.21** |
+| Gujarati | 7.29 | 56.98 | 58.37 | 58.93 | **60.41** |
+Paired bootstrap 95 % CI of the gains (pp; AAC / caregiver), every interval excludes 0:
+| Language | final vs OLD | CPU vs OLD | personal on CPU | GPU vs CPU | personal on GPU |
+|---|---|---|---|---|---|
+| English | 54.9-57.6 / 56.9-59.0 | 49.5-52.1 / 51.3-53.6 | 0.65-1.32 / 1.59-2.30 | 4.26-5.25 / 4.03-4.84 | 0.39-0.93 / 0.76-1.38 |
+| Hindi | 52.9-55.4 / 54.0-56.1 | 48.5-50.8 / 49.5-51.4 | 2.03-3.16 / 2.45-3.47 | 1.83-2.60 / 1.80-2.44 | 1.76-2.88 / 2.06-2.94 |
+| Marathi | 47.8-52.1 / 52.7-55.3 | 44.9-49.1 / 49.2-51.9 | 0.35-0.97 / 0.96-1.75 | 1.95-3.02 / 1.64-2.69 | 0.32-0.85 / 0.92-1.60 |
+| Gujarati | 51.1-53.9 / 52.4-54.8 | 47.8-50.4 / 49.1-51.5 | 0.86-1.71 / 1.17-1.84 | 1.82-2.72 / 1.30-1.97 | 0.90-1.66 / 1.34-2.02 |
+Phrase row used (accepted multi-word suggestions over the whole test stream): en 106, hi 319, mr 80, gu 284.
+Reading:
+- The old app wasted almost all savings (KSR 5-10) because typed letters never reached the server and the merge rule hid the best words. That is fixed; this is by far the largest gain for real users.
+- The GPU re-ranker adds 2-5 pp; personal vocabulary + phrase row add another 0.9-2.4 pp on top (on CPU 1.0-2.8 pp).
+- KSR 75 is not reached (ceilings in 12a). Final: en 64.3, hi 64.3, mr 57.2, gu 60.4. Marathi/Gujarati test text is machine-translated, which lowers their numbers.
+- Personal gains are a lower bound (16b: test sentences almost never repeat; real users repeat).
+- Shipped defaults: `AAC_LM_K=50`, `LAM=0.1`, phrase confidence 0.5, 7 words shown.

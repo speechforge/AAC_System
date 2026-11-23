@@ -1,0 +1,15 @@
+{
+ "en": {
+  "n7": 57.5,
+  "n8 (control: one more word)": 58.136,
+  "n7 personal lam0.1": 58.247,
+  "n7 personal lam0.2": 58.233,
+  "n7 personal lam0.3": 58.205,
+  "n7 personal lam0.5": 58.081,
+  "n7 + phrase: own sentences only": 57.5,
+  "n7 + phrase: own + training sentences": 57.549,
+  "n7 + phrase: own + training + confident extension p0.5": 57.777,
+  "n7 + phrase: own + training + confident extension p0.3": 57.811,
+  "n7 personal lam0.1 + phrase: own + training + confident extension p0.3": 58.551
+ }
+}

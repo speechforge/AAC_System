@@ -6,7 +6,7 @@ LoRA adapter per language (adapters in lm_adapters/, trained on the AAC train sp
 Measured (full test sets, KSR, CPU-only -> with LM, K=20): en 57.5 -> ~61, hi 58.3 -> 60.6, mr 51.9 -> 54.1, gu 55.6 -> 57.4.
 
 Switch:   AAC_LM=auto (default: on when CUDA + base model + adapter are available) | 1 (same, but log why it is off) | 0 (off)
-Tunables: AAC_LM_K (shortlist size, default 20), AAC_LM_W (CPU weight, default 0.1)
+Tunables: AAC_LM_K (shortlist size, default 50: best on dev in all 4 languages, Step 12), AAC_LM_W (CPU weight, default 0.1)
 Any failure (no GPU, out of memory, bad adapter) -> the caller keeps the CPU ranking; after an error the LM is skipped for 60 s.
 """
 import collections
@@ -18,9 +18,11 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 ADAPTERS = os.path.join(HERE, "lm_adapters")
 MODEL = os.environ.get("AAC_LM_MODEL", "bigscience/bloom-560m")
-K = int(os.environ.get("AAC_LM_K", "20"))
+K = int(os.environ.get("AAC_LM_K", "50"))
 W_CPU = float(os.environ.get("AAC_LM_W", "0.1"))
 MODE = os.environ.get("AAC_LM", "auto").lower()
+CHUNK = 16                           # candidates per GPU batch
+CACHE_MAX = 2000                     # contexts kept in the score cache (experiments raise it)
 
 _lock = threading.Lock()
 _state = {"ready": False, "failed": None, "retry_at": 0.0, "lang": None}
@@ -118,7 +120,7 @@ def _logp(lang, ctx, cands):
     sc = _cache.get(key)
     if sc is None:
         sc = _cache[key] = {}
-        if len(_cache) > 2000:
+        if len(_cache) > CACHE_MAX:
             _cache.popitem(last=False)
     else:
         _cache.move_to_end(key)
@@ -130,18 +132,21 @@ def _logp(lang, ctx, cands):
                 _state["lang"] = lang
             text = " ".join(ctx)
             base = [_bos] + (_tok(text, add_special_tokens=False)["input_ids"] if text else [])
-            ws = [_tok((" " if ctx else "") + w, add_special_tokens=False)["input_ids"] for w in miss]
-            L = len(base) + max(map(len, ws))
-            ids = torch.full((len(miss), L), _tok.pad_token_id)
-            att = torch.zeros((len(miss), L), dtype=torch.long)
-            for j, w in enumerate(ws):
-                s_ = base + w
-                ids[j, :len(s_)] = torch.tensor(s_)
-                att[j, :len(s_)] = 1
-            h = _m.transformer(input_ids=ids.cuda(), attention_mask=att.cuda()).last_hidden_state[:, len(base) - 1:]
-            lp = torch.log_softmax(_m.lm_head(h).float(), -1)
-            for j, w in enumerate(ws):
-                sc[miss[j]] = sum(lp[j, k, t].item() for k, t in enumerate(w))
+            for c0 in range(0, len(miss), CHUNK):                # small batches: the 250k-word output layer is large
+                part = miss[c0:c0 + CHUNK]
+                ws = [_tok((" " if ctx else "") + w, add_special_tokens=False)["input_ids"] for w in part]
+                L = len(base) + max(map(len, ws))
+                ids = torch.full((len(part), L), _tok.pad_token_id)
+                att = torch.zeros((len(part), L), dtype=torch.long)
+                for j, w in enumerate(ws):
+                    s_ = base + w
+                    ids[j, :len(s_)] = torch.tensor(s_)
+                    att[j, :len(s_)] = 1
+                h = _m.transformer(input_ids=ids.cuda(), attention_mask=att.cuda()).last_hidden_state[:, len(base) - 1:]
+                lp = torch.log_softmax(_m.lm_head(h).float(), -1)
+                for j, w in enumerate(ws):
+                    sc[part[j]] = sum(lp[j, k, t].item() for k, t in enumerate(w))
+                del h, lp
     return [sc[w] for w in cands]
 
 

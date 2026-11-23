@@ -1,0 +1,15 @@
+{
+ "gu": {
+  "n7": 55.412,
+  "n8 (control: one more word)": 56.156,
+  "n7 personal lam0.1": 55.737,
+  "n7 personal lam0.2": 55.614,
+  "n7 personal lam0.3": 55.448,
+  "n7 personal lam0.5": 55.152,
+  "n7 + phrase: own sentences only": 55.412,
+  "n7 + phrase: own + training sentences": 55.542,
+  "n7 + phrase: own + training + confident extension p0.5": 56.365,
+  "n7 + phrase: own + training + confident extension p0.3": 56.17,
+  "n7 personal lam0.1 + phrase: own + training + confident extension p0.5": 56.654
+ }
+}

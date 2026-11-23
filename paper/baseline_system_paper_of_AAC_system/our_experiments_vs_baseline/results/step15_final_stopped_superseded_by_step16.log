@@ -1,0 +1,4 @@
+[∞-gram Engine] Initialized in 602.0ms! Sentences: 15,505 | Tokens: 112,875 | Max Depth: 181 | EN Vocab: 2,228 | HI Vocab: 2,596
+[∞-gram Engine] Initialized in 0.4ms! Sentences: 37 | Tokens: 194 | Max Depth: 7 | EN Vocab: 76 | HI Vocab: 36
+en OLD {'aac': 5.849, 'care': 8.604, 'avg': 7.226, 'seconds': 7}
+en CPU {'aac': 56.691, 'care': 61.034, 'avg': 58.862, 'seconds': 30}

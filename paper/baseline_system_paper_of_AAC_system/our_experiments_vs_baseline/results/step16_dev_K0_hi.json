@@ -1,0 +1,15 @@
+{
+ "hi": {
+  "n7": 59.873,
+  "n8 (control: one more word)": 60.43,
+  "n7 personal lam0.1": 60.686,
+  "n7 personal lam0.2": 60.686,
+  "n7 personal lam0.3": 60.667,
+  "n7 personal lam0.5": 60.436,
+  "n7 + phrase: own sentences only": 60.033,
+  "n7 + phrase: own + training sentences": 60.161,
+  "n7 + phrase: own + training + confident extension p0.5": 61.236,
+  "n7 + phrase: own + training + confident extension p0.3": 61.076,
+  "n7 personal lam0.1 + phrase: own + training + confident extension p0.5": 62.023
+ }
+}

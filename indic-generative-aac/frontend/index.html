@@ -217,7 +217,7 @@
       100% { opacity: 1; transform: translateY(0); }
     }
   </style>
-<link rel="stylesheet" href="/static/workspace.css?v=split-1"><link rel="stylesheet" href="/static/motion.css"><script src="/static/motion.js"></script><script src="/static/history.js"></script><link rel="icon" type="image/svg+xml" href="/static/favicon.svg"><meta name="theme-color" content="#6044be"><meta name="description" content="Indic AAC Studio: communication support in English, Hindi, Gujarati and Marathi."><meta property="og:type" content="website"><meta property="og:site_name" content="Indic AAC Studio"><meta property="og:title" content="Indic AAC Studio"><meta property="og:description" content="Your words, clearly expressed. Communication support in English, Hindi, Gujarati and Marathi."><meta property="og:image" content="/static/thumbnail.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="/static/thumbnail.png"><link rel="apple-touch-icon" href="/static/apple-touch-icon.png"><link rel="manifest" href="/static/site.webmanifest"><!--studio-global--><link rel="stylesheet" href="/static/ambient.css"><link rel="stylesheet" href="/static/studio-theme.css?v=reference-2"><script src="/static/studio-core.js"></script><!--/studio-global--><link rel="stylesheet" href="/static/communicator-layout.css?v=2"></head>
+<link rel="stylesheet" href="/static/workspace.css?v=split-1"><link rel="stylesheet" href="/static/aac-standard.css?v=1"><script src="/static/aac-access.js?v=1" defer></script><link rel="stylesheet" href="/static/motion.css"><script src="/static/motion.js"></script><script src="/static/history.js"></script><link rel="icon" type="image/svg+xml" href="/static/favicon.svg"><meta name="theme-color" content="#6044be"><meta name="description" content="Indic AAC Studio: communication support in English, Hindi, Gujarati and Marathi."><meta property="og:type" content="website"><meta property="og:site_name" content="Indic AAC Studio"><meta property="og:title" content="Indic AAC Studio"><meta property="og:description" content="Your words, clearly expressed. Communication support in English, Hindi, Gujarati and Marathi."><meta property="og:image" content="/static/thumbnail.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="/static/thumbnail.png"><link rel="apple-touch-icon" href="/static/apple-touch-icon.png"><link rel="manifest" href="/static/site.webmanifest"><!--studio-global--><link rel="stylesheet" href="/static/ambient.css"><link rel="stylesheet" href="/static/studio-theme.css?v=reference-2"><script src="/static/studio-core.js"></script><!--/studio-global--><link rel="stylesheet" href="/static/communicator-layout.css?v=2"></head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen antialiased selection:bg-brand-500 selection:text-white transition-colors duration-200">
   <div id="root"></div>
 
@@ -376,6 +376,15 @@
       { id: 'emergency', label: { en: 'Urgent', hi: 'आपातकालीन', gu: 'તાત્કાલિક', mr: 'तातडीचे' }, icon: '🆘', accent: 'card-accent-red' },
       { id: 'search', label: { en: '5,000+ Emojis', hi: '5000+ इमोजी', gu: '5000+ ઈમોજી', mr: '5000+ इमोजी' }, icon: '🔍', accent: 'card-accent-sky' }
     ];
+
+    // Modified Fitzgerald Key word types: lets users find words by colour (standard in AAC boards)
+    const CORE_CLASS = { YES: 'social', NO: 'neg', WANT: 'verb', HELP: 'verb', MORE: 'desc', STOP: 'verb', ME: 'pron', YOU: 'pron', GOOD: 'desc', BAD: 'desc' };
+    const CAT_CLASS = { actions: 'verb', food: 'noun', places: 'noun', body: 'noun', feelings: 'desc', people: 'pron', chat: 'social', emergency: 'urgent' };
+    let WORD_CLASS = null;   // concept id -> word type, built once from the board
+    const wordClass = (item) => {
+      if (!WORD_CLASS) { WORD_CLASS = {}; Object.entries(SYMBOL_DATABASE).forEach(([c, items]) => (items || []).forEach(x => { if (!WORD_CLASS[x.k]) WORD_CLASS[x.k] = CORE_CLASS[x.k] || CAT_CLASS[c]; })); }
+      return WORD_CLASS[item.k];
+    };
 
     const MY_WORDS_META = { id: 'custom', label: { en: 'My Words', hi: 'मेरे शब्द', gu: 'મારા શબ્દો', mr: 'माझे शब्द' }, icon: '📌', accent: 'card-accent-pink' };
 
@@ -969,6 +978,7 @@
 
       // Predictions & Output
       const [predictions, setPredictions] = useState([]);
+      const [phrase, setPhrase] = useState(null);   // one multi-word suggestion from the server (Step 16)
       const [isPredicting, setIsPredicting] = useState(false);
       const [isGenerating, setIsGenerating] = useState(false);
       const [generatedResult, setGeneratedResult] = useState(null);
@@ -1462,7 +1472,7 @@
 
       const predictSeq = useRef(0);   // newest request wins (typing fires many requests)
       const fetchPredictions = useCallback(async (currentWords, typedPrefix = '') => {
-        if(window.AACOffline.settings().mode==='offline'){setPredictions([]);return;}
+        if(window.AACOffline.settings().mode==='offline'){setPredictions([]);setPhrase(null);return;}
         setIsPredicting(true);
         const seq = ++predictSeq.current;
         try {
@@ -1483,6 +1493,7 @@
             const native = language === 'en' ? /[A-Za-z]/ : language === 'gu' ? /[\u0a80-\u0aff]/ : /[\u0900-\u097f]/;
             const foreign = language === 'en' ? /[\u0900-\u0aff]/ : /[a-zA-Z]/;
             const suggestions = (data.suggestions || data.predictions || []).filter(p => native.test(p.word) && !foreign.test(p.word));
+            setPhrase(data.phrase && native.test(data.phrase) && !foreign.test(data.phrase) ? data.phrase : null);
             if (suggestions.length > 0) {
               setPredictions(suggestions.slice(0, 7));
               setIsPredicting(false);
@@ -1520,6 +1531,7 @@
         };
 
         if (currentLanguageRef.current !== language || seq !== predictSeq.current) return;
+        setPhrase(null);
         // while typing, generic starter words would not match the typed letters: show nothing instead
         setPredictions(typedPrefix ? [] : (fallbacks[language] || fallbacks.hi));
         setIsPredicting(false);
@@ -1557,6 +1569,20 @@
         }
 
         // Haptic feedback
+        if (window.AACOffline.settings().vibration && navigator.vibrate) navigator.vibrate(20);
+      }, [language, autoSpeakOnSelect, speak, recordActivity]);
+
+      // Add a multi-word suggestion: every word becomes a token in one step, spoken once
+      const addPhrase = useCallback((text) => {
+        const ws = (text || '').split(/\s+/).filter(Boolean);
+        if (!ws.length) return;
+        const stamp = Date.now();
+        setTokens(prev => [...prev, ...ws.map((w, j) => ({
+          id: 'tok_' + stamp + '_' + j + '_' + Math.random().toString(36).substr(2, 4),
+          label: w, emoji: '💬', image: null, isCustom: false, visualId: null, cid: null
+        }))]);
+        ws.forEach(w => recordActivity('word', w, language));
+        if (autoSpeakOnSelect) speak(ws.join(' '), language);
         if (window.AACOffline.settings().vibration && navigator.vibrate) navigator.vibrate(20);
       }, [language, autoSpeakOnSelect, speak, recordActivity]);
 
@@ -2545,35 +2571,39 @@
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-[11px] font-black uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
-                      <span>{ui("⚡ Next Word Predictions", language)}</span>
+                      <span>{ui("Suggestions", language)}</span>
                       {isPredicting && <span className="w-2 h-2 rounded-full bg-brand-500 animate-ping"></span>}
                     </span>
                   </div>
                   <span className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold">
-                    {tokens.length > 0 ? `Context: ${tokens.length} words` : ui("Conversation Starters", language)}
+                    {tokens.length > 0 ? '' : ui("Conversation Starters", language)}
                   </span>
                 </div>
+
+                {/* Phrase row: one tap enters several words */}
+                {phrase && (
+                  <button
+                    type="button"
+                    onClick={() => { addPhrase(phrase); setInputText(t => t.replace(/[^\s,]*$/, '')); }}
+                    className="phrase-suggestion tap-ripple spring-press w-full text-left inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-brand-50 hover:bg-brand-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-extrabold text-sm sm:text-base border-2 border-brand-300 hover:border-brand-500 dark:border-slate-600 cursor-pointer transition-all"
+                    aria-label={ui('Add phrase', language) + ': ' + phrase}
+                  >
+                    <span aria-hidden="true">➜</span>
+                    <span className="truncate">{phrase}</span>
+                  </button>
+                )}
 
                 {/* Prediction Pills Ribbon */}
                 <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
                   {predictions.map((pred, i) => (
                     <button
                       key={i}
-                      onClick={() => addToken({ word: pred.word, emoji: pred.emoji || '✨' })}
+                      onClick={() => { addToken({ word: pred.word, emoji: pred.emoji || '✨' }); setInputText(t => t.replace(/[^\s,]*$/, '')); }}   /* the suggestion replaces the letters typed so far */
                       className="tap-ripple spring-press flex-shrink-0 inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white hover:bg-brand-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-extrabold text-xs sm:text-sm border-2 border-slate-200 hover:border-brand-500 dark:border-slate-700 shadow-xs cursor-pointer transition-all"
-                      title={pred.order_label ? `Matched ${pred.order_label}` : undefined}
+                      aria-label={pred.word}
                     >
                       <SymbolVisual item={visualItem(pred.word,pred.emoji)} style={visualStyle} photos={photoOverrides} />
                       <span>{pred.word}</span>
-                      {pred.order >= 4 && (
-                        <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
-                          ∞-{pred.order}{ui("g", language)}</span>
-                      )}
-                      {pred.prob > 0 && (
-                        <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500">
-                          {Math.round(pred.prob * 100)}%
-                        </span>
-                      )}
                     </button>
                   ))}
                 </div>
@@ -2712,10 +2742,10 @@
                   const content=<><SymbolVisual item={item} style={visualStyle} photos={photoOverrides} /><span className="card-label">{label}</span></>;
                   return item.isCustom ? (
                     <div className="custom-symbol-cell" key={item.k}>
-                      <button className="symbol-card comm-card flex flex-col items-center text-center border" data-symbol-id={item.k} onClick={() => addToken(item)}>{content}</button>
+                      <button className="symbol-card comm-card flex flex-col items-center text-center border" data-symbol-id={item.k} data-wc="custom" onClick={() => addToken(item)}>{content}</button>
                       <button className="custom-symbol-remove" aria-label={ui('Remove from My Words',language)+': '+label} onClick={() => removeCustomWord(item.k)}>×</button>
                     </div>
-                  ) : <button key={item.k} className="symbol-card comm-card flex flex-col items-center text-center border" data-symbol-id={item.k} onClick={() => addToken(item)}>{content}</button>;
+                  ) : <button key={item.k} className="symbol-card comm-card flex flex-col items-center text-center border" data-symbol-id={item.k} data-wc={wordClass(item)} onClick={() => addToken(item)}>{content}</button>;
                 })}
               </div>
 

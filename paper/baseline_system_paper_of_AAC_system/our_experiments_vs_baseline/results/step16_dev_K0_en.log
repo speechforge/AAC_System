@@ -1,0 +1,11 @@
+en K0 n7 57.5 phrases used 0 19 s
+en K0 n8 (control: one more word) 58.136 phrases used 0 19 s
+en K0 n7 personal lam0.1 58.247 phrases used 0 20 s
+en K0 n7 personal lam0.2 58.233 phrases used 0 21 s
+en K0 n7 personal lam0.3 58.205 phrases used 0 21 s
+en K0 n7 personal lam0.5 58.081 phrases used 0 22 s
+en K0 n7 + phrase: own sentences only 57.5 phrases used 0 22 s
+en K0 n7 + phrase: own + training sentences 57.549 phrases used 5 22 s
+en K0 n7 + phrase: own + training + confident extension p0.5 57.777 phrases used 34 23 s
+en K0 n7 + phrase: own + training + confident extension p0.3 57.811 phrases used 33 23 s
+en K0 n7 personal lam0.1 + phrase: own + training + confident extension p0.3 58.551 phrases used 32 24 s

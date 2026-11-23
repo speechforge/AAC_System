@@ -114,8 +114,8 @@ class SessionStore:
                 for word, count in self.redis.zrevrange(self.data_key(session, language, 'word'),
                                                        0, limit - 1, withscores=True)]
 
-    def recent(self, session, language):
-        return [json.loads(x) for x in self.redis.lrange(self.data_key(session, language, 'conversation'), 0, 49)]
+    def recent(self, session, language, limit=50):
+        return [json.loads(x) for x in self.redis.lrange(self.data_key(session, language, 'conversation'), 0, limit - 1)]
 
     def bookmark(self, session, text, language):
         text = validate_native(text, language)

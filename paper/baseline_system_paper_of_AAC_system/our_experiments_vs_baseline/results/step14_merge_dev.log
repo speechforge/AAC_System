@@ -1,0 +1,16 @@
+en dev current_excludeTrue 31.287 22 s
+en dev stat_first_excludeTrue 56.083 13 s
+en dev stat_first_excludeFalse 56.83 14 s
+en dev stat_only_excludeFalse 57.5 14 s
+hi dev current_excludeTrue 26.853 28 s
+hi dev stat_first_excludeTrue 57.814 16 s
+hi dev stat_first_excludeFalse 59.182 16 s
+hi dev stat_only_excludeFalse 59.873 15 s
+mr dev current_excludeTrue 28.818 40 s
+mr dev stat_first_excludeTrue 51.331 17 s
+mr dev stat_first_excludeFalse 52.939 17 s
+mr dev stat_only_excludeFalse 53.343 15 s
+gu dev current_excludeTrue 25.193 32 s
+gu dev stat_first_excludeTrue 52.69 15 s
+gu dev stat_first_excludeFalse 54.914 15 s
+gu dev stat_only_excludeFalse 55.412 15 s

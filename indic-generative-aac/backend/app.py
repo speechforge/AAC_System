@@ -304,11 +304,25 @@ def predict_next(req: ContextRequest, request: Request):
     lang = req.language
     # 1) Concept grammar: reacts to every selected word, identical in all four languages.
     context_preds = concept_predict.predict(words, lang, top_k=10)
+    # The signed-in user's own data: frequent words, and their spoken sentences + saved phrases -> a small personal model
+    # (predictor_v2.Personal) that learns their words and how their sentences go on (20_nov_changes.md Step 16).
+    personalized, history = [], []
+    token = request.cookies.get(personal_service.COOKIE)
+    if token:
+        try:
+            session = personal_service.store.read(token)
+            personalized = [{**item, "source": "personal", "emoji": "⭐"}
+                            for item in personal_service.store.frequent(session, lang, 7)]
+            history = [x.get("text", "") for x in personal_service.store.recent(session, lang, 100)]
+            history += [x.get("text", "") for x in personal_service.store.bookmarks(session, lang)]
+        except (HTTPException, personal_service.redis.RedisError):
+            pass
+    pm = predictor_v2.Personal(lang, history) if history and lang in predictor_v2.LANGS else None
     # 2) Statistical model (infinity-gram / Markov), localised and script-filtered.
     preds = []
     if os.environ.get("AAC_PREDICTOR", "v2") != "legacy":      # v2 = per-language model + char-12-gram mix + OOV completion (predictor_v2.py)
         try:
-            preds = predictor_v2.predict(words, lang, prefix=req.prefix, top_k=10)
+            preds = predictor_v2.predict(words, lang, prefix=req.prefix, top_k=10, personal=pm)
         except Exception:
             traceback.print_exc()
             preds = []
@@ -329,35 +343,38 @@ def predict_next(req: ContextRequest, request: Request):
             continue
         seen_stat.add(label)
         stat.append({**pred, "word": label, "source": pred.get("source", "model")})
-    # 3) Merge: with a sentence in progress context leads (interleaved with the model so both show);
-    #    with an empty sentence the user's own frequent words lead.
-    personalized = []
-    token = request.cookies.get(personal_service.COOKIE)
-    if token:
-        try:
-            session = personal_service.store.read(token)
-            personalized = [{**item, "source": "personal", "emoji": "⭐"}
-                            for item in personal_service.store.frequent(session, lang, 7)]
-        except (HTTPException, personal_service.redis.RedisError):
-            pass
+    # 3) Merge (measured in paper/.../20_nov_changes.md Step 12): the statistical model leads. The old rule showed the concept
+    # grammar first and only the 2nd, 4th, 6th... statistical words, which cut simulated keystroke savings roughly in half.
+    # While letters are typed only the statistical model is used; otherwise every 3rd slot goes to the concept grammar.
+    # Words already in the sentence are not removed (repeats such as "to ... to" are real; removing them cost 0.7-2.2 KSR).
     selected, used = [], set()
+    pre = req.prefix.strip()
     def push(item):
-        if req.prefix and not item["word"].startswith(req.prefix.strip()):
-            return                                       # a typed prefix narrows every source, not only the statistical one
-        if item["word"] not in used and item["word"] not in {w.strip() for w in words}:
+        if pre and not item["word"].lower().startswith(pre.lower()):
+            return
+        if item["word"] not in used:
             used.add(item["word"]); selected.append(item)
-    if words:
-        for i in range(max(len(context_preds), len(stat))):
-            if i < len(context_preds): push(context_preds[i])
-            if i < len(stat) and i % 2 == 1: push(stat[i])
-        for item in personalized[:2]:      # personal words only fill spare slots once context is known
-            push(item)
-    else:
-        for item in personalized[:4]: push(item)
-        for item in context_preds: push(item)
+    if not words:
+        for item in personalized[:2]: push(item)       # the user's own frequent starters
+    if pre:
         for item in stat: push(item)
+    else:
+        c, st, i = list(context_preds), list(stat), 0
+        while c or st:
+            if st and (i % 3 != 2 or not c): push(st.pop(0))
+            elif c: push(c.pop(0))
+            i += 1
+    for item in personalized: push(item)                # spare slots only
     selected = selected[:10]
-    return {"predictions": selected, "suggestions": selected, "personalized": bool(personalized)}
+    # 4) One multi-word suggestion (shown as its own row): how the user's own / the training sentences went on from here,
+    #    else the top word extended while the model is confident. Selecting it enters all its words at once.
+    phrase = None
+    if os.environ.get("AAC_PREDICTOR", "v2") != "legacy":
+        try:
+            phrase = predictor_v2.suggest_phrase(words, lang, req.prefix, top=stat[0]["word"] if stat else None, personal=pm)
+        except Exception:
+            traceback.print_exc()
+    return {"predictions": selected, "suggestions": selected, "phrase": phrase, "personalized": bool(personalized or pm)}
 
 @app.post("/api/unjumble")
 def unjumble(req: UnjumbleRequest):
