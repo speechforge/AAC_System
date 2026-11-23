@@ -701,3 +701,4 @@ over sentences of "ours with re-ranker minus row"; speed = median of 5 runs x 20
   Section 4 now says the adapted baseline is 1.2 points better and faster, and that it was run for English only.
 - Possible follow-up (NOT done; changes the system): an adapted OPT-125m as the English re-ranker instead of BLOOM+LoRA.
 - The AAC server on :8000 stays stopped (user does not need it now).
+- 16:15 final commit `5ab94e1` pushed to `November_22_2026` (Step 17 complete: all six review points answered; v4 source ready for an Overleaf build).
